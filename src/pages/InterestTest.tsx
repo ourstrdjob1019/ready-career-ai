@@ -1,177 +1,147 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button, Card, ProgressBar, MascotAri } from "../components";
-import { Check, ArrowLeft, ArrowRight, Sparkles } from "lucide-react";
-
-interface Question {
-  id: number;
-  category: string;
-  question: string;
-  hint?: string;
-}
-
-const QUESTIONS: Question[] = [
-  {
-    id: 1,
-    category: "R (현실형) & I (탐구형)",
-    question: "복잡한 과학적 현상이나 소프트웨어의 뼈대가 되는 원리를 해부해 보고 실험하는 일을 좋아하나요?",
-    hint: "단순히 보는데 그치지 않고 왜 그런지 탐구하고 만들어보는 행동과 관련이 높아요!"
-  },
-  {
-    id: 2,
-    category: "A (예술형) & E (진취형)",
-    question: "남들이 생각하지 못한 아이디어를 글, 그림, 기획서나 영상을 통해 새롭게 표현하여 매료시키고 싶나요?",
-    hint: "유행을 리드하고 감수성과 커뮤니케이션 능력을 발휘하는 능력을 뜻합니다."
-  },
-  {
-    id: 3,
-    category: "S (사회형) & C (관습형)",
-    question: "친구들의 고민을 진심으로 들어주고, 체계적인 규칙 속에서 갈등을 부드럽게 조정해 나가는 데 보람을 느끼나요?",
-    hint: "공공의 복지와 교육, 조직의 조화와 정확한 프로세스 준수에 관한 성향이에요."
-  },
-  {
-    id: 4,
-    category: "AI 융합 미래 역량",
-    question: "인공지능, 로봇공학, 데이터 분석 도구를 적극 활용하여 인류가 당면한 기후나 자원 문제를 해결하고 싶나요?",
-    hint: "ReadyCareer AI가 가장 주목하는 융합적 미래 문제해결 잠재력 지수입니다!"
-  }
-];
+import { ProgressBar, MascotAri } from "../components";
+import { ArrowLeft, ArrowRight, Brain } from "lucide-react";
+import configData from "../data/assessment_config.json";
 
 export const InterestTest: React.FC = () => {
   const navigate = useNavigate();
   const [currentIdx, setCurrentIdx] = useState(0);
-  const [selectedScore, setSelectedScore] = useState<number | null>(null);
-  const [answers, setAnswers] = useState<Record<number, number>>({});
+  const [scores, setScores] = useState<Record<string, number>>({
+    R: 0, I: 0, A: 0, S: 0, E: 0, C: 0,
+  });
 
-  const currentQ = QUESTIONS[currentIdx];
+  const questions = configData.items || [];
+  const currentQ = questions[currentIdx];
+  const progressPercent = Math.round(((currentIdx + 1) / questions.length) * 100);
 
-  const handleNext = () => {
-    if (selectedScore !== null) {
-      const newAnswers = { ...answers, [currentQ.id]: selectedScore };
-      setAnswers(newAnswers);
+  const handleSelect = (chosenType: string) => {
+    const nextScores = { ...scores, [chosenType]: (scores[chosenType] || 0) + 1 };
+    setScores(nextScores);
+
+    if (currentIdx + 1 < questions.length) {
+      setCurrentIdx((prev) => prev + 1);
+    } else {
+      const sorted = Object.entries(nextScores).sort((a, b) => b[1] - a[1]);
+      const topCode = `${sorted[0][0]}${sorted[1][0]}`;
+      const primaryType = sorted[0][0];
       
-      if (currentIdx < QUESTIONS.length - 1) {
-        setCurrentIdx(currentIdx + 1);
-        setSelectedScore(newAnswers[QUESTIONS[currentIdx + 1].id] || null);
-      } else {
-        // Test finished, redirect to result
-        navigate("/test-result");
-      }
+      localStorage.setItem("riasec_result_scores", JSON.stringify(nextScores));
+      localStorage.setItem("riasec_result_code", topCode);
+      localStorage.setItem("riasec_primary", primaryType);
+      
+      navigate("/test-result");
     }
   };
 
-  const handlePrev = () => {
-    if (currentIdx > 0) {
-      setCurrentIdx(currentIdx - 1);
-      setSelectedScore(answers[QUESTIONS[currentIdx - 1].id] || null);
-    }
-  };
-
-  const scaleOptions = [
-    { value: 1, label: "전혀 그렇지 않다", color: "hover:bg-error-container/40" },
-    { value: 2, label: "그렇지 않은 편", color: "hover:bg-surface-container" },
-    { value: 3, label: "보통이다", color: "hover:bg-primary/10" },
-    { value: 4, label: "그런 편이다", color: "hover:bg-secondary/15" },
-    { value: 5, label: "매우 그렇다!", color: "hover:bg-primary/25" },
-  ];
+  if (!currentQ) return null;
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-8 md:py-12 flex flex-col gap-6">
-      {/* Progress & Header */}
-      <div className="flex flex-col gap-3">
-        <div className="flex justify-between items-center text-label-sm text-text-muted">
-          <span className="font-headline font-bold text-primary flex items-center gap-1">
-            <Sparkles className="w-4 h-4 text-secondary-spot" />
-            AI 진로 탐색 무대 (3D 진도)
+    <div className="max-w-4xl mx-auto px-4 py-8 md:py-12 space-y-8">
+      
+      {/* Top Header & Progress */}
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary/15 text-secondary font-headline text-xs font-black">
+            <Brain className="w-4 h-4 text-secondary-spot" />
+            <span>Holland RIASEC 상황 설명형 양자택일 (A/B) 6유형 검사</span>
           </span>
-          <span className="font-bold text-base text-text-primary">
-            {currentIdx + 1} / {QUESTIONS.length}
+          <span className="text-xs font-headline font-black text-text-muted">
+            문항 {currentIdx + 1} / {questions.length} ({progressPercent}%)
           </span>
         </div>
-        <ProgressBar
-          value={currentIdx + 1}
-          max={QUESTIONS.length}
-          variant="gradient"
-          showLabel={false}
-        />
+
+        <ProgressBar value={progressPercent} max={100} variant="teal" />
+        <h1 className="text-2xl md:text-3xl font-headline font-black text-text-primary leading-tight text-center pt-2">
+          {currentQ.situation}
+        </h1>
       </div>
 
-      {/* Main Question Card */}
-      <Card variant="activity" padding="lg" className="w-full shadow-3d-ambient min-h-[400px] flex flex-col justify-between">
-        <div className="flex flex-col gap-6">
-          <div className="inline-flex items-center self-start gap-2 bg-secondary/10 text-secondary px-4 py-1 rounded-full text-xs font-headline font-extrabold">
-            {currentQ.category}
-          </div>
-          
-          <h2 className="text-headline-md md:text-headline-lg font-headline font-bold text-text-primary leading-snug">
-            {currentQ.question}
-          </h2>
-
-          {/* Scale Options */}
-          <div className="flex flex-col gap-3 mt-4">
-            {scaleOptions.map((opt) => {
-              const isSelected = selectedScore === opt.value;
-              return (
-                <button
-                  key={opt.value}
-                  type="button"
-                  onClick={() => setSelectedScore(opt.value)}
-                  className={`w-full p-4 md:py-5 rounded-2xl border flex items-center justify-between font-headline transition-all duration-200 ${
-                    isSelected
-                      ? "bg-primary text-on-primary border-primary font-extrabold shadow-3d-base translate-x-1"
-                      : `bg-surface-container-low border-surface-variant/40 text-text-primary ${opt.color}`
-                  }`}
-                >
-                  <span className="text-base md:text-lg pl-2">{opt.label}</span>
-                  <div className={`w-7 h-7 rounded-full flex items-center justify-center border-2 ${
-                    isSelected ? "bg-white text-primary border-white" : "border-text-muted/40"
-                  }`}>
-                    {isSelected && <Check className="w-4 h-4 stroke-[3]" />}
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Navigation Actions */}
-        <div className="flex justify-between items-center gap-4 mt-8 pt-6 border-t border-surface-variant/30">
-          <Button
-            type="button"
-            variant="secondary"
-            size="md"
-            onClick={handlePrev}
-            disabled={currentIdx === 0}
-            className={currentIdx === 0 ? "opacity-40 pointer-events-none" : ""}
-          >
-            <ArrowLeft className="w-5 h-5 mr-1" />
-            이전
-          </Button>
-
-          <Button
-            type="button"
-            variant={selectedScore !== null ? "primary" : "secondary"}
-            size="md"
-            onClick={handleNext}
-            disabled={selectedScore === null}
-            className={selectedScore === null ? "opacity-50 pointer-events-none" : "px-8"}
-          >
-            {currentIdx === QUESTIONS.length - 1 ? "결과 보고서 생성" : "다음 질문"}
-            <ArrowRight className="w-5 h-5 ml-1" />
-          </Button>
-        </div>
-      </Card>
-
-      {/* Ari AI Hint */}
-      {currentQ.hint && (
-        <MascotAri
-          pose="avatar"
-          size="sm"
-          bubbleTitle="Ari's AI 분석 힌트"
-          bubbleMessage={currentQ.hint}
-          className="max-w-2xl mx-auto w-full"
+      {/* Situation Image Illustration */}
+      <div className="w-full h-52 md:h-64 rounded-3xl overflow-hidden shadow-3d-base relative bg-surface-container border border-surface-variant/40">
+        <img
+          src={currentQ.image}
+          alt="상황 일러스트"
+          className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700"
+          onError={(e) => {
+            (e.target as HTMLElement).style.display = "none";
+          }}
         />
-      )}
+        <div className="absolute inset-0 bg-gradient-to-t from-surface-container-lowest/90 via-transparent to-transparent flex items-end p-4">
+          <span className="text-xs font-headline font-extrabold text-text-primary bg-surface-container-lowest/80 backdrop-blur-md px-3 py-1 rounded-full border border-surface-variant/30 shadow-sm">
+            🎨 터치하거나 좌우 버튼(A vs B)을 선택해 내 진행 성향을 발견해 보세요!
+          </span>
+        </div>
+      </div>
+
+      {/* FORCED-CHOICE PAIR COMPARISON CARDS */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
+        
+        {/* Option A */}
+        <button
+          onClick={() => handleSelect(currentQ.options.A.type)}
+          className="p-6 md:p-8 rounded-3xl bg-gradient-to-br from-primary-fixed/30 to-surface-container-low hover:from-primary/20 hover:to-surface-container border-2 border-primary/40 hover:border-primary shadow-3d-base hover:shadow-3d-ambient transition-all duration-200 text-left flex flex-col justify-between group active:scale-[0.98]"
+        >
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="w-10 h-10 rounded-2xl bg-primary text-on-primary font-headline font-black text-lg flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
+                A
+              </span>
+              <span className="text-[11px] font-extrabold text-primary px-2.5 py-0.5 rounded-full bg-primary/10">
+                선택지 &larr; (좌 화살표)
+              </span>
+            </div>
+            <p className="text-base md:text-lg font-headline font-extrabold text-text-primary leading-relaxed group-hover:text-primary transition-colors">
+              "{currentQ.options.A.label}"
+            </p>
+          </div>
+
+          <div className="mt-6 pt-3 border-t border-primary/20 flex items-center justify-between text-xs font-black text-primary">
+            <span>이 행동 방식을 선택</span>
+            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+          </div>
+        </button>
+
+        {/* Option B */}
+        <button
+          onClick={() => handleSelect(currentQ.options.B.type)}
+          className="p-6 md:p-8 rounded-3xl bg-gradient-to-br from-secondary-fixed/30 to-surface-container-low hover:from-secondary/20 hover:to-surface-container border-2 border-secondary/40 hover:border-secondary shadow-3d-base hover:shadow-3d-ambient transition-all duration-200 text-left flex flex-col justify-between group active:scale-[0.98]"
+        >
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="w-10 h-10 rounded-2xl bg-secondary text-white font-headline font-black text-lg flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
+                B
+              </span>
+              <span className="text-[11px] font-extrabold text-secondary-spot px-2.5 py-0.5 rounded-full bg-secondary/10">
+                (우 화살표) &rarr; 선택지
+              </span>
+            </div>
+            <p className="text-base md:text-lg font-headline font-extrabold text-text-primary leading-relaxed group-hover:text-secondary transition-colors">
+              "{currentQ.options.B.label}"
+            </p>
+          </div>
+
+          <div className="mt-6 pt-3 border-t border-secondary/20 flex items-center justify-between text-xs font-black text-secondary-spot">
+            <span>이 생각 방식을 선택</span>
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </div>
+        </button>
+
+      </div>
+
+      {/* Footer Mascot Tip */}
+      <div className="p-4 bg-surface-container-low rounded-3xl border border-surface-variant/40 flex items-center gap-4">
+        <MascotAri pose="sticker" size="sm" rotate={false} />
+        <div>
+          <h4 className="text-xs font-headline font-extrabold text-text-primary">아리(Ari)의 검사 코칭 Tip</h4>
+          <p className="text-xs text-text-muted">
+            정답이나 더 좋은 성격은 없어요! 조별과제나 첨단 기기를 다룰 때 본능적으로 가장 마음이 편한 선택을 터치해 주시면 가장 정확한 커리어 클러스터가 생성됩니다.
+          </p>
+        </div>
+      </div>
+
     </div>
   );
 };
+
+export default InterestTest;

@@ -15,14 +15,15 @@ import {
   Login,
   SignUp,
   ForgotPassword,
+  StartScreen,
+  SuperAdminConsole,
   SelfUnderstanding,
   SelfReport,
 } from "./pages";
 import { AuthProvider, SelfUnderstandingProvider, useAuth } from "./context";
 import "./App.css";
 
-// PrivateRoute: automatically redirects to /login if user is not authenticated
-const PrivateRoute: React.FC<{ children: React.ReactElement; requiredRole?: "student" | "teacher" }> = ({
+const PrivateRoute: React.FC<{ children: React.ReactElement; requiredRole?: string }> = ({
   children,
   requiredRole,
 }) => {
@@ -30,42 +31,49 @@ const PrivateRoute: React.FC<{ children: React.ReactElement; requiredRole?: "stu
   const location = useLocation();
 
   if (!isAuthenticated) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    return <Navigate to="/start" state={{ from: location }} replace />;
   }
 
-  // If a teacher tries to hit student-only root (/), gracefully steer them to teacher board
-  if (session?.role === "teacher" && location.pathname === "/") {
+  const role = session?.role as string | undefined;
+  const state = location.state as { forceStudent?: boolean } | undefined;
+
+  if (role === "super_admin" && location.pathname === "/" && !state?.forceStudent) {
+    return <Navigate to="/super-admin" replace />;
+  }
+  if (role === "teacher" && location.pathname === "/" && !state?.forceStudent) {
     return <Navigate to="/teacher" replace />;
   }
 
-  // Optional strict role checks
-  if (requiredRole && session?.role !== requiredRole) {
-    return <Navigate to={session?.role === "teacher" ? "/teacher" : "/"} replace />;
+  if (requiredRole && role !== requiredRole && role !== "super_admin") {
+    return <Navigate to={role === "teacher" ? "/teacher" : role === "super_admin" ? "/super-admin" : "/"} replace />;
   }
 
   return children;
 };
 
-// PublicRoute: if already logged in and hits /login or /signup, redirect to appropriate home
 const PublicAuthRoute: React.FC<{ children: React.ReactElement }> = ({ children }) => {
   const { isAuthenticated, session } = useAuth();
-  if (isAuthenticated) {
-    return <Navigate to={session?.role === "teacher" ? "/teacher" : "/"} replace />;
+  if (isAuthenticated && session) {
+    return <Navigate to={session.role === "super_admin" ? "/super-admin" : session.role === "teacher" ? "/teacher" : "/"} replace />;
   }
   return children;
 };
 
 const AppContent: React.FC = () => {
   return (
-    <div className="min-h-screen flex flex-col bg-surface font-body-md text-text-primary selection:bg-primary/20 selection:text-primary pb-20 md:pb-0">
+    <div className="min-h-screen flex flex-col bg-surface font-body-md text-text-primary selection:bg-primary/20 selection:text-primary pb-20 lg:pb-0">
       <Header />
 
       <main className="flex-grow">
         <Routes>
-          {/* Auth Public Routes (First Screen Target) */}
+          {/* Start Hub & Auth Routes */}
+          <Route path="/start" element={<StartScreen />} />
           <Route path="/login" element={<PublicAuthRoute><Login /></PublicAuthRoute>} />
           <Route path="/signup" element={<PublicAuthRoute><SignUp /></PublicAuthRoute>} />
           <Route path="/forgot-password" element={<PublicAuthRoute><ForgotPassword /></PublicAuthRoute>} />
+
+          {/* Super Admin Console */}
+          <Route path="/super-admin" element={<PrivateRoute requiredRole="super_admin"><SuperAdminConsole /></PrivateRoute>} />
 
           {/* Student Core Dashboard & Self-Understanding Hub */}
           <Route path="/" element={<PrivateRoute><HomeDashboard /></PrivateRoute>} />
@@ -89,8 +97,8 @@ const AppContent: React.FC = () => {
           {/* Teacher Guide 3D Pro Dashboard */}
           <Route path="/teacher" element={<PrivateRoute requiredRole="teacher"><TeacherGuide /></PrivateRoute>} />
 
-          {/* Fallback Catch-all: send to root (which checks auth and steers appropriately) */}
-          <Route path="*" element={<Navigate to="/" replace />} />
+          {/* Fallback Catch-all: send to /start */}
+          <Route path="*" element={<Navigate to="/start" replace />} />
         </Routes>
       </main>
 

@@ -1,203 +1,219 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Button, Card, Input, Chip, MascotAri } from "../../components";
+import { Button, Card } from "../../components";
 import { useAuth } from "../../context";
-import { User, Mail, Lock, School, KeyRound, CheckCircle2, ShieldAlert } from "lucide-react";
 import type { UserRole } from "../../context";
+import { UserPlus, School, KeyRound, AlertCircle, CheckCircle2 } from "lucide-react";
+import configData from "../../data/assessment_config.json";
 
 export const SignUp: React.FC = () => {
-  const navigate = useNavigate();
-  const { signup } = useAuth();
-
   const [role, setRole] = useState<UserRole>("student");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-  const [school, setSchool] = useState("서울창의고등학교");
-  const [teacherCode, setTeacherCode] = useState("");
-  const [error, setError] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedSchoolCode, setSelectedSchoolCode] = useState("SEOUL-701");
+  const [inviteCode, setInviteCode] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
+
+  const { register, signupOpen } = useAuth();
+  const navigate = useNavigate();
+
+  const schoolList = configData.school_master_data || [];
+  const activeSchool = schoolList.find((s) => s.code === selectedSchoolCode) || schoolList[0];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !password || !name) {
-      setError("필수 입력 값을 모두 기입해주세요.");
+    setErrorMsg("");
+    setSuccessMsg("");
+
+    if (!email || !name) {
+      setErrorMsg("이메일과 실명을 정확하게 입력해 주세요.");
       return;
     }
 
-    if (role === "teacher" && !teacherCode) {
-      setError("학교 담당자(교사) 가입은 학교로부터 받은 '담당자 인증코드' 입력이 필수입니다.");
+    if (!inviteCode.trim()) {
+      setErrorMsg("슈퍼관리자 또는 담임 선생님으로부터 받은 B2B 초대코드를 입력해야 합니다.");
       return;
     }
 
-    setIsSubmitting(true);
-    await signup({
-      email,
-      name,
-      role,
-      school,
-      teacherCode: role === "teacher" ? teacherCode : undefined,
-    });
-    setIsSubmitting(false);
-
-    // After signup, direct to onboarding for student, or teacher guide for teachers
-    if (role === "teacher") {
-      navigate("/teacher");
+    const res = await register(name, email, role, activeSchool?.name || "서울창의고등학교", selectedSchoolCode, inviteCode);
+    if (res.success) {
+      setSuccessMsg("🎉 학교 마스터코드 승인 및 회원가입이 100% 성공했습니다!");
+      setTimeout(() => {
+        navigate(role === "teacher" ? "/teacher" : "/");
+      }, 1000);
     } else {
-      navigate("/onboarding-code");
+      setErrorMsg(res.message || "회원가입에 실패했습니다.");
     }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[88vh] px-4 py-10 max-w-2xl mx-auto">
-      <div className="text-center mb-6 flex flex-col items-center">
-        <div className="inline-flex items-center gap-1.5 bg-primary/10 text-primary px-3.5 py-1 rounded-full text-xs font-headline font-extrabold mb-2">
-          <span>신규 계정 생성 및 세션 등록</span>
-        </div>
-        <h1 className="text-headline-lg md:text-display-lg font-extrabold text-text-primary font-headline">
-          ReadyCareer <span className="text-transparent bg-clip-text gradient-hero-card">회원가입</span>
-        </h1>
-        <p className="text-sm text-text-muted mt-1">
-          가입하신 계정의 역할(Role)에 따라 최적화된 개별 세션 뷰가 적용됩니다.
-        </p>
-      </div>
-
-      <Card variant="activity" padding="lg" className="w-full shadow-3d-ambient border-primary/20">
-        <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-          {/* Role selector chips */}
-          <div className="flex flex-col gap-2">
-            <label className="font-headline font-bold text-label-lg text-text-primary px-1">
-              가입 계정 유형 선택
-            </label>
-            <div className="flex gap-4">
-              <Chip
-                type="button"
-                size="md"
-                active={role === "student"}
-                onClick={() => setRole("student")}
-                className="flex-1 py-3 text-center justify-center"
-              >
-                🧑‍🎓 일반 학생 계정
-              </Chip>
-              <Chip
-                type="button"
-                size="md"
-                active={role === "teacher"}
-                variant={role === "teacher" ? "teal" : "default"}
-                onClick={() => setRole("teacher")}
-                className="flex-1 py-3 text-center justify-center"
-              >
-                👨‍🏫 학교 담당자(교사)
-              </Chip>
-            </div>
-          </div>
-
-          <Input
-            label={role === "student" ? "이름 (학생 성명)" : "선생님 성명"}
-            placeholder={role === "student" ? "예: 김수진" : "예: 박성열 (3학년 진로부)"}
-            value={name}
-            onChange={(e) => {
-              setName(e.target.value);
-              if (error) setError("");
-            }}
-            icon={<User className="w-5 h-5 text-primary" />}
-            required
-          />
-
-          <Input
-            type="email"
-            label="이메일 계정 (로그인 ID)"
-            placeholder="example@school.ai"
-            value={email}
-            onChange={(e) => {
-              setEmail(e.target.value);
-              if (error) setError("");
-            }}
-            icon={<Mail className="w-5 h-5 text-secondary" />}
-            required
-          />
-
-          <Input
-            type="password"
-            label="비밀번호"
-            placeholder="8자 이상 영숫자 및 특수기호"
-            value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-              if (error) setError("");
-            }}
-            error={error}
-            icon={<Lock className="w-5 h-5 text-primary" />}
-            required
-          />
-
-          <Input
-            label="소속 학교명"
-            placeholder="예: 서울창의고등학교"
-            value={school}
-            onChange={(e) => setSchool(e.target.value)}
-            icon={<School className="w-5 h-5 text-secondary-spot" />}
-            required
-          />
-
-          {/* Teacher Code Condition */}
-          {role === "teacher" && (
-            <div className="bg-secondary/10 p-5 rounded-3xl border-2 border-secondary/30 flex flex-col gap-3">
-              <div className="flex items-center gap-2 font-headline font-black text-secondary-spot text-sm">
-                <ShieldAlert className="w-5 h-5 text-secondary" />
-                <span>학교 담당자 전용 보안 검증</span>
-              </div>
-              <Input
-                label="담당자 인증코드 (School Teacher Key)"
-                placeholder="예: EDU-PRO-2026-TEACHER"
-                value={teacherCode}
-                onChange={(e) => {
-                  setTeacherCode(e.target.value.toUpperCase());
-                  if (error) setError("");
-                }}
-                icon={<KeyRound className="w-5 h-5 text-secondary" />}
-                hint="학교 또는 교육기관 관리처에서 부여받은 프로 고해상도 열쇠"
-                required
-              />
-            </div>
-          )}
-
-          <div className="bg-surface-container p-4 rounded-2xl flex items-center gap-3 border border-surface-variant/30 text-xs text-text-muted">
-            <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0" />
-            <span>
-              가입 즉시 3D 한글 진로 포트폴리오 및 AI 세특 자동 문구 생성 권한이 부여되며, RLS 테이블 보안 정책이 준수됩니다.
-            </span>
-          </div>
-
-          <Button
-            type="submit"
-            variant={role === "student" ? "primary" : "teal"}
-            size="lg"
-            fullWidth
-            disabled={isSubmitting}
-            className="font-extrabold"
-          >
-            {isSubmitting ? "계정 프로필 생성 중..." : `${role === "student" ? "학생 계정 가입" : "학교 담당자 계정 가입"} 완수`}
-          </Button>
-        </form>
-
-        <div className="mt-6 pt-6 border-t border-surface-variant/30 text-center">
-          <p className="text-sm font-body-md text-text-muted">
-            이미 ReadyCareer AI 계정을 보유하고 계신가요?{" "}
-            <Link to="/login" className="text-primary font-extrabold hover:underline ml-1">
-              로그인 창으로 이동 &rarr;
-            </Link>
+    <div className="min-h-[85vh] flex items-center justify-center px-4 py-10 bg-surface">
+      <div className="max-w-md w-full space-y-6">
+        
+        {/* Title */}
+        <div className="text-center space-y-2">
+          <Link to="/start" className="text-xs font-bold text-text-muted hover:text-primary transition-colors block">
+            &larr; 스타트(체험) 화면으로 돌아가기
+          </Link>
+          <h1 className="text-3xl font-headline font-black text-text-primary tracking-tight">
+            학교 승인코드 신규가입
+          </h1>
+          <p className="text-xs text-text-muted font-body-md">
+            표준학교코드 마스터 목록에서 학교를 선택하고 발급된 <strong>초대코드</strong>를 입력해 가입하세요. (자유입력 방지)
           </p>
         </div>
-      </Card>
 
-      <div className="mt-6 w-full">
-        <MascotAri
-          pose="avatar"
-          size="sm"
-          bubbleTitle="Ari의 가입 안내"
-          bubbleMessage="학생 계정으로 가입하시면 신규 '자기이해' 탭을 통해 나만의 미래 융합 DNA를 발현할 수 있어요!"
-        />
+        {!signupOpen ? (
+          <Card variant="hero" padding="md" className="bg-error-container/20 border border-error/40 text-center py-8 space-y-4">
+            <AlertCircle className="w-12 h-12 text-error mx-auto animate-bounce" />
+            <h3 className="font-headline font-black text-lg text-text-primary">현재 회원가입 기간이 마감되었습니다</h3>
+            <p className="text-xs text-text-muted">
+              AI 서버리스 API 사용량 통제 정책(B2B)에 따라 현재 <strong>슈퍼관리자</strong>가 정식 가입 기간을 마감했습니다.<br />
+              박람회 방문객이시라면 [스타트 체험 화면]에서 1초 체험 버튼을 클릭해 주세요!
+            </p>
+            <Link to="/start">
+              <Button variant="primary" size="md" fullWidth>
+                🎪 박람회 1초 체험 화면으로 즉시 이동
+              </Button>
+            </Link>
+          </Card>
+        ) : (
+          <Card variant="surface" padding="lg" className="border border-surface-variant/50 shadow-3d-base">
+            <form onSubmit={handleSubmit} className="space-y-5">
+              
+              {/* Role Selection */}
+              <div className="space-y-2">
+                <span className="text-xs font-headline font-bold text-text-muted block">가입 계정 역할 선택</span>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setRole("student")}
+                    className={`p-3 rounded-2xl font-headline font-extrabold text-xs flex items-center justify-center gap-2 border transition-all ${
+                      role === "student"
+                        ? "bg-primary text-on-primary border-primary shadow-sm"
+                        : "bg-surface-container-low text-text-muted border-surface-variant/40 hover:bg-surface-container"
+                    }`}
+                  >
+                    <span>🧑‍🎓 학생 계정</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setRole("teacher")}
+                    className={`p-3 rounded-2xl font-headline font-extrabold text-xs flex items-center justify-center gap-2 border transition-all ${
+                      role === "teacher"
+                        ? "bg-secondary text-white border-secondary shadow-sm"
+                        : "bg-surface-container-low text-text-muted border-surface-variant/40 hover:bg-surface-container"
+                    }`}
+                  >
+                    <span>👨‍🏫 학교관리자(교직원)</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Standard School Code Selection (NO FREE INPUT per §5.1) */}
+              <div className="space-y-1.5">
+                <label className="text-xs font-headline font-bold text-text-primary flex items-center justify-between">
+                  <span className="flex items-center gap-1.5"><School className="w-3.5 h-3.5 text-primary" /> 소속 학교 선택 (표준학교코드)</span>
+                  <span className="text-[10px] text-error font-black">자유입력 금지 규정 적용</span>
+                </label>
+                <select
+                  value={selectedSchoolCode}
+                  onChange={(e) => setSelectedSchoolCode(e.target.value)}
+                  className="w-full px-4 py-2.5 bg-surface-container-lowest border border-surface-variant/60 rounded-2xl text-sm text-text-primary font-body-md focus:outline-none focus:ring-2 focus:ring-primary font-bold shadow-inner"
+                >
+                  {schoolList.map((s) => (
+                    <option key={s.code} value={s.code}>
+                      [{s.code}] {s.name} ({s.region})
+                    </option>
+                  ))}
+                </select>
+                <p className="text-[11px] text-text-muted">💡 나이스(NEIS) 교육정보 개방포털 기반 승인 학교만 선택 가능합니다.</p>
+              </div>
+
+              {/* Name & Email */}
+              <div className="space-y-3">
+                <div>
+                  <label className="text-xs font-headline font-bold text-text-primary block mb-1">실명 (또는 학교 사용 닉네임)</label>
+                  <input
+                    type="text"
+                    placeholder="예: 김수진"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="w-full px-4 py-2.5 bg-surface-container-lowest border border-surface-variant/50 rounded-2xl text-sm focus:ring-2 focus:ring-primary"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-xs font-headline font-bold text-text-primary block mb-1">학교 이메일 또는 구글 ID</label>
+                  <input
+                    type="email"
+                    placeholder="student@seoul-high.edu"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full px-4 py-2.5 bg-surface-container-lowest border border-surface-variant/50 rounded-2xl text-sm focus:ring-2 focus:ring-primary"
+                  />
+                </div>
+              </div>
+
+              {/* Invite Code Input Gate */}
+              <div className="space-y-1.5 pt-1">
+                <label className="text-xs font-headline font-bold text-text-primary flex items-center justify-between">
+                  <span className="flex items-center gap-1.5 text-secondary-spot"><KeyRound className="w-3.5 h-3.5" /> 초대코드 (Invite Code) 필수</span>
+                  <button
+                    type="button"
+                    onClick={() => setInviteCode(role === "teacher" ? "TEACHER-SEOUL" : "EXPO-2026")}
+                    className="text-[11px] font-black text-secondary underline"
+                  >
+                    데모 코드 자동 채우기 &rarr;
+                  </button>
+                </label>
+                <input
+                  type="text"
+                  placeholder="예: EXPO-2026 또는 T-VIP-900"
+                  value={inviteCode}
+                  onChange={(e) => setInviteCode(e.target.value)}
+                  className="w-full px-4 py-2.5 bg-secondary/5 border-2 border-secondary/40 rounded-2xl text-sm text-secondary font-headline font-black uppercase placeholder-text-muted/70 focus:outline-none focus:ring-2 focus:ring-secondary text-center tracking-widest shadow-sm"
+                />
+              </div>
+
+              {/* Messages */}
+              {errorMsg && (
+                <div className="p-3 bg-error-container/20 border border-error/30 rounded-xl text-xs text-error font-bold flex items-center gap-2">
+                  <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                  <span>{errorMsg}</span>
+                </div>
+              )}
+
+              {successMsg && (
+                <div className="p-3 bg-primary/10 border border-primary/30 rounded-xl text-xs text-primary font-bold flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 flex-shrink-0" />
+                  <span>{successMsg}</span>
+                </div>
+              )}
+
+              <Button
+                variant="teal"
+                size="lg"
+                fullWidth
+                type="submit"
+                icon={<UserPlus className="w-5 h-5" />}
+                className="font-headline font-extrabold py-4 mt-2 shadow-md"
+              >
+                학교 코드 검증 후 30초 회원가입 완료
+              </Button>
+            </form>
+          </Card>
+        )}
+
+        <div className="text-center">
+          <span className="text-xs text-text-muted">이미 학교 코드로 등록하셨나요? </span>
+          <Link to="/login" className="text-xs font-bold text-primary underline ml-1">
+            로그인 화면 이동
+          </Link>
+        </div>
+
       </div>
     </div>
   );

@@ -1,256 +1,361 @@
 import React, { useState } from "react";
-import { Button, Card, Chip, MascotAri } from "../components";
-import { Sparkles, Users, Search, Download, ShieldCheck, Edit3, Layers } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Button, Card, Chip } from "../components";
+import { useAuth } from "../context";
+import {
+  Sparkles,
+  Search,
+  CheckCircle2,
+  AlertCircle,
+  Copy,
+  Users,
+  ShieldCheck,
+  FileText,
+  Lock,
+} from "lucide-react";
 
-interface Student {
+interface StudentData {
   id: string;
   name: string;
-  grade: string;
-  cluster: string;
-  activitiesCount: number;
-  aiScore: number;
-  draftStatus: "완성됨" | "생성 중" | "검토 전";
-  seoteoSample: string;
+  grade: number;
+  classNo: number;
+  riasecCode: string;
+  targetJob: string;
+  level: number;
+  questCount: number;
+  portfolioCount: number;
+  habitSuccessRate: number;
+  activities: string[];
+  guidelineSample?: string;
 }
 
+const MOCK_STUDENTS: StudentData[] = [
+  {
+    id: "std-1",
+    name: "김수진",
+    grade: 2,
+    classNo: 4,
+    riasecCode: "SI",
+    targetJob: "스마트 AI 에듀테크 진로 멘토",
+    level: 5,
+    questCount: 14,
+    portfolioCount: 6,
+    habitSuccessRate: 92,
+    activities: [
+      "AI 및 기계학습 모델의 교육 격차 해소 방안 탐구 (공공 교육 데이터 활용 프로토타입 제작)",
+      "학교 공식 인공지능 코딩 동아리 'Neuro-V26' 아키텍처 리더십 발휘",
+      "자기이해 다중진단 리포트 (사회형-탐구형 이타적 논리 추론력 돋보임)",
+    ],
+    guidelineSample:
+      "[자율 및 진로탐구 영역] AI 및 기계학습 모델의 교육 격차 해소 방안을 깊이 있게 탐구하며 주도적인 연구자로서의 면모를 드러냄. 특히 다양한 공공 교육 데이터 세트를 기반으로 학습 진단 모델 프로토타입을 서면 서술하는 과정에서 본인의 장점인 사회형(S)-탐구형(I) 융합 역량을 훌륭하게 발휘함. 자신의 꿈인 'AI 에듀테크 진로 멘토'라는 비전을 달성하기 위해, 매주 STEM 전문 서적과 뉴스를 정독하며 취약계층 교육의 불합리를 실질적으로 개선하려는 주도성과 따뜻한 리더십이 탁월한 학생임.",
+  },
+  {
+    id: "std-2",
+    name: "이재현",
+    grade: 2,
+    classNo: 4,
+    riasecCode: "RC",
+    targetJob: "AI 로봇 융합 연구원",
+    level: 4,
+    questCount: 11,
+    portfolioCount: 4,
+    habitSuccessRate: 85,
+    activities: [
+      "아두이노 센서를 이용한 4륜 자율주행 모션 로봇 하드웨어 실습",
+      "과학 기술 고전 비판적 독서 및 기계 윤리 지정 토론 메인 입론",
+    ],
+    guidelineSample:
+      "[공학 실습 영역] 아두이노 센서 기반 4륜 자율주행 모션 로봇을 조합하고 코드를 설계하는 과정에서 탁월한 현실형(R) 도구 활용 능력과 치밀한 관습형(C) 문제 해결력을 보임. 복잡한 오류 앞에서도 굴절 없이 실험으로 해답을 찾아내는 엔지니어링 감각이 훌륭함.",
+  },
+  {
+    id: "std-3",
+    name: "박도훈",
+    grade: 2,
+    classNo: 4,
+    riasecCode: "IA",
+    targetJob: "빅데이터 AI 모델 아키텍트",
+    level: 3,
+    questCount: 8,
+    portfolioCount: 3,
+    habitSuccessRate: 78,
+    activities: ["파이썬 퀀트 투자 통계 모델 구축 과제 완료"],
+  },
+];
+
 export const TeacherGuide: React.FC = () => {
-  const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [filterCluster, setFilterCluster] = useState("전체");
+  const { session } = useAuth();
+  const [selectedStudentId, setSelectedStudentId] = useState<string>("std-1");
+  const [gradeFilter, setGradeFilter] = useState("전체");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isExtracting, setIsExtracting] = useState(false);
+  const [generatedGuideline, setGeneratedGuideline] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
 
-  const clusters = ["전체", "인공지능·공학", "바이오·메디컬", "문화 콘텐츠·디자인", "기초과학·연구"];
+  const activeStudent = MOCK_STUDENTS.find((s) => s.id === selectedStudentId) || MOCK_STUDENTS[0];
 
-  const students: Student[] = [
-    {
-      id: "std-1",
-      name: "김수진",
-      grade: "3학년 2반",
-      cluster: "인공지능·공학",
-      activitiesCount: 12,
-      aiScore: 98,
-      draftStatus: "완성됨",
-      seoteoSample: "[인공지능·공학 융합 탐구 역량] 자율주행과 기후위기 토론 대회에서 데이터 시각화 라이브러리를 직접 활용하여 환경 개선 통계를 훌륭히 도축함. 3학기에 걸쳐 AI 윤리 책 3권을 완독하고 관련 학술제에 참가하는 등 미래지향적 공학 커리어에 대한 열정과 성취도 극히 뛰어남."
-    },
-    {
-      id: "std-2",
-      name: "박도현",
-      grade: "3학년 2반",
-      cluster: "바이오·메디컬",
-      activitiesCount: 9,
-      aiScore: 94,
-      draftStatus: "완성됨",
-      seoteoSample: "[바이오·메디컬 데이터 분석] 유전체 시퀀싱 데이터 정제 실무 체험 스터디를 주도하며 생물학적 호기심을 알고리즘적 사고로 해결하는 능력을 보여줌. 성찰 지수가 뛰어나고 학과 간 융합 사고가 두드러짐."
-    },
-    {
-      id: "std-3",
-      name: "이윤지",
-      grade: "3학년 2반",
-      cluster: "문화 콘텐츠·디자인",
-      activitiesCount: 8,
-      aiScore: 89,
-      draftStatus: "생성 중",
-      seoteoSample: "[XR 메타버스 UI/UX 기획] 감성 융합형 인터랙티브 3D 그래픽 설계를 목표로 하여 학생들의 진로 무드검사를 인포그래픽으로 다변화함."
-    },
-    {
-      id: "std-4",
-      name: "최준혁",
-      grade: "3학년 2반",
-      cluster: "기초과학·연구",
-      activitiesCount: 5,
-      aiScore: 82,
-      draftStatus: "검토 전",
-      seoteoSample: "기본 과학교과 실험에 성실히 임하며 ESG 가치 실현을 위한 기초 데이터 기록을 수행함."
-    }
-  ];
+  const handleExtractAiGuideline = () => {
+    setIsExtracting(true);
+    setGeneratedGuideline(null);
+    setTimeout(() => {
+      setIsExtracting(false);
+      setGeneratedGuideline(
+        activeStudent.guidelineSample ||
+          "[AI 가이드안 추출 완료] 해당 학생은 뚜렷한 진로 비전 아래 다중지능 및 습관 챌린지를 꾸준히 누적해 왔으며, 포트폴리오의 실험 보고서를 토대로 학교생활기록부 진로/행동특성란에 발전 가능성 높은 우수 사원으로 적극 인용 가능합니다."
+      );
+    }, 1200);
+  };
 
-  const currentStudent = selectedStudent || students[0];
-
-  const filteredStudents = students.filter(s => 
-    s.name.includes(searchTerm) && (filterCluster === "전체" || s.cluster === filterCluster)
-  );
+  const handleCopy = () => {
+    if (!generatedGuideline) return;
+    navigator.clipboard.writeText(generatedGuideline);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 sm:px-8 py-8 md:py-12 flex flex-col gap-8">
-      {/* Teacher Desktop Pro Hero Header (Matching 2560x2048 high density Stitch screen) */}
-      <div className="bg-surface-container-lowest border-2 border-primary/20 rounded-[32px] p-6 md:p-10 shadow-3d-ambient relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8">
-        <div className="flex flex-col gap-3 max-w-3xl">
-          <div className="inline-flex items-center self-start gap-2 bg-secondary/15 text-secondary-spot px-4 py-1 rounded-full text-xs font-headline font-black">
-            <ShieldCheck className="w-4 h-4 text-secondary" />
-            <span>교사 전용 고해상도 Pro 도구 (3D 한글)</span>
+    <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 space-y-8">
+      
+      {/* Top Banner (2560px Pro & RLS Security Notice) */}
+      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 border-b border-surface-variant/40 pb-6">
+        <div className="space-y-2">
+          <div className="inline-flex items-center gap-2 bg-secondary/15 text-secondary px-3.5 py-1 rounded-full text-xs font-headline font-black shadow-inner">
+            <ShieldCheck className="w-4 h-4 text-secondary-spot" />
+            <span>2560px Pro Wide Display · RLS School-Admin Isolation Active</span>
           </div>
-          <h1 className="text-headline-lg md:text-display-lg font-extrabold text-text-primary font-headline tracking-tight">
-            학생부 기재 AI 스마트 가이드
+          <h1 className="text-4xl md:text-5xl font-headline font-black text-text-primary tracking-tight">
+            👨‍🏫 학교관리자 <span className="text-transparent bg-clip-text gradient-hero-card">업무보드</span>
           </h1>
-          <p className="text-text-muted font-body-md text-sm md:text-base leading-relaxed">
-            학생들의 ‘별자리 로드맵’ 및 ‘진로 포트폴리오’ 기록 실시간 통합 열람! <br />
-            AI 문체 번역 엔진을 통해 **세부능력 및 특기사항(세특)**과 **창의적체험활동** 모범 초안을 단 1초 만에 최적화하여 내보냅니다.
+          <p className="text-sm text-text-muted font-body-md max-w-3xl leading-relaxed">
+            소속 학교(<strong>{session?.school || "서울창의고등학교"}</strong>) 학생들의 진료 진도율과 자기이해 리포트를 다각도로 열람합니다.
+            학생이 누적한 포트폴리오들을 결합하여 <strong>[생기부 기재 가이드안]</strong>을 AI로 즉시 추출하세요.
           </p>
-
-          <div className="flex items-center gap-4 mt-3 pt-4 border-t border-surface-variant/40 text-xs font-semibold text-text-primary flex-wrap">
-            <span className="flex items-center gap-1.5"><Users className="w-4 h-4 text-primary" /> 관리 학급: 3학년 2반 (총 28명)</span>
-            <span className="flex items-center gap-1.5"><Sparkles className="w-4 h-4 text-secondary" /> AI 세특 정확도: 99.4%</span>
-            <span className="flex items-center gap-1.5"><Layers className="w-4 h-4 text-primary" /> 교육청 표준 기재 요약 규격 준수</span>
-          </div>
         </div>
 
-        <div className="flex-shrink-0 flex flex-col items-center justify-center bg-surface-container-low p-6 rounded-[28px] border border-surface-variant/40 min-w-[280px]">
-          <MascotAri pose="avatar" size="md" rotate={false} />
-          <Button variant="hero" size="sm" className="mt-4 w-full font-extrabold shadow-md" icon={<Download className="w-4 h-4" />}>
-            전체 학급 NEIS 일괄 내보내기
-          </Button>
+        <div className="flex items-center gap-2 self-start lg:self-auto">
+          <Link to="/super-admin">
+            <Button variant="outline" size="sm" className="font-bold">
+              👑 슈퍼관리자 콘솔 스위치
+            </Button>
+          </Link>
+          <Link to="/">
+            <Button variant="primary" size="sm" className="font-black">
+              🧑‍🎓 학생 메인 뷰로 이동
+            </Button>
+          </Link>
         </div>
       </div>
 
-      {/* Main 2-Column Pro Interface: Student List Table (Left) & AI Editor (Right) */}
+      {/* Strict Legal & Positioning Disclaimer Banner (§9-E & saengbu_guideline.md) */}
+      <Card variant="hero" padding="md" className="bg-amber-500/10 border-2 border-amber-500/40 p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-sm">
+        <div className="flex items-center gap-3">
+          <AlertCircle className="w-8 h-8 text-amber-600 flex-shrink-0" />
+          <div className="space-y-0.5">
+            <strong className="text-sm font-headline font-black text-text-primary block">
+              ⚠️ [정책 준수 가이드라인] 생기부는 '가이드안·예시본'이며 최종 기재는 선생님의 몫입니다.
+            </strong>
+            <p className="text-xs text-text-muted font-body-md leading-relaxed">
+              본 시스템은 <code>saengbu_guideline.md</code> (교육부 생기부 기재요령)를 프롬프트에 주입하여 교외 수상실적 및 사설 명칭을 자동 배제한 <strong>'참고 가이드안'</strong>만 생성합니다. 최종 NEIS 입력 전에 교사님의 확인과 검토를 부탁드립니다.
+            </p>
+          </div>
+        </div>
+        <Chip size="sm" variant="default" className="font-extrabold whitespace-nowrap bg-white shadow-inner">
+          GUIDELINES LOADED
+        </Chip>
+      </Card>
+
+      {/* SPLIT WORKSPACE: Student Selector Table (Left) & Extraction Panel (Right) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         
-        {/* Left Column: Student Roster & Filters (5 Cols) */}
-        <div className="lg:col-span-5 flex flex-col gap-4">
-          <Card variant="activity" padding="md" className="shadow-3d-base border-surface-variant/40">
-            <div className="flex flex-col gap-4">
-              <div className="flex items-center justify-between">
-                <h2 className="font-headline font-bold text-title-md text-text-primary flex items-center gap-2">
-                  <span>🧑‍🎓 학급 학생 목록</span>
-                  <span className="bg-primary/10 text-primary text-xs font-black px-2.5 py-0.5 rounded-full">{filteredStudents.length}명</span>
-                </h2>
-              </div>
+        {/* LEFT: Student Roster & Progress Rate (§7.8 학생 진도율 조회) */}
+        <Card variant="surface" padding="md" className="lg:col-span-5 border border-surface-variant/60 shadow-3d-base space-y-4">
+          <div className="flex items-center justify-between border-b border-surface-variant/30 pb-3">
+            <span className="text-sm font-headline font-black text-text-primary flex items-center gap-1.5">
+              <Users className="w-4 h-4 text-primary" /> 담당 학급 학생 리스트
+            </span>
+            <span className="text-xs font-bold text-primary">총 {MOCK_STUDENTS.length}명 조회됨</span>
+          </div>
 
-              {/* Search input */}
-              <div className="relative">
-                <Search className="w-4 h-4 absolute left-4 top-3.5 text-text-muted" />
-                <input
-                  type="text"
-                  placeholder="학생 이름 검색..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full h-11 pl-11 pr-4 bg-input-fill rounded-full text-sm font-body-md border border-surface-variant/40 focus:outline-none focus:ring-2 focus:ring-primary"
-                />
-              </div>
+          {/* Search & Filter Toolbar */}
+          <div className="flex items-center gap-2">
+            <select
+              value={gradeFilter}
+              onChange={(e) => setGradeFilter(e.target.value)}
+              className="px-3 py-2 bg-surface-container-low border border-surface-variant/50 rounded-xl text-xs font-headline font-bold text-text-primary focus:ring-2 focus:ring-primary"
+            >
+              <option value="전체">전체 학년/반</option>
+              <option value="2-4">2학년 4반</option>
+              <option value="1-3">1학년 3반</option>
+            </select>
 
-              {/* Cluster Chips */}
-              <div className="flex overflow-x-auto gap-2 no-scrollbar pb-1">
-                {clusters.map((cl) => (
-                  <Chip
-                    key={cl}
-                    size="sm"
-                    active={filterCluster === cl}
-                    onClick={() => setFilterCluster(cl)}
-                  >
-                    {cl}
-                  </Chip>
-                ))}
-              </div>
-
-              {/* Student Cards List */}
-              <div className="flex flex-col gap-3 mt-1 max-h-[520px] overflow-y-auto pr-1 no-scrollbar">
-                {filteredStudents.map((std) => {
-                  const isSelected = currentStudent.id === std.id;
-                  return (
-                    <div
-                      key={std.id}
-                      onClick={() => setSelectedStudent(std)}
-                      className={`p-4 rounded-2xl border transition-all cursor-pointer select-none flex items-center justify-between ${
-                        isSelected
-                          ? "bg-primary/10 border-primary font-bold shadow-sm translate-x-1"
-                          : "bg-surface-container-low/60 border-surface-variant/30 hover:bg-surface-container-low"
-                      }`}
-                    >
-                      <div className="flex flex-col gap-1">
-                        <div className="flex items-center gap-2">
-                          <span className="font-headline font-extrabold text-base text-text-primary">{std.name}</span>
-                          <span className="text-[11px] bg-white px-2 py-0.5 rounded-md border text-text-muted font-semibold">{std.grade}</span>
-                        </div>
-                        <span className="text-xs text-secondary-spot font-extrabold">
-                          ● {std.cluster}
-                        </span>
-                      </div>
-
-                      <div className="flex flex-col items-end gap-1">
-                        <span className={`text-[11px] px-2 py-0.5 rounded-full font-bold ${
-                          std.draftStatus === "완성됨" ? "bg-secondary/15 text-secondary-spot" : "bg-surface-variant text-text-muted"
-                        }`}>
-                          {std.draftStatus}
-                        </span>
-                        <span className="text-xs text-primary font-headline font-black">AI 99점</span>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </Card>
-        </div>
-
-        {/* Right Column: AI Seotek Editor & Generator (7 Cols) */}
-        <div className="lg:col-span-7 flex flex-col gap-6">
-          <Card variant="activity" padding="lg" className="shadow-3d-ambient border-primary/20 relative">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-surface-variant/30">
-              <div>
-                <span className="text-xs font-bold text-secondary bg-secondary/10 px-3 py-1 rounded-full uppercase tracking-wide">
-                  Selected Student Record
-                </span>
-                <h2 className="text-headline-lg font-headline font-extrabold text-text-primary mt-2">
-                  {currentStudent.name} 학생 <small className="text-sm font-semibold text-text-muted">({currentStudent.cluster})</small>
-                </h2>
-                <span className="text-xs text-text-muted block mt-0.5">누적 활동 퀘스트: {currentStudent.activitiesCount}건 완결</span>
-              </div>
-
-              <div className="flex gap-2">
-                <Button variant="teal" size="sm" icon={<Sparkles className="w-4 h-4" />}>
-                  AI 맞춤 다시 생성
-                </Button>
-                <Button variant="primary" size="sm" icon={<Edit3 className="w-4 h-4" />}>
-                  수동 수정
-                </Button>
-              </div>
-            </div>
-
-            {/* AI Seoteo Generator Output Canvas */}
-            <div className="mt-6 flex flex-col gap-4">
-              <div className="flex justify-between items-center px-1">
-                <span className="font-headline font-extrabold text-title-md text-primary flex items-center gap-1.5">
-                  <Sparkles className="w-5 h-5 text-secondary-spot" />
-                  AI 자동 생성 세무능력 및 특기사항 초안
-                </span>
-                <span className="text-xs text-secondary-spot font-bold bg-secondary/15 px-3 py-1 rounded-full">
-                  NEIS 복사 준비됨
-                </span>
-              </div>
-
-              <div className="bg-input-fill p-6 rounded-[28px] border-2 border-primary/20 text-text-primary font-body-md leading-relaxed text-sm md:text-base shadow-inner relative">
-                <p className="whitespace-pre-line leading-8">
-                  {currentStudent.seoteoSample}
-                </p>
-
-                <div className="mt-6 pt-4 border-t border-surface-variant/30 flex justify-between items-center text-xs text-text-muted font-bold">
-                  <span>● 글자 수: 공백 포함 284자 / 500자 (NEIS 기준 안전)</span>
-                  <button className="text-primary hover:underline flex items-center gap-1">
-                    클립보드에 바로 복사 &rarr;
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* AI Partner hint on teacher view */}
-            <div className="mt-6">
-              <MascotAri
-                pose="avatar"
-                size="sm"
-                bubbleTitle="Ari's 교사용 AI 피칭 분석"
-                bubbleMessage="이 학생의 '인간의 일 독후감' 활동을 세특 초안 3문장에 병행 배치하면 논리력과 감수성 평가 지수가 15% 상승합니다."
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-text-muted" />
+              <input
+                type="text"
+                placeholder="학생 실명 또는 꿈 검색..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-9 pr-3 py-2 bg-surface-container-lowest border border-surface-variant/50 rounded-xl text-xs font-body-md focus:ring-2 focus:ring-primary shadow-inner"
               />
             </div>
+          </div>
+
+          {/* Roster list */}
+          <div className="space-y-3 pt-1">
+            {MOCK_STUDENTS.map((std) => {
+              const isSelected = std.id === activeStudent.id;
+              return (
+                <div
+                  key={std.id}
+                  onClick={() => {
+                    setSelectedStudentId(std.id);
+                    setGeneratedGuideline(null);
+                  }}
+                  className={`p-4 rounded-3xl border-2 cursor-pointer transition-all duration-200 shadow-sm space-y-3 ${
+                    isSelected
+                      ? "bg-primary/10 border-primary shadow-md scale-[1.01]"
+                      : "bg-surface-container-low border-surface-variant/40 hover:bg-surface-container hover:border-primary/40"
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-headline font-black text-primary bg-white px-2.5 py-1 rounded-xl shadow-sm">
+                        {std.grade}학년 {std.classNo}반
+                      </span>
+                      <strong className="text-base font-headline font-black text-text-primary">
+                        {std.name}
+                      </strong>
+                    </div>
+                    <span className="text-xs font-black bg-secondary text-white px-2.5 py-0.5 rounded-full">
+                      Lv.{std.level}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center justify-between text-xs text-text-muted font-bold">
+                    <span>💡 꿈: {std.targetJob} ({std.riasecCode} 유형)</span>
+                  </div>
+
+                  <div className="pt-2 border-t border-surface-variant/30 grid grid-cols-3 gap-2 text-center">
+                    <div className="bg-white/70 p-2 rounded-xl text-[11px] font-bold shadow-sm">
+                      퀘스트 {std.questCount}건
+                    </div>
+                    <div className="bg-white/70 p-2 rounded-xl text-[11px] font-bold shadow-sm">
+                      포폴 {std.portfolioCount}건
+                    </div>
+                    <div className="bg-white/70 p-2 rounded-xl text-[11px] font-bold text-secondary font-black shadow-sm">
+                      습관 {std.habitSuccessRate}%
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </Card>
+
+        {/* RIGHT: Selected Student Dossier & AI 생기부 Guide Extractor (§7.8 & §9-E) */}
+        <div className="lg:col-span-7 space-y-6">
+          
+          {/* Active Student Card */}
+          <Card variant="hero" padding="lg" className="shadow-3d-ambient bg-gradient-to-r from-point via-white to-white border-2 border-secondary/40 space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-surface-variant/30 pb-4">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-headline font-black text-secondary-spot uppercase">
+                    🎓 Selected Student Archive
+                  </span>
+                  <span className="text-xs px-2 py-0.5 rounded-md bg-secondary/15 text-secondary font-black">
+                    RIASEC [{activeStudent.riasecCode}]
+                  </span>
+                </div>
+                <h2 className="text-2xl md:text-3xl font-headline font-black text-text-primary">
+                  {activeStudent.name} ({activeStudent.grade}학년 {activeStudent.classNo}반)
+                </h2>
+                <span className="text-xs font-bold text-text-muted block">
+                  비전 지향점: <strong>{activeStudent.targetJob}</strong>
+                </span>
+              </div>
+
+              <Button
+                variant="teal"
+                size="lg"
+                onClick={handleExtractAiGuideline}
+                disabled={isExtracting}
+                icon={<Sparkles className="w-5 h-5 animate-pulse" />}
+                className="font-headline font-extrabold shadow-lg whitespace-nowrap"
+              >
+                {isExtracting ? "AI 서버리스 가이드안 생성 중..." : "AI 생기부 가이드안 1초 추출"}
+              </Button>
+            </div>
+
+            {/* Activities summary to be combined */}
+            <div className="space-y-3">
+              <span className="text-xs font-headline font-extrabold text-text-primary flex items-center justify-between">
+                <span>📚 융합 가능한 누적 활동 자산 (포트폴리오 &amp; 자기이해 리포트):</span>
+                <span className="text-[11px] text-primary font-bold">✓ 전체 활동 결합 선택됨</span>
+              </span>
+
+              <div className="space-y-2 max-h-56 overflow-y-auto pr-1">
+                {activeStudent.activities.map((act, idx) => (
+                  <div key={idx} className="p-3.5 bg-surface-container-low rounded-2xl border border-surface-variant/40 flex items-start gap-3 text-xs md:text-sm font-body-md shadow-inner">
+                    <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+                    <span className="text-text-primary font-bold leading-relaxed">{act}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Generated Guideline Output Panel */}
+            {generatedGuideline ? (
+              <div className="p-6 bg-surface-container-lowest rounded-3xl border-2 border-primary/40 shadow-2xl space-y-4 animate-fadeIn">
+                <div className="flex items-center justify-between border-b border-surface-variant/40 pb-3">
+                  <span className="text-xs md:text-sm font-headline font-black text-primary flex items-center gap-1.5">
+                    <FileText className="w-4 h-4" /> AI 생기부 기재 가이드안·예시본 (Vercel Serverless 경유)
+                  </span>
+                  <button
+                    onClick={handleCopy}
+                    className={`px-4 py-2 rounded-2xl text-xs font-headline font-black flex items-center gap-1.5 transition-all ${
+                      copied
+                        ? "bg-secondary text-white shadow-md"
+                        : "bg-primary text-on-primary hover:bg-primary/90 shadow-sm"
+                    }`}
+                  >
+                    <Copy className="w-3.5 h-3.5" />
+                    <span>{copied ? "NEIS 클립보드 복사됨!" : "가이드안 복사"}</span>
+                  </button>
+                </div>
+
+                <p className="text-xs md:text-sm font-body-md text-text-primary/90 leading-relaxed whitespace-pre-line p-4 bg-surface-container-low rounded-2xl border border-surface-variant/30 shadow-inner">
+                  {generatedGuideline}
+                </p>
+
+                <p className="text-[11px] text-text-muted flex items-center gap-1 font-bold">
+                  <span>💡 위 예시 문구는 교사님의 편집을 거쳐 학교생활기록부에 입력되어야 합니다.</span>
+                </p>
+              </div>
+            ) : (
+              <div className="p-8 rounded-3xl bg-surface-container-low border border-dashed border-surface-variant/60 text-center space-y-2">
+                <FileText className="w-10 h-10 text-text-muted mx-auto" />
+                <strong className="text-sm font-headline font-bold text-text-primary block">
+                  상단의 [AI 생기부 가이드안 1초 추출] 버튼을 터치해 보세요!
+                </strong>
+                <p className="text-xs text-text-muted">
+                  학생이 입력한 포트폴리오 활동명과 느낀 점, 그리고 자기이해 리포트를 융합한 가장 아름다운 NEIS 예시 문장이 자동 합성됩니다.
+                </p>
+              </div>
+            )}
           </Card>
 
-          {/* Quick Guidance Rules & Caution Card */}
-          <Card variant="surface" padding="md" className="bg-surface-container-low/80 border border-surface-variant/30 flex items-center justify-between gap-4 text-xs font-body-md text-text-muted">
-            <div>
-              <strong className="text-text-primary block mb-1">📢 2026학년도 학생부 기재 유의사항 (자동 감지 활성)</strong>
-              사설 대회 수상 실적, 교외 인증 시험 점수 등 금지 문자열이 탐지될 경우 AI가 자동으로 필터링하여 합법적인 학교 생활 중심 언어로 전환합니다.
-            </div>
-          </Card>
+          {/* Footer RLS reminder */}
+          <div className="p-4 bg-surface-container-low rounded-2xl border border-surface-variant/40 flex items-center gap-3 text-xs text-text-muted font-bold">
+            <Lock className="w-4 h-4 text-primary flex-shrink-0" />
+            <span>Supabase RLS 규칙에 따라 학교관리자 계정은 소속 학교 ID 이외의 학생 데이터를 임의로 열람하거나 복제할 수 없습니다.</span>
+          </div>
+
         </div>
+
       </div>
+
     </div>
   );
 };
+
+export default TeacherGuide;

@@ -1,185 +1,238 @@
 import React, { useState } from "react";
-import { Button, Card, Chip, ProgressBar, MascotAri } from "../components";
-import { CheckSquare, Plus, Calendar, Flame, Trash2 } from "lucide-react";
+import { Button, Card, MascotAri } from "../components";
+import { Sparkles, Flame, CheckCircle2, Plus, Calendar } from "lucide-react";
 
 interface Habit {
-  id: number;
+  id: string;
   title: string;
+  targetDays: number;
+  completedDays: number[];
   category: string;
-  completed: boolean;
-  streak: number;
 }
 
 export const HabitManagement: React.FC = () => {
-  const [habits, setHabits] = useState<Habit[]>([
-    { id: 1, title: "매일 아침 IT/테크 기사 1건 스크랩 및 요약", category: "학습 습관", completed: true, streak: 12 },
-    { id: 2, title: "파이썬 백준 코딩테스트 기초 문제 2개 풀기", category: "전공 역량", completed: true, streak: 7 },
-    { id: 3, title: "영어 TED 테크놀로지 대담 15분 청취", category: "언어/글로벌", completed: false, streak: 4 },
-    { id: 4, title: "주간 진로 탐색 일자 및 세특 메모 정리", category: "진로 진도", completed: false, streak: 2 },
-  ]);
+  const [habits, setHabits] = useState<Habit[]>(() => {
+    const saved = localStorage.getItem("my_habits_v2");
+    if (saved) {
+      try { return JSON.parse(saved); } catch (e) {}
+    }
+    return [
+      { id: "h-1", title: "매일 AI 알고리즘 문제 1개 실습 · 50일 챌린지", targetDays: 50, completedDays: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], category: "코딩·AI" },
+      { id: "h-2", title: "최신 STEM 저널 및 경제 뉴스 15분 정독", targetDays: 30, completedDays: [1, 2, 3, 4, 5], category: "독서·탐구" },
+    ];
+  });
 
+  const [selectedHabitId, setSelectedHabitId] = useState<string>("h-1");
   const [newTitle, setNewTitle] = useState("");
-  const [selectedCat, setSelectedCat] = useState("학습 습관");
-  
-  const categories = ["학습 습관", "전공 역량", "언어/글로벌", "진로 진도", "기기타 생활"];
 
-  const toggleHabit = (id: number) => {
-    setHabits(habits.map(h => h.id === id ? { ...h, completed: !h.completed, streak: !h.completed ? h.streak + 1 : Math.max(1, h.streak - 1) } : h));
+  const activeHabit = habits.find((h) => h.id === selectedHabitId) || habits[0];
+
+  const handleToggleDay = (dayNo: number) => {
+    setHabits((prev) =>
+      prev.map((h) => {
+        if (h.id !== activeHabit.id) return h;
+        const exists = h.completedDays.includes(dayNo);
+        const nextDays = exists
+          ? h.completedDays.filter((d) => d !== dayNo)
+          : [...h.completedDays, dayNo].sort((a, b) => a - b);
+        const updated = { ...h, completedDays: nextDays };
+        localStorage.setItem("my_habits_v2", JSON.stringify(habits));
+        return updated;
+      })
+    );
   };
 
-  const addHabit = (e: React.FormEvent) => {
+  const handleAiRecommendHabits = () => {
+    const aiSuggestions: Habit = {
+      id: `h-${Date.now()}`,
+      title: "🔥 [AI 추천] 매주 진로 도서 1권 읽고 3줄 세특 메모 남기기 · 50일",
+      targetDays: 50,
+      completedDays: [1],
+      category: "AI 아리 추천",
+    };
+    setHabits((prev) => [aiSuggestions, ...prev]);
+    setSelectedHabitId(aiSuggestions.id);
+    localStorage.setItem("my_habits_v2", JSON.stringify([aiSuggestions, ...habits]));
+  };
+
+  const handleCreateHabit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newTitle.trim()) return;
-    setHabits([
-      ...habits,
-      { id: Date.now(), title: newTitle, category: selectedCat, completed: false, streak: 1 }
-    ]);
+    const item: Habit = {
+      id: `h-${Date.now()}`,
+      title: `${newTitle} · 50일 챌린지`,
+      targetDays: 50,
+      completedDays: [],
+      category: "자율 목표",
+    };
+    setHabits((prev) => [item, ...prev]);
+    setSelectedHabitId(item.id);
     setNewTitle("");
+    localStorage.setItem("my_habits_v2", JSON.stringify([item, ...habits]));
   };
 
-  const deleteHabit = (id: number) => {
-    setHabits(habits.filter(h => h.id !== id));
-  };
-
-  const completedCount = habits.filter(h => h.completed).length;
-  const totalCount = habits.length;
+  const successRate = Math.round((activeHabit.completedDays.length / activeHabit.targetDays) * 100);
+  const currentStreak = activeHabit.completedDays.length;
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8 md:py-12 flex flex-col gap-8">
-      {/* Header & Status Card */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
-        <Card variant="hero" padding="md" className="md:col-span-2 flex flex-col justify-between shadow-3d-ambient">
-          <div>
-            <div className="inline-flex items-center gap-1.5 bg-white/20 px-3 py-1 rounded-full text-xs font-headline font-bold mb-3">
-              <Calendar className="w-3.5 h-3.5 text-secondary-container" />
-              <span>오늘의 데일리 습관 체크인</span>
-            </div>
-            <h1 className="text-headline-lg font-extrabold text-white font-headline">
-              작은 성취, 커리어의 기적
-            </h1>
-            <p className="text-white/85 text-sm mt-1">
-              꾸준한 기록이야말로 학생부 종합전형 및 미래 역량 평가에서 가장 설득력 있는 무기입니다!
-            </p>
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 space-y-10">
+      
+      {/* Title */}
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-surface-variant/40 pb-6">
+        <div>
+          <div className="inline-flex items-center gap-1.5 bg-secondary/15 text-secondary px-3 py-1 rounded-full text-xs font-headline font-black mb-3">
+            <Flame className="w-4 h-4 text-secondary-spot animate-bounce" />
+            <span>50-Day Career Challenge &amp; Routine Tracker</span>
           </div>
-
-          <div className="mt-6 pt-4 border-t border-white/20 flex items-center justify-between">
-            <div className="flex flex-col">
-              <span className="text-xs text-white/80 font-bold">오늘 달성률</span>
-              <span className="text-2xl font-headline font-black text-secondary-container">{completedCount} / {totalCount} 완료</span>
-            </div>
-            <div className="w-1/2">
-              <ProgressBar value={completedCount} max={totalCount || 1} variant="teal" />
-            </div>
-          </div>
-        </Card>
-
-        {/* Streak & Ari Card */}
-        <Card variant="activity" padding="md" className="flex flex-col items-center justify-center text-center gap-3 bg-surface-container-low shadow-3d-base">
-          <div className="flex items-center gap-1 text-secondary font-headline font-black text-xl">
-            <Flame className="w-7 h-7 text-secondary fill-secondary animate-bounce" />
-            <span>최장 연속 12일째!</span>
-          </div>
-          <p className="text-xs text-text-muted font-body-md">
-            대단해요! 하루만 더 달성하면 '성실의 은비늘' 배지와 추가 STAR 포인트를 획득합니다.
+          <h1 className="text-4xl md:text-5xl font-headline font-black text-text-primary tracking-tight">
+            습관 &amp; <span className="text-transparent bg-clip-text gradient-hero-card">목표 관리</span>
+          </h1>
+          <p className="text-sm text-text-muted mt-2 font-body-md max-w-2xl leading-relaxed">
+            매일 작은 루틴을 달성하며 1~50일 그리드를 채워나가세요! 연속 성공 수치가 오를 때마다 진로 퀘스트 EXP가 누적되어 상위 캐릭터 외형을 해금합니다.
           </p>
-          <MascotAri pose="sticker" size="sm" />
-        </Card>
+        </div>
+
+        {/* AI Recommend Action */}
+        <div className="flex items-center gap-2">
+          <Button
+            variant="teal"
+            size="lg"
+            onClick={handleAiRecommendHabits}
+            icon={<Sparkles className="w-5 h-5 animate-pulse" />}
+            className="font-headline font-extrabold shadow-md whitespace-nowrap"
+          >
+            🤖 아리와 함께 진로 관련 습관 즉시 설계
+          </Button>
+        </div>
       </div>
 
-      {/* Add New Habit Quick Form */}
-      <Card variant="surface" padding="md" className="bg-surface-container shadow-sm border border-surface-variant/40">
-        <form onSubmit={addHabit} className="flex flex-col gap-4">
-          <h3 className="font-headline font-bold text-text-primary text-base flex items-center gap-1.5">
-            <Plus className="w-5 h-5 text-primary" />
-            새로운 습관 목표 추가
+      {/* Main Grid Work area */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        {/* LEFT: Habit Selector List & New Form */}
+        <div className="lg:col-span-4 space-y-4">
+          <h3 className="text-lg font-headline font-black text-text-primary flex items-center gap-2">
+            <Calendar className="w-5 h-5 text-primary" />
+            <span>진행 중인 내 챌린지 목록</span>
           </h3>
-          
-          <div className="flex flex-col md:flex-row gap-3">
-            <input
-              type="text"
-              placeholder="예: 매일 저녁 진로 독서 20분"
-              value={newTitle}
-              onChange={(e) => setNewTitle(e.target.value)}
-              className="flex-grow h-12 rounded-full px-5 bg-surface-container-lowest border border-surface-variant/40 text-text-primary font-body-md focus:outline-none focus:ring-2 focus:ring-primary"
-            />
-            <Button type="submit" variant="primary" size="sm" className="px-6 h-12 text-sm font-bold">
-              추가하기
-            </Button>
-          </div>
 
-          <div className="flex overflow-x-auto gap-2 no-scrollbar">
-            {categories.map((cat) => (
-              <Chip
-                key={cat}
-                size="sm"
-                type="button"
-                active={selectedCat === cat}
-                onClick={() => setSelectedCat(cat)}
-              >
-                #{cat}
-              </Chip>
-            ))}
-          </div>
-        </form>
-      </Card>
-
-      {/* Habits List */}
-      <div className="flex flex-col gap-3">
-        <h2 className="font-headline font-extrabold text-title-md text-text-primary mb-1">
-          📋 오늘의 루틴 리스트
-        </h2>
-
-        {habits.map((h) => (
-          <div
-            key={h.id}
-            onClick={() => toggleHabit(h.id)}
-            className={`p-5 rounded-3xl border transition-all duration-200 cursor-pointer flex items-center justify-between select-none ${
-              h.completed
-                ? "bg-surface-container-low border-primary/25 shadow-sm text-text-primary/70"
-                : "bg-white border-surface-variant/40 shadow-3d-base hover:border-primary/50"
-            }`}
-          >
-            <div className="flex items-center gap-4">
-              <button
-                type="button"
-                className={`w-7 h-7 rounded-xl flex items-center justify-center transition-colors ${
-                  h.completed ? "bg-primary text-on-primary shadow-sm" : "border-2 border-text-muted/40 text-transparent"
-                }`}
-              >
-                {h.completed && <CheckSquare className="w-5 h-5" />}
-              </button>
-              
-              <div className="flex flex-col">
-                <div className="flex items-center gap-2">
-                  <span className="text-[11px] font-bold text-secondary px-2 py-0.5 rounded-full bg-secondary/10">
-                    {h.category}
-                  </span>
-                  {h.streak > 5 && (
-                    <span className="text-[11px] font-black text-primary flex items-center gap-0.5">
-                      <Flame className="w-3 h-3 fill-primary" /> {h.streak}일 연속
+          <div className="space-y-3">
+            {habits.map((h) => {
+              const isSelected = h.id === activeHabit.id;
+              const percent = Math.round((h.completedDays.length / h.targetDays) * 100);
+              return (
+                <div
+                  key={h.id}
+                  onClick={() => setSelectedHabitId(h.id)}
+                  className={`p-4 rounded-3xl border-2 cursor-pointer transition-all duration-200 shadow-sm space-y-2.5 ${
+                    isSelected
+                      ? "bg-primary/10 border-primary shadow-md scale-[1.02]"
+                      : "bg-surface-container-low border-surface-variant/50 hover:bg-surface-container hover:border-primary/40"
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-headline font-black bg-surface-container-high text-text-muted px-2 py-0.5 rounded-full">
+                      #{h.category}
                     </span>
-                  )}
+                    <span className="text-xs font-black text-primary">{h.completedDays.length} / {h.targetDays}일</span>
+                  </div>
+                  <strong className="text-sm md:text-base font-headline font-black text-text-primary block leading-snug">
+                    {h.title}
+                  </strong>
+                  <div className="w-full bg-surface-container-highest h-1.5 rounded-full overflow-hidden">
+                    <div className="bg-gradient-to-r from-primary to-secondary h-1.5 rounded-full" style={{ width: `${percent}%` }} />
+                  </div>
                 </div>
-                <span className={`text-base font-headline font-bold mt-1 ${h.completed ? "line-through text-text-muted" : "text-text-primary"}`}>
-                  {h.title}
-                </span>
+              );
+            })}
+          </div>
+
+          {/* New Habit Form */}
+          <Card variant="surface" padding="md" className="border border-surface-variant/60 shadow-inner space-y-3">
+            <span className="text-xs font-headline font-extrabold text-text-primary block">
+              + 새 50일 챌린지 목표 생성하기
+            </span>
+            <form onSubmit={handleCreateHabit} className="flex gap-2">
+              <input
+                type="text"
+                placeholder="예: 매일 영어 VOA 5분 듣기"
+                value={newTitle}
+                onChange={(e) => setNewTitle(e.target.value)}
+                className="flex-1 px-3 py-2 bg-surface-container-lowest border border-surface-variant/60 rounded-2xl text-xs focus:ring-2 focus:ring-primary font-bold shadow-inner"
+              />
+              <Button variant="secondary" size="sm" type="submit" icon={<Plus className="w-4 h-4" />} className="font-extrabold">
+                추가
+              </Button>
+            </form>
+          </Card>
+        </div>
+
+        {/* RIGHT: 1~50 Day Interactive Check Grid (§7.6 명세 100% 실무 체결) */}
+        <Card variant="hero" padding="lg" className="lg:col-span-8 shadow-3d-ambient bg-gradient-to-t from-surface-container-lowest to-surface border border-surface-variant/50 space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-surface-variant/30 pb-4">
+            <div>
+              <span className="text-xs font-headline font-black text-secondary uppercase tracking-wider block mb-1">
+                📅 50-Day Grid Checker
+              </span>
+              <h2 className="text-2xl font-headline font-black text-text-primary leading-tight">
+                {activeHabit.title}
+              </h2>
+            </div>
+            <div className="bg-secondary/10 px-4 py-2 rounded-2xl border border-secondary/30 flex items-center gap-2 self-start sm:self-auto shadow-sm">
+              <Flame className="w-5 h-5 text-secondary-spot animate-bounce" />
+              <span className="text-sm font-headline font-black text-secondary">
+                현재 <strong>{currentStreak}일차</strong> 챌린지 성공! ({successRate}%)
+              </span>
+            </div>
+          </div>
+
+          {/* Grid interactive cells (1 to 50) */}
+          <div className="grid grid-cols-5 sm:grid-cols-10 gap-2.5 pt-2">
+            {Array.from({ length: activeHabit.targetDays }, (_, i) => i + 1).map((dayNo) => {
+              const isCompleted = activeHabit.completedDays.includes(dayNo);
+
+              return (
+                <button
+                  key={dayNo}
+                  onClick={() => handleToggleDay(dayNo)}
+                  className={`h-14 rounded-2xl font-headline font-black text-xs md:text-sm flex flex-col items-center justify-center transition-all duration-150 select-none shadow-sm ${
+                    isCompleted
+                      ? "bg-gradient-to-br from-primary to-secondary text-white shadow-3d-base scale-105"
+                      : "bg-surface-container hover:bg-surface-container-high text-text-muted hover:text-text-primary border border-surface-variant/40"
+                  }`}
+                  title={`${dayNo}일차 출석 체크 전환`}
+                >
+                  <span className="text-[10px] opacity-80">Day</span>
+                  <span>{dayNo}</span>
+                  {isCompleted && <CheckCircle2 className="w-3.5 h-3.5 mt-0.5" />}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Mascot praise & advice */}
+          <div className="p-5 rounded-3xl bg-surface-container-low border border-surface-variant/40 flex items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <MascotAri pose="celebrate" size="sm" rotate={false} />
+              <div className="space-y-1">
+                <strong className="text-sm font-headline font-extrabold text-text-primary block">
+                  🎉 아리(Ari)의 힘이 되는 칭찬 코멘트
+                </strong>
+                <p className="text-xs text-text-muted leading-relaxed font-body-md">
+                  "{activeHabit.title}" 도전을 하루도 빠짐없이 훌륭하게 수행하고 계시군요! 하루 1개의 체크가 쌓일 때마다 학교관리자(교사) 뷰에서 학생 역량 지수가 상승하여 차질없는 세특 자산이 됩니다.
+                </p>
               </div>
             </div>
-
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                deleteHabit(h.id);
-              }}
-              className="p-2 text-text-muted hover:text-error hover:bg-error-container/30 rounded-full transition-colors"
-              title="삭제"
-            >
-              <Trash2 className="w-4 h-4" />
-            </button>
+            <Button variant="outline" size="sm" onClick={() => window.location.href = "/portfolio"} className="font-extrabold text-xs whitespace-nowrap">
+              포트폴리오 기록 &rarr;
+            </Button>
           </div>
-        ))}
+        </Card>
+
       </div>
+
     </div>
   );
 };
+
+export default HabitManagement;

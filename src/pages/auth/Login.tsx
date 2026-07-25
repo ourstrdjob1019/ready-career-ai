@@ -1,197 +1,167 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Button, Card, Input, Chip, MascotAri } from "../../components";
+import { Button, Card } from "../../components";
 import { useAuth } from "../../context";
-import { LogIn, Key, Mail, ShieldCheck, UserCheck, HelpCircle } from "lucide-react";
 import type { UserRole } from "../../context";
+import { LogIn, ShieldCheck, UserCheck } from "lucide-react";
 
 export const Login: React.FC = () => {
-  const navigate = useNavigate();
-  const { login } = useAuth();
-
   const [role, setRole] = useState<UserRole>("student");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
+  const { login, startExpoDemo } = useAuth();
+  const navigate = useNavigate();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email.trim() || !password.trim()) {
-      setError("이메일과 비밀번호를 모두 입력해주세요.");
+    setErrorMsg("");
+    if (!email) {
+      setErrorMsg("로그인 이메일을 입력해 주세요.");
       return;
     }
-    // Perform simulated login session division
-    login(email, role);
-    // If student -> go to Dashboard, if teacher -> go to Teacher Guide Pro
+    await login(email, password, role);
     if (role === "teacher") {
       navigate("/teacher");
+    } else if (role === "super_admin") {
+      navigate("/super-admin");
     } else {
       navigate("/");
     }
   };
 
-  const handleQuickDemo = (demoRole: UserRole) => {
-    if (demoRole === "student") {
-      setEmail("student@readycareer.ai");
-      setPassword("demo2026");
-      setRole("student");
+  const fillDemo = (targetRole: UserRole) => {
+    startExpoDemo(targetRole);
+    if (targetRole === "teacher") {
+      navigate("/teacher");
+    } else if (targetRole === "super_admin") {
+      navigate("/super-admin");
     } else {
-      setEmail("teacher@seoul-high.edu");
-      setPassword("teacher2026");
-      setRole("teacher");
+      navigate("/");
     }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[88vh] px-4 py-8 max-w-4xl mx-auto">
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 w-full items-center">
-        {/* Left Column: Mascot & Brand Welcome */}
-        <div className="lg:col-span-5 flex flex-col items-center lg:items-start text-center lg:text-left gap-5">
-          <div className="inline-flex items-center gap-2 bg-secondary/15 px-4 py-1 rounded-full text-xs font-headline font-bold text-secondary-spot">
-            <ShieldCheck className="w-4 h-4 text-secondary" />
-            <span>2026 3D AI 진로 & 학생부 통합 무대</span>
-          </div>
-
-          <h1 className="text-display-lg md:text-display-lg font-black text-text-primary font-headline tracking-tight leading-none">
-            ReadyCareer <br />
-            <span className="text-transparent bg-clip-text gradient-hero-card">AI Studio</span>
+    <div className="min-h-[85vh] flex flex-col items-center justify-center px-4 py-8 bg-surface">
+      <div className="max-w-md w-full space-y-6">
+        
+        {/* Header */}
+        <div className="text-center space-y-2">
+          <Link to="/start" className="text-xs font-bold text-text-muted hover:text-primary transition-colors block">
+            &larr; 스타트(체험/실전) 선택 뷰로 돌아가기
+          </Link>
+          <h1 className="text-3xl font-headline font-black text-text-primary tracking-tight">
+            Ready Career <span className="text-transparent bg-clip-text gradient-hero-card">AI</span>
           </h1>
-
-          <p className="text-sm md:text-base text-text-muted font-body-md leading-relaxed">
-            학생은 <strong>‘자기이해’</strong>와 별자리 로드맵을 통해 생기부를 다듬고,<br />
-            학교 담당자(교사)는 고품격 AI 세특 초안을 1초 만에 최적화합니다.
+          <p className="text-xs text-text-muted font-body-md">
+            학교 승인 계정으로 로그인하여 나만의 커리어 자산을 조회하고 추출하세요.
           </p>
+        </div>
 
-          <div className="w-full max-w-sm mt-2">
-            <MascotAri
-              pose="celebrate"
-              size="md"
-              bubbleTitle="로그인 세션 안내"
-              bubbleMessage="학생 화면과 학교 담당자 화면은 독립적인 세션과 권한(RLS)으로 안전하게 분리되어 제공됩니다!"
-            />
+        <Card variant="surface" padding="lg" className="border border-surface-variant/50 shadow-3d-base space-y-6">
+          
+          {/* 3-tier tabs */}
+          <div className="flex bg-surface-container p-1 rounded-2xl">
+            <button
+              type="button"
+              onClick={() => setRole("student")}
+              className={`flex-1 py-2 rounded-xl text-xs font-headline font-extrabold transition-all ${
+                role === "student" ? "bg-primary text-on-primary shadow-sm" : "text-text-muted hover:text-text-primary"
+              }`}
+            >
+              🧑‍🎓 학생
+            </button>
+            <button
+              type="button"
+              onClick={() => setRole("teacher")}
+              className={`flex-1 py-2 rounded-xl text-xs font-headline font-extrabold transition-all ${
+                role === "teacher" ? "bg-secondary text-white shadow-sm" : "text-text-muted hover:text-text-primary"
+              }`}
+            >
+              👨‍🏫 학교관리자
+            </button>
+            <button
+              type="button"
+              onClick={() => setRole("super_admin")}
+              className={`flex-1 py-2 rounded-xl text-xs font-headline font-extrabold transition-all ${
+                role === "super_admin" ? "bg-surface-container-highest text-secondary-spot border border-secondary/40 shadow-sm" : "text-text-muted hover:text-text-primary"
+              }`}
+            >
+              👑 슈퍼관리자
+            </button>
           </div>
-        </div>
 
-        {/* Right Column: Login Card with Student/Teacher Tabs */}
-        <div className="lg:col-span-7 w-full">
-          <Card variant="activity" padding="lg" className="w-full shadow-3d-ambient border-primary/25 relative overflow-hidden">
-            <div className="flex flex-col gap-6">
-              
-              {/* Role Switch Tabs */}
-              <div className="flex bg-surface-container p-1.5 rounded-[24px] border border-surface-variant/40">
-                <button
-                  type="button"
-                  onClick={() => setRole("student")}
-                  className={`flex-1 py-3 px-4 rounded-[20px] font-headline font-extrabold text-sm transition-all duration-200 flex items-center justify-center gap-2 ${
-                    role === "student"
-                      ? "bg-primary text-on-primary shadow-md translate-y-0"
-                      : "text-text-muted hover:text-text-primary hover:bg-white/50"
-                  }`}
-                >
-                  <UserCheck className="w-4 h-4" />
-                  🧑‍🎓 학생 로그인
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => setRole("teacher")}
-                  className={`flex-1 py-3 px-4 rounded-[20px] font-headline font-extrabold text-sm transition-all duration-200 flex items-center justify-center gap-2 ${
-                    role === "teacher"
-                      ? "bg-secondary text-white shadow-md translate-y-0"
-                      : "text-text-muted hover:text-text-primary hover:bg-white/50"
-                  }`}
-                >
-                  <ShieldCheck className="w-4 h-4" />
-                  👨‍🏫 학교 담당자(교사)
-                </button>
-              </div>
-
-              {/* Title descriptions */}
-              <div className="text-center sm:text-left pt-2">
-                <h2 className="text-headline-md font-headline font-extrabold text-text-primary">
-                  {role === "student" ? "학생 포트폴리오 & 자기이해 접속" : "교사 전용 스마트 학생부 가이드 접속"}
-                </h2>
-                <span className="text-xs text-secondary-spot font-extrabold block mt-0.5">
-                  {role === "student"
-                    ? "● 전국 중고교 NEIS 표준 진로 검사 및 로드맵 연동"
-                    : "● 교사용 고해상도 Pro (2560px 대응) 학급 데이터 관리 툴"}
-                </span>
-              </div>
-
-              {/* Login Form */}
-              <form onSubmit={handleLogin} className="flex flex-col gap-4 mt-2">
-                <Input
-                  label="이메일 또는 학생/교사 아이디"
-                  placeholder={role === "student" ? "example@student.ai" : "teacher@school.edu"}
-                  value={email}
-                  onChange={(e) => {
-                    setEmail(e.target.value);
-                    if (error) setError("");
-                  }}
-                  icon={<Mail className="w-5 h-5 text-primary" />}
-                  required
-                />
-
-                <Input
-                  type="password"
-                  label="비밀번호"
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => {
-                    setPassword(e.target.value);
-                    if (error) setError("");
-                  }}
-                  error={error}
-                  icon={<Key className="w-5 h-5 text-secondary" />}
-                  required
-                />
-
-                <div className="flex items-center justify-between text-xs font-headline pt-1 px-1">
-                  <label className="flex items-center gap-2 text-text-muted cursor-pointer select-none">
-                    <input type="checkbox" defaultChecked className="rounded text-primary focus:ring-0 w-4 h-4" />
-                    <span>로그인 상태 유지 (자동 세션)</span>
-                  </label>
-
-                  <Link to="/forgot-password" className="text-primary font-bold hover:underline flex items-center gap-1">
-                    <HelpCircle className="w-3.5 h-3.5" />
-                    <span>아이디/비밀번호 초기화</span>
-                  </Link>
-                </div>
-
-                <Button type="submit" variant={role === "student" ? "hero" : "teal"} size="lg" fullWidth icon={<LogIn className="w-5 h-5" />} className="mt-2 font-black">
-                  {role === "student" ? "학생 세션 로그인 & 시작" : "학교 담당자 Pro 모드 접속"}
-                </Button>
-              </form>
-
-              {/* Demo Fast Fill Helpers */}
-              <div className="bg-surface-container-low p-4 rounded-2xl border border-surface-variant/40 flex flex-col gap-2">
-                <span className="text-xs font-bold text-text-primary flex items-center justify-between">
-                  <span>💡 체험용 테스트 계정 1초 입력</span>
-                  <span className="text-[11px] text-primary">즉시 시전!</span>
-                </span>
-                <div className="flex gap-2">
-                  <Chip size="sm" onClick={() => handleQuickDemo("student")} variant="gradient" className="flex-1 text-center">
-                    🧑‍🎓 학생 데모 채우기
-                  </Chip>
-                  <Chip size="sm" onClick={() => handleQuickDemo("teacher")} variant="teal" className="flex-1 text-center">
-                    👨‍🏫 학교 담당자 데모
-                  </Chip>
-                </div>
-              </div>
-
-              {/* Sign up Link */}
-              <div className="pt-4 border-t border-surface-variant/30 text-center">
-                <p className="text-sm font-body-md text-text-muted">
-                  아직 ReadyCareer AI 계정이 없으신가요?{" "}
-                  <Link to="/signup" className="text-primary font-extrabold hover:underline ml-1">
-                    신규 회원가입 30초 컷 &rarr;
-                  </Link>
-                </p>
-              </div>
-
+          {/* Form */}
+          <form onSubmit={handleLogin} className="space-y-4">
+            <div>
+              <label className="text-xs font-headline font-bold text-text-primary block mb-1">
+                {role === "teacher" ? "학교 교직원 공식 이메일" : role === "super_admin" ? "최종마스터 인증 ID" : "학생 ID (이메일)"}
+              </label>
+              <input
+                type="text"
+                placeholder={role === "teacher" ? "teacher@seoul-high.edu" : role === "super_admin" ? "master@readycareer.ai" : "student@seoul-high.edu"}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full px-4 py-2.5 bg-surface-container-lowest border border-surface-variant/50 rounded-2xl text-sm focus:ring-2 focus:ring-primary font-body-md"
+              />
             </div>
-          </Card>
+
+            <div>
+              <div className="flex items-center justify-between mb-1">
+                <label className="text-xs font-headline font-bold text-text-primary">비밀번호</label>
+                <Link to="/forgot-password" className="text-[11px] font-extrabold text-secondary hover:underline">
+                  비밀번호 초기화 &rarr;
+                </Link>
+              </div>
+              <input
+                type="password"
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-2.5 bg-surface-container-lowest border border-surface-variant/50 rounded-2xl text-sm focus:ring-2 focus:ring-primary"
+              />
+            </div>
+
+            {errorMsg && <p className="text-xs text-error font-bold text-center">{errorMsg}</p>}
+
+            <Button variant="primary" size="lg" fullWidth type="submit" icon={<LogIn className="w-4 h-4" />} className="font-extrabold py-3.5 shadow-md">
+              {role === "teacher" ? "학교관리자 3D 보드 접속" : role === "super_admin" ? "최종마스터 콘솔 접속" : "학생 커리어 홈 접속"}
+            </Button>
+          </form>
+
+          {/* Instant Demo Fill Banner */}
+          <div className="pt-3 border-t border-surface-variant/40 space-y-2">
+            <span className="text-[11px] font-headline font-bold text-text-muted block text-center">
+              💡 박람회 현장에서 빠르게 로그인 없이 확인하시겠습니까?
+            </span>
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                onClick={() => fillDemo("student")}
+                className="py-2.5 px-3 rounded-xl bg-primary/10 hover:bg-primary/20 text-primary text-xs font-headline font-black flex items-center justify-center gap-1.5 border border-primary/20 transition-all"
+              >
+                <UserCheck className="w-3.5 h-3.5" />
+                <span>학생 체험 뷰 즉각 진입</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => fillDemo("teacher")}
+                className="py-2.5 px-3 rounded-xl bg-secondary/15 hover:bg-secondary/25 text-secondary-spot text-xs font-headline font-black flex items-center justify-center gap-1.5 border border-secondary/30 transition-all"
+              >
+                <ShieldCheck className="w-3.5 h-3.5" />
+                <span>교사·생기부 즉각 진입</span>
+              </button>
+            </div>
+          </div>
+        </Card>
+
+        <div className="text-center">
+          <span className="text-xs text-text-muted">아직 소속 학교 코드를 등록하지 않으셨나요? </span>
+          <Link to="/signup" className="text-xs font-bold text-secondary underline ml-1">
+            신규 회원가입 &rarr;
+          </Link>
         </div>
+
       </div>
     </div>
   );
