@@ -14,6 +14,8 @@ export interface UserSession {
   classNo?: number;
   avatarUrl?: string;
   isExpoDemo?: boolean;
+  targetJob?: string;
+  riasecCode?: string;
 }
 
 interface AuthContextType {
@@ -25,7 +27,7 @@ interface AuthContextType {
   login: (email: string, password?: string, role?: UserRole) => Promise<boolean>;
   logout: () => void;
   register: (name: string, email: string, role: UserRole, school: string, schoolCode: string, inviteCode: string) => Promise<{ success: boolean; message?: string }>;
-  startExpoDemo: (role: UserRole) => void;
+  startExpoDemo: (role: UserRole, customProfile?: Partial<UserSession>) => void;
   toggleSignupOpen: () => void;
   generateInviteCode: (role: string, school: string, maxUses?: number) => string;
   resetPassword: (email: string) => Promise<{ success: boolean; message?: string }>;
@@ -35,20 +37,22 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const EXPO_STUDENT_SESSION: UserSession = {
   id: "expo-student-1001",
-  email: "student@seoul-high.edu",
-  name: "김수진 (체험용)",
+  email: "student.sujin@seoul-high.edu",
+  name: "김수진",
   role: "student",
   school: "서울창의고등학교",
   schoolCode: "SEOUL-701",
   grade: 2,
   classNo: 4,
+  targetJob: "스마트 AI 에듀테크 진로 멘토",
+  riasecCode: "SI",
   isExpoDemo: true,
 };
 
 const EXPO_TEACHER_SESSION: UserSession = {
   id: "expo-teacher-2001",
-  email: "teacher@seoul-high.edu",
-  name: "박성열 선생님 (체험용)",
+  email: "teacher.park@seoul-high.edu",
+  name: "박성열 담임교사",
   role: "teacher",
   school: "서울창의고등학교",
   schoolCode: "SEOUL-701",
@@ -58,7 +62,7 @@ const EXPO_TEACHER_SESSION: UserSession = {
 const EXPO_SUPER_ADMIN_SESSION: UserSession = {
   id: "expo-super-3001",
   email: "master@readycareer.ai",
-  name: "최종마스터 (슈퍼관리자)",
+  name: "최종마스터 통제관",
   role: "super_admin",
   school: "ReadyCareer AI 본사 통합센터",
   schoolCode: "MASTER-000",
@@ -94,15 +98,45 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
   }, [session]);
 
-  const startExpoDemo = (role: UserRole) => {
+  // 체험 모드 진입 및 사전 세팅값(직업, RIASEC, 비전, 습관 등) 즉시 동기화
+  const startExpoDemo = (role: UserRole, customProfile?: Partial<UserSession>) => {
     setIsExpoDemoMode(true);
     localStorage.setItem("readycareer_demo_mode", "true");
-    if (role === "teacher") {
-      setSession(EXPO_TEACHER_SESSION);
-    } else if (role === "super_admin") {
-      setSession(EXPO_SUPER_ADMIN_SESSION);
-    } else {
-      setSession(EXPO_STUDENT_SESSION);
+    
+    let targetSession = EXPO_STUDENT_SESSION;
+    if (role === "teacher") targetSession = EXPO_TEACHER_SESSION;
+    if (role === "super_admin") targetSession = EXPO_SUPER_ADMIN_SESSION;
+
+    const mergedSession = { ...targetSession, ...customProfile };
+    setSession(mergedSession);
+
+    // 학생용 체험 데이터 사전 세팅 (로그인 시 미리 채워둠)
+    if (role === "student") {
+      if (mergedSession.targetJob) {
+        localStorage.setItem(
+          "my_interested_jobs",
+          JSON.stringify([
+            { name: mergedSession.targetJob, image: "👨‍🏫", category: "대표 관심 직업" },
+            { name: "빅데이터 AI 모델 아키텍트", image: "📊", category: "AI·데이터" },
+            { name: "3D XR 인터랙티브 디자이너", image: "🎨", category: "아트·XR" },
+          ])
+        );
+      }
+      if (mergedSession.riasecCode) {
+        localStorage.setItem("riasec_result_code", mergedSession.riasecCode);
+        localStorage.setItem("riasec_primary", mergedSession.riasecCode.charAt(0));
+      }
+      localStorage.setItem(
+        "readycareer_vision_v1",
+        "AI 역량과 따뜻한 공감 능력으로 교육 격차를 해소하는 4차 산업 융합 디렉터가 되겠다!"
+      );
+      localStorage.setItem(
+        "my_habits_v2",
+        JSON.stringify([
+          { id: "h-1", title: "매일 AI 알고리즘 문제 1개 실습 · 50일 챌린지", targetDays: 50, completedDays: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], category: "코딩·AI" },
+          { id: "h-2", title: "최신 STEM 저널 및 진로 기사 15분 정독", targetDays: 30, completedDays: [1, 2, 3, 4, 5, 6, 7], category: "독서·탐구" },
+        ])
+      );
     }
   };
 
@@ -118,12 +152,14 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       setSession({
         id: `user-${Date.now()}`,
         email: email || "live.student@seoul-high.edu",
-        name: "정식 가입 학생",
+        name: email.split("@")[0] || "정식 가입 학생",
         role: "student",
         school: "서울창의고등학교",
         schoolCode: "SEOUL-701",
         grade: 1,
         classNo: 3,
+        targetJob: "AI 융합 개척자",
+        riasecCode: "IA",
         isExpoDemo: false,
       });
     }
@@ -150,8 +186,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       role,
       school,
       schoolCode,
-      grade: 2,
+      grade: 1,
       classNo: 1,
+      targetJob: "진로 탐색 중",
+      riasecCode: "R",
       isExpoDemo: false,
     };
     setSession(newSession);

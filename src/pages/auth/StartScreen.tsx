@@ -1,156 +1,372 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Button, Card, MascotAri } from "../../components";
+import { Button, Card, MascotAri, Chip } from "../../components";
 import { useAuth } from "../../context";
 import {
   Sparkles,
   ShieldCheck,
-  Zap,
   LogIn,
   UserPlus,
-  CheckCircle2,
   ArrowRight,
+  ArrowLeft,
+  CheckCircle2,
+  School,
+  Award,
+  BookOpen,
 } from "lucide-react";
 
 export const StartScreen: React.FC = () => {
-  const { startExpoDemo, isAuthenticated, session } = useAuth();
+  const { startExpoDemo } = useAuth();
   const navigate = useNavigate();
 
-  const handleExpoSelect = (role: "student" | "teacher" | "super_admin") => {
-    startExpoDemo(role);
-    if (role === "teacher") {
-      navigate("/teacher");
-    } else if (role === "super_admin") {
-      navigate("/super-admin");
-    } else {
-      navigate("/");
-    }
+  // 'initial' = 처음 2개 선택 (체험 vs 실제)
+  // 'expo' = 체험 모드 (학생/교사 역할 및 아이디 선택)
+  // 'real' = 실제 모드 (정식 로그인/회원가입)
+  const [viewMode, setViewMode] = useState<"initial" | "expo" | "real">("initial");
+  const [expoRole, setExpoRole] = useState<"student" | "teacher" | "super_admin">("student");
+
+  // 학생용 체험 계정 리스트 (미리 세팅된 풍부한 데이터 vs 새 체험)
+  const studentDemoAccounts = [
+    {
+      id: "std-1",
+      name: "김수진",
+      school: "서울창의고등학교",
+      grade: 2,
+      classNo: 4,
+      targetJob: "스마트 AI 에듀테크 진로 멘토",
+      riasecCode: "SI",
+      desc: "Lv.05 (만렙 임박) · 별자리 퀘스트 14건 & 50일 습관 14일차 세팅 완료!",
+      tag: "⭐ 대표 시연 계정",
+      badgeColor: "teal" as const,
+      route: "/", // 바로 메인 대시보드로 이동
+    },
+    {
+      id: "std-2",
+      name: "이재현",
+      school: "서울창의고등학교",
+      grade: 2,
+      classNo: 4,
+      targetJob: "AI 로봇 융합 연구원",
+      riasecCode: "RC",
+      desc: "Lv.04 · 아두이노 자율주행 모봇 실습 포트폴리오 세트 장착 완료",
+      tag: "🤖 로보틱스 지망",
+      badgeColor: "default" as const,
+      route: "/",
+    },
+    {
+      id: "std-new",
+      name: "신규 방문 학생",
+      school: "서울창의고등학교",
+      grade: 1,
+      classNo: 1,
+      targetJob: "진로 탐색 중",
+      riasecCode: "I",
+      desc: "온보딩 정보 입력부터 흥미검사(RIASEC)를 직접 처음부터 진행하는 흐름",
+      tag: " 🌱 새로 직접 입력",
+      badgeColor: "default" as const,
+      route: "/onboarding-info", // 온보딩부터 시작
+    },
+  ];
+
+  // 교사 및 관리자 체험 계정 리스트
+  const teacherDemoAccounts = [
+    {
+      id: "tch-1",
+      name: "박성열 선생님",
+      role: "teacher" as const,
+      school: "서울창의고등학교",
+      title: "진로 상담 담임 & 학교관리자",
+      desc: "담당 학급 명부 열람, 학생 누적 데이터 확인 및 AI 생기부 1초 합성에 즉시 최적화된 계정",
+      tag: "👨‍🏫 교사용 대표 뷰",
+      route: "/teacher",
+    },
+    {
+      id: "sup-1",
+      name: "최종마스터 통제관",
+      role: "super_admin" as const,
+      school: "ReadyCareer AI 통합센터",
+      title: "B2B 라이센스 및 AI 관제",
+      desc: "학교별 신규 가입 마감/개방 토글 제어, 표준 초대코드 발급 및 서버리스 통계 조회",
+      tag: "👑 슈퍼관리자 콘솔",
+      route: "/super-admin",
+    },
+  ];
+
+  // 즉시 1초 자동 로그인 실행 및 세팅 적용
+  const handleAutoLogin = (role: "student" | "teacher" | "super_admin", account: any) => {
+    startExpoDemo(role, {
+      name: account.name,
+      school: account.school,
+      grade: account.grade,
+      classNo: account.classNo,
+      targetJob: account.targetJob,
+      riasecCode: account.riasecCode,
+    });
+    navigate(account.route || "/");
   };
 
   return (
-    <div className="min-h-screen bg-surface flex flex-col justify-between overflow-x-hidden">
+    <div className="min-h-[90vh] bg-surface flex flex-col items-center justify-center px-4 py-12 relative overflow-hidden">
+      
       {/* Background ambient lighting */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 -mt-40 w-[800px] h-[400px] bg-primary-fixed/25 rounded-full blur-[120px] pointer-events-none -z-0" />
-      <div className="absolute bottom-0 right-0 -mr-20 -mb-20 w-96 h-96 bg-secondary-fixed/30 rounded-full blur-[100px] pointer-events-none -z-0" />
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-primary-fixed/20 rounded-full blur-[120px] pointer-events-none -z-0" />
+      <div className="absolute bottom-10 right-10 w-80 h-80 bg-secondary-fixed/20 rounded-full blur-[100px] pointer-events-none -z-0" />
 
-      {/* Main Content Hub */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16 relative z-10 flex flex-col gap-12">
+      <div className="max-w-4xl w-full relative z-10 space-y-10">
         
-        {/* Top Header Label */}
+        {/* Header & Brand Logo */}
         <div className="text-center space-y-3">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-surface-container-highest border border-surface-variant/50 text-secondary font-headline text-xs md:text-sm font-extrabold shadow-inner">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-surface-container-highest border border-surface-variant/60 text-secondary font-headline text-xs font-extrabold shadow-sm">
             <Sparkles className="w-4 h-4 text-secondary-spot animate-pulse" />
-            <span>2026 교육박람회 1초 풀패키지 시연 모드 탑재 · Antigravity IDE</span>
+            <span>ReadyCareer AI · Stitch 디자인 DNA 기반 주도적 진로 여정</span>
           </div>
-          <h1 className="text-4xl md:text-6xl font-headline font-black text-text-primary tracking-tight leading-tight">
-            Ready Career <span className="text-transparent bg-clip-text gradient-hero-card">AI</span>
+          <h1 className="text-4xl md:text-5xl font-headline font-black text-text-primary tracking-tight">
+            어떤 모드로 <span className="text-transparent bg-clip-text gradient-hero-card">시작하시겠습니까?</span>
           </h1>
-          <p className="text-sm md:text-lg text-text-muted font-body-md max-w-2xl mx-auto leading-relaxed">
-            학생이 <strong>진로활동을 누적 관리하며 미래를 수놓는</strong> 게임화 3D 한글 플랫폼.<br />
-            흥미 검사를 넘어 AI 별자리 로드맵과 교사용 생기부 가이드안까지 즉시 시연해 보세요!
+          <p className="text-sm text-text-muted font-body-md max-w-lg mx-auto">
+            원하는 접속 방식을 선택하세요. 언제든 화면 우측 상단 메뉴에서 다른 모드로 자유롭게 스위칭할 수 있습니다.
           </p>
         </div>
 
-        {/* Mascot Greeting */}
-        <div className="flex justify-center -my-2">
-          <MascotAri
-            pose="celebrate"
-            size="lg"
-            rotate={true}
-            bubbleTitle="✨ 2026 교육박람회 방문을 환영해요!"
-            bubbleMessage="하단에서 [1초 체험용]을 고르시면 복잡한 회원가입 없이 세팅된 완벽한 데모 화면을 즉각 만나보실 수 있습니다!"
-          />
-        </div>
-
-        {/* TWO-TRACK ACTION SELECTION (EXPO DEMO vs LIVE PRODUCTION) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-          
-          {/* Track 1: Expo Demo Mode (Left / Prominent) */}
-          <Card
-            variant="hero"
-            padding="lg"
-            className="lg:col-span-7 bg-gradient-to-br from-point/60 via-white to-white border-2 border-secondary/40 shadow-3d-ambient flex flex-col justify-between relative overflow-hidden"
-          >
-            <div className="space-y-4">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary text-white text-xs font-headline font-black uppercase tracking-wider">
-                <Zap className="w-3.5 h-3.5 fill-current" />
-                <span>🎪 박람회 1초 즉각 체험 (Expo Pilot)</span>
+        {/* =========================================================================
+            1. INITIAL SELECTION: 체험 모드 vs 실제 모드 (깔끔한 2개 카드)
+           ========================================================================= */}
+        {viewMode === "initial" && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+            
+            {/* CARD A: 체험 모드 */}
+            <div
+              onClick={() => setViewMode("expo")}
+              className="p-8 rounded-3xl bg-gradient-to-br from-point via-white to-white border-2 border-secondary/40 hover:border-secondary shadow-3d-base hover:shadow-3d-ambient cursor-pointer transition-all duration-300 flex flex-col justify-between group active:scale-[0.98] min-h-[340px]"
+            >
+              <div className="space-y-4">
+                <div className="w-14 h-14 rounded-2xl bg-secondary text-white flex items-center justify-center text-2xl shadow-md group-hover:scale-110 transition-transform">
+                  🎪
+                </div>
+                <div className="space-y-1.5">
+                  <span className="text-xs font-headline font-black text-secondary uppercase tracking-wider block">
+                    1초 즉각 체험 · Pilot Mode
+                  </span>
+                  <h3 className="text-2xl font-headline font-black text-text-primary group-hover:text-secondary transition-colors">
+                    박람회 체험 모드
+                  </h3>
+                </div>
+                <p className="text-xs md:text-sm text-text-muted font-body-md leading-relaxed">
+                  복잡한 인증이나 회원가입 절차 없이, <strong>학생 및 교사용 미리 세팅된 테스트 계정</strong>을 클릭 한 번으로 자동 로그인하여 모든 핵심 기능을 바로 확인합니다.
+                </p>
               </div>
-              <h2 className="text-2xl md:text-3xl font-headline font-black text-text-primary">
-                복잡한 DB 설정 없는 100% 데모 시연
+
+              <div className="mt-8 pt-4 border-t border-surface-variant/40 flex items-center justify-between text-xs font-headline font-black text-secondary">
+                <span>⚡ 계정 선택하고 1초 입장하기</span>
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
+              </div>
+            </div>
+
+            {/* CARD B: 실제 실무 모드 */}
+            <div
+              onClick={() => setViewMode("real")}
+              className="p-8 rounded-3xl bg-surface-container-lowest hover:bg-surface-container-low border border-surface-variant/60 hover:border-primary/50 shadow-3d-base hover:shadow-3d-ambient cursor-pointer transition-all duration-300 flex flex-col justify-between group active:scale-[0.98] min-h-[340px]"
+            >
+              <div className="space-y-4">
+                <div className="w-14 h-14 rounded-2xl bg-primary/10 text-primary flex items-center justify-center text-2xl border border-primary/20 shadow-sm group-hover:scale-110 transition-transform">
+                  🔐
+                </div>
+                <div className="space-y-1.5">
+                  <span className="text-xs font-headline font-black text-primary uppercase tracking-wider block">
+                    학교 승인코드 실사용 · Live Real
+                  </span>
+                  <h3 className="text-2xl font-headline font-black text-text-primary group-hover:text-primary transition-colors">
+                    실제 실무 모드
+                  </h3>
+                </div>
+                <p className="text-xs md:text-sm text-text-muted font-body-md leading-relaxed">
+                  교육청 NEIS 학교 마스터코드 조회 및 발급받은 B2B 초대코드를 바탕으로 <strong>정식 신규 회원가입 및 실무 교직원/학생 로그인</strong>을 진행합니다.
+                </p>
+              </div>
+
+              <div className="mt-8 pt-4 border-t border-surface-variant/40 flex items-center justify-between text-xs font-headline font-bold text-primary">
+                <span>정식 가입 및 로그인으로 진입</span>
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
+              </div>
+            </div>
+
+          </div>
+        )}
+
+        {/* =========================================================================
+            2. EXPO MODE: 학생용 vs 교사용 역할 탭 & 하단 체험 아이디 1초 자동 로그인
+           ========================================================================= */}
+        {viewMode === "expo" && (
+          <div className="space-y-8 animate-fadeIn">
+            <div className="flex items-center justify-between border-b border-surface-variant/40 pb-4">
+              <button
+                onClick={() => setViewMode("initial")}
+                className="inline-flex items-center gap-1.5 text-xs font-headline font-black text-text-muted hover:text-text-primary transition-colors"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                <span>처음 선택으로 돌아가기</span>
+              </button>
+              <Chip size="sm" variant="teal" className="font-extrabold">🎪 체험 모드 계정 선택</Chip>
+            </div>
+
+            {/* 역할 선택 탭 (학생용 vs 교사/관리자용) */}
+            <div className="space-y-3 text-center">
+              <h2 className="text-2xl font-headline font-black text-text-primary">
+                어떤 역할을 체험하고 싶으신가요?
               </h2>
-              <p className="text-xs md:text-sm text-text-muted font-body-md leading-relaxed">
-                만렙에 가까운 퀘스트 진도율, 완료된 RIASEC 흥미검사와 3종 AI 진단 리포트, 교사회관 생기부 추출 예시가 <strong>모두 풀로 차있는 환경</strong>입니다. 원하시는 역할을 터치해 즉시 뛰어드세요!
-              </p>
-
-              {/* 3-Tier Expo Role Buttons */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+              <div className="flex max-w-md mx-auto bg-surface-container p-1.5 rounded-3xl border border-surface-variant/50 shadow-inner">
                 <button
-                  onClick={() => handleExpoSelect("student")}
-                  className="p-4 rounded-3xl bg-primary text-on-primary font-headline font-extrabold flex flex-col items-center justify-center gap-2 shadow-3d-base hover:scale-[1.02] active:scale-95 transition-all group bezel-effect"
+                  type="button"
+                  onClick={() => setExpoRole("student")}
+                  className={`flex-1 py-3 px-4 rounded-2xl font-headline font-extrabold text-sm flex items-center justify-center gap-2 transition-all ${
+                    expoRole === "student"
+                      ? "bg-primary text-on-primary shadow-3d-base scale-[1.02]"
+                      : "text-text-muted hover:text-text-primary"
+                  }`}
                 >
-                  <div className="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center text-xl">
-                    🧑‍🎓
-                  </div>
-                  <span className="text-sm">학생 체험 뷰</span>
-                  <span className="text-[10px] bg-white/20 px-2 py-0.5 rounded-full font-black">
-                    만렙 퀘스트 DB
-                  </span>
+                  <Award className="w-4 h-4" />
+                  <span>🧑‍🎓 학생용 체험</span>
                 </button>
-
                 <button
-                  onClick={() => handleExpoSelect("teacher")}
-                  className="p-4 rounded-3xl bg-secondary text-white font-headline font-extrabold flex flex-col items-center justify-center gap-2 shadow-3d-base hover:scale-[1.02] active:scale-95 transition-all group bezel-effect"
+                  type="button"
+                  onClick={() => setExpoRole("teacher")}
+                  className={`flex-1 py-3 px-4 rounded-2xl font-headline font-extrabold text-sm flex items-center justify-center gap-2 transition-all ${
+                    expoRole === "teacher" || expoRole === "super_admin"
+                      ? "bg-secondary text-white shadow-3d-base scale-[1.02]"
+                      : "text-text-muted hover:text-text-primary"
+                  }`}
                 >
-                  <div className="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center text-xl">
-                    👨‍🏫
-                  </div>
-                  <span className="text-sm">학교관리자 뷰</span>
-                  <span className="text-[10px] bg-white/20 px-2 py-0.5 rounded-full font-black">
-                    생기부 가이드안
-                  </span>
-                </button>
-
-                <button
-                  onClick={() => handleExpoSelect("super_admin")}
-                  className="p-4 rounded-3xl bg-surface-container-high hover:bg-surface-container-highest text-text-primary border border-surface-variant/60 font-headline font-extrabold flex flex-col items-center justify-center gap-2 shadow-md hover:scale-[1.02] active:scale-95 transition-all group"
-                >
-                  <div className="w-12 h-12 rounded-2xl bg-secondary/20 text-secondary-spot flex items-center justify-center text-xl font-black">
-                    👑
-                  </div>
-                  <span className="text-sm">최종마스터 뷰</span>
-                  <span className="text-[10px] bg-secondary/20 text-secondary-spot px-2 py-0.5 rounded-full font-black">
-                    초대코드·가입통제
-                  </span>
+                  <BookOpen className="w-4 h-4" />
+                  <span>👨‍🏫 교사·학교관리자용</span>
                 </button>
               </div>
             </div>
 
-            <div className="mt-6 pt-4 border-t border-surface-variant/30 flex items-center justify-between text-xs font-bold text-text-muted">
-              <span>💡 교육박람회 시연이 종료되면 손쉽게 스위칭되거나 해제될 수 있습니다.</span>
-              <span className="text-secondary font-black">START &gt;&gt; 클릭하여 즉시 진입</span>
+            {/* 하단 자동로그인 계정 카드 리스트 */}
+            <div className="space-y-4 pt-2">
+              <span className="text-xs font-headline font-black text-text-muted block text-center">
+                👇 아래 체험용 아이디를 클릭(선택)하면 해당 데이터로 즉시 1초 자동 로그인이 진행됩니다!
+              </span>
+
+              {expoRole === "student" ? (
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {studentDemoAccounts.map((acc) => (
+                    <Card
+                      key={acc.id}
+                      variant="surface"
+                      padding="md"
+                      className="border-2 border-surface-variant/60 hover:border-primary shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer flex flex-col justify-between group active:scale-95"
+                      onClick={() => handleAutoLogin("student", acc)}
+                    >
+                      <div className="space-y-3">
+                        <div className="flex items-center justify-between">
+                          <span className={`text-[10px] font-headline font-black px-2.5 py-0.5 rounded-full ${
+                            acc.id === "std-1" ? "bg-secondary/15 text-secondary" : "bg-primary/10 text-primary"
+                          }`}>
+                            {acc.tag}
+                          </span>
+                          <span className="text-xs font-black text-text-muted">{acc.grade}학년 {acc.classNo}반</span>
+                        </div>
+                        <div>
+                          <strong className="text-lg font-headline font-black text-text-primary group-hover:text-primary transition-colors block">
+                            {acc.name}
+                          </strong>
+                          <span className="text-xs font-bold text-text-muted flex items-center gap-1 mt-0.5">
+                            <School className="w-3.5 h-3.5 text-primary" /> {acc.school} · [{acc.riasecCode}]
+                          </span>
+                        </div>
+                        <p className="text-xs text-text-muted font-body-md bg-surface-container-low p-2.5 rounded-xl border border-surface-variant/30 leading-snug">
+                          {acc.desc}
+                        </p>
+                      </div>
+
+                      <Button variant="teal" size="sm" fullWidth className="mt-5 font-headline font-extrabold shadow-sm group-hover:bg-primary">
+                        ⚡ 이 아이디로 1초 자동 로그인 &rarr;
+                      </Button>
+                    </Card>
+                  ))}
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+                  {teacherDemoAccounts.map((tAcc) => (
+                    <Card
+                      key={tAcc.id}
+                      variant="surface"
+                      padding="lg"
+                      className="border-2 border-surface-variant/60 hover:border-secondary shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer flex flex-col justify-between group active:scale-95"
+                      onClick={() => handleAutoLogin(tAcc.role, tAcc)}
+                    >
+                      <div className="space-y-3">
+                        <div className="flex items-center justify-between">
+                          <span className="text-[10px] font-headline font-black px-3 py-1 rounded-full bg-secondary/15 text-secondary">
+                            {tAcc.tag}
+                          </span>
+                          <ShieldCheck className="w-5 h-5 text-secondary" />
+                        </div>
+                        <div>
+                          <strong className="text-xl font-headline font-black text-text-primary group-hover:text-secondary transition-colors block">
+                            {tAcc.name}
+                          </strong>
+                          <span className="text-xs font-bold text-text-muted block mt-0.5">
+                            {tAcc.title} · {tAcc.school}
+                          </span>
+                        </div>
+                        <p className="text-xs text-text-muted font-body-md bg-surface-container-low p-3 rounded-2xl border border-surface-variant/30 leading-relaxed">
+                          {tAcc.desc}
+                        </p>
+                      </div>
+
+                      <Button variant="teal" size="md" fullWidth className="mt-6 font-headline font-extrabold shadow-md group-hover:bg-secondary">
+                        ⚡ 이 교사·관리자로 자동 로그인 &rarr;
+                      </Button>
+                    </Card>
+                  ))}
+                </div>
+              )}
             </div>
-          </Card>
 
-          {/* Track 2: Real Live Production Mode (Right / Gatekeeper) */}
-          <Card
-            variant="surface"
-            padding="lg"
-            className="lg:col-span-5 bg-surface-container-low border border-surface-variant/60 shadow-3d-base flex flex-col justify-between"
-          >
-            <div className="space-y-4">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-headline font-black uppercase tracking-wider">
-                <ShieldCheck className="w-3.5 h-3.5" />
-                <span>🔐 정식 실전 프로덕션 (Live Real)</span>
+            {/* 마스코트 코칭 */}
+            <div className="max-w-lg mx-auto pt-4 flex items-center justify-center gap-3 bg-surface-container-low py-3 px-5 rounded-full border border-surface-variant/40 shadow-inner">
+              <div className="w-8 h-8 flex-shrink-0">
+                <MascotAri pose="avatar" size="sm" rotate={false} className="-my-1" />
               </div>
-              <h2 className="text-xl md:text-2xl font-headline font-black text-text-primary">
-                학교 승인코드 기반 실무 로그인
-              </h2>
-              <p className="text-xs text-text-muted font-body-md leading-relaxed">
-                정식 도입된 학교의 <strong>표준학교코드 선택 및 마스터 초대코드 승인</strong>을 통해 가입을 진행하거나, Supabase/Vercel 프록시 API를 사용하는 실제 DB 사용자 로그인입니다.
-              </p>
+              <span className="text-xs font-headline font-bold text-text-primary">
+                💡 로그인 후 언제든 새로운 관심직업이나 비전을 직접 수정하고 추가해보세요!
+              </span>
+            </div>
+          </div>
+        )}
 
-              <div className="space-y-3 pt-3">
+        {/* =========================================================================
+            3. REAL MODE: 정식 회원가입 및 학교 승인 로그인 (깔끔하고 명확한 UX)
+           ========================================================================= */}
+        {viewMode === "real" && (
+          <div className="max-w-md mx-auto space-y-6 animate-fadeIn">
+            <div className="flex items-center justify-between border-b border-surface-variant/40 pb-4">
+              <button
+                onClick={() => setViewMode("initial")}
+                className="inline-flex items-center gap-1.5 text-xs font-headline font-black text-text-muted hover:text-text-primary transition-colors"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                <span>모드 선택으로 돌아가기</span>
+              </button>
+              <Chip size="sm" variant="default" className="font-extrabold">🔐 정식 계정 실무 모드</Chip>
+            </div>
+
+            <Card variant="surface" padding="lg" className="border border-surface-variant/60 shadow-3d-base space-y-6 text-center">
+              <div className="space-y-2">
+                <div className="w-12 h-12 bg-primary/10 text-primary mx-auto rounded-2xl flex items-center justify-center mb-2">
+                  <ShieldCheck className="w-6 h-6" />
+                </div>
+                <h2 className="text-2xl font-headline font-black text-text-primary">
+                  학교 승인 계정 접속
+                </h2>
+                <p className="text-xs text-text-muted font-body-md leading-relaxed">
+                  NEIS 학교 코드 및 발급받은 <strong>초대코드</strong> 검증을 통해 신규 계정을 생성하거나 실사용 계정으로 진입합니다.
+                </p>
+              </div>
+
+              <div className="space-y-3 pt-2">
                 <Link to="/login" className="block">
                   <Button
                     variant="outline"
@@ -159,7 +375,7 @@ export const StartScreen: React.FC = () => {
                     icon={<LogIn className="w-5 h-5 text-primary" />}
                     className="font-headline font-extrabold justify-between py-4 shadow-sm"
                   >
-                    <span>정식 계정으로 로그인</span>
+                    <span>기존 정식 계정으로 로그인</span>
                     <ArrowRight className="w-4 h-4 text-text-muted" />
                   </Button>
                 </Link>
@@ -172,34 +388,17 @@ export const StartScreen: React.FC = () => {
                     icon={<UserPlus className="w-5 h-5" />}
                     className="font-headline font-extrabold justify-between py-4 shadow-md"
                   >
-                    <span>학교 승인코드 신규 회원가입</span>
-                    <ArrowRight className="w-4 h-4 text-white/80" />
+                    <span>학교 마스터 승인 신규 회원가입</span>
+                    <ArrowRight className="w-4 h-4 text-white" />
                   </Button>
                 </Link>
               </div>
-            </div>
 
-            <div className="mt-6 p-3 bg-surface-container rounded-2xl border border-surface-variant/40 flex items-center gap-3 text-xs text-text-muted">
-              <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0" />
-              <span>B2B 토너먼트 규정에 따라 최종마스터에 의해 가입 기간 개방 여부가 실시간 제어됩니다.</span>
-            </div>
-          </Card>
-        </div>
-
-        {/* Bottom Navigation quick links if already authenticated */}
-        {isAuthenticated && (
-          <div className="p-4 bg-surface-container-low rounded-3xl border border-surface-variant/40 flex items-center justify-between shadow-sm">
-            <span className="text-sm font-headline font-black text-text-primary flex items-center gap-2">
-              <span>🎉 현재 <strong>{session?.name} ({session?.role})</strong>님으로 세션이 체결되어 있습니다.</span>
-            </span>
-            <Button
-              variant="primary"
-              size="sm"
-              onClick={() => navigate(session?.role === "teacher" ? "/teacher" : session?.role === "super_admin" ? "/super-admin" : "/")}
-              className="font-extrabold"
-            >
-              내 메인보드로 바로 가기 &rarr;
-            </Button>
+              <div className="p-3 bg-surface-container rounded-2xl border border-surface-variant/40 flex items-center gap-2 text-[11px] text-text-muted text-left">
+                <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0" />
+                <span>자유 입력 방지 규정에 따라 승인된 전국 고등학교 표준 목록에서 소속을 고르고 가입할 수 있습니다.</span>
+              </div>
+            </Card>
           </div>
         )}
 
