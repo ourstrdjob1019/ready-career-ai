@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-background text-text-primary antialiased;
+    font-family: 'Be Vietnam Pro', sans-serif;
+  }
+  
+  h1, h2, h3, h4, h5, h6, .font-headline {
+    font-family: 'Hanken Grotesk', sans-serif;
+  }
+}
+
+@layer utilities {
+  .glass-overlay {
+    backdrop-filter: blur(20px);
+    background-color: rgba(255, 255, 255, 0.7);
+    border-top: 1.5px solid rgba(255, 255, 255, 0.4);
+    border-left: 1.5px solid rgba(255, 255, 255, 0.4);
+  }
+  
+  .bezel-effect {
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8), 0 8px 16px rgba(123, 92, 240, 0.2);
+  }
+  
+  .chip-gradient {
+    background: linear-gradient(135deg, rgba(123, 92, 240, 0.1) 0%, rgba(98, 64, 213, 0.05) 100%);
+  }
+
+  .gradient-hero-card {
+    background: linear-gradient(135deg, #8E70F7 0%, #6B45E4 100%);
+  }
+
+  /* Custom scrollbar hiding for horizontal chip lists */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
