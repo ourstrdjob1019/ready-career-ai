@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button, Card, Chip } from "../components";
 import { useAuth } from "../context";
+import { executeAiPrompt } from "../services/aiService";
 import {
   Sparkles,
   Search,
@@ -93,16 +94,27 @@ export const TeacherGuide: React.FC = () => {
 
   const activeStudent = MOCK_STUDENTS.find((s) => s.id === selectedStudentId) || MOCK_STUDENTS[0];
 
-  const handleExtractAiGuideline = () => {
+  const handleExtractAiGuideline = async () => {
     setIsExtracting(true);
     setGeneratedGuideline(null);
-    setTimeout(() => {
-      setIsExtracting(false);
+    try {
+      const res = await executeAiPrompt({
+        promptType: "saengbu_guideline",
+        studentName: activeStudent.name,
+        riasecCode: activeStudent.riasecCode,
+        targetJob: activeStudent.targetJob,
+        activities: activeStudent.activities,
+      });
       setGeneratedGuideline(
-        activeStudent.guidelineSample ||
+        res.content ||
+          activeStudent.guidelineSample ||
           "[AI 가이드안 추출 완료] 해당 학생은 뚜렷한 진로 비전 아래 다중지능 및 습관 챌린지를 꾸준히 누적해 왔으며, 포트폴리오의 실험 보고서를 토대로 학교생활기록부 진로/행동특성란에 발전 가능성 높은 우수 사원으로 적극 인용 가능합니다."
       );
-    }, 1200);
+    } catch (error) {
+      setGeneratedGuideline(activeStudent.guidelineSample || "AI 추출 중 지연이 발생하여 기본 데모 가이드안을 대체 표시합니다.");
+    } finally {
+      setIsExtracting(false);
+    }
   };
 
   const handleCopy = () => {

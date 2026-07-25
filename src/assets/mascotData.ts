@@ -1,14 +1,17 @@
-// Stitch MCP 디자인에서 추출된 마스코트 Ari 및 주요 시각적 에셋의 URL 소스 모음
-export const MASCOT_ASSETS = {
-  // GNB 좌측 상단 및 아바타용 Ari 프로필
-  avatar: "https://www.gstatic.com/labs-code/stitch/stitch-placeholder-300x300.svg",
-  
-  // 활동 카드 및 퀘스트 완료 시 등장하는 3D 강아지 Ari 스티커
-  sticker3D: "https://lh3.googleusercontent.com/aida/AB6AXuCJHRTlUnzFm8Sun1LPqE4kjO6TYkKcyxitCNTRAw3G8rDMnYrGNLZvVyX_mv7CF1t-4vU6ziWiTb4uD71FNeHVhlJxsqcFqBnJcQUfHUO_aTtjXv9t0tZDfhb-FzczLB7AL9jsmDGI79ddmIrM-R0QOPFMM9Fl-nr3DrBfTjWVjSErtVuWgFWjlwlsg_Rat2MwNIFaPsiPcxyjgzQg_UT4mnlcF9Z6vjczU6MWOHu6ufyy8Sa9NoM8s6G3haTN_hhhtDxGDiOLMXsM",
+// ReadyCareer AI 공식 마스코트 "아리(Ari)" 및 주요 3D 캐릭터 에셋 URL
+// 사용자 제공 Vercel Blob Storage 및 Supabase URL 실연동
+const ARI_BLOB_URL = "https://bmticbgdrkcccpqw.private.blob.vercel-storage.com/%EC%BA%90%EB%A6%AD%ED%84%B0/KakaoTalk_20260713_090001607.png?vercel-blob-delegation=eyJzdG9yZUlkIjoic3RvcmVfQk1UaWNiR0Rya2NDY1BRdyIsIm93bmVySWQiOiJ0ZWFtX1lQMWRwb2hySTNRYk50NThJSmE2aDRHciIsInBhdGhuYW1lIjoiKiIsIm9wZXJhdGlvbnMiOlsiZ2V0IiwiaGVhZCJdLCJ2YWxpZFVudGlsIjoxNzg1MDExNjA2NTA0LCJpYXQiOjE3ODQ5Njg0MDU5OTN9.ECxkkVRAQmUqe9zQJXPDmqRldILQS_h82zLnV7dO6gw&vercel-blob-signature=_vy3l97SXU5kduuptr_TNWRAZStzAajTAbhVXSulWvc";
 
-  // 온보딩 및 로드맵 축하 포즈 (대체 고화질 3D 렌더링)
-  celebrate: "https://lh3.googleusercontent.com/aida/AP1WRLv6l8ZK8TZ5HmNdZgPYK_T8vvMMLyoVF-zmtJsEn7TLzTMz5mRZbr_aasbRc8moZaDWkvBn8p3V-7Qvv6oztmRcEZFtNRiEyGZvPC3q5Tj-eAvz9Ly2OvKxrQiP_-pcOXjBf9hFAWL8f1iimexOjhU4E4VpO6Cmqd-tGUAJdllE6tmNroVQkdqsGYT0SGT9FUWAmRbGUDUcg67JuYorm_0gHRWRWTlALVFhP6Za65-E3JC88Evtec9VKL4",
+export const MASCOT_ASSETS = {
+  // GNB 좌측 상단 및 아바타 프로필
+  avatar: ARI_BLOB_URL,
+  
+  // 활동 카드 및 퀘스트 완료 시 등장하는 3D 아리 스티커
+  sticker3D: ARI_BLOB_URL,
+
+  // 온보딩, 대시보드 및 로드맵 축하 포즈
+  celebrate: ARI_BLOB_URL,
 
   // 별자리 및 3D 로드맵 메인 아이콘
-  starRoadmapIcon: "https://lh3.googleusercontent.com/aida/AP1WRLsDpenY1VHGzhztfcUP0NbCikDkF38Nf_h_amRL2k5ViWNkssnmjj6lzio1mTktCZ5x47t5ZrX43rjU-bDINN7SGseS75ybiQUi70fPyk7Wg-kG-OuMbDmjfOHrpQtVUXFybA06R_mo7VhxTl-wefHLBtg8Su5iw3rWA9x-qGolC_En2z62LF-7MaXk-pNuI1STM00lnG8DgS4-pXQmsCbUjL8M73AhwyPnMFl4XZ8lA0KKDS6P0AwoTS0Z",
+  starRoadmapIcon: ARI_BLOB_URL,
 };

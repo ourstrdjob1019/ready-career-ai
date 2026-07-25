@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button, Card, Chip, MascotAri, ProgressBar } from "../components";
 import { useAuth, useSelfUnderstanding } from "../context";
+import { executeAiPrompt } from "../services/aiService";
 import {
   Sparkles,
   ArrowRight,
@@ -45,7 +46,24 @@ export const HomeDashboard: React.FC = () => {
     setIsEditingVision(false);
   };
 
-  const handleAiSuggestVision = () => {
+  const handleAiSuggestVision = async () => {
+    const currentTarget = interestedJobs[jobCarouselIdx % (interestedJobs.length || 1)]?.name || "AI 융합 디렉터";
+    try {
+      const res = await executeAiPrompt({
+        promptType: "vision_recommendation",
+        targetJob: currentTarget,
+      });
+      if (res.content && res.provider !== "expo-demo-fallback") {
+        const cleaned = res.content.replace(/^["']|["']$/g, "").trim();
+        setVisionStatement(cleaned);
+        localStorage.setItem("readycareer_vision_v1", cleaned);
+        setIsEditingVision(false);
+        return;
+      }
+    } catch (e) {
+      console.warn("AI 비전 생성 실패, 로컬 풀에서 추천합니다.", e);
+    }
+
     const suggestions = [
       "인공지능과 데이터 가공 기법으로 사회적 취약계층을 보호하는 정의로운 테크 혁신가!",
       "따뜻한 공감 능력으로 교실 속 아이들의 잠재력을 깨우는 최고의 맞춤형 에듀테크 리더!",
