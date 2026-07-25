@@ -75,7 +75,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     if (saved) {
       try { return JSON.parse(saved); } catch (e) { return null; }
     }
-    return EXPO_STUDENT_SESSION;
+    return null;
   });
 
   const [isExpoDemoMode, setIsExpoDemoMode] = useState<boolean>(() => {

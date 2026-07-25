@@ -1,32 +1,33 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Button, Card, Chip, MascotAri, ProgressBar } from "../components";
-import { useAuth, useSelfUnderstanding } from "../context";
+import { Button, Card, MascotAri, ProgressBar } from "../components";
+import { useAuth } from "../context";
 import { executeAiPrompt } from "../services/aiService";
 import {
   Sparkles,
   ArrowRight,
-  Flame,
   Plus,
   CheckCircle2,
-  Lock,
-  MessageSquareQuote,
-  Target,
-  ChevronRight,
-  ChevronLeft,
+  Brain,
+  Compass,
+  Award,
+  FolderKanban,
+  Edit2,
+  RefreshCw,
+  Star,
 } from "lucide-react";
 
 export const HomeDashboard: React.FC = () => {
-  const { session, isExpoDemoMode } = useAuth();
-  const { report } = useSelfUnderstanding();
+  const { session } = useAuth();
 
   const [visionStatement, setVisionStatement] = useState<string>(() => {
     return localStorage.getItem("readycareer_vision_v1") || "AI 역량과 따뜻한 공감 능력으로 교육 격차를 해소하는 4차 산업 융합 디렉터가 되겠다!";
   });
   const [isEditingVision, setIsEditingVision] = useState(false);
   const [interestedJobs, setInterestedJobs] = useState<Array<{ name: string; image: string; category: string }>>([]);
-  const [jobCarouselIdx, setJobCarouselIdx] = useState(0);
+  const [selectedJobIdx, setSelectedJobIdx] = useState(0);
   const [newJobInput, setNewJobInput] = useState("");
+  const [isAiLoading, setIsAiLoading] = useState(false);
 
   useEffect(() => {
     const savedJobs = localStorage.getItem("my_interested_jobs");
@@ -36,7 +37,7 @@ export const HomeDashboard: React.FC = () => {
       setInterestedJobs([
         { name: "스마트 AI 에듀테크 진로 멘토", image: "👨‍🏫", category: "대표 관심 직업" },
         { name: "빅데이터 AI 모델 아키텍트", image: "📊", category: "AI·데이터" },
-        { name: "3D XR 공간 인터랙션 디자이너", image: "🎨", category: "아트·XR" },
+        { name: "3D XR 공간 인터랙티브 디자이너", image: "🎨", category: "아트·XR" },
       ]);
     }
   }, []);
@@ -47,7 +48,8 @@ export const HomeDashboard: React.FC = () => {
   };
 
   const handleAiSuggestVision = async () => {
-    const currentTarget = interestedJobs[jobCarouselIdx % (interestedJobs.length || 1)]?.name || "AI 융합 디렉터";
+    setIsAiLoading(true);
+    const currentTarget = interestedJobs[selectedJobIdx]?.name || "AI 융합 디렉터";
     try {
       const res = await executeAiPrompt({
         promptType: "vision_recommendation",
@@ -58,10 +60,11 @@ export const HomeDashboard: React.FC = () => {
         setVisionStatement(cleaned);
         localStorage.setItem("readycareer_vision_v1", cleaned);
         setIsEditingVision(false);
+        setIsAiLoading(false);
         return;
       }
     } catch (e) {
-      console.warn("AI 비전 생성 실패, 로컬 풀에서 추천합니다.", e);
+      console.warn("AI 비전 통신 불완전, 로컬 추천 풀로 진행합니다.", e);
     }
 
     const suggestions = [
@@ -73,6 +76,7 @@ export const HomeDashboard: React.FC = () => {
     setVisionStatement(randomOne);
     localStorage.setItem("readycareer_vision_v1", randomOne);
     setIsEditingVision(false);
+    setIsAiLoading(false);
   };
 
   const handleAddJob = (e: React.FormEvent) => {
@@ -80,311 +84,289 @@ export const HomeDashboard: React.FC = () => {
     if (!newJobInput.trim()) return;
     const added = [{ name: newJobInput.trim(), image: "🌟", category: "직접 추가" }, ...interestedJobs];
     setInterestedJobs(added);
+    setSelectedJobIdx(0);
     localStorage.setItem("my_interested_jobs", JSON.stringify(added));
     setNewJobInput("");
   };
 
-  const currentJob = interestedJobs[jobCarouselIdx % (interestedJobs.length || 1)] || { name: "AI 융합 개척자", image: "🤖", category: "탐색 중" };
+  const currentJob = interestedJobs[selectedJobIdx] || { name: "AI 융합 개척자", image: "🤖", category: "탐색 중" };
   const userName = session?.name || "김수진";
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12">
       
-      {/* Expo Demo Badge if Active */}
-      {isExpoDemoMode && (
-        <div className="p-3 bg-secondary/15 border-2 border-secondary/40 rounded-2xl flex items-center justify-between shadow-sm animate-pulse">
-          <span className="text-xs md:text-sm font-headline font-extrabold text-secondary flex items-center gap-2">
-            <span>🎪 2026 교육박람회 시연 세션 가동 중 — 1초 만렙 데이터 및 학교관리자 연계 샘플 장착됨!</span>
-          </span>
-          <Link to="/start" className="text-xs font-black bg-secondary text-white px-3 py-1 rounded-xl shadow">
-            모드/역할 스위처 &rarr;
-          </Link>
-        </div>
-      )}
-
-      {/* TOP: Gamification Level Banner & Job Badge (§7.4 상단) */}
-      <Card variant="surface" padding="md" className="border-2 border-primary/30 shadow-3d-base bg-gradient-to-r from-surface-container-lowest via-point/20 to-white flex flex-col md:flex-row items-center justify-between gap-4">
-        <div className="flex items-center gap-4">
-          <div className="w-14 h-14 rounded-2xl bg-secondary/20 text-3xl flex items-center justify-center border-2 border-secondary/30 shadow-inner">
-            {currentJob.image}
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="text-[11px] font-headline font-black bg-primary text-on-primary px-2.5 py-0.5 rounded-full">
-                ★ {currentJob.name} 지망생
-              </span>
-              <span className="text-xs font-bold text-text-muted">| 소속: {session?.school || "서울창의고등학교"}</span>
-            </div>
-            <h2 className="text-xl md:text-2xl font-headline font-black text-text-primary mt-1">
-              {userName}의 진로 여행 · <span className="text-secondary font-extrabold">Lv.05 (중급 프로그래머)</span>
-            </h2>
-          </div>
-        </div>
-
-        {/* EXP Bar */}
-        <div className="w-full md:w-72 space-y-1.5">
-          <div className="flex items-center justify-between text-xs font-headline font-bold">
-            <span className="text-text-muted">다음 캐릭터 외형 해금까지</span>
-            <span className="text-primary font-black">EXP 420 / 500 (84%)</span>
-          </div>
-          <ProgressBar value={84} max={100} variant="teal" />
-        </div>
-      </Card>
-
-      {/* CENTER WORKSPACE: Left Stack, Central Character Avatar, Right Carousel (§7.4 좌측/중앙/우측) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      {/* =========================================================================
+          SECTION 1: Hero Welcome & Character (우아하고 시각적인 상단 환영 영역)
+         ========================================================================= */}
+      <div className="p-8 md:p-10 rounded-3xl bg-surface-container-lowest border border-surface-variant/60 shadow-3d-base grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
         
-        {/* LEFT BUTTON STACK (§7.4 & §11-D: AI, 코딩, 진로탐색(미정/비활성), AI멘토(미정/비활성)) */}
-        <div className="lg:col-span-3 flex flex-col gap-3">
-          <span className="text-xs font-headline font-black text-text-muted px-2 uppercase tracking-wider">
-            ⚡ 퀵 스택 어셈블
-          </span>
-
-          <Link to="/self-understanding">
-            <button className="w-full p-4 rounded-3xl bg-primary/10 hover:bg-primary/20 text-primary border-2 border-primary/30 font-headline font-black text-left flex items-center justify-between shadow-sm transition-all group">
-              <div className="flex items-center gap-3">
-                <span className="w-9 h-9 rounded-xl bg-primary text-on-primary flex items-center justify-center font-black">AI</span>
-                <span>AI 자기이해 스튜디오</span>
-              </div>
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </button>
-          </Link>
-
-          <Link to="/activity-form">
-            <button className="w-full p-4 rounded-3xl bg-secondary/10 hover:bg-secondary/20 text-secondary border-2 border-secondary/30 font-headline font-black text-left flex items-center justify-between shadow-sm transition-all group">
-              <div className="flex items-center gap-3">
-                <span className="w-9 h-9 rounded-xl bg-secondary text-white flex items-center justify-center font-black">💻</span>
-                <span>코딩·세특 활동 기록</span>
-              </div>
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </button>
-          </Link>
-
-          {/* Placeholder 1 (§11-D 데모용) */}
-          <button
-            disabled
-            className="w-full p-4 rounded-3xl bg-surface-container text-text-muted border border-surface-variant/40 font-headline font-bold text-left flex items-center justify-between cursor-not-allowed opacity-75"
-            title="박람회 시연 이후 정식 업데이트 예정"
-          >
-            <div className="flex items-center gap-3">
-              <span className="w-9 h-9 rounded-xl bg-surface text-text-muted flex items-center justify-center">🔍</span>
-              <span>진로 심층 탐색관 (🔜)</span>
-            </div>
-            <Lock className="w-4 h-4 text-text-muted" />
-          </button>
-
-          {/* Placeholder 2 (§11-D 데모용) */}
-          <button
-            disabled
-            className="w-full p-4 rounded-3xl bg-surface-container text-text-muted border border-surface-variant/40 font-headline font-bold text-left flex items-center justify-between cursor-not-allowed opacity-75"
-            title="박람회 시연 이후 정식 업데이트 예정"
-          >
-            <div className="flex items-center gap-3">
-              <span className="w-9 h-9 rounded-xl bg-surface text-text-muted flex items-center justify-center">🤝</span>
-              <span>명문 멘토 매칭 라운지 (🔜)</span>
-            </div>
-            <Lock className="w-4 h-4 text-text-muted" />
-          </button>
-
-          <Link to="/habits" className="mt-2 block">
-            <Card variant="surface" padding="sm" className="border-secondary/30 bg-secondary/5 text-center p-3 shadow-sm hover:scale-[1.02] transition-transform">
-              <span className="text-xs font-headline font-black text-secondary-spot flex items-center justify-center gap-1">
-                <Flame className="w-4 h-4 text-secondary-spot animate-bounce" /> 50일 습관 챌린지 현재 12일차! &rarr;
+        {/* Left Info & Vision Statement */}
+        <div className="lg:col-span-8 space-y-6">
+          <div className="space-y-3">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-xs font-headline font-black bg-primary text-on-primary px-3 py-1 rounded-full shadow-sm flex items-center gap-1">
+                <Star className="w-3.5 h-3.5 fill-current" />
+                <span>★ 대표 꿈: {currentJob.name}</span>
               </span>
-            </Card>
-          </Link>
-        </div>
-
-        {/* CENTER CHARACTER AVATAR (§7.4 중앙) */}
-        <Card variant="hero" padding="lg" className="lg:col-span-5 shadow-3d-ambient bg-gradient-to-t from-surface-container-low to-surface-container-lowest flex flex-col items-center text-center justify-between min-h-[400px] relative border border-surface-variant/50">
-          <div className="space-y-1 z-10">
-            <Chip size="sm" variant="teal" className="font-extrabold uppercase">
-              {report ? `👑 ${report.characterTitle}` : "🌟 2026 AI 개별 커리어리스트"}
-            </Chip>
-            <h3 className="text-2xl font-headline font-black text-text-primary">
-              아리(Ari)와 커리어 동행
-            </h3>
+              <span className="text-xs font-bold text-text-muted bg-surface-container px-3 py-1 rounded-full border border-surface-variant/40">
+                {session?.school || "서울창의고등학교"} · {session?.grade || 2}학년 {session?.classNo || 4}반
+              </span>
+              <span className="text-xs font-black text-secondary bg-secondary/10 px-3 py-1 rounded-full">
+                RIASEC: {session?.riasecCode || "SI"} 유형
+              </span>
+            </div>
+            
+            <h1 className="text-3xl md:text-4xl font-headline font-black text-text-primary tracking-tight leading-tight">
+              <span className="text-primary">{userName}</span>님, 오늘도 힘찬<br />
+              진로 여정을 시작해 볼까요?
+            </h1>
           </div>
 
-          <div className="my-6 transform hover:scale-105 transition-transform duration-300">
-            <MascotAri
-              pose={report ? "celebrate" : "avatar"}
-              size="lg"
-              rotate={false}
-              bubbleTitle={report ? report.characterTitle : "Ari의 오늘의 황금 팁"}
-              bubbleMessage={
-                report
-                  ? report.characterAura
-                  : "별자리 로드맵에서 한입 퀘스트를 완료하면 경험치와 멋진 캐릭터 장착 뱃지를 받을 수 있어요!"
-              }
-            />
-          </div>
-
-          <div className="w-full pt-4 border-t border-surface-variant/40 flex items-center justify-between text-xs font-headline font-extrabold text-text-primary">
-            <span className="text-primary font-black">직업 상태: 중급 프로그래머</span>
-            <Link to="/roadmap" className="text-secondary hover:underline font-black">
-              ★ 별자리 퀘스트 계속하기 &rarr;
-            </Link>
-          </div>
-        </Card>
-
-        {/* RIGHT JOB CAROUSEL & CUSTOM ADD (§7.4 우측: +관심직업 추가, 좌우 스와이프) */}
-        <Card variant="surface" padding="md" className="lg:col-span-4 border border-surface-variant/60 shadow-3d-base space-y-5 flex flex-col justify-between">
-          <div>
+          {/* Vision Statement Quote */}
+          <div className="p-5 rounded-2xl bg-surface-container border border-surface-variant/50 relative">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-headline font-black text-text-primary flex items-center gap-1.5">
-                <Target className="w-4 h-4 text-secondary" /> 관심 직업군 슬라이더
+              <span className="text-xs font-headline font-black text-secondary-spot flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-secondary" />
+                <span>나의 맞춤 비전 선언문 (Vision Statement)</span>
               </span>
-              <span className="text-[11px] font-bold text-text-muted">
-                {jobCarouselIdx % (interestedJobs.length || 1) + 1} / {interestedJobs.length}
-              </span>
-            </div>
-
-            {/* Swipeable Job Card Display */}
-            <div className="p-6 rounded-3xl bg-surface-container-low border border-surface-variant/50 text-center space-y-4 shadow-inner relative overflow-hidden">
-              <div className="w-20 h-20 mx-auto rounded-2xl bg-white flex items-center justify-center text-4xl shadow-md">
-                {currentJob.image}
-              </div>
-              <div>
-                <span className="text-[10px] font-headline font-black text-primary uppercase bg-primary/10 px-2 py-0.5 rounded-full">
-                  {currentJob.category}
-                </span>
-                <h4 className="text-lg font-headline font-black text-text-primary mt-1.5">
-                  {currentJob.name}
-                </h4>
-              </div>
-
-              {/* Left/Right Swipe Controllers */}
-              <div className="flex items-center justify-between pt-2">
+              <div className="flex items-center gap-2">
                 <button
-                  onClick={() => setJobCarouselIdx((prev) => (prev > 0 ? prev - 1 : (interestedJobs.length - 1)))}
-                  className="p-2 rounded-2xl bg-surface-container hover:bg-surface-container-high text-text-primary font-black shadow-sm"
-                  aria-label="이전 직업"
+                  onClick={handleAiSuggestVision}
+                  disabled={isAiLoading}
+                  className="text-[11px] font-headline font-extrabold px-2.5 py-1 rounded-lg bg-secondary text-white hover:bg-secondary-spot transition-colors shadow-sm flex items-center gap-1 disabled:opacity-50"
                 >
-                  <ChevronLeft className="w-5 h-5" />
+                  <RefreshCw className={`w-3 h-3 ${isAiLoading ? "animate-spin" : ""}`} />
+                  <span>AI 추천받기</span>
                 </button>
-                <Link to="/roadmap">
-                  <Button variant="outline" size="sm" className="text-xs font-bold py-1 px-3">
-                    이 직업 로드맵 생성 &rarr;
-                  </Button>
-                </Link>
                 <button
-                  onClick={() => setJobCarouselIdx((prev) => prev + 1)}
-                  className="p-2 rounded-2xl bg-surface-container hover:bg-surface-container-high text-text-primary font-black shadow-sm"
-                  aria-label="다음 직업"
+                  onClick={() => setIsEditingVision(!isEditingVision)}
+                  className="text-xs text-text-muted hover:text-text-primary transition-colors p-1"
+                  title="직접 문구 수정하기"
                 >
-                  <ChevronRight className="w-5 h-5" />
+                  <Edit2 className="w-4 h-4" />
                 </button>
               </div>
-            </div>
-          </div>
-
-          {/* Add Custom Job Form */}
-          <div className="pt-3 border-t border-surface-variant/40 space-y-2">
-            <span className="text-[11px] font-headline font-extrabold text-text-muted block">
-              + 나만의 관심 직업 실시간 추가 (좌우 스와이프 등록)
-            </span>
-            <form onSubmit={handleAddJob} className="flex items-center gap-1.5">
-              <input
-                type="text"
-                placeholder="새 직업명 직접 입력..."
-                value={newJobInput}
-                onChange={(e) => setNewJobInput(e.target.value)}
-                className="flex-1 px-3 py-2 bg-surface-container-lowest border border-surface-variant/60 rounded-xl text-xs font-body-md text-text-primary focus:ring-2 focus:ring-primary shadow-inner"
-              />
-              <button type="submit" className="p-2.5 rounded-xl bg-secondary text-white text-xs font-extrabold hover:bg-secondary-spot transition-colors flex items-center justify-center">
-                <Plus className="w-4 h-4" />
-              </button>
-            </form>
-          </div>
-        </Card>
-      </div>
-
-      {/* BOTTOM: VISION STATEMENT BAR (§7.4 하단 & §11-E: 나의 비전선언문 입력/예시 제안) */}
-      <Card variant="activity" padding="md" className="border-2 border-secondary/40 shadow-3d-ambient bg-gradient-to-r from-point via-white to-white flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div className="flex items-start gap-4 flex-1">
-          <div className="w-12 h-12 rounded-2xl bg-secondary text-white flex items-center justify-center font-black flex-shrink-0 shadow-md">
-            <MessageSquareQuote className="w-6 h-6" />
-          </div>
-          <div className="space-y-2 flex-1">
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-headline font-black text-secondary-spot uppercase">
-                📜 My Career Vision Statement
-              </span>
-              <span className="text-[10px] bg-secondary/15 text-secondary px-2 py-0.5 rounded-full font-bold">
-                생기부 행특/진로 인용문
-              </span>
             </div>
 
             {isEditingVision ? (
-              <div className="flex items-center gap-2">
+              <div className="flex gap-2 mt-2">
                 <input
                   type="text"
                   value={visionStatement}
                   onChange={(e) => setVisionStatement(e.target.value)}
-                  className="w-full px-4 py-2 bg-white border-2 border-secondary rounded-2xl text-sm font-headline font-black text-text-primary shadow-inner focus:outline-none"
+                  className="flex-grow px-3 py-2 rounded-xl border border-primary text-sm bg-white font-body-md text-text-primary focus:outline-none"
                 />
-                <Button variant="secondary" size="sm" onClick={handleSaveVision} className="font-black whitespace-nowrap">
+                <Button variant="primary" size="sm" onClick={handleSaveVision}>
                   저장
                 </Button>
               </div>
             ) : (
-              <h4
-                onClick={() => setIsEditingVision(true)}
-                className="text-lg md:text-xl font-headline font-black text-text-primary cursor-pointer hover:text-primary transition-colors leading-relaxed"
-                title="클릭하여 자유롭게 수정해 보세요!"
-              >
-                "{visionStatement}" <small className="text-xs text-text-muted font-bold ml-1">(✏️ 터치하여 편집)</small>
-              </h4>
+              <p className="text-sm md:text-base font-headline font-extrabold text-text-primary italic leading-relaxed">
+                "{visionStatement}"
+              </p>
             )}
           </div>
         </div>
 
-        <div className="flex items-center gap-2 self-end md:self-auto">
-          <button
-            onClick={handleAiSuggestVision}
-            className="px-4 py-2.5 rounded-2xl bg-surface-container-high hover:bg-surface-container-highest text-text-primary text-xs font-headline font-black flex items-center gap-1.5 transition-all shadow-sm"
-            title="AI 아리가 추천하는 근사한 비전선언문 자동 변환"
-          >
-            <Sparkles className="w-4 h-4 text-secondary-spot animate-pulse" />
-            <span>AI 비전 문구 제안받기</span>
-          </button>
-          <Button variant="teal" size="sm" onClick={() => setIsEditingVision(!isEditingVision)} className="font-extrabold">
-            {isEditingVision ? "취소" : "직접 입력"}
-          </Button>
+        {/* Right Mascot & Level Progress */}
+        <div className="lg:col-span-4 flex flex-col items-center text-center p-6 rounded-3xl bg-gradient-to-b from-primary/5 to-surface-container border border-surface-variant/40 shadow-inner">
+          <MascotAri pose="celebrate" size="md" rotate={true} />
+          <div className="mt-3 space-y-2 w-full">
+            <span className="text-xs font-headline font-black text-secondary uppercase tracking-wider block">
+              아리 캐릭터 성장 지수
+            </span>
+            <strong className="text-lg font-headline font-black text-text-primary block">
+              Lv.05 중급 프로그래머
+            </strong>
+            <div className="space-y-1 pt-1">
+              <div className="flex justify-between text-[11px] font-bold text-text-muted">
+                <span>진행도</span>
+                <span className="text-primary font-extrabold">84%</span>
+              </div>
+              <ProgressBar value={84} max={100} variant="teal" />
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      {/* =========================================================================
+          SECTION 2: Core Career Navigator (깔끔한 4대 핵심 활동 카드)
+         ========================================================================= */}
+      <div className="space-y-6">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-2 border-b border-surface-variant/40 pb-4">
+          <div>
+            <span className="text-xs font-headline font-black text-primary uppercase tracking-wider block mb-1">
+              READYCAREER HUB
+            </span>
+            <h2 className="text-2xl font-headline font-black text-text-primary">
+              나의 핵심 진로 탐색 메뉴
+            </h2>
+          </div>
+          <span className="text-xs text-text-muted">원하는 탭을 클릭하여 즉각 주도적인 진로 활동을 이어나가세요.</span>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          
+          {/* CARD 1: AI 자기이해 */}
+          <Link to="/self-understanding">
+            <Card variant="surface" padding="lg" className="border-2 border-surface-variant/60 hover:border-primary transition-all duration-200 h-full flex flex-col justify-between group shadow-sm hover:shadow-md">
+              <div className="space-y-4">
+                <div className="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center border border-primary/20 group-hover:scale-110 transition-transform">
+                  <Brain className="w-6 h-6 text-primary" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-headline font-black text-text-primary group-hover:text-primary transition-colors">
+                    AI 자기이해 진단
+                  </h3>
+                  <p className="text-xs text-text-muted font-body-md mt-1 leading-relaxed">
+                    6유형 RIASEC 강제선택 흥미유형 및 다중 역량 리포트 열람
+                  </p>
+                </div>
+              </div>
+              <div className="mt-6 pt-3 border-t border-surface-variant/30 flex items-center justify-between text-xs font-headline font-bold text-primary">
+                <span>진단 및 리포트 보기</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </div>
+            </Card>
+          </Link>
+
+          {/* CARD 2: 50일 습관 관리 */}
+          <Link to="/habits">
+            <Card variant="surface" padding="lg" className="border-2 border-surface-variant/60 hover:border-secondary transition-all duration-200 h-full flex flex-col justify-between group shadow-sm hover:shadow-md">
+              <div className="space-y-4">
+                <div className="w-12 h-12 rounded-2xl bg-secondary/15 text-secondary flex items-center justify-center border border-secondary/30 group-hover:scale-110 transition-transform">
+                  <Award className="w-6 h-6 text-secondary" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-headline font-black text-text-primary group-hover:text-secondary transition-colors">
+                    50일 습관 챌린지
+                  </h3>
+                  <p className="text-xs text-text-muted font-body-md mt-1 leading-relaxed">
+                    매일 실천하는 알고리즘 및 진로 탐색 꾸준함 출석 스트릭
+                  </p>
+                </div>
+              </div>
+              <div className="mt-6 pt-3 border-t border-surface-variant/30 flex items-center justify-between text-xs font-headline font-bold text-secondary">
+                <span>습관 체커 가동 (14일차)</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </div>
+            </Card>
+          </Link>
+
+          {/* CARD 3: 별자리 로드맵 */}
+          <Link to="/roadmap">
+            <Card variant="surface" padding="lg" className="border-2 border-surface-variant/60 hover:border-primary transition-all duration-200 h-full flex flex-col justify-between group shadow-sm hover:shadow-md">
+              <div className="space-y-4">
+                <div className="w-12 h-12 rounded-2xl bg-surface-container-high text-primary flex items-center justify-center border border-surface-variant group-hover:scale-110 transition-transform">
+                  <Compass className="w-6 h-6 text-primary" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-headline font-black text-text-primary group-hover:text-primary transition-colors">
+                    별자리 로드맵
+                  </h3>
+                  <p className="text-xs text-text-muted font-body-md mt-1 leading-relaxed">
+                    꿈을 향한 학업 퀘스트 해금 및 전공 맞춤 로드맵 확인
+                  </p>
+                </div>
+              </div>
+              <div className="mt-6 pt-3 border-t border-surface-variant/30 flex items-center justify-between text-xs font-headline font-bold text-primary">
+                <span>로드맵 지도 열기</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </div>
+            </Card>
+          </Link>
+
+          {/* CARD 4: 진로 포트폴리오 DB */}
+          <Link to="/portfolio">
+            <Card variant="surface" padding="lg" className="border-2 border-surface-variant/60 hover:border-secondary transition-all duration-200 h-full flex flex-col justify-between group shadow-sm hover:shadow-md">
+              <div className="space-y-4">
+                <div className="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center border border-primary/20 group-hover:scale-110 transition-transform">
+                  <FolderKanban className="w-6 h-6 text-secondary-spot" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-headline font-black text-text-primary group-hover:text-secondary-spot transition-colors">
+                    진로 포트폴리오
+                  </h3>
+                  <p className="text-xs text-text-muted font-body-md mt-1 leading-relaxed">
+                    독서, 동아리, 세특 소재 및 학업 결과물 누적 저장고
+                  </p>
+                </div>
+              </div>
+              <div className="mt-6 pt-3 border-t border-surface-variant/30 flex items-center justify-between text-xs font-headline font-bold text-secondary-spot">
+                <span>내 포트폴리오 DB</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </div>
+            </Card>
+          </Link>
+
+        </div>
+      </div>
+
+      {/* =========================================================================
+          SECTION 3: Interested Jobs (나만의 관심직업 리스트 & 직각 직접 입력)
+         ========================================================================= */}
+      <Card variant="surface" padding="lg" className="border border-surface-variant/60 shadow-sm space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-surface-variant/40 pb-4">
+          <div>
+            <h3 className="text-lg font-headline font-black text-text-primary flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-secondary" />
+              <span>나의 관심 직업군 관리</span>
+            </h3>
+            <p className="text-xs text-text-muted font-body-md mt-0.5">
+              클릭(선택)하는 순간 즉시 상단의 대표 지망 직업으로 적용됩니다. 자유롭게 새로운 직업을 추가해 보세요!
+            </p>
+          </div>
+
+          {/* Add Job Form Bar */}
+          <form onSubmit={handleAddJob} className="flex items-center gap-2 max-w-sm w-full">
+            <input
+              type="text"
+              placeholder="예: 3D AI 인터페이스 설계자..."
+              value={newJobInput}
+              onChange={(e) => setNewJobInput(e.target.value)}
+              className="flex-grow text-xs px-3.5 py-2.5 rounded-xl bg-surface-container border border-surface-variant text-text-primary focus:outline-none focus:ring-1 focus:ring-primary font-body-md"
+            />
+            <Button type="submit" variant="teal" size="sm" className="whitespace-nowrap font-headline font-bold">
+              <Plus className="w-4 h-4 mr-1" />
+              직업 추가
+            </Button>
+          </form>
+        </div>
+
+        {/* Interested Jobs List */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {interestedJobs.map((job, idx) => {
+            const isSelected = selectedJobIdx === idx;
+            return (
+              <div
+                key={idx}
+                onClick={() => setSelectedJobIdx(idx)}
+                className={`p-4 rounded-2xl border-2 cursor-pointer transition-all duration-150 flex items-center justify-between ${
+                  isSelected
+                    ? "bg-secondary/15 border-secondary shadow-md scale-[1.02]"
+                    : "bg-surface-container-low border-surface-variant/50 hover:bg-surface-container hover:border-primary/40"
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl">{job.image}</span>
+                  <div>
+                    <strong className="text-sm font-headline font-black text-text-primary block">
+                      {job.name}
+                    </strong>
+                    <span className="text-[11px] text-text-muted font-bold">
+                      {isSelected ? "⭐ 대표 직업 선택됨" : job.category}
+                    </span>
+                  </div>
+                </div>
+                {isSelected && <CheckCircle2 className="w-5 h-5 text-secondary flex-shrink-0" />}
+              </div>
+            );
+          })}
         </div>
       </Card>
-
-      {/* Navigation Footer to 4 Core Tabs */}
-      <section className="space-y-3 pt-2">
-        <div className="flex items-center justify-between">
-          <h3 className="text-headline-md font-headline font-black text-text-primary">
-            🚀 하단 4대 탭 메인 워크플로우
-          </h3>
-          <span className="text-xs font-bold text-text-muted">어디서든 한 번의 터치로 전환 가능합니다.</span>
-        </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <Link to="/" className="p-4 rounded-3xl bg-primary text-on-primary font-headline font-extrabold flex items-center justify-between shadow-md">
-            <span>🏠 1. 홈 대시보드</span>
-            <CheckCircle2 className="w-4 h-4" />
-          </Link>
-          <Link to="/roadmap" className="p-4 rounded-3xl bg-surface-container-low hover:bg-surface-container text-text-primary font-headline font-extrabold flex items-center justify-between border border-surface-variant/50 transition-all">
-            <span>🌌 2. 별자리 로드맵</span>
-            <ArrowRight className="w-4 h-4 text-secondary" />
-          </Link>
-          <Link to="/habits" className="p-4 rounded-3xl bg-surface-container-low hover:bg-surface-container text-text-primary font-headline font-extrabold flex items-center justify-between border border-surface-variant/50 transition-all">
-            <span>🔥 3. 습관&amp;목표 관리</span>
-            <ArrowRight className="w-4 h-4 text-primary" />
-          </Link>
-          <Link to="/portfolio" className="p-4 rounded-3xl bg-surface-container-low hover:bg-surface-container text-text-primary font-headline font-extrabold flex items-center justify-between border border-surface-variant/50 transition-all">
-            <span>🏆 4. 진로 포트폴리오</span>
-            <ArrowRight className="w-4 h-4 text-secondary-spot" />
-          </Link>
-        </div>
-      </section>
 
     </div>
   );
 };
-
 export default HomeDashboard;

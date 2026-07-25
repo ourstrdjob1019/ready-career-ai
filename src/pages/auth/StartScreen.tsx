@@ -121,10 +121,10 @@ export const StartScreen: React.FC = () => {
             <span>ReadyCareer AI · Stitch 디자인 DNA 기반 주도적 진로 여정</span>
           </div>
           <h1 className="text-4xl md:text-5xl font-headline font-black text-text-primary tracking-tight">
-            어떤 모드로 <span className="text-transparent bg-clip-text gradient-hero-card">시작하시겠습니까?</span>
+            어떤 모드로 <span className="text-primary underline decoration-secondary decoration-4 underline-offset-8">시작하시겠습니까?</span>
           </h1>
-          <p className="text-sm text-text-muted font-body-md max-w-lg mx-auto">
-            원하는 접속 방식을 선택하세요. 언제든 화면 우측 상단 메뉴에서 다른 모드로 자유롭게 스위칭할 수 있습니다.
+          <p className="text-sm text-text-muted font-body-md max-w-lg mx-auto pt-2">
+            원하는 접속 방식을 선택하세요. 박람회 시연을 위한 즉각 체험 혹은 학교 승인코드 기반 실무 모드로 진입합니다.
           </p>
         </div>
 
