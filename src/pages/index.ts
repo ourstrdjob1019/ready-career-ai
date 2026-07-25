@@ -1,3 +1,4 @@
+export * from "./HomeDashboard";
 export * from "./OnboardingCode";
 export * from "./OnboardingInfo";
 export * from "./InterestTest";
@@ -6,5 +7,6 @@ export * from "./StarRoadmap";
 export * from "./HabitManagement";
 export * from "./ActivityForm";
 export * from "./Portfolio";
-export * from "./HomeDashboard";
 export * from "./TeacherGuide";
+export * from "./auth";
+export * from "./self";

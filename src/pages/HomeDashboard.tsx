@@ -1,196 +1,268 @@
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { Button, Card, Chip, MascotAri } from "../components";
-import { Sparkles, Compass, Award, ArrowUpRight, Clock, CheckCircle2, BookOpen } from "lucide-react";
+import { useAuth, useSelfUnderstanding } from "../context";
+import {
+  Sparkles,
+  Compass,
+  Award,
+  ArrowRight,
+  Flame,
+  Plus,
+  BookOpen,
+  Brain,
+  CheckCircle2,
+} from "lucide-react";
 
 export const HomeDashboard: React.FC = () => {
-  const navigate = useNavigate();
+  const { session } = useAuth();
+  const { report, assessments } = useSelfUnderstanding();
 
-  const quickStats = [
-    { label: "진행 중 퀘스트", val: "3", unit: "개", icon: Compass, color: "text-primary", bg: "bg-primary/10", link: "/roadmap" },
-    { label: "포트폴리오 기록", val: "12", unit: "건", icon: Award, color: "text-secondary", bg: "bg-secondary/10", link: "/portfolio" },
-    { label: "AI 세특 분석율", val: "98", unit: "%", icon: Sparkles, color: "text-primary", bg: "bg-primary-container/20", link: "/teacher" },
-  ];
+  // Interactive local state for dynamic hero greeting
+  const [selectedCluster, setSelectedCluster] = useState<string>("AI·공학 융합");
+
+  const clusters = ["AI·공학 융합", "의·약학 바이오", "경영·경제 금융", "인문·미디어 예술"];
+
+  const completedAssessments = assessments.filter((a) => a.status === "완료됨").length;
+  const userName = session?.name ? session.name : "김수진";
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8 md:py-10 flex flex-col gap-8">
-      {/* Hero Welcome Banner */}
-      <Card variant="hero" padding="lg" className="shadow-3d-ambient flex flex-col md:flex-row items-center justify-between gap-6 overflow-hidden relative">
-        <div className="flex flex-col gap-3 max-w-xl z-10 text-center md:text-left">
-          <div className="inline-flex items-center self-center md:self-start gap-2 bg-white/20 px-3.5 py-1 rounded-full text-xs font-headline font-bold text-white">
-            <Sparkles className="w-3.5 h-3.5 text-secondary-container" />
-            <span>2026 AI 커리어 플롯 액티브</span>
-          </div>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
+      {/* 1. Hero Welcome Card (Integrated with Mascot Ari & Self-Understanding Aura!) */}
+      <Card variant="hero" padding="lg" className="shadow-3d-ambient relative overflow-hidden">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+          {/* Left Hero Text Content */}
+          <div className="md:col-span-8 space-y-4 z-10 text-center md:text-left">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container-highest text-secondary font-headline text-xs font-bold shadow-inner">
+              <Sparkles className="w-4 h-4 text-secondary-spot animate-pulse" />
+              <span>{report ? `✨ ${report.characterTitle} 오오라 칭호 보유` : "2026 AI 개별 고교생 맞춤 커리어 무대"}</span>
+            </div>
 
-          <h1 className="text-headline-lg md:text-display-lg font-extrabold text-white font-headline tracking-tight leading-tight">
-            김수진 학생,<br />
-            <span className="text-secondary-container">미래의 무대가 열렸어요!</span>
-          </h1>
+            <h1 className="text-display-lg font-headline font-black text-text-primary tracking-tight leading-none">
+              반가워요, <span className="text-transparent bg-clip-text gradient-hero-card">{userName}</span> 님!<br />
+              <span className="text-headline-lg font-bold text-text-secondary mt-1 block">
+                나에 대한 깊은 <strong className="text-secondary font-extrabold">‘자기이해’</strong>가 최적의 커리어를 만듭니다.
+              </span>
+            </h1>
 
-          <p className="text-white/90 text-sm md:text-base font-body-md leading-relaxed">
-            나만의 흥미유형 AI 검사 결과를 토대로 이번 주 별자리 퀘스트와 학생부 세특 기록을 간결하게 완성해보세요.
-          </p>
+            <p className="text-sm md:text-base text-text-muted font-body-md max-w-2xl leading-relaxed">
+              {report ? (
+                <>
+                  AI 자기이해 종합 분석에 따라 <strong>"{report.title}"</strong> 칭호가 수여되었습니다.<br />
+                  포트폴리오에 등록된 강점을 바탕으로 이번 달 별자리 로드맵 퀘스트를 돌파해 봐요!
+                </>
+              ) : (
+                <>
+                  아직 나만의 진로 흥미와 다중지능 AI 진단 리포트를 생성하지 못했군요!<br />
+                  지금 즉시 <strong>[자기이해 스튜디오]</strong>에서 다각도 진단을 시작해보세요.
+                </>
+              )}
+            </p>
 
-          <div className="flex flex-wrap gap-3 mt-2 justify-center md:justify-start">
-            <Link to="/roadmap">
-              <Button variant="teal" size="sm" icon={<Compass className="w-4 h-4" />}>
-                로드맵 탐색하기
-              </Button>
-            </Link>
-            <Link to="/activity-form">
-              <Button variant="secondary" size="sm" className="bg-white/15 text-white border border-white/20 hover:bg-white/25">
-                + 새 활동 기입
-              </Button>
-            </Link>
-          </div>
-        </div>
-
-        <div className="flex-shrink-0 z-10 relative">
-          <MascotAri pose="sticker" size="lg" rotate={true} className="drop-shadow-[0_20px_40px_rgba(0,0,0,0.35)]" />
-        </div>
-
-        {/* Background ambient aura */}
-        <div className="absolute -right-20 -bottom-20 w-96 h-96 bg-white/10 rounded-full blur-3xl pointer-events-none" />
-      </Card>
-
-      {/* Quick Stats Row */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-        {quickStats.map((st) => {
-          const IconComp = st.icon;
-          return (
-            <Card
-              key={st.label}
-              variant="activity"
-              padding="md"
-              hoverEffect
-              onClick={() => navigate(st.link)}
-              className="flex items-center justify-between group cursor-pointer border-surface-variant/40"
-            >
-              <div className="flex flex-col gap-1">
-                <span className="text-label-sm text-text-muted font-semibold">{st.label}</span>
-                <div className="flex items-baseline gap-1 mt-1">
-                  <span className="text-3xl font-headline font-black text-text-primary group-hover:text-primary transition-colors">
-                    {st.val}
-                  </span>
-                  <span className="text-xs font-bold text-text-muted">{st.unit}</span>
-                </div>
-              </div>
-              <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${st.bg} ${st.color} group-hover:scale-110 transition-transform shadow-sm`}>
-                <IconComp className="w-6 h-6" />
-              </div>
-            </Card>
-          );
-        })}
-      </div>
-
-      {/* Two Columns Dashboard Content */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Left 2 Cols: Active Quest & Portfolio Stream */}
-        <div className="lg:col-span-2 flex flex-col gap-6">
-          {/* Active Constellation Quest Preview */}
-          <div className="flex items-center justify-between">
-            <h2 className="text-headline-md font-headline font-bold text-text-primary flex items-center gap-2">
-              <span>⭐ 이번 주 집중 로드맵 퀘스트</span>
-            </h2>
-            <Link to="/roadmap" className="text-xs font-bold text-primary hover:underline flex items-center gap-1">
-              전체 로드맵 보기 <ArrowUpRight className="w-3.5 h-3.5" />
-            </Link>
-          </div>
-
-          <Card variant="interactive" padding="md" className="border-2 border-secondary/40 shadow-3d-ambient relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-full h-1 bg-secondary/80" />
-            <div className="flex flex-col md:flex-row justify-between md:items-center gap-4">
-              <div className="flex flex-col gap-2">
-                <div className="flex items-center gap-2">
-                  <span className="bg-secondary text-white text-[11px] font-headline font-bold px-2.5 py-0.5 rounded-full">
-                    진행 중 2단계
-                  </span>
-                  <span className="text-text-muted text-xs font-semibold">● 창의적체험활동</span>
-                </div>
-                <h3 className="font-headline font-extrabold text-title-md text-text-primary mt-1">
-                  교내 과학탐구 토론 대회 '기후위기와 자율주행' 참가 및 시각화
-                </h3>
-                <p className="text-sm text-text-muted">
-                  팀을 구성하여 실무 데이터를 시각화하고 자율주행 시스템이 환경에 미치는 긍정적 효과 보고서 1건 제출.
-                </p>
-              </div>
-              <div className="flex md:flex-col justify-between items-center md:items-end flex-shrink-0 pt-3 md:pt-0 border-t md:border-t-0 border-surface-variant/30">
-                <span className="font-headline font-black text-lg text-primary">+300 STAR</span>
-                <Link to="/activity-form">
-                  <Button variant="primary" size="sm" className="mt-2 font-bold">
-                    활동 기록하기
-                  </Button>
-                </Link>
+            {/* Interactive Cluster Selector Chips */}
+            <div className="pt-2 space-y-2">
+              <span className="text-xs font-headline font-semibold text-text-muted block">
+                현재 설정된 탐구 클러스터 관점:
+              </span>
+              <div className="flex flex-wrap gap-2 justify-center md:justify-start">
+                {clusters.map((c) => (
+                  <Chip
+                    key={c}
+                    active={selectedCluster === c}
+                    variant={selectedCluster === c ? "default" : "default"}
+                    onClick={() => setSelectedCluster(c)}
+                    size="sm"
+                  >
+                    {c}
+                  </Chip>
+                ))}
               </div>
             </div>
-          </Card>
 
-          {/* Daily Habit Mini List */}
-          <div className="flex items-center justify-between mt-4">
-            <h2 className="text-headline-md font-headline font-bold text-text-primary flex items-center gap-2">
-              <span>🔥 데일리 커리어 루틴</span>
-            </h2>
-            <Link to="/habits" className="text-xs font-bold text-primary hover:underline flex items-center gap-1">
-              습관 관리로 이동 <ArrowUpRight className="w-3.5 h-3.5" />
-            </Link>
-          </div>
-
-          <Card variant="surface" padding="md" className="flex flex-col gap-4 bg-white border-surface-variant/40 shadow-3d-base">
-            <div className="flex items-center justify-between pb-3 border-b border-surface-variant/30">
-              <span className="font-bold text-sm text-text-primary flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-secondary" /> 매일 아침 IT/테크 기사 1건 스크랩
-              </span>
-              <Chip variant="teal" size="sm">완료됨!</Chip>
-            </div>
-            <div className="flex items-center justify-between pb-1">
-              <span className="font-semibold text-sm text-text-primary/80 flex items-center gap-2">
-                <Clock className="w-4 h-4 text-text-muted" /> 파이썬 백준 코딩테스트 기초 문제 2개 풀기
-              </span>
-              <Link to="/habits">
-                <Chip variant="default" size="sm" className="hover:bg-primary/15 hover:text-primary">도전 중</Chip>
+            <div className="pt-4 flex flex-wrap items-center gap-3 justify-center md:justify-start">
+              <Link to="/self-understanding">
+                <Button variant="teal" size="lg" icon={<Brain className="w-5 h-5" />} className="font-extrabold shadow-md">
+                  {report ? "자기이해 리포트 보러가기" : "AI 자기이해 3종 진단 시작"} &rarr;
+                </Button>
+              </Link>
+              <Link to="/portfolio">
+                <Button variant="outline" size="md" icon={<Award className="w-4 h-4 text-primary" />}>
+                  내 포트폴리오
+                </Button>
               </Link>
             </div>
-          </Card>
-        </div>
+          </div>
 
-        {/* Right Col: AI Partner Advice & Teacher Pro Link */}
-        <div className="flex flex-col gap-6">
-          <Card variant="activity" padding="md" className="bg-gradient-to-b from-point to-white border-primary/20 shadow-3d-base">
-            <h3 className="font-headline font-extrabold text-title-md text-primary flex items-center gap-1.5 mb-3">
-              <Sparkles className="w-5 h-5 text-secondary-spot" />
-              <span>AI 커리어 파트너 Ari의 조언</span>
-            </h3>
-
+          {/* Right Mascot Ari */}
+          <div className="md:col-span-4 flex justify-center z-10">
             <MascotAri
-              pose="avatar"
-              size="sm"
-              bubbleTitle="이번 주 황금 어드바이스"
-              bubbleMessage="관심 진로군인 '인공지능·공학'과 '환경 기후위기' 주제를 엮어 세특에 기재하면 차별성 높은 최고 점수 등급을 받아요!"
+              pose={report ? "celebrate" : "avatar"}
+              size="lg"
+              rotate={true}
+              bubbleTitle={report ? report.characterTitle : "Ari의 오늘의 황금 팁"}
+              bubbleMessage={
+                report
+                  ? report.characterAura
+                  : "자기이해 탭에서 30초 흥미검사를 마치면 포트폴리오에 AI 진단 리포트가 자동 스크랩돼요!"
+              }
+              className="scale-105"
             />
+          </div>
+        </div>
 
-            <div className="mt-4 pt-4 border-t border-primary/10 text-xs text-text-muted flex items-center justify-between font-semibold">
-              <span>● 일일 추천 데이터 실시간 동기화됨</span>
-              <Link to="/interest-test" className="text-primary hover:underline">검사 다시받기</Link>
+        {/* Decorative Background gradient blot */}
+        <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-primary-fixed/20 blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-0 -ml-10 -mb-10 w-80 h-80 rounded-full bg-secondary-fixed/25 blur-3xl pointer-events-none" />
+      </Card>
+
+      {/* 2. Self-Understanding & Progress Summary Bar (NEW FEATURE SECTION) */}
+      <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <Card variant="activity" padding="md" className="md:col-span-2 shadow-3d-base border-secondary/30 flex flex-col justify-between bg-gradient-to-r from-point to-white">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-surface-variant/40 pb-4">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-2xl bg-secondary/15 text-secondary flex items-center justify-center font-black">
+                <Brain className="w-6 h-6 stroke-[2.5]" />
+              </div>
+              <div>
+                <span className="text-xs font-headline font-bold text-secondary-spot">Self-Understanding DNA</span>
+                <h2 className="text-title-lg font-headline font-extrabold text-text-primary">자기이해 진도 및 AI 리포트 현황</h2>
+              </div>
+            </div>
+            <Link to="/self-understanding">
+              <Chip variant="teal" size="sm" active className="cursor-pointer">
+                진료 스튜디오 이동 &rarr;
+              </Chip>
+            </Link>
+          </div>
+
+          <div className="py-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="bg-white p-3.5 rounded-2xl border border-surface-variant/30 flex flex-col gap-1 shadow-sm">
+              <span className="text-xs text-text-muted font-extrabold">완료된 AI 진단 수</span>
+              <strong className="text-xl font-headline font-black text-primary">{completedAssessments} / {assessments.length} 과목</strong>
+            </div>
+            <div className="bg-white p-3.5 rounded-2xl border border-surface-variant/30 flex flex-col gap-1 shadow-sm sm:col-span-2">
+              <span className="text-xs text-text-muted font-extrabold">최근 획득 오오라 칭호</span>
+              <strong className="text-sm font-headline font-black text-secondary-spot truncate">
+                {report ? report.title : "진행 전 (테스트 필요)"}
+              </strong>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 text-xs text-text-muted font-body-md">
+            <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0" />
+            <span>자기이해 리포트는 선생님 보드 및 내 포트폴리오에 실시간 스크랩됩니다.</span>
+          </div>
+        </Card>
+
+        {/* Quick Streak Widget */}
+        <Card variant="surface" padding="md" className="shadow-3d-base flex flex-col justify-between border-primary/20">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-headline font-extrabold text-primary bg-primary/10 px-3 py-1 rounded-full">
+              데일리 커리어 루틴
+            </span>
+            <Flame className="w-6 h-6 text-secondary-spot animate-bounce" />
+          </div>
+          <div className="my-2">
+            <span className="text-display-lg font-headline font-black text-text-primary leading-none">12<small className="text-base font-bold ml-1">일 연속</small></span>
+            <p className="text-xs text-text-muted mt-1">
+              상위 3% 습관 달성률! 오늘 AI 세특 문장 다듬기 1회만 더하면 13일 스트리크 달성!
+            </p>
+          </div>
+          <Link to="/habits" className="w-full">
+            <Button variant="secondary" size="sm" fullWidth icon={<Sparkles className="w-4 h-4" />}>
+              오늘의 루틴 체크인
+            </Button>
+          </Link>
+        </Card>
+      </section>
+
+      {/* 3. Core Action Grid (Roadmap, Activity Form, Teacher Guide, Portfolio) */}
+      <section className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-headline-md font-headline font-extrabold text-text-primary flex items-center gap-2">
+            <span>🚀 진로 네비게이션 핵심 코스</span>
+          </h2>
+          <span className="text-xs font-bold text-secondary-spot">교육청 NEIS 표준 양식 대응</span>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <Card variant="activity" padding="md" hoverEffect onClick={() => window.location.href = "/activity-form"} className="cursor-pointer border-2 border-primary/20 flex flex-col justify-between group">
+            <div>
+              <div className="w-10 h-10 rounded-2xl bg-primary/15 text-primary flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                <Plus className="w-6 h-6" />
+              </div>
+              <span className="text-[11px] font-headline font-extrabold text-primary uppercase block mb-1">Step 1. 실시간 기록</span>
+              <h3 className="font-headline font-black text-title-lg text-text-primary group-hover:text-primary transition-colors">
+                AI 세특 활동 기록 폼
+              </h3>
+              <p className="text-xs text-text-muted mt-2 leading-relaxed font-body-md">
+                키워드 몇 개만 입력하면 AI 파트너가 고교부 최고의 고급 세특 문장으로 즉시 세련되게 윤문해줍니다!
+              </p>
+            </div>
+            <div className="mt-6 pt-3 border-t border-surface-variant/40 flex items-center justify-between text-xs font-extrabold text-primary">
+              <span>활동 추가하기</span>
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </div>
           </Card>
 
-          {/* Teacher Guide Pro Feature Card */}
-          <Card variant="surface" padding="md" className="bg-secondary-container/25 border border-secondary/30 flex flex-col gap-3">
-            <div className="flex items-center gap-2 text-secondary-spot font-headline font-black text-base">
-              <BookOpen className="w-5 h-5" />
-              <span>학생부 기재 가이드 (교사용 3D Pro)</span>
+          <Card variant="surface" padding="md" hoverEffect onClick={() => window.location.href = "/roadmap"} className="cursor-pointer border border-surface-variant/60 flex flex-col justify-between group">
+            <div>
+              <div className="w-10 h-10 rounded-2xl bg-secondary/15 text-secondary flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                <Compass className="w-6 h-6" />
+              </div>
+              <span className="text-[11px] font-headline font-extrabold text-secondary-spot uppercase block mb-1">Step 2. 진로 내비게이션</span>
+              <h3 className="font-headline font-black text-title-lg text-text-primary group-hover:text-secondary transition-colors">
+                별자리 커리어 로드맵
+              </h3>
+              <p className="text-xs text-text-muted mt-2 leading-relaxed font-body-md">
+                고교 3년 동안 내가 이수해야 할 전공 맞춤형 프로젝트와 권장 독서 목록을 별자리처럼 수놓아보세요.
+              </p>
             </div>
-            <p className="text-xs text-text-primary leading-relaxed">
-              담당 선생님께서 이 대시보드 데이터를 실시간 열람하여 세무적인 행동특성 및 종합 의견(행특/세특)을 AI로 생성하는 고대비 Pro 도구입니다.
-            </p>
-            <Link to="/teacher">
-              <Button variant="teal" size="sm" fullWidth className="mt-1 font-extrabold shadow-sm">
-                교사용 보드 3D 열람하기 &rarr;
-              </Button>
-            </Link>
+            <div className="mt-6 pt-3 border-t border-surface-variant/40 flex items-center justify-between text-xs font-extrabold text-secondary-spot">
+              <span>로드맵 열기</span>
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </div>
+          </Card>
+
+          <Card variant="surface" padding="md" hoverEffect onClick={() => window.location.href = "/portfolio"} className="cursor-pointer border border-surface-variant/60 flex flex-col justify-between group">
+            <div>
+              <div className="w-10 h-10 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                <Award className="w-6 h-6" />
+              </div>
+              <span className="text-[11px] font-headline font-extrabold text-text-muted uppercase block mb-1">Step 3. 자산 보관 및 출력</span>
+              <h3 className="font-headline font-black text-title-lg text-text-primary group-hover:text-primary transition-colors">
+                3D 한글 포트폴리오
+              </h3>
+              <p className="text-xs text-text-muted mt-2 leading-relaxed font-body-md">
+                자기이해 리포트와 학기별 결과물을 아름다운 디자인 카드뷰와 NEIS 일괄 출력 텍스트로 조회하세요.
+              </p>
+            </div>
+            <div className="mt-6 pt-3 border-t border-surface-variant/40 flex items-center justify-between text-xs font-extrabold text-primary">
+              <span>내역 보러가기</span>
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </div>
+          </Card>
+
+          <Card variant="surface" padding="md" hoverEffect onClick={() => window.location.href = "/teacher"} className="cursor-pointer border border-secondary/30 bg-secondary/5 flex flex-col justify-between group">
+            <div>
+              <div className="w-10 h-10 rounded-2xl bg-secondary text-white flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                <BookOpen className="w-6 h-6" />
+              </div>
+              <span className="text-[11px] font-headline font-extrabold text-secondary uppercase block mb-1">2560px Pro 대응</span>
+              <h3 className="font-headline font-black text-title-lg text-text-primary group-hover:text-secondary transition-colors">
+                교사 전용 업무보드
+              </h3>
+              <p className="text-xs text-text-muted mt-2 leading-relaxed font-body-md">
+                담당 학급 학생들의 진척도와 자기이해 리포트를 확인하고 세특 문장을 NEIS에 일괄 최적화하여 내보내세요.
+              </p>
+            </div>
+            <div className="mt-6 pt-3 border-t border-surface-variant/40 flex items-center justify-between text-xs font-extrabold text-secondary">
+              <span>선생님 뷰 접속</span>
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </div>
           </Card>
         </div>
-      </div>
+      </section>
     </div>
   );
 };
