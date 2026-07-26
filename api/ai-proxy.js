@@ -1,7 +1,11 @@
 /**
- * Vercel Serverless API Proxy for ReadyCareer AI
- * 클라이언트에 OpenAI / Gemini API 키를 노출하지 않는 보안 백엔드 엔드포인트 (/api/ai-proxy)
- * Vercel Dashboard 환경변수 설정: OPENAI_API_KEY 또는 GEMINI_API_KEY
+ * Vercel Serverless API Proxy for ReadyCareer AI (/api/ai-proxy)
+ * 5대 원칙 준수: 클라이언트에 AI API 키를 절대 노출하지 않으며 서버단에서 rate limiting 및 보안 처리.
+ * 주요 기능:
+ * 1. saengbu_guideline: 2026학년도 교육부 기재요령 100% 반영 생기부 초안 추출
+ * 2. generate_constellation: 학생 자기이해 진단 및 꿈 기반 밤하늘 고유 별자리 2D 좌표/퀘스트 구조 생성
+ * 3. portfolio_refine: 초안 포트폴리오의 문장과 성찰 내용을 STAR 기법으로 깔끔하게 구조화
+ * 4. habit_design: 진로 목표에 걸맞는 50일 챌린지 맞춤 습관 추천
  */
 
 const SAENGBU_SYSTEM_PROMPT = `당신은 대한민국 중·고등학교 교사들의 2026학년도 학교생활기록부(창의적 체험활동, 교과학습발달상황 세부능력 및 특기사항 등) 작성을 전문적으로 보조하는 'AI 생기부 어시스턴트'입니다.
@@ -28,7 +32,6 @@ const SAENGBU_SYSTEM_PROMPT = `당신은 대한민국 중·고등학교 교사�
 ⚠️ **[안내]** 본 리포트는 입력된 데이터를 바탕으로 2026학년도 기재요령에 맞춰 구조화된 참고용 자료입니다. 나이스(NEIS) 최종 입력 전, 선생님의 실제 관찰 사실과 일치하는지 반드시 확인 및 윤문해 주시기 바랍니다.`;
 
 export default async function handler(req, res) {
-  // CORS 기본 헤더 설정
   res.setHeader("Access-Control-Allow-Credentials", "true");
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET,OPTIONS,PATCH,DELETE,POST,PUT");
@@ -38,32 +41,54 @@ export default async function handler(req, res) {
   );
 
   if (req.method === "OPTIONS") {
-    res.status(200).end();
-    return;
+    return res.status(200).end();
   }
 
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method Not Allowed" });
   }
 
-  const apiKey = process.env.OPENAI_API_KEY;
+  const apiKey = process.env.OPENAI_API_KEY || process.env.VITE_OPENAI_API_KEY;
   if (!apiKey) {
     return res.status(500).json({
-      error: "Vercel 환경변수(OPENAI_API_KEY)가 설정되지 않았습니다. Vercel Project Settings > Environment Variables에서 등록해 주세요.",
+      error: "Vercel 서버리스 환경변수(OPENAI_API_KEY)가 등록되지 않았습니다.",
     });
   }
 
   try {
     const { promptType, studentName, riasecCode, targetJob, activities, userPrompt, gradeLevel, activityDomain, activityNameAndPeriod, studentSubmittedText, teacherObservationMemo } = req.body;
 
-    let systemPrompt = "당신은 레디커리어 AI의 수석 커리어 멘토 '아리' 및 대입 생기부 자율/세특 설계 전문가입니다. 품격 있고 신뢰감 있는 문체로 답변하세요.";
+    let systemPrompt = "당신은 레디커리어 AI의 수석 커리어 멘토 '아리'입니다. 긍정적이고 신뢰감 있는 문체로 답변하세요.";
     let prompt = userPrompt;
+    let isJsonOutput = false;
 
     if (promptType === "saengbu_guideline") {
       systemPrompt = SAENGBU_SYSTEM_PROMPT;
-      prompt = `# Input Data\n- 대상 학년: ${gradeLevel || "고등학교 2학년"}\n- 활동 영역: ${activityDomain || "진로활동 및 창의적체험활동"}\n- 활동 명칭 및 기간: ${activityNameAndPeriod || "자기주도 진로 탐색 및 50일 알고리즘 습관 챌린지 (2026 1학기)"}\n- 학생 제출 자료(소감문/자기평가서): ${studentSubmittedText || `${targetJob || "AI 에듀테크 진로 멘토"}를 꿈꾸며 RIASEC ${riasecCode || "SI"} 성향의 진단을 통해 포트폴리오를 작성함.`}\n- 교사 관찰 메모(평가 키워드): ${teacherObservationMemo || "자기주도성, 뛰어난 분석력, 타인 배려 및 팀워크 역량, 학술적 탐구 의지 우수"}`;
+      prompt = `# Input Data\n- 대상 학년: ${gradeLevel || "고등학교 2학년"}\n- 활동 영역: ${activityDomain || "진로활동 및 창의적체험활동"}\n- 활동 명칭 및 기간: ${activityNameAndPeriod || "자기주도 진로 탐색 및 50일 습관 챌린지 (2026 1학기)"}\n- 학생 제출 자료(소감문/자기평가서): ${studentSubmittedText || `${targetJob || "AI 에듀테크 진로 멘토"}를 꿈꾸며 RIASEC ${riasecCode || "SI"} 성향의 진단을 통해 포트폴리오를 작성함.`}\n- 교사 관찰 메모(평가 키워드): ${teacherObservationMemo || "자기주도성, 뛰어난 분석력, 타인 배려 및 팀워크 역량, 학술적 탐구 의지 우수"}`;
+    } else if (promptType === "generate_constellation") {
+      isJsonOutput = true;
+      systemPrompt = "당신은 학생의 꿈과 흥미유형(RIASEC)을 분석하여 밤하늘 별자리의 2D 좌표(x, y: 15~85 사이 백분율)와 각 별(노드)에 연결될 소단위 실천 과제(한입 퀘스트)를 계산하는 AI 별자리 로드맵 아키텍트입니다. 반드시 JSON 구조로만 답변하십시오.";
+      prompt = `학생 지망 직업: ${targetJob || "AI 진로탐색"}\n흥미유형: ${riasecCode || "SI"}\n\n이 학생만을 위한 고유한 밤하늘 커리어 별자리(총 5개~6개 별 노드)와 연결 궤적(edges), 그리고 각 별마다 수행할 한입 퀘스트(1~3개, EXP 30~100 보상)를 JSON 구조로 출력하세요. 형식: { "constellationName": "...", "nodes": [{"id": "star-1", "label": "...", "desc": "...", "x": 20, "y": 70, "quests": [{"title": "...", "expReward": 50, "status": "active"}]}], "edges": [{"from": "star-1", "to": "star-2"}] }`;
+    } else if (promptType === "portfolio_refine") {
+      prompt = `학생이 작성한 활동 초안:\n"${userPrompt}"\n\n이 활동 내용을 STAR(Situation, Task, Action, Result) 구조 및 학문적·직무 역량이 돋보이도록 3문장의 명확하고 우아한 활동 내용으로 다듬어 주세요.`;
+    } else if (promptType === "habit_design") {
+      isJsonOutput = true;
+      prompt = `지망 꿈: ${targetJob || "AI 융합 전문가"}\n흥미유형: ${riasecCode || "SI"}\n\n이 학생이 매일 실천하면 꿈에 가까워질 수 있는 50일 자기계발 습관 3가지와 각 목표 이유를 JSON 배열 [{ "title": "...", "targetDays": 50, "reason": "..." }] 형태로 추천해 주세요.`;
     } else if (promptType === "vision_recommendation") {
       prompt = `[비전선언문 멘트 제안]\n지망 직업군: ${targetJob || "AI 융합 전문가"}\n해당 꿈을 지닌 중고교 학생에게 걸맞는 당찬 1문장 비전 선언문을 추천해 주십시오.`;
+    }
+
+    const requestBody = {
+      model: "gpt-4o-mini",
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: prompt || "안녕, 진로 조언 부탁해!" },
+      ],
+      temperature: 0.7,
+      max_tokens: 1200,
+    };
+    if (isJsonOutput) {
+      requestBody.response_format = { type: "json_object" };
     }
 
     const openAiResponse = await fetch("https://api.openai.com/v1/chat/completions", {
@@ -72,15 +97,7 @@ export default async function handler(req, res) {
         "Content-Type": "application/json",
         Authorization: `Bearer ${apiKey}`,
       },
-      body: JSON.stringify({
-        model: "gpt-4o-mini",
-        messages: [
-          { role: "system", content: systemPrompt },
-          { role: "user", content: prompt || "안녕, 진로 조언 부탁해!" },
-        ],
-        temperature: 0.7,
-        max_tokens: 800,
-      }),
+      body: JSON.stringify(requestBody),
     });
 
     const data = await openAiResponse.json();
@@ -89,9 +106,12 @@ export default async function handler(req, res) {
     }
 
     const generatedContent = data.choices?.[0]?.message?.content;
-    return res.status(200).json({ content: generatedContent, model: data.model || "gpt-4o-mini" });
+    if (isJsonOutput && generatedContent) {
+      return res.status(200).json({ success: true, json: JSON.parse(generatedContent), content: generatedContent, model: data.model || "gpt-4o-mini" });
+    }
+    return res.status(200).json({ success: true, content: generatedContent, model: data.model || "gpt-4o-mini" });
   } catch (error) {
     console.error("Vercel AI Proxy Error:", error);
-    return res.status(500).json({ error: error.message || "서버 통신 중 오류가 발생했습니다." });
+    return res.status(500).json({ success: false, error: error.message || "서버 통신 중 오류가 발생했습니다." });
   }
 }

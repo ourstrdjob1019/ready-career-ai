@@ -68,7 +68,7 @@
   },
   "job_clusters": {
     "R": [
-      { "name": "AI 로봇 융합 연구원", "image": "🤖", "category": "AI·기술" },
+      { "name": "AI 로보틱스 연구원", "image": "🤖", "category": "AI·기술" },
       { "name": "기계설비 엔지니어", "image": "⚙️", "category": "기술·정비" },
       { "name": "자유선회 항공·드론 전문가", "image": "✈️", "category": "항공·모빌리티" },
       { "name": "첨단 모션 재활 트레이너", "image": "🏃‍♂️", "category": "스포츠·메디컬" }
