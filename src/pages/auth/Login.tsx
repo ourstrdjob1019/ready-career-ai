@@ -125,7 +125,7 @@ export const Login: React.FC = () => {
             {errorMsg && <p className="text-xs text-error font-bold text-center">{errorMsg}</p>}
 
             <Button variant="primary" size="lg" fullWidth type="submit" icon={<LogIn className="w-4 h-4" />} className="font-extrabold py-3.5 shadow-md">
-              {role === "teacher" ? "학교관리자 3D 보드 접속" : role === "super_admin" ? "최종마스터 콘솔 접속" : "학생 커리어 홈 접속"}
+              {role === "teacher" ? "학교관리자 학급 보드 접속" : role === "super_admin" ? "최종마스터 콘솔 접속" : "학생 커리어 홈 접속"}
             </Button>
           </form>
 

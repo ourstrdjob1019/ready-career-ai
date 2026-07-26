@@ -32,11 +32,11 @@ export const SelfReport: React.FC = () => {
             <ArrowLeft className="w-5 h-5" />
           </button>
           <div>
-            <span className="text-xs font-headline font-extrabold text-secondary bg-secondary/15 px-3 py-0.5 rounded-full uppercase">
+            <span className="text-xs font-headline font-extrabold text-secondary bg-secondary/15 px-3 py-0.5 rounded-full uppercase whitespace-nowrap inline-block border border-secondary/20">
               Comprehensive AI Profile
             </span>
             <h1 className="text-headline-lg font-black text-text-primary font-headline mt-1">
-              자기이해 3D 개인 맞춤 종합 리포트
+              자기이해 AI 개인 맞춤 종합 리포트
             </h1>
           </div>
         </div>

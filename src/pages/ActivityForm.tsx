@@ -38,8 +38,8 @@ export const ActivityForm: React.FC = () => {
       {/* Title Header */}
       <div className="flex items-center justify-between border-b border-surface-variant/40 pb-4">
         <div>
-          <span className="text-xs font-headline font-extrabold text-secondary bg-secondary/10 px-3 py-1 rounded-full uppercase">
-            3D Student Record Assistant
+          <span className="text-xs font-headline font-extrabold text-secondary bg-secondary/10 px-3 py-1 rounded-full uppercase whitespace-nowrap inline-block border border-secondary/20">
+            AI Student Record Assistant
           </span>
           <h1 className="text-headline-lg font-extrabold text-text-primary font-headline mt-2">
             활동 기록 폼 & AI 교정

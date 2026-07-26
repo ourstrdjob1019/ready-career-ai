@@ -126,7 +126,7 @@ export const TestResult: React.FC = () => {
                   {job.image}
                 </div>
                 <div>
-                  <span className="text-[10px] font-headline font-extrabold text-secondary-spot bg-surface-container px-2 py-0.5 rounded-full block mb-1">
+                  <span className="text-[10px] font-headline font-extrabold text-secondary-spot bg-surface-container px-2.5 py-0.5 rounded-full inline-block mb-1 whitespace-nowrap">
                     {job.category}
                   </span>
                   <strong className="text-sm md:text-base font-headline font-black text-text-primary block leading-tight">
@@ -134,11 +134,11 @@ export const TestResult: React.FC = () => {
                   </strong>
                 </div>
                 {isPrimary ? (
-                  <span className="w-full py-1 rounded-xl bg-secondary text-white text-[11px] font-black shadow-sm">
-                    ★ 대표 관심 직업 (Primary)
+                  <span className="w-full py-1.5 px-2 rounded-xl bg-secondary text-white text-[11px] font-black shadow-sm whitespace-nowrap text-center">
+                    ★ 대표 관심 직업
                   </span>
                 ) : (
-                  <span className="w-full py-1 rounded-xl bg-surface-container-high text-text-muted text-[11px] font-bold">
+                  <span className="w-full py-1.5 px-2 rounded-xl bg-surface-container-high text-text-muted text-[11px] font-bold whitespace-nowrap text-center">
                     터치하여 대표 설정
                   </span>
                 )}

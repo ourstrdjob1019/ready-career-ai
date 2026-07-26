@@ -119,17 +119,17 @@ export const StartScreen: React.FC = () => {
             </h1>
 
             <p className="text-sm md:text-base text-[#5B556D] pt-1 font-normal leading-relaxed">
-              별도의 복잡한 회원가입 절차 없이, <strong>학생용 및 교사용 사전 맞춤 세팅 계정</strong>을 선택하시면 AI 3D 별자리 로드맵과 2026 기재요령 최적화 보드로 단 1초 만에 입장합니다.
+              별도의 복잡한 회원가입 절차 없이, <strong>학생용 및 교사용 사전 맞춤 세팅 계정</strong>을 선택하시면 AI 별자리 로드맵과 2026 기재요령 최적화 보드로 단 1초 만에 입장합니다.
             </p>
 
-            <div className="flex items-center justify-center md:justify-start gap-4 pt-2">
-              <div className="flex items-center gap-1 text-xs font-bold text-[#006970] bg-[#7af1fc]/20 px-3.5 py-1.5 rounded-xl border border-[#006970]/20">
+            <div className="flex items-center justify-center md:justify-start gap-3 pt-2 flex-wrap">
+              <div className="flex items-center gap-1 text-xs font-bold text-[#006970] bg-[#7af1fc]/20 px-3 py-1.5 rounded-xl border border-[#006970]/20 whitespace-nowrap">
                 <BookOpen className="w-3.5 h-3.5" />
                 <span>NEIS 기재 지침 100% 준수</span>
               </div>
-              <div className="flex items-center gap-1 text-xs font-bold text-[#6240D5] bg-[#7B5CF0]/10 px-3.5 py-1.5 rounded-xl border border-[#7B5CF0]/20">
+              <div className="flex items-center gap-1 text-xs font-bold text-[#6240D5] bg-[#7B5CF0]/10 px-3 py-1.5 rounded-xl border border-[#7B5CF0]/20 whitespace-nowrap">
                 <Award className="w-3.5 h-3.5" />
-                <span>3D 아리 멘토링 즉각 실행</span>
+                <span>아리 멘토링 즉각 실행</span>
               </div>
             </div>
           </div>

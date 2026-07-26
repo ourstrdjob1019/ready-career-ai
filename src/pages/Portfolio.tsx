@@ -59,10 +59,10 @@ export const Portfolio: React.FC = () => {
 
   const badges = [
     { id: "b1", name: "⭐ 대표 시연 마스터", desc: "2026 박람회 시연 에디션 완벽 탑재 및 모든 기능 탐구 완수", icon: "👑", rarity: "LEGENDARY", unlocked: true },
-    { id: "b2", name: "🔬 AI 3D 자기이해 개척자", desc: "흥미유형 6유형 및 다중지능 AI 진단 리포트 활성화", icon: "🧬", rarity: "EPIC", unlocked: true },
+    { id: "b2", name: "🔬 AI 자기이해 개척자", desc: "흥미유형 6유형 및 다중지능 AI 진단 리포트 활성화", icon: "🧬", rarity: "EPIC", unlocked: true },
     { id: "b3", name: "🔥 50일 챌린지 도전자", desc: "진로 루틴 및 한입 퀘스트 14일 연속 완수", icon: "🎯", rarity: "RARE", unlocked: true },
     { id: "b4", name: "📝 2026 기재요령 최신 가이드", desc: "NEIS 기재 지침 100% 준수 세특 텍스트 생성 3회 이상", icon: "🏆", rarity: "EPIC", unlocked: true },
-    { id: "b5", name: "🤖 아리의 단짝 친구", desc: "3D 대화창에서 AI 아리와 실시간 멘토링 상담 진행", icon: "🐶", rarity: "RARE", unlocked: true },
+    { id: "b5", name: "🤖 아리의 단짝 친구", desc: "실시간 대화창에서 AI 아리와 진로 멘토링 상담 진행", icon: "🐶", rarity: "RARE", unlocked: true },
     { id: "b6", name: "🌌 별자리 마스터 크리드", desc: "우주 밤하늘 모든 희망 진로 노드 100% 탐사 완료", icon: "✨", rarity: "LEGENDARY", unlocked: false },
   ];
 
@@ -74,7 +74,7 @@ export const Portfolio: React.FC = () => {
         category: "자기성찰/진도",
         date: report.portfolioSavedAt || "2026.07.25",
         content: `[AI 다중지능 및 진로 흥미무드 진단 완료]\n오오라 칭호: "${report.characterAura}"\n강점: ${report.strengths.join(", ")}\n추천 진로: ${report.recommendedCareers.join(", ")}\nAI 세특 적용 팁: ${report.aiAdvice}`,
-        tags: ["AI자기이해", "3D진로리포트", "NEIS적용팁", "강점분석"],
+        tags: ["AI자기이해", "진로종합리포트", "NEIS적용팁", "강점분석"],
         aiFeedback: "이 자기이해 종합 리포트는 학생이 본인의 잠재력을 정확히 파악하고 주도적인 커리어 계획을 수립했다는 객관적 지표로 생기부 행특/진로활동란에 적극 인용 가능합니다!",
         isSelfReport: true,
       }
@@ -102,12 +102,12 @@ export const Portfolio: React.FC = () => {
       {/* Page Title & Stats */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-surface-variant/40 pb-6">
         <div>
-          <div className="inline-flex items-center gap-1.5 bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-headline font-extrabold mb-3">
+          <div className="inline-flex items-center gap-1.5 bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-headline font-extrabold mb-3 whitespace-nowrap border border-primary/20">
             <Award className="w-4 h-4" />
-            <span>3D ReadyCareer AI Pro Asset Archive</span>
+            <span>ReadyCareer AI Pro Asset Archive</span>
           </div>
           <h1 className="text-display-lg font-black text-text-primary font-headline tracking-tight leading-none">
-            내 한글 <span className="text-transparent bg-clip-text gradient-hero-card">포트폴리오</span>
+            내 맞춤 <span className="text-transparent bg-clip-text gradient-hero-card">포트폴리오</span>
           </h1>
           <p className="text-sm text-text-muted mt-2 font-body-md max-w-2xl leading-relaxed">
             세특 활동 기록과 <strong>[자기이해]</strong> 다중 진단 리포트가 함께 모여 강력한 학종 자산을 구성합니다.
@@ -133,7 +133,7 @@ export const Portfolio: React.FC = () => {
       <div className="flex items-center gap-2 bg-[#EFEDF5] p-1.5 rounded-2xl w-fit self-start md:self-center border border-[#E3E1E9]">
         <button
           onClick={() => setActiveTab("list")}
-          className={`px-5 py-2.5 rounded-xl font-headline font-black text-xs transition-all flex items-center gap-2 ${
+          className={`px-5 py-2.5 rounded-xl font-headline font-black text-xs transition-all flex items-center gap-2 whitespace-nowrap ${
             activeTab === "list"
               ? "bg-[#FFFFFF] text-[#7B5CF0] shadow-[0_4px_12px_rgba(123,92,240,0.15)] font-extrabold"
               : "text-[#6E6A80] hover:text-[#1A1626]"
@@ -143,17 +143,17 @@ export const Portfolio: React.FC = () => {
         </button>
         <button
           onClick={() => setActiveTab("drawers")}
-          className={`px-5 py-2.5 rounded-xl font-headline font-black text-xs transition-all flex items-center gap-2 ${
+          className={`px-5 py-2.5 rounded-xl font-headline font-black text-xs transition-all flex items-center gap-2 whitespace-nowrap ${
             activeTab === "drawers"
               ? "bg-[#7B5CF0] text-white shadow-[0_4px_12px_rgba(123,92,240,0.25)] font-extrabold"
               : "text-[#6E6A80] hover:text-[#1A1626]"
           }`}
         >
-          <span>🗄️ 진로 보관함 (3D 서랍장)</span>
+          <span>🗄️ 진로 보관함 서랍장</span>
         </button>
         <button
           onClick={() => setActiveTab("badges")}
-          className={`px-5 py-2.5 rounded-xl font-headline font-black text-xs transition-all flex items-center gap-2 ${
+          className={`px-5 py-2.5 rounded-xl font-headline font-black text-xs transition-all flex items-center gap-2 whitespace-nowrap ${
             activeTab === "badges"
               ? "bg-[#006970] text-white shadow-[0_4px_12px_rgba(0,105,112,0.25)] font-extrabold"
               : "text-[#6E6A80] hover:text-[#1A1626]"
@@ -247,8 +247,8 @@ export const Portfolio: React.FC = () => {
                     <div className="flex items-center gap-2 self-end sm:self-auto">
                       {isSelf && (
                         <Link to="/self-report">
-                          <Button variant="outline" size="sm" className="text-xs font-bold py-1 px-3">
-                            3D 종합 리포트 전문 보기 <ExternalLink className="w-3.5 h-3.5 ml-1 inline" />
+                          <Button variant="outline" size="sm" className="text-xs font-bold py-1 px-3 whitespace-nowrap">
+                            AI 종합 리포트 전문 보기 <ExternalLink className="w-3.5 h-3.5 ml-1 inline" />
                           </Button>
                         </Link>
                       )}
@@ -325,12 +325,12 @@ export const Portfolio: React.FC = () => {
         <section className="space-y-6 animate-fadeIn">
           <div className="bg-gradient-to-r from-[#7B5CF0]/15 via-white to-[#006970]/15 p-6 rounded-[28px] border border-[#E3E1E9] shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
             <div>
-              <span className="text-xs font-black text-[#7B5CF0] uppercase tracking-widest block mb-1">STITCH 3D ARCHIVES</span>
-              <h2 className="text-2xl font-black text-[#1A1626]">🗄️ 3D 입체 진로 보관함 서랍장</h2>
-              <p className="text-xs text-[#6E6A80] mt-1">학년별/활동영역별 기록이 가상 3D 서랍 속에 구조화되어 영구 보관됩니다. 카드를 탭하여 세부 내역을 펼쳐보세요.</p>
+              <span className="text-xs font-black text-[#7B5CF0] uppercase tracking-widest block mb-1">STITCH CAREER ARCHIVES</span>
+              <h2 className="text-2xl font-black text-[#1A1626]">🗄️ 맞춤형 진로 보관함 아카이브</h2>
+              <p className="text-xs text-[#6E6A80] mt-1">학년별/활동영역별 기록이 보관함 서랍 속에 체계적으로 구조화되어 영구 보관됩니다. 카드를 탭하여 세부 내역을 펼쳐보세요.</p>
             </div>
-            <span className="text-xs bg-white text-[#7B5CF0] font-black px-4 py-2 rounded-full border border-[#cbbeff] shadow-sm">
-              총 {allItems.length}개의 3D 데이터 셀 탑재
+            <span className="text-xs bg-white text-[#7B5CF0] font-black px-4 py-2 rounded-full border border-[#cbbeff] shadow-sm whitespace-nowrap">
+              총 {allItems.length}개의 아카이브 셀 탑재
             </span>
           </div>
 
@@ -340,8 +340,8 @@ export const Portfolio: React.FC = () => {
                 key={item.id}
                 className="bg-white rounded-[32px] p-6 border-2 border-[#E3E1E9] shadow-[0_20px_40px_rgba(123,92,240,0.08)] hover:shadow-[0_25px_50px_rgba(123,92,240,0.16)] hover:border-[#7B5CF0] transition-all duration-300 relative group flex flex-col justify-between"
               >
-                <div className="absolute top-4 right-4 bg-[#f4f2fa] text-[#6240d5] text-[10px] font-black px-3 py-1 rounded-full border border-[#cac4d7]/60 shadow-inner">
-                  3D 서랍칸 #{idx + 1}
+                <div className="absolute top-4 right-4 bg-[#f4f2fa] text-[#6240d5] text-[10px] font-black px-3 py-1 rounded-full border border-[#cac4d7]/60 shadow-inner whitespace-nowrap">
+                  아카이브 서랍칸 #{idx + 1}
                 </div>
                 <div className="space-y-3 pr-20">
                   <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#8E70F7] to-[#6240d5] text-white flex items-center justify-center text-xl shadow-md group-hover:scale-105 transition-transform">

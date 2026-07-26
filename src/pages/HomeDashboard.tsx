@@ -37,8 +37,8 @@ export const HomeDashboard: React.FC = () => {
     } else {
       setInterestedJobs([
         { name: "스마트 AI 에듀테크 진로 멘토", image: "👨‍🏫", category: "대표 관심 직업" },
-        { name: "빅데이터 AI 모델 아키텍트", image: "📊", category: "AI·데이터" },
-        { name: "3D XR 공간 인터랙티브 디자이너", image: "🎨", category: "아트·XR" },
+        { name: "빅데이터 데이터 분석사", image: "📊", category: "AI·데이터" },
+        { name: "디스플레이 및 웹 서비스 디자이너", image: "🎨", category: "디자인·IT" },
       ]);
     }
   }, []);
@@ -303,7 +303,7 @@ export const HomeDashboard: React.FC = () => {
           <form onSubmit={handleAddJob} className="flex items-center gap-2 max-w-sm w-full">
             <input
               type="text"
-              placeholder="예: 3D AI 인터페이스 설계자..."
+              placeholder="예: 스포츠 전담 데이터 분석사..."
               value={newJobInput}
               onChange={(e) => setNewJobInput(e.target.value)}
               className="flex-grow h-12 text-xs md:text-sm px-4 rounded-[20px] bg-[#f7f5fd] border border-transparent focus:border-primary text-on-surface placeholder:text-text-muted/70 focus:outline-none focus:ring-2 focus:ring-primary/20 font-body-md transition-all shadow-inner"

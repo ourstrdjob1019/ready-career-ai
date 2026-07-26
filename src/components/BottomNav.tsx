@@ -20,7 +20,7 @@ export const BottomNav: React.FC = () => {
   ];
 
   const teacherItems = [
-    { label: "교사 3D", path: "/teacher", icon: BookOpen, isSpot: true },
+    { label: "교사 보드", path: "/teacher", icon: BookOpen, isSpot: true },
     { label: "자기이해 DB", path: "/self-understanding", icon: Brain },
     { label: "학급 관리", path: "/portfolio", icon: Award },
   ];

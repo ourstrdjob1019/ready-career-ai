@@ -116,7 +116,7 @@ export const StarRoadmap: React.FC = () => {
               x: 82,
               y: 72,
               quests: [
-                { id: "q7", title: "최종 진로 융합 3D 보고서 NEIS 제출 완결", expReward: 200, status: "locked" },
+                { id: "q7", title: "최종 진로 융합 종합 보고서 NEIS 제출 완결", expReward: 200, status: "locked" },
               ],
             },
           ],

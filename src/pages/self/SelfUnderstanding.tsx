@@ -6,8 +6,7 @@ import { Sparkles, Brain, CheckCircle2, ArrowRight, ShieldCheck, Zap } from "luc
 
 export const SelfUnderstanding: React.FC = () => {
   const navigate = useNavigate();
-  const { assessments, report, completeAssessment, generateComprehensiveReport } = useSelfUnderstanding();
-  const [simulatingId, setSimulatingId] = useState<string | null>(null);
+  const { assessments, report, generateComprehensiveReport } = useSelfUnderstanding();
 
   const completedCount = assessments.filter((a) => a.status === "완료됨").length;
   const totalCount = assessments.length;
@@ -15,17 +14,11 @@ export const SelfUnderstanding: React.FC = () => {
   const handleQuickTakeTest = (id: string) => {
     if (id === "test-interest") {
       navigate("/interest-test");
-      return;
+    } else if (id === "test-intelligence") {
+      navigate("/intelligence-test");
+    } else if (id === "test-learning") {
+      navigate("/learning-test");
     }
-    setSimulatingId(id);
-    setTimeout(() => {
-      if (id === "test-intelligence") {
-        completeAssessment(id, 96, "다중지능 분석 결과: 상위 1.8%의 AI 알고리즘 공간 직관력과 탁월한 인문 토론 리더십을 보유했습니다.");
-      } else if (id === "test-learning") {
-        completeAssessment(id, 92, "학습 스타일 진단: 45분 집중 10분 휴식의 시각화 데이터 요약 루틴이 세특 효율을 극대화합니다.");
-      }
-      setSimulatingId(null);
-    }, 900);
   };
 
   return (
@@ -33,9 +26,9 @@ export const SelfUnderstanding: React.FC = () => {
       {/* Hero Banner: Self-Understanding Hub */}
       <Card variant="hero" padding="lg" className="shadow-3d-ambient flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden">
         <div className="flex flex-col gap-3 max-w-xl z-10 text-center md:text-left">
-          <div className="inline-flex items-center self-center md:self-start gap-2 bg-white/20 px-3.5 py-1 rounded-full text-xs font-headline font-bold text-white">
+          <div className="inline-flex items-center self-center md:self-start gap-2 bg-white/20 px-3.5 py-1 rounded-full text-xs font-headline font-bold text-white whitespace-nowrap border border-white/20">
             <Brain className="w-4 h-4 text-secondary-container animate-pulse" />
-            <span>나만의 입체적 3D DNA 진단 허브</span>
+            <span>나만의 커리어 역량 다면 진단 허브</span>
           </div>
 
           <h1 className="text-headline-lg md:text-display-lg font-black text-white font-headline tracking-tight leading-tight">
@@ -92,7 +85,6 @@ export const SelfUnderstanding: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {assessments.map((item) => {
             const isCompleted = item.status === "완료됨";
-            const isSimulating = simulatingId === item.id;
 
             return (
               <Card
@@ -100,8 +92,8 @@ export const SelfUnderstanding: React.FC = () => {
                 variant={isCompleted ? "activity" : "surface"}
                 padding="md"
                 hoverEffect
-                onClick={() => !isSimulating && handleQuickTakeTest(item.id)}
-                className={`flex flex-col justify-between border-2 transition-all group min-h-[300px] ${
+                onClick={() => handleQuickTakeTest(item.id)}
+                className={`flex flex-col justify-between border-2 transition-all group min-h-[300px] cursor-pointer ${
                   isCompleted
                     ? "border-primary/40 bg-white shadow-3d-ambient"
                     : "border-surface-variant/40 bg-surface-container-low/70 hover:border-secondary/60"
@@ -109,18 +101,18 @@ export const SelfUnderstanding: React.FC = () => {
               >
                 <div className="flex flex-col gap-3">
                   <div className="flex justify-between items-center">
-                    <span className={`text-xs font-headline font-bold px-3 py-1 rounded-full ${
+                    <span className={`text-xs font-headline font-bold px-3 py-1 rounded-full whitespace-nowrap ${
                       item.category === "흥미무드" ? "bg-primary/10 text-primary" : item.category === "다중지능" ? "bg-secondary/15 text-secondary-spot" : "bg-surface-container text-text-primary"
                     }`}>
                       #{item.category}
                     </span>
 
                     {isCompleted ? (
-                      <Chip variant="teal" size="sm" active className="pointer-events-none">
-                        <CheckCircle2 className="w-3.5 h-3.5 mr-1" /> 완료됨 ({item.score}점)
+                      <Chip variant="teal" size="sm" active className="pointer-events-none whitespace-nowrap">
+                        <CheckCircle2 className="w-3.5 h-3.5 mr-1 inline" /> 완료됨 ({item.score}점)
                       </Chip>
                     ) : (
-                      <Chip variant="default" size="sm" className="pointer-events-none">
+                      <Chip variant="default" size="sm" className="pointer-events-none whitespace-nowrap">
                         도전 기다리는 중
                       </Chip>
                     )}
@@ -136,15 +128,15 @@ export const SelfUnderstanding: React.FC = () => {
                 </div>
 
                 <div className="pt-4 mt-4 border-t border-surface-variant/30 flex items-center justify-between">
-                  <span className="text-xs font-bold text-text-muted">
+                  <span className="text-xs font-bold text-text-muted whitespace-nowrap">
                     {isCompleted ? `● 검사일: ${item.completedAt}` : "● 소요시간 약 2분 내외"}
                   </span>
                   <Button
                     variant={isCompleted ? "secondary" : "primary"}
                     size="sm"
-                    className="font-black"
+                    className="font-black whitespace-nowrap shadow-sm"
                   >
-                    {isSimulating ? "AI 분석 중..." : isCompleted ? "결과 다시 보기" : "진단 밟기"}
+                    {isCompleted ? "결과 다시 보기 / 재진단" : "진단 시작하기"}
                     <ArrowRight className="w-4 h-4 ml-1" />
                   </Button>
                 </div>
@@ -158,15 +150,15 @@ export const SelfUnderstanding: React.FC = () => {
       <section className="bg-white rounded-[32px] p-8 border border-[#E3E1E9] shadow-[0_20px_45px_rgba(123,92,240,0.08)] space-y-6 animate-fadeIn">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#E3E1E9]/80 pb-5">
           <div>
-            <span className="text-xs font-black text-[#7B5CF0] uppercase tracking-wider bg-[#e6deff]/60 px-3 py-1 rounded-full inline-block mb-1 border border-[#cbbeff]/50">
-              STITCH 3D RADAR CHART &middot; GROWTH VISUALIZER
+            <span className="text-xs font-black text-[#7B5CF0] uppercase tracking-wider bg-[#e6deff]/60 px-3 py-1 rounded-full inline-block mb-1 border border-[#cbbeff]/50 whitespace-nowrap">
+              AI RADAR CHART &middot; GROWTH VISUALIZER
             </span>
             <h2 className="text-2xl font-black text-[#1A1626] flex items-center gap-2">
-              <span>📊 AI 3D 방사형 역량 성장 시각화 대시보드</span>
+              <span>📊 AI 방사형 역량 성장 시각화 대시보드</span>
             </h2>
             <p className="text-xs text-[#6E6A80] mt-0.5">다중지능 및 습관 퀘스트 이행도에 따라 고유한 5대 핵심 학생부 역량 펜타곤이 확장됩니다.</p>
           </div>
-          <div className="bg-[#7af1fc]/20 text-[#006970] px-4 py-2 rounded-2xl border border-[#006970]/20 font-black text-xs self-start md:self-auto flex items-center gap-1.5 shadow-sm">
+          <div className="bg-[#7af1fc]/20 text-[#006970] px-4 py-2 rounded-2xl border border-[#006970]/20 font-black text-xs self-start md:self-auto flex items-center gap-1.5 shadow-sm whitespace-nowrap">
             <span>🚀 전월 대비 역량 성장율: +18.4% 상승</span>
           </div>
         </div>
@@ -180,8 +172,8 @@ export const SelfUnderstanding: React.FC = () => {
               </div>
             </div>
             <div className="absolute bottom-4 left-0 right-0 px-4">
-              <span className="text-[11px] font-extrabold bg-white/90 px-4 py-1 rounded-full shadow-sm border border-[#E3E1E9] text-[#1A1626]">
-                3D Pentagon Level: <strong className="text-[#6240d5]">AURA DIAMOND</strong>
+              <span className="text-[11px] font-extrabold bg-white/90 px-4 py-1 rounded-full shadow-sm border border-[#E3E1E9] text-[#1A1626] whitespace-nowrap inline-block">
+                역량 Pentagon Level: <strong className="text-[#6240d5]">AURA DIAMOND</strong>
               </span>
             </div>
           </div>

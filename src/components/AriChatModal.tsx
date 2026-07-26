@@ -38,7 +38,7 @@ export const AriChatModal: React.FC<AriChatModalProps> = ({ isOpen, onClose }) =
       sender: "ari",
       text: "최근 완성한 자기이해 다중진단 데이터와 흥미 유형을 바탕으로 분석해 본 추천 학과와 학습 로드맵입니다!",
       card: {
-        tag: "AI 3D 맞춤 추천 학과",
+        tag: "AI 맞춤 추천 학과",
         title: "컴퓨터·AI 융합공학과",
         point1Title: "AI 진단 매칭 포인트",
         point1Desc: "상위 1.8%의 AI 알고리즘 공간 직관력과 논리적 사고력, 문제 해결 역량이 매우 뛰어납니다.",
@@ -81,9 +81,9 @@ export const AriChatModal: React.FC<AriChatModalProps> = ({ isOpen, onClose }) =
               <img src={ARI_BLOB_URL} alt="Ari Mascot" className="w-full h-full object-contain" />
             </div>
             <div>
-              <div className="inline-flex items-center gap-1 bg-[#7af1fc]/30 text-[#006970] px-2 py-0.5 rounded-full text-[10px] font-extrabold tracking-wide mb-0.5">
+              <div className="inline-flex items-center gap-1 bg-[#7af1fc]/30 text-[#006970] px-2.5 py-0.5 rounded-full text-[10px] font-extrabold tracking-wide mb-0.5 whitespace-nowrap border border-[#006970]/20">
                 <Sparkles className="w-3 h-3" />
-                <span>3D AI CAREER ASSISTANT</span>
+                <span>AI CAREER ASSISTANT</span>
               </div>
               <h2 className="text-xl font-extrabold text-[#1A1626] tracking-tight flex items-center gap-1.5">
                 아리에게 묻기 <span className="text-xs text-[#7B5CF0] font-normal">(실시간 상담)</span>

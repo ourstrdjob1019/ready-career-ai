@@ -30,14 +30,14 @@ export const Header: React.FC = () => {
 
   const studentNavItems = [
     { label: "홈", path: "/", icon: Home },
-    { label: "자기이해", path: "/self-understanding", icon: Brain, badge: "AI 3D" },
+    { label: "자기이해", path: "/self-understanding", icon: Brain, badge: "AI 진단" },
     { label: "별자리 로드맵", path: "/roadmap", icon: Compass },
     { label: "습관 관리", path: "/habits", icon: Award },
     { label: "진로 포트폴리오", path: "/portfolio", icon: Award },
   ];
 
   const teacherNavItems = [
-    { label: "👨‍🏫 교사 3D Pro 보드", path: "/teacher", icon: BookOpen, badge: "2560px Pro" },
+    { label: "👨‍🏫 교사용 학급 보드", path: "/teacher", icon: BookOpen, badge: "NEIS 가이드" },
     { label: "학급 포트폴리오 DB", path: "/portfolio", icon: Award },
     { label: "자기이해 다중진단", path: "/self-understanding", icon: Brain },
   ];

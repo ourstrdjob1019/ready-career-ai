@@ -61,17 +61,17 @@ const INITIAL_ASSESSMENTS: AssessmentItem[] = [
 ];
 
 const INITIAL_REPORT: ComprehensiveReport = {
-  title: "🤖 3D 미래 융합형: AI 로보틱스 개척자",
-  characterTitle: "👑 3D 융합 개척자 Ari",
+  title: "🤖 미래 전도유망형: AI 소프트웨어 엔지니어",
+  characterTitle: "👑 AI 커리어 마이스터 Ari",
   characterAura: "논리와 따뜻한 ESG 사유를 두루 갖춘 천부적인 미래 설계 커리어리스트!",
-  aiAdvice: "자기이해 다중 지능 분석 결과, 논리·수학 역량을 발휘할 수 있는 '데이터 시각화 프로젝트'를 본인 주도 학습으로 세특에 녹여내면 압도적인 최상위 변호력을 지닙니다.",
+  aiAdvice: "자기이해 다중 지능 분석 결과, 논리·수학 역량을 발휘할 수 있는 '데이터 시각화 프로젝트'를 본인 주도 학습으로 세특에 녹여내면 압도적인 최상위 경쟁력을 지닙니다.",
   strengths: [
     "상위 2% 논리수학 추론력",
-    "이타적 ESG 환경 사유",
-    "뛰어난 코드북 판해 해상도",
+    "이타적 사회 통찰력",
+    "뛰어난 코드북 독해력",
     "협업 토론 및 주도성",
   ],
-  recommendedCareers: ["AI 로봇 융합 연구원", "기후·환경 데이터 애널리스트", "XR 감각 인터랙션 설계자"],
+  recommendedCareers: ["소프트웨어 개발자", "빅데이터 분석가", "컴퓨터 교육 교사"],
   portfolioSavedAt: "2026.07.25 (포트폴리오 연동 완료)",
 };
 

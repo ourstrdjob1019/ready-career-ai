@@ -20,6 +20,8 @@ import {
   SuperAdminConsole,
   SelfUnderstanding,
   SelfReport,
+  IntelligenceTest,
+  LearningStyleTest,
 } from "./pages";
 import { AuthProvider, SelfUnderstandingProvider, useAuth } from "./context";
 import "./App.css";
@@ -90,6 +92,8 @@ const AppContent: React.FC = () => {
           <Route path="/onboarding-code" element={<PrivateRoute><OnboardingCode /></PrivateRoute>} />
           <Route path="/onboarding-info" element={<PrivateRoute><OnboardingInfo /></PrivateRoute>} />
           <Route path="/interest-test" element={<PrivateRoute><InterestTest /></PrivateRoute>} />
+          <Route path="/intelligence-test" element={<PrivateRoute><IntelligenceTest /></PrivateRoute>} />
+          <Route path="/learning-test" element={<PrivateRoute><LearningStyleTest /></PrivateRoute>} />
           <Route path="/test-result" element={<PrivateRoute><TestResult /></PrivateRoute>} />
 
           {/* Roadmap & Habits */}
@@ -122,8 +126,8 @@ const AppContent: React.FC = () => {
               <img src={ARI_BLOB_URL} alt="Ari" className="w-full h-full object-contain group-hover:scale-110 transition-transform" />
             </div>
             <div className="flex flex-col text-left">
-              <span className="text-[10px] text-[#7af1fc] font-extrabold leading-none tracking-wider uppercase">3D AI 어시스턴트</span>
-              <span className="text-sm font-extrabold font-headline leading-tight mt-0.5">아리에게 묻기 ✨</span>
+              <span className="text-[10px] text-[#7af1fc] font-extrabold leading-none tracking-wider uppercase whitespace-nowrap">AI 커리어 어시스턴트</span>
+              <span className="text-sm font-extrabold font-headline leading-tight mt-0.5 whitespace-nowrap">아리에게 묻기 ✨</span>
             </div>
           </button>
         </div>

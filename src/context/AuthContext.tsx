@@ -117,8 +117,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           "my_interested_jobs",
           JSON.stringify([
             { name: mergedSession.targetJob, image: "👨‍🏫", category: "대표 관심 직업" },
-            { name: "빅데이터 AI 모델 아키텍트", image: "📊", category: "AI·데이터" },
-            { name: "3D XR 인터랙티브 디자이너", image: "🎨", category: "아트·XR" },
+            { name: "빅데이터 데이터 분석사", image: "📊", category: "AI·데이터" },
+            { name: "디스플레이 및 웹 서비스 디자이너", image: "🎨", category: "디자인·IT" },
           ])
         );
       }

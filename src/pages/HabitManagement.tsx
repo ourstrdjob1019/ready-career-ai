@@ -122,12 +122,12 @@ export const HabitManagement: React.FC = () => {
       <section className="space-y-4">
         <div className="flex items-center justify-between">
           <div>
-            <span className="text-xs font-extrabold text-[#7B5CF0] uppercase tracking-widest block">3D QUEST LOG &middot; STITCH UI</span>
+            <span className="text-xs font-extrabold text-[#7B5CF0] uppercase tracking-widest block">AI QUEST LOG &middot; CUSTOM UI</span>
             <h2 className="text-2xl font-extrabold text-[#1A1626] tracking-tight flex items-center gap-2">
-              <span>🚀 오늘의 맞춤 진로 퀘스트 (3D 인터랙션)</span>
+              <span>🚀 오늘의 맞춤 진로 퀘스트</span>
             </h2>
           </div>
-          <span className="text-xs font-bold bg-[#e6deff] text-[#6240d5] px-3.5 py-1 rounded-full border border-[#cbbeff]">
+          <span className="text-xs font-bold bg-[#e6deff] text-[#6240d5] px-3.5 py-1 rounded-full border border-[#cbbeff] whitespace-nowrap">
             완료 시 캐릭터 오오라 EXP 부여 ✨
           </span>
         </div>
@@ -171,14 +171,14 @@ export const HabitManagement: React.FC = () => {
                   <CheckCircle2 className="w-4 h-4" />
                   <span>{q.completed ? "퀘스트 달성 완수!" : "클릭하여 완료하기"}</span>
                 </button>
-                <span className="text-[11px] font-semibold text-[#7B5CF0]">
-                  {flippedQuestId === q.id ? "▲ 닫기" : "▼ 3D 상세 보기"}
+                <span className="text-[11px] font-semibold text-[#7B5CF0] whitespace-nowrap">
+                  {flippedQuestId === q.id ? "▲ 닫기" : "▼ 상세 가이드 보기"}
                 </span>
               </div>
 
               {flippedQuestId === q.id && (
                 <div className="mt-4 p-4 rounded-2xl bg-[#efedf5] border border-[#cac4d7]/60 text-xs text-[#1A1626] space-y-1.5 animate-fadeIn">
-                  <p className="font-extrabold text-[#6240d5]">💡 AI 3D 성장 연계 정보</p>
+                  <p className="font-extrabold text-[#6240d5]">💡 AI 역량 성장 연계 정보</p>
                   <p className="text-text-muted leading-snug">이 퀘스트를 달성하면 생활기록부 '자기주도 학업역량' 및 '진로 탐색 태도' 평가 항목에 시도 포인트가 누적 기록됩니다!</p>
                 </div>
               )}
