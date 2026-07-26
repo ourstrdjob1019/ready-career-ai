@@ -100,10 +100,11 @@ export const Portfolio: React.FC = () => {
     }
   })();
 
+  const isNewClean = localStorage.getItem("is_new_student_clean_state") === "true";
   const allItems: PortfolioItem[] = [
     ...(selfReportItem ? [selfReportItem] : []),
     ...savedUserActivities,
-    ...INITIAL_PORTFOLIOS,
+    ...(isNewClean ? [] : INITIAL_PORTFOLIOS),
   ];
 
   const filteredItems = allItems.filter((item) => {

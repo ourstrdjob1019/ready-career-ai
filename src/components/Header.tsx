@@ -36,8 +36,7 @@ export const Header: React.FC = () => {
   ];
 
   const teacherNavItems = [
-    { label: "👨‍🏫 학급 학생 활동·포트폴리오 감독", path: "/teacher", icon: BookOpen, badge: "실천도 조회" },
-    { label: "NEIS 세특 가이드 추출", path: "/teacher", icon: Award, badge: "2026 기재기준" },
+    { label: "👨‍🏫 교사용 학급 보드", path: "/teacher", icon: BookOpen, badge: "NEIS 가이드" },
   ];
 
   const superAdminNavItems = [

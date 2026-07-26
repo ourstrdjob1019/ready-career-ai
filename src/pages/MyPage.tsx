@@ -49,18 +49,22 @@ export const MyPage: React.FC = () => {
     }
   })();
 
+  const isNewClean = localStorage.getItem("is_new_student_clean_state") === "true";
+
   const completedQuests = [
     ...savedUserActivities,
-    { id: "q1", title: "공공 교육 데이터 활용 맞춤 멘토링 방안 작성", type: "심화 탐구", exp: "+50 EXP", date: "어제 완료" },
-    { id: "q2", title: "Holland RIASEC 흥미무드 18문항 다면 진단 완수", type: "자기이해", exp: "+40 EXP", date: "2일 전 완료" },
-    { id: "q3", title: "센서 기반 자율주행 모션 로봇 하드웨어 알고리즘 분석", type: "동아리", exp: "+60 EXP", date: "4일 전 완료" },
-    { id: "q4", title: "과학 기술 고전 비판적 독서 및 기계 윤리 토론 발췌", type: "전공 독서", exp: "+45 EXP", date: "1주일 전 완료" },
+    ...(isNewClean ? [] : [
+      { id: "q1", title: "공공 교육 데이터 활용 맞춤 멘토링 방안 작성", type: "심화 탐구", exp: "+50 EXP", date: "어제 완료" },
+      { id: "q2", title: "Holland RIASEC 흥미무드 18문항 다면 진단 완수", type: "자기이해", exp: "+40 EXP", date: "2일 전 완료" },
+      { id: "q3", title: "센서 기반 자율주행 모션 로봇 하드웨어 알고리즘 분석", type: "동아리", exp: "+60 EXP", date: "4일 전 완료" },
+      { id: "q4", title: "과학 기술 고전 비판적 독서 및 기계 윤리 토론 발췌", type: "전공 독서", exp: "+45 EXP", date: "1주일 전 완료" },
+    ]),
   ];
 
-  const habitsList = [
+  const habitsList = isNewClean ? [] : [
     { title: "매일 아침 10분 진로 전공 헤드라인 뉴스 읽기", streak: "14일 연속 완수", rate: 94 },
     { title: "방과 후 30분 융합 수학 및 파이썬 코딩 챌린지", streak: "8일 연속 완수", rate: 88 },
-    { title: "주말 세탁·자율 활동 기록부 구조화 일지 1줄 정리", streak: "3주 연속 완수", rate: 96 },
+    { title: "주말 세관·자율 활동 기록부 구조화 일지 1줄 정리", streak: "3주 연속 완수", rate: 96 },
   ];
 
   return (

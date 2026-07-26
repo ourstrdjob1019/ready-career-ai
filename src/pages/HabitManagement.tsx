@@ -13,21 +13,22 @@ interface Habit {
 
 export const HabitManagement: React.FC = () => {
   const navigate = useNavigate();
+  const isNewClean = localStorage.getItem("is_new_student_clean_state") === "true";
   const [habits, setHabits] = useState<Habit[]>(() => {
     const saved = localStorage.getItem("my_habits_v2");
     if (saved) {
       try { return JSON.parse(saved); } catch (e) {}
     }
     return [
-      { id: "h-1", title: "매일 AI 알고리즘 문제 1개 실습 · 50일 챌린지", targetDays: 50, completedDays: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], category: "코딩·AI" },
-      { id: "h-2", title: "최신 STEM 저널 및 경제 뉴스 15분 정독", targetDays: 30, completedDays: [1, 2, 3, 4, 5], category: "독서·탐구" },
+      { id: "h-1", title: "매일 AI 알고리즘 문제 1개 실습 · 50일 챌린지", targetDays: 50, completedDays: isNewClean ? [] : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], category: "코딩·AI" },
+      { id: "h-2", title: "최신 STEM 저널 및 경제 뉴스 15분 정독", targetDays: 30, completedDays: isNewClean ? [] : [1, 2, 3, 4, 5], category: "독서·탐구" },
     ];
   });
 
   const [selectedHabitId, setSelectedHabitId] = useState<string>("h-1");
   const [newTitle, setNewTitle] = useState("");
   const [todayQuests, setTodayQuests] = useState([
-    { id: "q1", title: "전공 서적 30분 읽기", desc: "매일 꾸준한 지식 쌓기 및 진로 역량 강화", icon: "📚", exp: "+50 EXP", completed: true },
+    { id: "q1", title: "전공 서적 30분 읽기", desc: "매일 꾸준한 지식 쌓기 및 진로 역량 강화", icon: "📚", exp: "+50 EXP", completed: !isNewClean && true },
     { id: "q2", title: "최신 진로 산업 뉴스 1건 스크랩", desc: "AI 인프라 및 전공 관련 트렌드 파악하기", icon: "📰", exp: "+40 EXP", completed: false },
     { id: "q3", title: "아리에게 진로 고민 1회 실시간 질문하기", desc: "AI 상담을 통한 세특 가이드 아이디어 탐색", icon: "🤖", exp: "+70 EXP", completed: false },
   ]);

@@ -47,7 +47,6 @@ export const MascotAri: React.FC<MascotAriProps> = ({
           <div className="w-full h-full rounded-full bg-secondary/10 p-2 shadow-3d-base border border-secondary/20 flex items-center justify-center">
             <img 
               src={getAsset()} 
-              onError={(e) => { e.currentTarget.src = "/ari_mascot.png"; }}
               alt="ReadyCareer AI Mascot Ari" 
               className="w-full h-full object-contain drop-shadow-md"
             />
@@ -75,7 +74,6 @@ export const MascotAri: React.FC<MascotAriProps> = ({
     <div className={`relative transition-transform duration-300 hover:scale-105 select-none pointer-events-auto ${sizeClass[size]} ${rotationClass} ${className}`}>
       <img
         src={getAsset()}
-        onError={(e) => { e.currentTarget.src = "/ari_mascot.png"; }}
         alt="ReadyCareer AI Mascot Ari"
         className="w-full h-full object-contain drop-shadow-xl"
       />

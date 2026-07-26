@@ -19,8 +19,7 @@ export const BottomNav: React.FC = () => {
   ];
 
   const teacherItems = [
-    { label: "학급 학생 감독", path: "/teacher", icon: BookOpen, isSpot: true },
-    { label: "세특 가이드", path: "/teacher", icon: Award },
+    { label: "교사 보드", path: "/teacher", icon: BookOpen, isSpot: true },
   ];
 
   const superAdminItems = [

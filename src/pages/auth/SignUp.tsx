@@ -39,8 +39,15 @@ export const SignUp: React.FC = () => {
     const res = await register(name, email, role, activeSchool?.name || "서울창의고등학교", selectedSchoolCode, inviteCode);
     if (res.success) {
       setSuccessMsg("🎉 학교 마스터코드 승인 및 회원가입이 100% 성공했습니다!");
+      if (role === "student") {
+        localStorage.setItem("is_new_student_clean_state", "true");
+        localStorage.removeItem("readycareer_assessment_state");
+        localStorage.removeItem("readycareer_student_activities_v1");
+        localStorage.removeItem("readycareer_vision_v1");
+        localStorage.removeItem("readycareer_selected_job");
+      }
       setTimeout(() => {
-        navigate(role === "teacher" ? "/teacher" : "/");
+        navigate(role === "teacher" ? "/teacher" : "/onboarding-info");
       }, 1000);
     } else {
       setErrorMsg(res.message || "회원가입에 실패했습니다.");

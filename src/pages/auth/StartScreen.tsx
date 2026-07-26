@@ -79,21 +79,30 @@ export const StartScreen: React.FC = () => {
 
   const handleSelectExpoAccount = (account: ExpoAccountItem) => {
     startExpoDemo(account.role, {
-      name: account.name,
-      school: account.school,
+      name: account.name === "신규 방문 학생" ? "" : account.name,
+      school: account.school === "신규 가입 대기" ? "" : account.school,
       grade: account.grade || 2,
       targetJob: account.targetJob || "AI 진로탐색",
       riasecCode: account.riasecCode || "SI",
     });
     
-    if (account.role === "super_admin") {
-      navigate("/super-admin");
-    } else if (account.role === "teacher") {
-      navigate("/teacher");
-    } else if (account.name === "신규 방문 학생") {
+    if (account.name === "신규 방문 학생") {
+      // 신규학생 선택 시 세팅된 값 및 예제 내용을 100% 삭제(초기화)
+      localStorage.setItem("is_new_student_clean_state", "true");
+      localStorage.removeItem("readycareer_assessment_state");
+      localStorage.removeItem("readycareer_student_activities_v1");
+      localStorage.removeItem("readycareer_vision_v1");
+      localStorage.removeItem("readycareer_selected_job");
       navigate("/onboarding-info");
     } else {
-      navigate("/");
+      localStorage.removeItem("is_new_student_clean_state");
+      if (account.role === "super_admin") {
+        navigate("/super-admin");
+      } else if (account.role === "teacher") {
+        navigate("/teacher");
+      } else {
+        navigate("/");
+      }
     }
   };
 

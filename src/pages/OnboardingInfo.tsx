@@ -1,14 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Card, Input, Chip, MascotAri } from "../components";
 import { School, User, Sparkles, ArrowRight } from "lucide-react";
+import { useAuth } from "../context/AuthContext";
 
 export const OnboardingInfo: React.FC = () => {
   const navigate = useNavigate();
-  const [name, setName] = useState("김수진");
-  const [school, setSchool] = useState("서울창의중학교");
+  const { session, startExpoDemo } = useAuth();
+  const isNewClean = localStorage.getItem("is_new_student_clean_state") === "true" || !session?.name;
+
+  const [name, setName] = useState(isNewClean ? "" : (session?.name || "김수진"));
+  const [school, setSchool] = useState(isNewClean ? "" : (session?.school || "서울창의중학교"));
   const [grade, setGrade] = useState("3학년");
   const [targetCluster, setTargetCluster] = useState<string>("인공지능·공학");
+
+  useEffect(() => {
+    if (localStorage.getItem("is_new_student_clean_state") === "true") {
+      setName("");
+      setSchool("");
+    }
+  }, []);
 
   const clusters = [
     "인공지능·공학",
@@ -21,7 +32,14 @@ export const OnboardingInfo: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    navigate("/interest-test");
+    startExpoDemo("student", {
+      ...session,
+      name: name.trim() || "신규 학생",
+      school: school.trim() || "서울창의고등학교",
+      grade: parseInt(grade) || 2,
+    });
+    // 회원가입 및 기본정보 설정 후 진단검사 3개를 네모박스로 보며 먼저 완수하도록 유도
+    navigate("/self-understanding?onboarding=true");
   };
 
   return (
@@ -30,7 +48,7 @@ export const OnboardingInfo: React.FC = () => {
       <div className="flex items-center justify-between bg-surface-container px-6 py-3 rounded-full border border-surface-variant/30">
         <span className="font-headline font-extrabold text-primary text-label-lg flex items-center gap-2">
           <Sparkles className="w-4 h-4 text-secondary-spot" />
-          온보딩 2/3: 기본 정보 설정
+          온보딩 1단계: 기본 정보 및 목표 융합군
         </span>
         <span className="text-label-sm text-text-muted">학교 및 관심분야</span>
       </div>
@@ -43,14 +61,14 @@ export const OnboardingInfo: React.FC = () => {
             반가워요! 내 정보를 확인해 볼까요?
           </h2>
           <p className="text-body-md text-text-muted leading-relaxed text-sm">
-            입력한 정보는 맞춤형 진로 포트폴리오 및 학생부 활동 추천 알고리즘의 기초 데이터로 활용됩니다.
+            입력한 정보는 다음 단계에서 진행할 3종 AI 자기이해 진단 및 맞춤형 직업 추천 알고리즘의 기초 데이터로 활용됩니다.
           </p>
           <div className="hidden md:block w-full">
             <MascotAri 
               pose="avatar" 
               size="sm" 
-              bubbleTitle="AI 맞춤 추천" 
-              bubbleMessage="관심 진로 분야는 언제든 로드맵에서 자유롭게 변경할 수 있어요!" 
+              bubbleTitle="진단 및 직업 선택" 
+              bubbleMessage="3가지 진단 검사를 마치면 맞춤 직업군을 선택하고 대시보드로 이동해요!" 
             />
           </div>
         </div>
@@ -60,7 +78,7 @@ export const OnboardingInfo: React.FC = () => {
           <form onSubmit={handleSubmit} className="flex flex-col gap-6">
             <Input
               label="이름 (학생명)"
-              placeholder="예: 홍길동"
+              placeholder="예: 김성경 (신규 학생 이름을 입력하세요)"
               value={name}
               onChange={(e) => setName(e.target.value)}
               icon={<User className="w-5 h-5 text-primary" />}
@@ -69,7 +87,7 @@ export const OnboardingInfo: React.FC = () => {
 
             <Input
               label="학교명"
-              placeholder="예: 서울창의중학교"
+              placeholder="예: 서울창의고등학교"
               value={school}
               onChange={(e) => setSchool(e.target.value)}
               icon={<School className="w-5 h-5 text-secondary-spot" />}
@@ -125,7 +143,7 @@ export const OnboardingInfo: React.FC = () => {
                 fullWidth
                 icon={<ArrowRight className="w-5 h-5" />}
               >
-                흥미유형 AI 검사 시작하기
+                3종 AI 진단검사 및 추천 직업 선택으로 이동
               </Button>
             </div>
           </form>
