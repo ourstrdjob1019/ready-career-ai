@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ProgressBar, MascotAri } from "../../components";
+import { ProgressBar, MascotAri, Card, Button } from "../../components";
 import { useSelfUnderstanding } from "../../context";
 import { ArrowLeft, ArrowRight, Brain } from "lucide-react";
 
@@ -68,6 +68,8 @@ export const IntelligenceTest: React.FC = () => {
   const [currentIdx, setCurrentIdx] = useState(0);
   const [traits, setTraits] = useState<Record<string, number>>({});
   const [traitNames, setTraitNames] = useState<Record<string, string>>({});
+  const [isFinished, setIsFinished] = useState(false);
+  const [resultData, setResultData] = useState<{ traitName: string; score: number; summary: string } | null>(null);
 
   const currentQ = QUESTIONS[currentIdx];
   const progressPercent = Math.round(((currentIdx + 1) / QUESTIONS.length) * 100);
@@ -90,9 +92,70 @@ export const IntelligenceTest: React.FC = () => {
       const summary = `다중지능 정밀 진단 완료: [${topTraitName}] 분야에서 동급생 상위 2% 이내의 고소양을 보이며, 뛰어난 학습 잠재력을 입증했습니다.`;
       
       completeAssessment("test-intelligence", score, summary);
-      navigate("/self-understanding");
+      setResultData({ traitName: topTraitName, score, summary });
+      setIsFinished(true);
     }
   };
+
+  if (isFinished && resultData) {
+    return (
+      <div className="max-w-3xl mx-auto px-4 py-10 space-y-8 animate-fadeIn">
+        <div className="text-center space-y-3">
+          <span className="inline-flex items-center gap-1.5 bg-secondary/15 text-secondary px-4 py-1 rounded-full text-xs font-headline font-black">
+            <Brain className="w-4 h-4 text-secondary-spot animate-pulse flex-shrink-0" />
+            <span>미래 융합 다중지능 및 잠재력 진단 완수</span>
+          </span>
+          <h1 className="text-3xl md:text-4xl font-headline font-black text-text-primary tracking-tight">
+            회원님의 최우수 역량은 <span className="text-transparent bg-clip-text gradient-hero-card">[{resultData.traitName}]</span> 입니다!
+          </h1>
+          <p className="text-xs md:text-sm text-text-muted max-w-xl mx-auto leading-relaxed">
+            {resultData.summary}
+          </p>
+        </div>
+
+        <Card variant="hero" padding="lg" className="shadow-3d-ambient bg-gradient-to-br from-secondary/10 via-surface-container to-white border-2 border-secondary/30">
+          <div className="flex flex-col md:flex-row items-center gap-6">
+            <MascotAri pose="celebrate" size="md" rotate={true} />
+            <div className="space-y-3 flex-1">
+              <h3 className="text-xl font-headline font-black text-text-primary">
+                🎉 2단계 다중지능 검사 완료! (상위 2% 고역량 입증)
+              </h3>
+              <p className="text-xs md:text-sm text-text-muted leading-relaxed font-body-md">
+                이제 필수 3종 진단 중 남은 검사를 이수하거나, 모두 완료되었다면 종합 직업 선택 창을 확인해야 합니다.<br />
+                하단의 <strong>[리포트 마이페이지에 저장하고 허브로 복귀]</strong>를 누르면 결과가 누적 저장됩니다!
+              </p>
+            </div>
+          </div>
+        </Card>
+
+        <div className="flex justify-center pt-4">
+          <Button
+            variant="teal"
+            size="lg"
+            onClick={() => {
+              // 마이페이지 실천 기록부에 활동 저장
+              const existingActs = JSON.parse(localStorage.getItem("readycareer_student_activities_v1") || "[]");
+              const newAct = {
+                id: "act-intel-" + Date.now(),
+                title: `[자기이해 진단 2/3] 미래 융합 다중지능 정밀 진단 완수 (${resultData.traitName})`,
+                category: "자기이해 진단",
+                exp: "+50 EXP",
+                date: new Date().toLocaleDateString("ko-KR"),
+                reflection: resultData.summary
+              };
+              localStorage.setItem("readycareer_student_activities_v1", JSON.stringify([newAct, ...existingActs]));
+
+              navigate("/self-understanding?onboarding=true");
+            }}
+            icon={<ArrowRight className="w-5 h-5 flex-shrink-0" />}
+            className="font-headline font-extrabold px-8 py-5 shadow-2xl hover:scale-105 transition-transform text-base whitespace-nowrap"
+          >
+            💾 다중지능 리포트 마이페이지에 저장하고, 진단 3종 선택 허브로 이동 &rarr;
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   if (!currentQ) return null;
 

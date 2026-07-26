@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { useAuth } from "../../context";
+import { useAuth, useSelfUnderstanding } from "../../context";
 import type { UserRole } from "../../context";
 import { MascotAri } from "../../components/MascotAri";
 import {
@@ -74,6 +74,7 @@ const TEACHER_ACCOUNTS: ExpoAccountItem[] = [
 export const StartScreen: React.FC = () => {
   const navigate = useNavigate();
   const { startExpoDemo } = useAuth();
+  const { resetAssessments } = useSelfUnderstanding();
 
   const [expoTab, setExpoTab] = useState<"student" | "teacher">("student");
 
@@ -90,9 +91,12 @@ export const StartScreen: React.FC = () => {
       // 신규학생 선택 시 세팅된 값 및 예제 내용을 100% 삭제(초기화)
       localStorage.setItem("is_new_student_clean_state", "true");
       localStorage.removeItem("readycareer_assessment_state");
+      localStorage.removeItem("readycareer_assessments_real_v1");
+      localStorage.removeItem("readycareer_self_report_real_v1");
       localStorage.removeItem("readycareer_student_activities_v1");
       localStorage.removeItem("readycareer_vision_v1");
       localStorage.removeItem("readycareer_selected_job");
+      resetAssessments();
       navigate("/onboarding-info");
     } else {
       localStorage.removeItem("is_new_student_clean_state");

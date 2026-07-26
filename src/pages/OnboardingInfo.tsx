@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Card, Input, Chip, MascotAri } from "../components";
 import { School, User, Sparkles, ArrowRight } from "lucide-react";
-import { useAuth } from "../context/AuthContext";
+import { useAuth, useSelfUnderstanding } from "../context";
 
 export const OnboardingInfo: React.FC = () => {
   const navigate = useNavigate();
   const { session, startExpoDemo } = useAuth();
+  const { resetAssessments } = useSelfUnderstanding();
   const isNewClean = localStorage.getItem("is_new_student_clean_state") === "true" || !session?.name;
 
   const [name, setName] = useState(isNewClean ? "" : (session?.name || "김수진"));
@@ -18,6 +19,7 @@ export const OnboardingInfo: React.FC = () => {
     if (localStorage.getItem("is_new_student_clean_state") === "true") {
       setName("");
       setSchool("");
+      resetAssessments();
     }
   }, []);
 

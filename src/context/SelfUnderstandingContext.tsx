@@ -26,6 +26,7 @@ interface SelfUnderstandingContextType {
   report: ComprehensiveReport | null;
   completeAssessment: (id: string, score: number, summary: string) => void;
   generateComprehensiveReport: () => void;
+  resetAssessments: () => void;
   isPortfolioSync: boolean;
 }
 
@@ -118,6 +119,13 @@ export const SelfUnderstandingProvider: React.FC<{ children: React.ReactNode }> 
     }
   }, [report]);
 
+  const resetAssessments = () => {
+    setAssessments(INITIAL_ASSESSMENTS);
+    setReport(null);
+    localStorage.removeItem(STORAGE_KEY_ASSESSMENTS);
+    localStorage.removeItem(STORAGE_KEY_REPORT);
+  };
+
   const completeAssessment = (id: string, score: number, summary: string) => {
     const completedDate = new Date().toLocaleDateString("ko-KR");
     const updated = assessments.map((item) =>
@@ -127,8 +135,11 @@ export const SelfUnderstandingProvider: React.FC<{ children: React.ReactNode }> 
     );
     setAssessments(updated);
 
-    // 진단 완료 즉시 종합 AI 리포트 개별 생성 및 해금
-    generateComprehensiveReport();
+    // 3개 진단이 모두 완료된 경우에만 종합 리포트 자동 생성
+    const allCompleted = updated.every(i => i.status === "완료됨");
+    if (allCompleted) {
+      generateComprehensiveReport();
+    }
   };
 
   const generateComprehensiveReport = () => {
@@ -156,6 +167,7 @@ export const SelfUnderstandingProvider: React.FC<{ children: React.ReactNode }> 
         report,
         completeAssessment,
         generateComprehensiveReport,
+        resetAssessments,
         isPortfolioSync: !!report,
       }}
     >

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, Card } from "../../components";
-import { useAuth } from "../../context";
+import { useAuth, useSelfUnderstanding } from "../../context";
 import type { UserRole } from "../../context";
 import { UserPlus, School, KeyRound, AlertCircle, CheckCircle2 } from "lucide-react";
 import configData from "../../data/assessment_config.json";
@@ -16,6 +16,7 @@ export const SignUp: React.FC = () => {
   const [successMsg, setSuccessMsg] = useState("");
 
   const { register, signupOpen } = useAuth();
+  const { resetAssessments } = useSelfUnderstanding();
   const navigate = useNavigate();
 
   const schoolList = configData.school_master_data || [];
@@ -42,9 +43,12 @@ export const SignUp: React.FC = () => {
       if (role === "student") {
         localStorage.setItem("is_new_student_clean_state", "true");
         localStorage.removeItem("readycareer_assessment_state");
+        localStorage.removeItem("readycareer_assessments_real_v1");
+        localStorage.removeItem("readycareer_self_report_real_v1");
         localStorage.removeItem("readycareer_student_activities_v1");
         localStorage.removeItem("readycareer_vision_v1");
         localStorage.removeItem("readycareer_selected_job");
+        resetAssessments();
       }
       setTimeout(() => {
         navigate(role === "teacher" ? "/teacher" : "/onboarding-info");
