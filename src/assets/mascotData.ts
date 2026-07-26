@@ -1,8 +1,6 @@
 // ReadyCareer AI 공식 마스코트 "아리(Ari)" 및 주요 캐릭터 에셋 URL
-// Vercel Private Blob (private.blob) URL의 토큰 만료 및 권한 차단으로 인한 공백 표시 현상을 원천 방지하기 위해 로컬 마스코트 PNG 에셋을 안정적으로 적용합니다.
-import ariMascotPng from "./ari_mascot.png";
-
-export const ARI_BLOB_URL = ariMascotPng;
+// 사용자 제공 정식 Public Vercel Blob Storage URL 연동 (토큰 만료 없음 100% 안정적 표출 보장)
+export const ARI_BLOB_URL = "https://fea6nfqj9cdttjmk.public.blob.vercel-storage.com/%EC%BA%90%EB%A6%AD%ED%84%B0/KakaoTalk_20260713_090001607.png";
 
 export const MASCOT_ASSETS = {
   avatar: ARI_BLOB_URL,
