@@ -61,7 +61,7 @@ const PublicAuthRoute: React.FC<{ children: React.ReactElement }> = ({ children 
 
 const AppContent: React.FC = () => {
   return (
-    <div className="min-h-screen flex flex-col bg-surface font-body-md text-text-primary selection:bg-primary/20 selection:text-primary pb-20 lg:pb-0">
+    <div className="min-h-screen flex flex-col bg-[#FBF8FF] font-body-md text-[#1A1626] selection:bg-[#7B5CF0]/20 selection:text-[#7B5CF0] pb-20 lg:pb-0">
       <Header />
 
       <main className="flex-grow">

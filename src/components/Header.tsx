@@ -71,11 +71,8 @@ export const Header: React.FC = () => {
           </div>
           <div className="flex flex-col">
             <div className="flex items-center gap-1.5">
-              <span className="font-headline font-black text-xl text-text-primary tracking-tight group-hover:text-primary transition-colors">
-                ReadyCareer <span className="text-primary font-black">AI</span>
-              </span>
-              <span className="text-[10px] font-headline font-black bg-secondary/15 text-secondary px-2 py-0.5 rounded-full">
-                3D 한글
+              <span className="font-headline font-bold text-xl text-[#1A1626] tracking-tight group-hover:text-[#7B5CF0] transition-colors">
+                ReadyCareer <span className="text-[#7B5CF0] font-black">AI</span>
               </span>
             </div>
             <span className="text-[11px] text-text-muted font-body-md">
