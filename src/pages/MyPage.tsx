@@ -1,0 +1,384 @@
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { Button, Card, ProgressBar, MascotAri } from "../components";
+import { useAuth } from "../context";
+import {
+  Award,
+  Sparkles,
+  TrendingUp,
+  CheckCircle2,
+  Lock,
+  Flame,
+  ChevronRight,
+  RefreshCw,
+} from "lucide-react";
+
+export const MyPage: React.FC = () => {
+  const { session } = useAuth();
+  const [activeCategory, setActiveCategory] = useState<"all" | "badges" | "quests">("all");
+
+  const level = 5;
+  const currentExp = 380;
+  const targetExp = 500;
+  const expPercent = Math.round((currentExp / targetExp) * 100);
+  const streakDays = 14;
+
+  const badgeCollection = [
+    { id: "b1", name: "RIASEC 18문항 개척자", desc: "자기이해 18개 문항을 완주한 진도 마스터", icon: "🧠", unlocked: true, date: "2026.07.26" },
+    { id: "b2", name: "별자리 로드맵 첫 점등", desc: "AI 커리어 로드맵을 확정하고 첫 퀘스트 완수", icon: "🌌", unlocked: true, date: "2026.07.25" },
+    { id: "b3", name: "50일 습관 2주 챌린저", desc: "매일 세특 학습 루틴 14일 연속 완수", icon: "🔥", unlocked: true, date: "2026.07.24" },
+    { id: "b4", name: "AI 생기부 팩트 증인", desc: "첫 진로 탐색 활동 포트폴리오 3개 누적 등록", icon: "📋", unlocked: true, date: "2026.07.22" },
+    { id: "b5", name: "다중지능 AI 펜타곤 마스터", desc: "다중지능 및 학습스타일 3종 진단 리포트 모두 획득", icon: "💎", unlocked: true, date: "2026.07.20" },
+    { id: "b6", name: "50일 습관 완주자 (예정)", desc: "50일간 하루도 빠짐없이 퀘스트 클리어 시 해금", icon: "🏆", unlocked: false, requirement: "습관 36일 더 인증 필요" },
+    { id: "b7", name: "전공 독서 학술 리더", desc: "심층 추천 독서 5권 요약 보고서 등록 시 해금", icon: "📚", unlocked: false, requirement: "포트폴리오 2개 추가 등록 필요" },
+    { id: "b8", name: "AURA DIAMOND 달성자", desc: "학급 역량 성장율 및 레벨 10 달성 시 부여", icon: "👑", unlocked: false, requirement: "EXP 1,200 (Lv.10) 도달 시 해금" },
+  ];
+
+  const completedQuests = [
+    { id: "q1", title: "공공 교육 데이터 활용 맞춤 멘토링 방안 작성", type: "심화 탐구", exp: "+50 EXP", date: "어제 완료" },
+    { id: "q2", title: "Holland RIASEC 흥미무드 18문항 다면 진단 완수", type: "자기이해", exp: "+40 EXP", date: "2일 전 완료" },
+    { id: "q3", title: "센서 기반 자율주행 모션 로봇 하드웨어 알고리즘 분석", type: "동아리", exp: "+60 EXP", date: "4일 전 완료" },
+    { id: "q4", title: "과학 기술 고전 비판적 독서 및 기계 윤리 토론 발췌", type: "전공 독서", exp: "+45 EXP", date: "1주일 전 완료" },
+  ];
+
+  const habitsList = [
+    { title: "매일 아침 10분 진로 전공 헤드라인 뉴스 읽기", streak: "14일 연속 완수", rate: 94 },
+    { title: "방과 후 30분 융합 수학 및 파이썬 코딩 챌린지", streak: "8일 연속 완수", rate: 88 },
+    { title: "주말 세탁·자율 활동 기록부 구조화 일지 1줄 정리", streak: "3주 연속 완수", rate: 96 },
+  ];
+
+  return (
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10 selection:bg-primary/20 animate-fadeIn">
+      
+      {/* Top Header Section (Cumulative Motivation Engine) */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-surface-variant/50 pb-8">
+        <div className="space-y-2">
+          <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3.5 py-1 rounded-full text-xs font-headline font-black whitespace-nowrap border border-primary/20 shadow-sm">
+            <Sparkles className="w-3.5 h-3.5 animate-bounce" />
+            <span>ReadyCareer AI · 누적 성장 동기부여 엔진 마이페이지</span>
+          </div>
+          <h1 className="text-3xl md:text-4xl font-headline font-black text-text-primary tracking-tight flex items-center gap-3">
+            <span>🚀 {session?.name || "박상혁"} 님의 누적 커리어 히어로 볼트</span>
+          </h1>
+          <p className="text-sm text-text-muted font-medium">
+            소속: <strong className="text-primary">{session?.school || "서울창의고등학교"}</strong> · 나의 진단 리포트 이력, 해금된 레벨 뱃지, 실천 습관과 생기부 퀘스트 성과가 실시간 누적 기록됩니다.
+          </p>
+        </div>
+
+        <div className="flex items-center gap-3 flex-wrap">
+          <Link to="/self-understanding">
+            <Button variant="primary" size="sm" className="font-extrabold whitespace-nowrap shadow-md">
+              <RefreshCw className="w-4 h-4 mr-1 inline" /> 진단 리포트 재검사 &rarr;
+            </Button>
+          </Link>
+          <Link to="/teacher">
+            <Button variant="outline" size="sm" className="font-extrabold whitespace-nowrap border-surface-variant bg-white shadow-sm">
+              👨‍🏫 교무실 팩트 생기부 확인
+            </Button>
+          </Link>
+        </div>
+      </div>
+
+      {/* HERO GAMIFICATION & LEVEL STATS BANNER */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+        
+        {/* Level & EXP Ring Dashboard Card (5 COL) */}
+        <Card variant="hero" padding="lg" className="lg:col-span-5 shadow-3d-ambient flex flex-col justify-between relative overflow-hidden text-white min-h-[280px]">
+          <div className="space-y-4 z-10">
+            <div className="flex items-center justify-between">
+              <span className="bg-white/20 px-3.5 py-1 rounded-full text-xs font-black whitespace-nowrap border border-white/20 uppercase tracking-wider">
+                CURRENT GROWTH STATUS
+              </span>
+              <span className="text-xs font-black text-secondary-container flex items-center gap-1 whitespace-nowrap">
+                <Flame className="w-4 h-4 text-orange-400 fill-orange-400" /> {streakDays}일째 열정 불기둥
+              </span>
+            </div>
+
+            <div className="flex items-center gap-5">
+              <div className="w-24 h-24 rounded-3xl bg-gradient-to-tr from-primary-container to-secondary flex flex-col items-center justify-center border-4 border-white/40 shadow-2xl transform rotate-3 flex-shrink-0">
+                <span className="text-xs font-bold uppercase text-white/80 whitespace-nowrap">LEVEL</span>
+                <span className="text-4xl font-black tracking-tight">{level}</span>
+              </div>
+              <div>
+                <span className="text-xs font-extrabold text-secondary-container uppercase block mb-1 whitespace-nowrap">AURA TIER &middot; GOLD CHASER</span>
+                <h3 className="text-2xl font-black text-white">세부능력 실증 개척자</h3>
+                <p className="text-xs text-white/80 mt-0.5 whitespace-nowrap">다음 레벨(Lv.6)까지 120 EXP 남았습니다!</p>
+              </div>
+            </div>
+
+            <div className="space-y-2 pt-2">
+              <div className="flex justify-between text-xs font-black text-white/90">
+                <span>누적 EXP: {currentExp} / {targetExp} XP</span>
+                <span className="text-secondary-container">{expPercent}% 달성 중</span>
+              </div>
+              <div className="w-full bg-black/40 h-3 rounded-full overflow-hidden p-0.5 border border-white/20 shadow-inner">
+                <div className="h-full bg-gradient-to-r from-[#7af1fc] to-[#4eed80] rounded-full transition-all duration-1000" style={{ width: `${expPercent}%` }} />
+              </div>
+            </div>
+          </div>
+
+          <div className="absolute -bottom-4 -right-4 opacity-20 pointer-events-none transform scale-150">
+            <MascotAri pose="celebrate" size="lg" />
+          </div>
+        </Card>
+
+        {/* Cumulative Quick Stat Cards (7 COL) */}
+        <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <Card variant="surface" padding="md" hoverEffect className="flex flex-col justify-between border-2 border-primary/20 bg-white shadow-sm">
+            <div className="flex justify-between items-start">
+              <div className="space-y-1">
+                <span className="text-xs font-black text-primary bg-primary/10 px-2.5 py-1 rounded-full inline-block whitespace-nowrap">
+                  📊 3대 다면 진단 완료도
+                </span>
+                <h4 className="text-2xl font-black text-text-primary mt-1">3종 모두 완료 ✨</h4>
+                <p className="text-xs text-text-muted">흥미무드, 다중지능, 학습스타일 리포트 누적</p>
+              </div>
+              <span className="p-3.5 rounded-2xl bg-primary-fixed text-primary text-2xl shadow-sm font-black flex-shrink-0">
+                🧠
+              </span>
+            </div>
+            <Link to="/self-understanding" className="text-xs font-black text-primary hover:underline flex items-center gap-1 mt-4 pt-3 border-t border-surface-variant/30">
+              <span className="whitespace-nowrap">누적 리포트 비교 열람하기</span> <ChevronRight className="w-4 h-4 flex-shrink-0" />
+            </Link>
+          </Card>
+
+          <Card variant="surface" padding="md" hoverEffect className="flex flex-col justify-between border-2 border-secondary/30 bg-white shadow-sm">
+            <div className="flex justify-between items-start">
+              <div className="space-y-1">
+                <span className="text-xs font-black text-secondary-spot bg-secondary/15 px-2.5 py-1 rounded-full inline-block whitespace-nowrap">
+                  🎯 누적 퀘스트 클리어
+                </span>
+                <h4 className="text-2xl font-black text-text-primary mt-1">총 14개 완수 🚀</h4>
+                <p className="text-xs text-text-muted">세특 탐구 및 로드맵 실전 미션 누적</p>
+              </div>
+              <span className="p-3.5 rounded-2xl bg-[#7af1fc]/30 text-secondary-spot text-2xl shadow-sm font-black flex-shrink-0">
+                🌌
+              </span>
+            </div>
+            <Link to="/portfolio" className="text-xs font-black text-secondary-spot hover:underline flex items-center gap-1 mt-4 pt-3 border-t border-surface-variant/30">
+              <span className="whitespace-nowrap">내 포트폴리오 보관함 이동</span> <ChevronRight className="w-4 h-4 flex-shrink-0" />
+            </Link>
+          </Card>
+
+          <Card variant="surface" padding="md" hoverEffect className="flex flex-col justify-between border-2 border-orange-200 bg-gradient-to-br from-orange-50/50 to-white shadow-sm sm:col-span-2">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="flex items-center gap-4">
+                <div className="w-14 h-14 rounded-2xl bg-orange-500 text-white flex items-center justify-center font-black text-2xl shadow-md flex-shrink-0">
+                  <Flame className="w-8 h-8 fill-white animate-pulse" />
+                </div>
+                <div className="space-y-0.5">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-black text-orange-600 bg-orange-100 px-2.5 py-0.5 rounded-full whitespace-nowrap">
+                      50일 자기주도 챌린지
+                    </span>
+                    <span className="text-xs font-bold text-text-muted whitespace-nowrap">상위 1.2% 실천력</span>
+                  </div>
+                  <h4 className="text-xl font-black text-text-primary">현재 <strong className="text-orange-600">14일 연속</strong> 습관 미션 완결 성공!</h4>
+                  <p className="text-xs text-text-muted">내일 한 번 더 완수 시 '3주차 열정 마스터 뱃지'와 +50 EXP 보너스가 추가 지급됩니다.</p>
+                </div>
+              </div>
+              <Link to="/habits" className="self-start sm:self-center">
+                <Button variant="outline" size="sm" className="font-extrabold whitespace-nowrap bg-white border-orange-300 text-orange-600 shadow-sm">
+                  오늘의 루틴 체크하기 &rarr;
+                </Button>
+              </Link>
+            </div>
+          </Card>
+        </div>
+
+      </div>
+
+      {/* TABS SELECTOR (BADGES vs QUESTS vs HABIT TRENDS) */}
+      <div className="space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-surface-variant/50 pb-4">
+          <div className="flex gap-2 overflow-x-auto">
+            <button
+              onClick={() => setActiveCategory("all")}
+              className={`px-5 py-2.5 rounded-full text-xs font-black transition-all whitespace-nowrap border ${
+                activeCategory === "all"
+                  ? "bg-primary text-on-primary border-primary shadow-md"
+                  : "bg-surface-container-low text-text-muted border-surface-variant/50 hover:bg-surface-container"
+              }`}
+            >
+              🏅 뱃지 컬렉션 & 누적 퀘스트 전체
+            </button>
+            <button
+              onClick={() => setActiveCategory("badges")}
+              className={`px-5 py-2.5 rounded-full text-xs font-black transition-all whitespace-nowrap border ${
+                activeCategory === "badges"
+                  ? "bg-primary text-on-primary border-primary shadow-md"
+                  : "bg-surface-container-low text-text-muted border-surface-variant/50 hover:bg-surface-container"
+              }`}
+            >
+              🌟 획득/미획득 뱃지 모아보기 (8건)
+            </button>
+            <button
+              onClick={() => setActiveCategory("quests")}
+              className={`px-5 py-2.5 rounded-full text-xs font-black transition-all whitespace-nowrap border ${
+                activeCategory === "quests"
+                  ? "bg-primary text-on-primary border-primary shadow-md"
+                  : "bg-surface-container-low text-text-muted border-surface-variant/50 hover:bg-surface-container"
+              }`}
+            >
+              ✅ 실천 완료 퀘스트 및 습관 로그
+            </button>
+          </div>
+
+          <span className="text-xs font-bold text-text-muted whitespace-nowrap">
+            ● 아리(Ari) AI 동기부여 엔진 · 데이터 안전 동기화 완료
+          </span>
+        </div>
+
+        {/* SECTION 1: BADGE COLLECTION (획득/미획득 자극 엔진) */}
+        {(activeCategory === "all" || activeCategory === "badges") && (
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-headline font-black text-text-primary flex items-center gap-2">
+                <Award className="w-5 h-5 text-primary flex-shrink-0" />
+                <span>ReadyCareer 명예의 뱃지 컬렉션 (현재 5개 획득 / 3개 미획득)</span>
+              </h3>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+              {badgeCollection.map((badge) => (
+                <div
+                  key={badge.id}
+                  className={`p-5 rounded-3xl border-2 transition-all duration-300 flex flex-col justify-between relative overflow-hidden min-h-[220px] ${
+                    badge.unlocked
+                      ? "bg-white border-primary/40 shadow-3d-ambient hover:scale-[1.02] hover:border-primary"
+                      : "bg-surface-container/50 border-surface-variant/40 opacity-75 grayscale hover:grayscale-0 transition-all"
+                  }`}
+                >
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-4xl drop-shadow-md">{badge.icon}</span>
+                      {badge.unlocked ? (
+                        <span className="text-[10px] font-black bg-primary/10 text-primary px-2.5 py-1 rounded-full whitespace-nowrap border border-primary/20">
+                          ✓ 획득 완료
+                        </span>
+                      ) : (
+                        <span className="text-[10px] font-extrabold bg-surface-variant/40 text-text-muted px-2.5 py-1 rounded-full flex items-center gap-1 whitespace-nowrap">
+                          <Lock className="w-3 h-3 flex-shrink-0" /> 도전 중
+                        </span>
+                      )}
+                    </div>
+
+                    <div>
+                      <h4 className="font-headline font-black text-text-primary text-base leading-snug">
+                        {badge.name}
+                      </h4>
+                      <p className="text-xs text-text-muted mt-1 leading-relaxed">
+                        {badge.desc}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="pt-3 mt-4 border-t border-surface-variant/30 text-[11px] font-extrabold">
+                    {badge.unlocked ? (
+                      <span className="text-secondary-spot flex items-center gap-1">
+                        <CheckCircle2 className="w-3.5 h-3.5 inline flex-shrink-0" /> 획득일: {badge.date}
+                      </span>
+                    ) : (
+                      <span className="text-orange-600 bg-orange-50 px-2 py-1 rounded-lg block text-center font-bold whitespace-nowrap">
+                        🎯 {badge.requirement}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* SECTION 2: COMPLETED QUESTS & HABIT STREAK LOGS */}
+        {(activeCategory === "all" || activeCategory === "quests") && (
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 pt-4">
+            
+            {/* Completed Quests Timeline (7 COL) */}
+            <div className="lg:col-span-7 bg-white rounded-3xl p-6 md:p-8 border border-surface-variant/50 shadow-sm space-y-6">
+              <div className="flex items-center justify-between border-b border-surface-variant/40 pb-4">
+                <div className="space-y-0.5">
+                  <h3 className="text-lg font-headline font-black text-text-primary flex items-center gap-2">
+                    <CheckCircle2 className="w-5 h-5 text-secondary-spot flex-shrink-0" />
+                    <span>최근 실천 완료 퀘스트 및 탐구 내역</span>
+                  </h3>
+                  <p className="text-xs text-text-muted">내가 수행하고 주도적으로 완수한 진로 활동은 선생님의 생기부 데이터로 전달됩니다.</p>
+                </div>
+                <span className="text-xs font-black text-primary bg-primary-fixed/50 px-3 py-1 rounded-full whitespace-nowrap flex-shrink-0">
+                  총 14건 완수
+                </span>
+              </div>
+
+              <div className="space-y-4">
+                {completedQuests.map((q) => (
+                  <div key={q.id} className="p-4 rounded-2xl bg-surface-container-low border border-surface-variant/40 hover:border-secondary transition-colors flex items-center justify-between gap-4 shadow-inner">
+                    <div className="space-y-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <span className="text-[10px] font-black uppercase text-secondary bg-secondary/15 px-2.5 py-0.5 rounded-full whitespace-nowrap flex-shrink-0">
+                          {q.type}
+                        </span>
+                        <span className="text-xs text-text-muted font-bold whitespace-nowrap">{q.date}</span>
+                      </div>
+                      <h4 className="text-sm font-headline font-black text-text-primary truncate">
+                        {q.title}
+                      </h4>
+                    </div>
+                    <span className="text-xs font-black text-white bg-primary px-3 py-1 rounded-full whitespace-nowrap shadow-sm flex-shrink-0">
+                      {q.exp}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Habit Execution Logs & Success Rates (5 COL) */}
+            <div className="lg:col-span-5 bg-white rounded-3xl p-6 md:p-8 border border-surface-variant/50 shadow-sm space-y-6 flex flex-col justify-between">
+              <div className="space-y-4">
+                <div className="flex items-center justify-between border-b border-surface-variant/40 pb-4">
+                  <div className="space-y-0.5">
+                    <h3 className="text-lg font-headline font-black text-text-primary flex items-center gap-2">
+                      <TrendingUp className="w-5 h-5 text-orange-500 flex-shrink-0" />
+                      <span>50일 자기계발 실천 습관 현황</span>
+                    </h3>
+                    <p className="text-xs text-text-muted">매일 쌓이는 작은 세특 습관이 최고의 입시 스펙이 됩니다.</p>
+                  </div>
+                  <span className="text-xs font-black text-orange-600 bg-orange-100 px-2.5 py-1 rounded-full whitespace-nowrap flex-shrink-0">
+                    평균 92% 달성
+                  </span>
+                </div>
+
+                <div className="space-y-5 pt-2">
+                  {habitsList.map((h, idx) => (
+                    <div key={idx} className="space-y-2">
+                      <div className="flex justify-between items-center text-xs font-black gap-2">
+                        <span className="text-text-primary truncate">{h.title}</span>
+                        <span className="text-orange-600 font-black whitespace-nowrap flex-shrink-0">{h.streak} ({h.rate}%)</span>
+                      </div>
+                      <ProgressBar value={h.rate} max={100} variant="teal" className="h-2.5" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="pt-6 mt-4 border-t border-surface-variant/40 flex items-center justify-between bg-primary-fixed/20 p-4 rounded-2xl">
+                <div className="flex items-center gap-3">
+                  <MascotAri pose="sticker" size="sm" rotate={false} />
+                  <div>
+                    <strong className="text-xs font-extrabold text-primary block whitespace-nowrap">아리(Ari)의 동기부여 코칭</strong>
+                    <span className="text-[11px] text-text-muted">오늘 습관을 체크하면 레벨 6 고지에 도약할 수 있어요!</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        )}
+
+      </div>
+
+    </div>
+  );
+};
+
+export default MyPage;

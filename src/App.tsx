@@ -22,6 +22,7 @@ import {
   SelfReport,
   IntelligenceTest,
   LearningStyleTest,
+  MyPage,
 } from "./pages";
 import { AuthProvider, SelfUnderstandingProvider, useAuth } from "./context";
 import "./App.css";
@@ -85,6 +86,7 @@ const AppContent: React.FC = () => {
 
           {/* Student Core Dashboard & Self-Understanding Hub */}
           <Route path="/" element={<PrivateRoute><HomeDashboard /></PrivateRoute>} />
+          <Route path="/mypage" element={<PrivateRoute><MyPage /></PrivateRoute>} />
           <Route path="/self-understanding" element={<PrivateRoute><SelfUnderstanding /></PrivateRoute>} />
           <Route path="/self-report" element={<PrivateRoute><SelfReport /></PrivateRoute>} />
 

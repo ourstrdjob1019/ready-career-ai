@@ -42,11 +42,11 @@ export const InterestTest: React.FC = () => {
       {/* Top Header & Progress */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary/15 text-secondary font-headline text-xs font-black">
-            <Brain className="w-4 h-4 text-secondary-spot" />
-            <span>Holland RIASEC 상황 설명형 양자택일 (A/B) 6유형 검사</span>
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary/15 text-secondary font-headline text-xs font-black whitespace-nowrap border border-secondary/20 shadow-sm">
+            <Brain className="w-4 h-4 text-secondary-spot flex-shrink-0" />
+            <span>Holland RIASEC 실전 18문항 양자택일 진단</span>
           </span>
-          <span className="text-xs font-headline font-black text-text-muted">
+          <span className="text-xs font-headline font-black text-text-muted whitespace-nowrap">
             문항 {currentIdx + 1} / {questions.length} ({progressPercent}%)
           </span>
         </div>
@@ -84,10 +84,10 @@ export const InterestTest: React.FC = () => {
         >
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <span className="w-10 h-10 rounded-2xl bg-primary text-on-primary font-headline font-black text-lg flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
+              <span className="w-10 h-10 rounded-2xl bg-primary text-on-primary font-headline font-black text-lg flex items-center justify-center shadow-md group-hover:scale-110 transition-transform flex-shrink-0">
                 A
               </span>
-              <span className="text-[11px] font-extrabold text-primary px-2.5 py-0.5 rounded-full bg-primary/10">
+              <span className="text-[11px] font-extrabold text-primary px-2.5 py-0.5 rounded-full bg-primary/10 whitespace-nowrap">
                 선택지 &larr; (좌 화살표)
               </span>
             </div>
@@ -109,10 +109,10 @@ export const InterestTest: React.FC = () => {
         >
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <span className="w-10 h-10 rounded-2xl bg-secondary text-white font-headline font-black text-lg flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
+              <span className="w-10 h-10 rounded-2xl bg-secondary text-white font-headline font-black text-lg flex items-center justify-center shadow-md group-hover:scale-110 transition-transform flex-shrink-0">
                 B
               </span>
-              <span className="text-[11px] font-extrabold text-secondary-spot px-2.5 py-0.5 rounded-full bg-secondary/10">
+              <span className="text-[11px] font-extrabold text-secondary-spot px-2.5 py-0.5 rounded-full bg-secondary/10 whitespace-nowrap">
                 (우 화살표) &rarr; 선택지
               </span>
             </div>

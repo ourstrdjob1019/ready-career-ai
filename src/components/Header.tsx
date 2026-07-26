@@ -30,10 +30,10 @@ export const Header: React.FC = () => {
 
   const studentNavItems = [
     { label: "홈", path: "/", icon: Home },
-    { label: "자기이해", path: "/self-understanding", icon: Brain, badge: "AI 진단" },
     { label: "별자리 로드맵", path: "/roadmap", icon: Compass },
-    { label: "습관 관리", path: "/habits", icon: Award },
-    { label: "진로 포트폴리오", path: "/portfolio", icon: Award },
+    { label: "습관&목표", path: "/habits", icon: Award },
+    { label: "포트폴리오", path: "/portfolio", icon: Award },
+    { label: "마이페이지", path: "/mypage", icon: UserCheck, badge: "누적" },
   ];
 
   const teacherNavItems = [
@@ -120,22 +120,26 @@ export const Header: React.FC = () => {
         <div className="hidden md:flex items-center gap-3">
           {isAuthenticated && !isStartScreen && session ? (
             <div className="flex items-center gap-3">
-              {/* User badge */}
-              <div className="flex items-center gap-2 bg-surface-container-low px-3.5 py-1.5 rounded-full border border-surface-variant/50 shadow-inner">
+              {/* User badge (Click to visit MyPage) */}
+              <Link
+                to={session.role === "teacher" ? "/teacher" : session.role === "super_admin" ? "/super-admin" : "/mypage"}
+                className="flex items-center gap-2 bg-surface-container-low hover:bg-surface-container px-3.5 py-1.5 rounded-full border border-surface-variant/50 shadow-inner transition-colors group cursor-pointer"
+                title="누적 마이페이지 열람하기"
+              >
                 {session.role === "super_admin" ? (
-                  <ShieldAlert className="w-4 h-4 text-secondary-spot" />
+                  <ShieldAlert className="w-4 h-4 text-secondary-spot group-hover:scale-110 transition-transform flex-shrink-0" />
                 ) : session.role === "teacher" ? (
-                  <ShieldCheck className="w-4 h-4 text-secondary" />
+                  <ShieldCheck className="w-4 h-4 text-secondary group-hover:scale-110 transition-transform flex-shrink-0" />
                 ) : (
-                  <UserCheck className="w-4 h-4 text-primary" />
+                  <UserCheck className="w-4 h-4 text-primary group-hover:scale-110 transition-transform flex-shrink-0" />
                 )}
-                <span className="text-xs font-headline font-black text-text-primary">
+                <span className="text-xs font-headline font-black text-text-primary whitespace-nowrap group-hover:text-primary transition-colors">
                   {session.name}
                 </span>
-                <Chip size="sm" variant={session.role === "super_admin" || session.role === "teacher" ? "teal" : "default"} className="py-0.5 text-[10px] font-extrabold">
-                  {session.role === "super_admin" ? "마스터" : session.role === "teacher" ? "교직원" : "학생"}
+                <Chip size="sm" variant={session.role === "super_admin" || session.role === "teacher" ? "teal" : "default"} className="py-0.5 text-[10px] font-extrabold whitespace-nowrap">
+                  {session.role === "super_admin" ? "마스터" : session.role === "teacher" ? "교직원" : "마이페이지 🌟"}
                 </Chip>
-              </div>
+              </Link>
 
               {/* Logout button */}
               <button
