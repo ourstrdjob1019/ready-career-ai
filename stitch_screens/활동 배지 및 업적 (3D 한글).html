@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-surface-variant": "#484554",
+                    "background": "#fdf8ff",
+                    "tertiary-fixed": "#e7deff",
+                    "on-tertiary": "#ffffff",
+                    "primary-fixed": "#e6deff",
+                    "on-primary-fixed-variant": "#4a21be",
+                    "outline-variant": "#cac4d7",
+                    "on-tertiary-fixed": "#1e0060",
+                    "on-secondary-fixed": "#1f0060",
+                    "on-secondary-container": "#fffbff",
+                    "secondary-fixed-dim": "#ccbdff",
+                    "error-container": "#ffdad6",
+                    "on-error": "#ffffff",
+                    "secondary": "#6242c8",
+                    "primary": "#6240d5",
+                    "on-tertiary-container": "#ffffff",
+                    "surface-container-lowest": "#ffffff",
+                    "error": "#ba1a1a",
+                    "outline": "#797586",
+                    "inverse-surface": "#312f39",
+                    "surface-bright": "#fdf8ff",
+                    "on-surface": "#1c1a23",
+                    "tertiary-fixed-dim": "#ccbeff",
+                    "primary-fixed-dim": "#cbbeff",
+                    "surface-variant": "#e6e0ed",
+                    "secondary-fixed": "#e7deff",
+                    "surface-dim": "#ddd8e4",
+                    "surface-container-low": "#f7f1fe",
+                    "surface-container-highest": "#e6e0ed",
+                    "inverse-primary": "#cbbeff",
+                    "surface-container-high": "#ece6f3",
+                    "surface": "#fdf8ff",
+                    "surface-tint": "#6341d6",
+                    "primary-container": "#7b5cf0",
+                    "on-primary-fixed": "#1d0061",
+                    "on-error-container": "#93000a",
+                    "on-tertiary-fixed-variant": "#4c19c5",
+                    "on-secondary": "#ffffff",
+                    "on-primary-container": "#ffffff",
+                    "secondary-container": "#7b5de3",
+                    "on-primary": "#ffffff",
+                    "on-secondary-fixed-variant": "#4c27b2",
+                    "tertiary-container": "#7d59f7",
+                    "on-background": "#1c1a23",
+                    "inverse-on-surface": "#f4eefb",
+                    "tertiary": "#643cdc",
+                    "surface-container": "#f1ebf8"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "16px",
+                    "container-padding": "24px",
+                    "unit": "8px",
+                    "card-gap": "24px"
+            },
+            "fontFamily": {
+                    "title-md": ["Hanken Grotesk"],
+                    "body-md": ["Hanken Grotesk"],
+                    "label-sm": ["Hanken Grotesk"],
+                    "headline-lg-mobile": ["Hanken Grotesk"],
+                    "headline-lg": ["Hanken Grotesk"],
+                    "display-lg": ["Hanken Grotesk"]
+            },
+            "fontSize": {
+                    "title-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Hanken Grotesk', sans-serif; background-color: #fdf8ff; color: #1c1a23; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1.5px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0px 20px 40px rgba(123, 92, 240, 0.1);
+        }
+        .achievement-glow {
+            background: radial-gradient(circle, rgba(123, 92, 240, 0.25) 0%, rgba(123, 92, 240, 0) 70%);
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        .animate-float { animation: float 4s ease-in-out infinite; }
+        .bezel-glow { box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.8); }
+    </style>
+</head>
+<body class="min-h-screen pb-24">
+<!-- TopAppBar -->
+<header class="w-full sticky top-0 z-50 bg-white/60 backdrop-blur-xl border-b-[1.5px] border-white/40 shadow-[0px_20px_40px_rgba(123,92,240,0.1)]">
+<div class="flex justify-between items-center px-gutter py-4">
+<button class="text-primary hover:bg-primary/5 transition-colors active:scale-95 transition-transform p-2 rounded-full">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h1 class="font-title-md text-title-md text-primary">나의 업적</h1>
+<div class="w-10 h-10 rounded-full border-2 border-primary-container overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="A high-quality 3D rendered avatar of Ari the puppy mascot smiling warmly, set against a soft lavender and white studio background. The mascot has soft textures and friendly features, perfectly reflecting a premium companion for middle school students in a modern digital educational environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDoWPWYi2yB56vAwqYFW_965dC-Yrz55H8yHdLsi6i_qBkL6B0Rg4JXJccrNrBHpTuFVAxPmPKdWdDmcvxvWkSIkCePGb95hysnITHBIRxA3PB6IsPf3n1TUyY44IT4-xnq20_P7YcUA_ieuiM3uTUeJSsarHk57CDIc6Lbt91wvDnRsfqwnn89TfIeWJ5PIoD969JNo96Ttk90v2XQLPngnxOUD_25Vesdsq8nb3upRSFI6JugeKFbHrhF5krOJXmZsVpLjKCOsEgV"/>
+</div>
+</div>
+</header>
+<main class="max-w-md mx-auto px-6 pt-8">
+<!-- Center Hero Section -->
+<section class="relative flex flex-col items-center justify-center mb-12">
+<div class="absolute inset-0 achievement-glow rounded-full scale-125 blur-3xl -z-10"></div>
+<div class="animate-float">
+<img alt="Achievements Trophy" class="w-64 h-64 drop-shadow-[0_35px_35px_rgba(123,92,240,0.3)]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBr0P8FZJ16UIemgjjSyk28eH2kSXxvutdmVv3nyIF3NibT0yIoOjnSvkzh_eOpQtZ8SLVBsPC1wO0vzM_zGSfQarzqU6pZUj-WRJUy3QpTYza_JQ9lSIkNJs9Gs-smq_9gHIw3tnLbwn7SQsfeZwXBlXPOvPGZc7IKlwW3tWPLSaRxKUjef-ZRfwVX9oTIP8Dg3aM_hCD5rNXMnsFknDChWG6IGOnFUUO2h9yRx8YWlzMFbJ7tAdEpQSz4mZHhMb1rLny8x61UMkab"/>
+</div>
+<div class="mt-8 text-center space-y-2">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-primary tracking-tight">
+                    대단해요!
+                </h2>
+<p class="font-title-md text-title-md text-on-surface-variant">
+                    벌써 <span class="text-primary-container font-extrabold">5개</span>의 배지를 모았어요
+                </p>
+</div>
+</section>
+<!-- Stats Quick View -->
+<div class="grid grid-cols-2 gap-4 mb-10">
+<div class="glass-card rounded-lg p-5 flex flex-col items-center justify-center text-center">
+<span class="text-label-sm font-label-sm text-on-surface-variant mb-1">진행률</span>
+<span class="text-title-md font-title-md text-primary">85%</span>
+</div>
+<div class="glass-card rounded-lg p-5 flex flex-col items-center justify-center text-center">
+<span class="text-label-sm font-label-sm text-on-surface-variant mb-1">상위 레벨</span>
+<span class="text-title-md font-title-md text-primary">TOP 5</span>
+</div>
+</div>
+<!-- Badge Grid -->
+<section>
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-title-md text-title-md text-on-surface">수집한 배지</h3>
+<button class="text-primary font-label-sm text-label-sm">전체보기</button>
+</div>
+<div class="grid grid-cols-3 gap-6">
+<!-- Badge 1 -->
+<div class="flex flex-col items-center group">
+<div class="w-20 h-20 rounded-full glass-card flex items-center justify-center mb-3 group-hover:scale-105 transition-transform bezel-glow">
+<div class="w-14 h-14 bg-primary-container/20 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">footprint</span>
+</div>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface text-center">첫 걸음</span>
+</div>
+<!-- Badge 2 -->
+<div class="flex flex-col items-center group">
+<div class="w-20 h-20 rounded-full glass-card flex items-center justify-center mb-3 group-hover:scale-105 transition-transform bezel-glow">
+<div class="w-14 h-14 bg-secondary-container/20 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary text-3xl" style="font-variation-settings: 'FILL' 1;">travel_explore</span>
+</div>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface text-center">탐구왕</span>
+</div>
+<!-- Badge 3 -->
+<div class="flex flex-col items-center group">
+<div class="w-20 h-20 rounded-full glass-card flex items-center justify-center mb-3 group-hover:scale-105 transition-transform bezel-glow">
+<div class="w-14 h-14 bg-tertiary-container/20 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary text-3xl" style="font-variation-settings: 'FILL' 1;">calendar_check</span>
+</div>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface text-center">성실한 습관</span>
+</div>
+<!-- Badge 4 -->
+<div class="flex flex-col items-center group">
+<div class="w-20 h-20 rounded-full glass-card flex items-center justify-center mb-3 group-hover:scale-105 transition-transform bezel-glow">
+<div class="w-14 h-14 bg-primary/20 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">groups</span>
+</div>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface text-center text-balance">프로젝트 리더</span>
+</div>
+<!-- Badge 5 -->
+<div class="flex flex-col items-center group">
+<div class="w-20 h-20 rounded-full glass-card flex items-center justify-center mb-3 group-hover:scale-105 transition-transform bezel-glow">
+<div class="w-14 h-14 bg-primary-container/20 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface text-center">비전가</span>
+</div>
+<!-- Locked Placeholder -->
+<div class="flex flex-col items-center opacity-40">
+<div class="w-20 h-20 rounded-full bg-surface-container-highest flex items-center justify-center mb-3">
+<span class="material-symbols-outlined text-outline text-3xl">lock</span>
+</div>
+<span class="text-label-sm font-label-sm text-outline text-center">잠겨있음</span>
+</div>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="mt-12 mb-8">
+<button class="w-full py-5 px-6 bg-gradient-to-br from-primary to-primary-container text-on-primary font-title-md text-title-md rounded-lg shadow-[0px_20px_40px_rgba(123,92,240,0.25)] flex items-center justify-between bezel-glow active:scale-95 transition-all">
+<span>다음 목표 도전하기</span>
+<span class="material-symbols-outlined">arrow_forward_ios</span>
+</button>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-2 bg-white/60 backdrop-blur-xl border-t-[1.5px] border-white/40 shadow-[0px_-10px_30px_rgba(123,92,240,0.1)] rounded-t-lg">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all px-4 py-2" href="#">
+<span class="material-symbols-outlined" data-icon="route">route</span>
+<span class="font-label-sm text-label-sm mt-1">Roadmap</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all px-4 py-2" href="#">
+<span class="material-symbols-outlined" data-icon="task_alt">task_alt</span>
+<span class="font-label-sm text-label-sm mt-1">Habits</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all px-4 py-2" href="#">
+<span class="material-symbols-outlined" data-icon="work">work</span>
+<span class="font-label-sm text-label-sm mt-1">Portfolio</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-2xl px-4 py-2 shadow-md active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="military_tech" style="font-variation-settings: 'FILL' 1;">military_tech</span>
+<span class="font-label-sm text-label-sm mt-1">Badges</span>
+</a>
+</nav>
+<script>
+        // Simple entry animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.group');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    card.style.transition = 'all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 400 + (index * 100));
+            });
+        });
+    </script>
+</body></html>

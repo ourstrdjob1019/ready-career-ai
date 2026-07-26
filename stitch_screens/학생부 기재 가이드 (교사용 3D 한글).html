@@ -1,0 +1,359 @@
+<!DOCTYPE html><html lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>학생부 기재 가이드</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-container": "#f1ebf8",
+                        "tertiary-container": "#7d59f7",
+                        "inverse-on-surface": "#f4eefb",
+                        "outline": "#797586",
+                        "surface-variant": "#e6e0ed",
+                        "secondary-fixed-dim": "#ccbdff",
+                        "secondary-fixed": "#e7deff",
+                        "surface-container-low": "#f7f1fe",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-fixed": "#1e0060",
+                        "on-tertiary": "#ffffff",
+                        "on-background": "#1c1a23",
+                        "on-surface": "#1c1a23",
+                        "on-secondary-fixed": "#1f0060",
+                        "primary-fixed": "#e6deff",
+                        "on-primary-fixed-variant": "#4a21be",
+                        "inverse-primary": "#cbbeff",
+                        "on-primary-container": "#ffffff",
+                        "on-error": "#ffffff",
+                        "on-tertiary-container": "#ffffff",
+                        "surface-tint": "#6341d6",
+                        "on-surface-variant": "#484554",
+                        "on-secondary-container": "#fffbff",
+                        "inverse-surface": "#312f39",
+                        "background": "#fdf8ff",
+                        "surface-dim": "#ddd8e4",
+                        "surface-container-highest": "#e6e0ed",
+                        "on-secondary-fixed-variant": "#4c27b2",
+                        "tertiary": "#643cdc",
+                        "on-tertiary-fixed-variant": "#4c19c5",
+                        "primary-fixed-dim": "#cbbeff",
+                        "outline-variant": "#cac4d7",
+                        "tertiary-fixed-dim": "#ccbeff",
+                        "on-primary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed": "#1d0061",
+                        "error": "#ba1a1a",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-bright": "#fdf8ff",
+                        "tertiary-fixed": "#e7deff",
+                        "primary": "#6240d5",
+                        "secondary-container": "#7b5de3",
+                        "surface": "#fdf8ff",
+                        "error-container": "#ffdad6",
+                        "surface-container-high": "#ece6f3",
+                        "secondary": "#6242c8",
+                        "primary-container": "#7b5cf0"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "unit": "8px",
+                        "card-gap": "24px",
+                        "container-padding": "24px",
+                        "gutter": "16px"
+                    },
+                    fontFamily: {
+                        "headline-lg": ["Hanken Grotesk", "sans-serif"],
+                        "label-sm": ["Hanken Grotesk", "sans-serif"],
+                        "body-md": ["Hanken Grotesk", "sans-serif"],
+                        "title-md": ["Hanken Grotesk", "sans-serif"],
+                        "display-lg": ["Hanken Grotesk", "sans-serif"],
+                        "headline-lg-mobile": ["Hanken Grotesk", "sans-serif"]
+                    },
+                    fontSize: {
+                        "headline-lg": ["32px", { lineHeight: "40px", letterSpacing: "-0.01em", fontWeight: "700" }],
+                        "label-sm": ["12px", { lineHeight: "16px", letterSpacing: "0.05em", fontWeight: "600" }],
+                        "body-md": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+                        "title-md": ["20px", { lineHeight: "28px", fontWeight: "600" }],
+                        "display-lg": ["48px", { lineHeight: "56px", letterSpacing: "-0.02em", fontWeight: "800" }],
+                        "headline-lg-mobile": ["28px", { lineHeight: "36px", fontWeight: "700" }]
+                    },
+                    boxShadow: {
+                        'float': '0px 20px 40px rgba(123, 92, 240, 0.1)',
+                        'float-hover': '0px 30px 60px rgba(123, 92, 240, 0.15)',
+                        'inner-glow': 'inset 0 1px 0 rgba(255, 255, 255, 0.6)'
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Hanken Grotesk', sans-serif; }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1.5px solid rgba(255, 255, 255, 0.4);
+            border-left: 1.5px solid rgba(255, 255, 255, 0.4);
+        }
+        .neumorphic-inset {
+            box-shadow: inset 4px 4px 8px rgba(197, 186, 219, 0.5), inset -4px -4px 8px rgba(255, 255, 255, 0.9);
+            background: #f1ebf8;
+        }
+        .checkbox-3d {
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            background: #f1ebf8;
+            box-shadow: inset 2px 2px 4px rgba(197, 186, 219, 0.5), inset -2px -2px 4px rgba(255, 255, 255, 0.9);
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .checkbox-3d:checked {
+            background: #6240d5;
+            box-shadow: inset 2px 2px 4px rgba(40, 20, 100, 0.5);
+        }
+        .checkbox-3d:checked::after {
+            content: '✓';
+            position: absolute;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .checkbox-3d:disabled {
+            background: #e6e0ed;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+        
+        .progress-bar-3d-track {
+            background: #f1ebf8;
+            box-shadow: inset 2px 2px 4px rgba(197, 186, 219, 0.5), inset -2px -2px 4px rgba(255, 255, 255, 0.9);
+            border-radius: 9999px;
+            height: 12px;
+            width: 100%;
+            overflow: hidden;
+        }
+        .progress-bar-3d-fill {
+            background: linear-gradient(90deg, #7b5cf0, #6240d5);
+            box-shadow: inset 0 2px 4px rgba(255,255,255,0.3);
+            height: 100%;
+            border-radius: 9999px;
+            transition: width 0.5s ease-out;
+        }
+
+        .btn-primary-3d {
+            background: linear-gradient(135deg, #7b5cf0, #6240d5);
+            box-shadow: 0px 8px 16px rgba(123, 92, 240, 0.2), inset 0 2px 0 rgba(255, 255, 255, 0.4);
+            transition: all 0.2s ease;
+        }
+        .btn-primary-3d:hover {
+            transform: translateY(-2px);
+            box-shadow: 0px 12px 24px rgba(123, 92, 240, 0.3), inset 0 2px 0 rgba(255, 255, 255, 0.4);
+        }
+        .btn-primary-3d:active {
+            transform: translateY(1px);
+            box-shadow: 0px 4px 8px rgba(123, 92, 240, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen pt-[88px] selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/60 backdrop-blur-xl border-b border-white/40 shadow-float flex justify-between items-center px-6 py-4">
+<div class="flex items-center gap-4">
+<img alt="아워스토리" class="h-8 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDip_2tQd0wZk4g7qVYtDfCfmhsmRkoHqkg_dTmQbRgMPcGPeOgApqozJCTdDybhov7I5IRWcLVv7T6RHLGkvi1OP2Jz2drrXF2JWMk2EnZMlBskst3B8iluao05tBNRExIVugsxKUTathZmke4_nrWsO5ML7GKrTIvdSRg3URFX9ZOL4ggW59NLSnfYjXWTSNMRYMfuS0fXoX95ZzKSQMGTl0qhbAwvKpjyrAcYQS3mLr9RM93Nr-r1jvjGaeO0-2jQzTARi0wJ9T7">
+<span class="text-surface-variant text-xl">|</span>
+<div class="font-title-md text-title-md text-on-surface">교사 대시보드</div>
+</div>
+<nav class="hidden md:flex items-center gap-6">
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:opacity-80 transition-opacity active:scale-95 duration-200 flex items-center gap-2" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+                학급 현황
+            </a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:opacity-80 transition-opacity active:scale-95 duration-200 flex items-center gap-2" href="#">
+<span class="material-symbols-outlined">group</span>
+                학생 상세
+            </a>
+<a class="font-label-sm text-label-sm text-primary hover:opacity-80 transition-opacity active:scale-95 duration-200 flex items-center gap-2 px-3 py-2 bg-primary-container text-on-primary-container rounded-lg shadow-inner-glow" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">assignment</span>
+                학생부 기재 가이드
+            </a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:opacity-80 transition-opacity active:scale-95 duration-200">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="w-10 h-10 rounded-full bg-surface-variant shadow-float overflow-hidden border-2 border-white">
+<img class="w-full h-full object-cover" data-alt="Professional teacher profile avatar in 3d style soft lighting vibrant colors" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWL-7sbsgCg8Qt_oKShxiIKAwMPFuHTtIwVVp5a6D0gqIaEhwbypqUWONsEhQVrhkniq0dgTGw6wYFKKgNbQfLCbLbVRiH4wkLqGnHxu3zapwys38ll2cU-g1UOj5ET1cSpg3d-q7nmHAGCwmZ49JUnAomjKWen-24Qf2Nvl5yi3fH4BVh9NWLGr9ww5CPYlUwMm9JyK0GXY8zRk8GB2PHzw_9RaFxAVUu25UeVIRf2iJoEp__KTSXWGS6WV4CX11NEDlnetUVIKjq">
+</div>
+</div>
+</header>
+<main class="max-w-[1440px] mx-auto px-6 md:px-20 py-8">
+<!-- Header Section -->
+<div class="mb-8 flex justify-between items-end">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface mb-2">학생부 기재 가이드</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">AI가 분석한 학생의 활동 내역을 바탕으로 학교생활기록부 기재 초안을 제안합니다.</p>
+</div>
+<div class="flex gap-4">
+<button class="glass-panel font-label-sm text-label-sm text-on-surface px-6 py-3 rounded-DEFAULT shadow-float hover:bg-white/40 transition-all flex items-center gap-2">
+<span class="material-symbols-outlined">chevron_left</span>
+                    이전 학생
+                </button>
+<button class="btn-primary-3d font-label-sm text-label-sm text-on-primary px-6 py-3 rounded-DEFAULT flex items-center gap-2">
+                    다음 학생
+                    <span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-card-gap">
+<!-- Left Panel: Select Activity -->
+<div class="lg:col-span-5 flex flex-col gap-6">
+<div class="bg-surface-container-lowest rounded-[32px] p-8 shadow-float border border-white/50 h-full">
+<div class="flex items-center gap-3 mb-6">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-title-md font-bold shadow-inner-glow">1</div>
+<h2 class="font-title-md text-title-md text-on-surface">활동 선택</h2>
+</div>
+<div class="flex flex-col gap-4 overflow-y-auto max-h-[500px] pr-2 custom-scrollbar">
+<!-- Activity Card 1 (Selected) -->
+<label class="block cursor-pointer group">
+<div class="bg-surface-container rounded-DEFAULT p-5 shadow-float border border-primary-fixed hover:shadow-float-hover transition-all duration-300 relative overflow-hidden">
+<div class="absolute top-0 right-0 w-16 h-16 bg-primary opacity-10 rounded-bl-full"></div>
+<div class="flex gap-4 items-start relative z-10">
+<input checked="" class="checkbox-3d mt-1" name="activity" type="radio">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="px-2 py-1 bg-tertiary/10 text-tertiary rounded-full font-label-sm text-[10px] uppercase tracking-wider">진로활동</span>
+</div>
+<h3 class="font-title-md text-[18px] leading-snug text-on-surface mb-1">AI 기반 미래 직업 탐구 워크숍</h3>
+<p class="font-body-md text-sm text-on-surface-variant line-clamp-2 text-on-surface">인공지능의 원리를 이해하고 미래 직업 변화에 대해 팀원들과 토론함.</p>
+</div>
+</div>
+</div>
+</label>
+<!-- Activity Card 2 -->
+<label class="block cursor-pointer group">
+<div class="bg-surface-container-lowest rounded-DEFAULT p-5 shadow-sm border border-outline-variant/30 hover:shadow-float transition-all duration-300">
+<div class="flex gap-4 items-start">
+<input class="checkbox-3d mt-1" name="activity" type="radio">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="px-2 py-1 bg-secondary/10 text-secondary rounded-full font-label-sm text-[10px] uppercase tracking-wider">진로활동</span>
+</div>
+<h3 class="font-title-md text-[18px] leading-snug text-on-surface mb-1">교내 진로 직업 체험의 날 (IT 기업)</h3>
+<p class="font-body-md text-sm text-on-surface-variant line-clamp-2 text-on-surface">데이터 분석가 멘토링을 통해 실무적인 역량과 필요 자질을 학습함.</p>
+</div>
+</div>
+</div>
+</label>
+<!-- Activity Card 3 (Disabled) -->
+<label class="block group opacity-60">
+<div class="bg-surface-variant/30 rounded-DEFAULT p-5 border border-outline-variant/30">
+<div class="flex gap-4 items-start">
+<input class="checkbox-3d mt-1" disabled="" name="activity" type="radio">
+<div class="w-full">
+<div class="flex items-center justify-between mb-1">
+<span class="px-2 py-1 bg-[#d93a77]/10 text-[#d93a77] rounded-full font-label-sm text-[10px] uppercase tracking-wider">개인활동</span>
+<span class="font-label-sm text-error font-bold text-xs">기재 불가</span>
+</div>
+<h3 class="font-title-md text-[18px] leading-snug text-on-surface mb-1 text-on-surface-variant">외부 코딩 부트캠프 수료</h3>
+<p class="font-body-md text-sm text-on-surface-variant line-clamp-2 text-on-surface">주말 외부 교육기관에서 진행하는 파이썬 기초 과정 이수.</p>
+</div>
+</div>
+</div>
+</label>
+</div>
+</div>
+</div>
+<!-- Right Panel: Writing Guide -->
+<div class="lg:col-span-7 flex flex-col gap-6">
+<!-- Large Vibrant 3D Card -->
+<div class="rounded-[32px] p-8 shadow-float relative overflow-hidden h-full flex flex-col" style="background: linear-gradient(145deg, #7b5cf0, #6240d5); border-top: 2px solid rgba(255,255,255,0.3); border-left: 2px solid rgba(255,255,255,0.3);">
+<!-- Decorative Background Elements -->
+<div class="absolute -top-20 -right-20 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+<div class="absolute bottom-0 left-0 w-48 h-48 bg-black/10 rounded-full blur-2xl"></div>
+<div class="relative z-10 flex-grow flex flex-col">
+<div class="flex justify-between items-start mb-6">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-white text-primary flex items-center justify-center font-title-md font-bold shadow-sm">2</div>
+<h2 class="font-title-md text-title-md text-white">기재 가이드 · 진로활동 특기사항</h2>
+</div>
+<!-- Byte Counter / Limits -->
+<div class="glass-panel px-4 py-2 rounded-lg flex flex-col gap-1 items-end">
+<div class="flex justify-between w-full gap-4 items-center">
+<span class="font-title-md text-sm text-white font-bold">1,240 / 1,500 Byte</span>
+</div>
+<div class="progress-bar-3d-track mt-1 !bg-black/20 !shadow-none">
+<div class="progress-bar-3d-fill !bg-white" style="width: 82%;"></div>
+</div>
+</div>
+</div>
+<!-- Main Editing Area -->
+<div class="glass-panel rounded-xl p-6 mb-6 flex-grow flex flex-col border border-white/20">
+<!-- Tags/Keywords -->
+<label class="font-label-sm mb-2 block tracking-wider text-white">도출된 역량 키워드</label>
+<div class="mb-4 flex flex-wrap gap-2">
+<div class="glass-panel px-3 py-1 rounded-full flex items-center gap-1 font-label-sm text-white text-xs">
+<span class="material-symbols-outlined text-[14px]">lightbulb</span> 문제해결력
+                                </div>
+<div class="glass-panel px-3 py-1 rounded-full flex items-center gap-1 font-label-sm text-white text-xs">
+<span class="material-symbols-outlined text-[14px]">group</span> 협동심
+                                </div>
+<div class="glass-panel px-3 py-1 rounded-full flex items-center gap-1 font-label-sm text-white text-xs">
+<span class="material-symbols-outlined text-[14px]">psychology</span> 비판적 사고
+                                </div>
+</div>
+<label class="font-label-sm mb-2 block tracking-wider mt-4 text-white">권장 문장 구조</label>
+<div class="bg-white/10 rounded-lg p-3 mb-4 text-white font-body-md text-sm border border-white/20 font-bold">
+                            (동기/계기) → (구체적 활동 내용) → (배우고 느낀 점/변화된 역량)
+                        </div>
+<label class="font-label-sm text-white mb-2 block tracking-wider font-bold">참고 문단</label>
+<textarea class="w-full flex-grow bg-white/5 border-none outline-none text-white font-body-md text-body-md resize-none rounded-lg p-4 shadow-[inset_0_2px_10px_rgba(0,0,0,0.1)] focus:ring-1 focus:ring-white/50 placeholder:text-white/40 font-bold" placeholder="활동 내역을 바탕으로 초안을 작성해주세요...">'AI 기반 미래 직업 탐구 워크숍'에 참여하여 인공지능 기술이 미래 산업에 미칠 영향을 깊이 있게 탐구함. 특히 빅데이터 분석이 실생활에 적용되는 사례에 관심을 가지고 팀원들과 활발히 토론을 주도함. 이 과정에서 발생한 의견 충돌을 논리적 근거를 바탕으로 조율하며 뛰어난 문제해결력과 리더십을 발휘함.
+
+진로 직업 체험의 날 행사를 통해 IT 기업 현직자의 멘토링을 받으며, 데이터 분석가로서 갖춰야 할 논리적 사고력과 커뮤니케이션 능력을 배양함. 이를 계기로 관련 도서를 찾아 읽고 스스로 심화 학습을 진행하는 등 자기주도적 진로 탐색 역량이 돋보임.</textarea>
+</div>
+<p class="text-xs text-center mb-4 font-bold text-white">본 내용은 참고 자료입니다. 실제 기재는 교사가 직접 확인·작성해야 합니다.</p>
+<!-- Action Bar inside Card -->
+<div class="flex justify-end items-center mt-auto">
+<button class="bg-white text-primary font-title-md text-sm px-6 py-3 rounded-lg shadow-[0_8px_16px_rgba(0,0,0,0.2)] hover:shadow-[0_12px_24px_rgba(0,0,0,0.3)] hover:-translate-y-1 transition-all duration-200 font-bold flex items-center gap-2">
+                                최종본 저장
+                                <span class="material-symbols-outlined">save</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent; 
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(121, 117, 134, 0.2); 
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(121, 117, 134, 0.4); 
+        }
+    </style>
+
+
+</body></html>

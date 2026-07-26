@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+
+<html lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>나의 성장 지표 - Radar Chart</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/threejs/r128/three.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;600;700&display=swap');
+        
+        :root {
+            --primary-violet: #7B5CF0;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #05020f;
+            font-family: 'Hanken Grotesk', sans-serif;
+            color: white;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+        }
+
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        #chart-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .ui-layer {
+            position: relative;
+            z-index: 20;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            pointer-events: none;
+        }
+
+        .interactive {
+            pointer-events: auto;
+        }
+    </style>
+</head>
+<body class="bg-black">
+<!-- Background Shader Canvas -->
+<canvas id="bg-canvas"></canvas>
+<!-- 3D Radar Chart Canvas -->
+<div id="chart-container"></div>
+<!-- UI Overlay -->
+<div class="ui-layer p-6 justify-between">
+<!-- Header -->
+<header class="flex items-center gap-4 interactive">
+<button class="w-10 h-10 flex items-center justify-center glass-card rounded-full">
+<span class="material-symbols-outlined text-white">chevron_left</span>
+</button>
+<h1 class="text-xl font-semibold">나의 성장 지표</h1>
+</header>
+<!-- Bottom Content -->
+<div class="space-y-6">
+<!-- Competency Labels -->
+<div class="flex flex-wrap gap-2 justify-center interactive">
+<span class="glass-card px-4 py-2 text-sm font-medium">문제해결</span>
+<span class="glass-card px-4 py-2 text-sm font-medium">탐구력</span>
+<span class="glass-card px-4 py-2 text-sm font-medium">협동심</span>
+<span class="glass-card px-4 py-2 text-sm font-medium">창의성</span>
+<span class="glass-card px-4 py-2 text-sm font-medium">논리력</span>
+</div>
+<!-- Action Area -->
+<div class="flex justify-center pb-8 interactive">
+<button class="flex items-center gap-2 bg-[#7B5CF0] hover:bg-[#6a4de0] text-white px-8 py-4 rounded-full shadow-[0_0_20px_rgba(123,92,240,0.5)] transition-all active:scale-95" id="add-record-btn">
+<span class="material-symbols-outlined">add</span>
+<span class="font-semibold text-lg">기록 추가하기</span>
+</button>
+</div>
+</div>
+</div>
+<script id="bg-vs" type="x-shader/x-vertex">
+        void main() {
+            gl_Position = vec4(position, 1.0);
+        }
+    </script>
+<script id="bg-fs" type="x-shader/x-fragment">
+        precision highp float;
+        uniform float u_time;
+        uniform vec2 u_resolution;
+
+        void main() {
+            vec2 uv = gl_FragCoord.xy / u_resolution.xy;
+            
+            // Dynamic moving gradient from ANIMATION_44
+            vec3 color1 = vec3(0.05, 0.02, 0.15); // Very deep dark violet
+            vec3 color2 = vec3(0.15, 0.08, 0.3);  // Mid deep violet
+            vec3 accent = vec3(0.48, 0.36, 0.94); // #7B5CF0
+            
+            float noise = sin(uv.x * 2.0 + u_time * 0.3) * cos(uv.y * 2.5 + u_time * 0.2);
+            float glow = smoothstep(0.5, 0.0, length(uv - 0.5));
+            
+            vec3 finalColor = mix(color1, color2, uv.y + noise * 0.1);
+            finalColor += accent * glow * 0.15;
+            
+            gl_FragColor = vec4(finalColor, 1.0);
+        }
+    </script>
+<script>
+        // 1. Background Shader Setup
+        const bgCanvas = document.getElementById('bg-canvas');
+        const bgRenderer = new THREE.WebGLRenderer({ canvas: bgCanvas, antialias: true });
+        const bgScene = new THREE.Scene();
+        const bgCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+        const bgGeometry = new THREE.PlaneGeometry(2, 2);
+        const bgUniforms = {
+            u_time: { value: 0 },
+            u_resolution: { value: new THREE.Vector2() }
+        };
+        const bgMaterial = new THREE.ShaderMaterial({
+            uniforms: bgUniforms,
+            vertexShader: document.getElementById('bg-vs').textContent,
+            fragmentShader: document.getElementById('bg-fs').textContent
+        });
+        const bgMesh = new THREE.Mesh(bgGeometry, bgMaterial);
+        bgScene.add(bgMesh);
+
+        // 2. Radar Chart Setup (from SCREEN_45 logic)
+        const chartContainer = document.getElementById('chart-container');
+        const chartScene = new THREE.Scene();
+        const chartCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const chartRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        chartRenderer.setSize(window.innerWidth, window.innerHeight);
+        chartRenderer.setPixelRatio(window.devicePixelRatio);
+        chartContainer.appendChild(chartRenderer.domElement);
+
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+        chartScene.add(ambientLight);
+        const pointLight = new THREE.PointLight(0x7B5CF0, 3, 50);
+        pointLight.position.set(5, 5, 5);
+        chartScene.add(pointLight);
+
+        const chartGroup = new THREE.Group();
+        chartScene.add(chartGroup);
+
+        const segments = 5;
+        const radius = 2.8;
+        const levels = 5;
+        let targetValues = [0.8, 0.6, 0.9, 0.7, 0.5];
+        let currentValues = [0.1, 0.1, 0.1, 0.1, 0.1];
+
+        // Grid Lines
+        for (let l = 1; l <= levels; l++) {
+            const currentRadius = (radius / levels) * l;
+            const pts = [];
+            for (let i = 0; i <= segments; i++) {
+                const angle = (i / segments) * Math.PI * 2;
+                pts.push(new THREE.Vector3(Math.cos(angle) * currentRadius, Math.sin(angle) * currentRadius, 0));
+            }
+            const lineGeom = new THREE.BufferGeometry().setFromPoints(pts);
+            const lineMat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.15 });
+            chartGroup.add(new THREE.Line(lineGeom, lineMat));
+        }
+
+        // Radar Spikes
+        for (let i = 0; i < segments; i++) {
+            const angle = (i / segments) * Math.PI * 2;
+            const pts = [new THREE.Vector3(0,0,0), new THREE.Vector3(Math.cos(angle) * radius, Math.sin(angle) * radius, 0)];
+            const lineGeom = new THREE.BufferGeometry().setFromPoints(pts);
+            const lineMat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.1 });
+            chartGroup.add(new THREE.Line(lineGeom, lineMat));
+        }
+
+        // Radar Fill Shape
+        const shapeGeom = new THREE.BufferGeometry();
+        const shapeMat = new THREE.MeshPhongMaterial({ 
+            color: 0x7B5CF0, 
+            side: THREE.DoubleSide, 
+            transparent: true, 
+            opacity: 0.6,
+            shininess: 100
+        });
+        const radarMesh = new THREE.Mesh(shapeGeom, shapeMat);
+        chartGroup.add(radarMesh);
+
+        // Nodes (Spheres)
+        const iconMeshes = [];
+        for (let i = 0; i < segments; i++) {
+            const iconGeom = new THREE.SphereGeometry(0.12, 24, 24);
+            const iconMat = new THREE.MeshPhongMaterial({ color: 0xffffff, shininess: 100, emissive: 0x7B5CF0, emissiveIntensity: 0.8 });
+            const icon = new THREE.Mesh(iconGeom, iconMat);
+            iconMeshes.push(icon);
+            chartGroup.add(icon);
+        }
+
+        chartCamera.position.z = 8;
+        const clock = new THREE.Clock();
+
+        function updateRadarGeometry() {
+            const vertices = [];
+            const indices = [];
+            vertices.push(0, 0, 0); 
+
+            for (let i = 0; i < segments; i++) {
+                const angle = (i / segments) * Math.PI * 2;
+                const r = currentValues[i] * radius;
+                const x = Math.cos(angle) * r;
+                const y = Math.sin(angle) * r;
+                vertices.push(x, y, 0);
+                iconMeshes[i].position.set(x, y, 0.1);
+                const next = (i + 1) % segments;
+                indices.push(0, i + 1, next + 1);
+            }
+
+            shapeGeom.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+            shapeGeom.setIndex(indices);
+            shapeGeom.computeVertexNormals();
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            const t = clock.getElapsedTime();
+
+            // Background shader update
+            bgUniforms.u_time.value = t;
+
+            // Chart update
+            for (let i = 0; i < segments; i++) {
+                currentValues[i] += (targetValues[i] - currentValues[i]) * 0.05;
+            }
+            updateRadarGeometry();
+
+            chartGroup.rotation.y = Math.sin(t * 0.2) * 0.15;
+            chartGroup.rotation.x = Math.cos(t * 0.15) * 0.1;
+            
+            iconMeshes.forEach((m, i) => {
+                const s = 1 + Math.sin(t * 3 + i) * 0.15;
+                m.scale.set(s, s, s);
+            });
+
+            bgRenderer.render(bgScene, bgCamera);
+            chartRenderer.render(chartScene, chartCamera);
+        }
+
+        function onResize() {
+            const w = window.innerWidth;
+            const h = window.innerHeight;
+            
+            bgRenderer.setSize(w, h);
+            bgUniforms.u_resolution.value.set(w, h);
+            
+            chartCamera.aspect = w / h;
+            chartCamera.updateProjectionMatrix();
+            chartRenderer.setSize(w, h);
+        }
+
+        window.addEventListener('resize', onResize);
+        onResize();
+        animate();
+
+        // FAB Action
+        document.getElementById('add-record-btn').addEventListener('click', () => {
+            targetValues = targetValues.map(v => Math.min(1.0, v + (Math.random() * 0.15)));
+        });
+    </script>
+</body></html>

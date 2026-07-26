@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+
+<html lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>회원가입 - 초대코드 입력</title>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@500;600;700;800&amp;family=Be+Vietnam+Pro:wght@400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed": "#1d0061",
+                        "surface-container": "#efedf5",
+                        "secondary": "#006970",
+                        "inverse-surface": "#2f3036",
+                        "surface-dim": "#dbd9e1",
+                        "primary-fixed": "#e6deff",
+                        "on-primary-fixed-variant": "#4a21be",
+                        "on-primary-container": "#ffffff",
+                        "text-primary": "#1A1626",
+                        "tertiary-fixed": "#e4e1ee",
+                        "on-tertiary-fixed": "#1b1b24",
+                        "on-tertiary": "#ffffff",
+                        "secondary-container": "#7af1fc",
+                        "background": "#fbf8ff",
+                        "surface-tint": "#6341d6",
+                        "gradient-hero-start": "#8E70F7",
+                        "on-surface-variant": "#484554",
+                        "on-tertiary-container": "#ffffff",
+                        "tertiary": "#5d5c67",
+                        "surface": "#fbf8ff",
+                        "surface-white": "#FFFFFF",
+                        "surface-bright": "#fbf8ff",
+                        "on-secondary-fixed": "#002022",
+                        "surface-container-high": "#e9e7ef",
+                        "inverse-primary": "#cbbeff",
+                        "inverse-on-surface": "#f2f0f8",
+                        "on-primary": "#ffffff",
+                        "surface-variant": "#e3e1e9",
+                        "tertiary-fixed-dim": "#c7c5d1",
+                        "gradient-hero-end": "#6B45E4",
+                        "on-secondary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "on-secondary-container": "#006e75",
+                        "secondary-fixed-dim": "#5ed7e2",
+                        "outline": "#797586",
+                        "on-background": "#1a1b21",
+                        "surface-container-lowest": "#ffffff",
+                        "primary": "#6240d5",
+                        "on-secondary-fixed-variant": "#004f54",
+                        "error": "#ba1a1a",
+                        "primary-container": "#7b5cf0",
+                        "tertiary-container": "#767580",
+                        "surface-container-highest": "#e3e1e9",
+                        "on-surface": "#1a1b21",
+                        "on-error": "#ffffff",
+                        "on-tertiary-fixed-variant": "#464650",
+                        "surface-container-low": "#f4f2fa",
+                        "primary-fixed-dim": "#cbbeff",
+                        "outline-variant": "#cac4d7",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed": "#7ef4fe",
+                        "text-muted": "#6E6A80",
+                        "input-bg": "#F7F5FD"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "40px",
+                        "stack-sm": "8px",
+                        "stack-lg": "32px",
+                        "margin-mobile": "20px",
+                        "stack-md": "16px",
+                        "gutter": "16px",
+                        "base": "4px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Hanken Grotesk"],
+                        "label-lg": ["Hanken Grotesk"],
+                        "body-md": ["Be Vietnam Pro"],
+                        "headline-xl": ["Hanken Grotesk"],
+                        "body-lg": ["Be Vietnam Pro"],
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "label-sm": ["Hanken Grotesk"],
+                        "headline-lg": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "700" }],
+                        "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-xl": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.04em", "fontWeight": "800" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["22px", { "lineHeight": "30px", "fontWeight": "700" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .code-input-slot {
+            width: 48px;
+            height: 56px;
+            font-family: 'Hanken Grotesk', monospace;
+            font-size: 24px;
+            font-weight: 700;
+            text-align: center;
+            border: none;
+            background-color: #F7F5FD;
+            border-radius: 12px;
+            color: #1A1626;
+            transition: all 0.2s ease;
+        }
+        .code-input-slot:focus {
+            outline: none;
+            box-shadow: inset 0 0 0 2px #7b5cf0;
+        }
+        
+        /* Hide arrows on number input */
+        .code-input-slot::-webkit-outer-spin-button,
+        .code-input-slot::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        .code-input-slot[type=number] {
+            -moz-appearance: textfield;
+        }
+    </style>
+</head>
+<body class="bg-background min-h-screen flex flex-col items-center justify-start text-text-primary">
+<!-- Mobile Container (Max width for web viewing) -->
+<main class="w-full max-w-md bg-background min-h-screen flex flex-col relative px-margin-mobile pt-4 pb-8">
+<!-- Header -->
+<header class="flex items-center justify-between mb-stack-md relative h-12">
+<button aria-label="뒤로 가기" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-text-primary text-2xl">arrow_back</span>
+</button>
+<h1 class="absolute left-1/2 transform -translate-x-1/2 font-headline-md text-headline-md text-text-primary">회원가입</h1>
+<div class="w-10"></div> <!-- Spacer for centering -->
+</header>
+<!-- Progress Indicator -->
+<div class="flex justify-center gap-2 mb-stack-lg">
+<div class="w-2.5 h-2.5 rounded-full bg-primary-container"></div>
+<div class="w-2.5 h-2.5 rounded-full bg-surface-variant"></div>
+<div class="w-2.5 h-2.5 rounded-full bg-surface-variant"></div>
+</div>
+<!-- Content Area -->
+<section class="flex flex-col flex-grow items-center w-full">
+<div class="text-center w-full mb-stack-lg relative">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg text-text-primary mb-stack-sm tracking-tight">초대코드를 입력해 주세요</h2>
+<p class="font-body-md text-body-md text-text-muted">선생님이 알려주신 6자리 코드예요</p>
+<!-- Mascot (Ari) peeking -->
+<div class="absolute -top-10 -right-2 w-16 h-16 animate-bounce" style="animation-duration: 3s;">
+<img class="w-full h-full object-contain" data-alt="A small, friendly blue puppy mascot character named Ari, with a soft 3D rendering style, peeking out to offer guidance in a clean, modern digital interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCwQLKZcdWlbzDqsDustGFrI9ih0fqCTUUgaSsyeB0xQN5lrBksMA1fosu1Tbv-z6gT5g2KbYlWOW_H9l1U4oZNSNfmb7NIjmogbnZ-f_kh3Ply22GBxjY-I7TJ_FeHi8bNBHXDuFboZfYDR_MziBvsb08qVL8NMStOmnXb4_LlUsh2gRPaew_ap4jOgznZFIQW-J4QFYqVfcsKypIWc9lvw0VuPM51-zS8sSyd5tePMsKGUKHtFCWhcefdyIHBFfH6R-h2POV_JOEn"/>
+</div>
+</div>
+<!-- Code Input Form -->
+<form class="w-full flex flex-col items-center flex-grow" onsubmit="event.preventDefault();">
+<div class="flex gap-2 mb-auto mt-4 w-full justify-center" id="code-inputs">
+<input autofocus="" class="code-input-slot" maxlength="1" type="text"/>
+<input class="code-input-slot" maxlength="1" type="text"/>
+<input class="code-input-slot" maxlength="1" type="text"/>
+<input class="code-input-slot" maxlength="1" type="text"/>
+<input class="code-input-slot" maxlength="1" type="text"/>
+<input class="code-input-slot" maxlength="1" type="text"/>
+</div>
+<!-- Bottom Action Area -->
+<div class="w-full mt-stack-lg flex flex-col gap-stack-md">
+<!-- Info Card -->
+<div class="bg-input-bg rounded-2xl p-4 flex flex-col gap-2 w-full items-center text-center">
+<span class="font-label-sm text-label-sm text-text-muted">시연용 코드</span>
+<div class="flex gap-4">
+<span class="font-label-lg text-label-lg text-primary-container bg-white px-3 py-1 rounded-full shadow-sm">123456</span>
+<span class="font-label-lg text-label-lg text-primary-container bg-white px-3 py-1 rounded-full shadow-sm">999999</span>
+</div>
+</div>
+<!-- Submit Button -->
+<button class="w-full h-[64px] bg-primary-container text-on-primary-container font-headline-md text-headline-md rounded-2xl flex items-center justify-center hover:scale-[0.98] transition-transform duration-200 shadow-[0_8px_20px_rgba(123,92,240,0.2)]" type="submit">
+                        코드 확인
+                    </button>
+</div>
+</form>
+</section>
+</main>
+<script>
+        // Auto-advance logic for code input slots
+        const inputs = document.querySelectorAll('.code-input-slot');
+        
+        inputs.forEach((input, index) => {
+            input.addEventListener('input', (e) => {
+                // Ensure only uppercase alphanumeric
+                input.value = input.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+                
+                if (input.value.length === 1 && index < inputs.length - 1) {
+                    inputs[index + 1].focus();
+                }
+            });
+
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && input.value === '' && index > 0) {
+                    inputs[index - 1].focus();
+                }
+            });
+            
+            // Handle paste
+            input.addEventListener('paste', (e) => {
+                e.preventDefault();
+                const pastedData = (e.clipboardData || window.clipboardData).getData('text').toUpperCase().replace(/[^A-Z0-9]/g, '');
+                if (pastedData) {
+                    for (let i = 0; i < Math.min(pastedData.length, inputs.length - index); i++) {
+                        inputs[index + i].value = pastedData[i];
+                    }
+                    if (index + pastedData.length < inputs.length) {
+                        inputs[index + pastedData.length].focus();
+                    } else {
+                        inputs[inputs.length - 1].focus();
+                    }
+                }
+            });
+        });
+    </script>
+</body></html>

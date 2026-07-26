@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ari's Career Lab - Growth Metrics</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-dim": "#ddd8e4",
+                        "tertiary-fixed": "#e7deff",
+                        "outline-variant": "#cac4d7",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed-variant": "#4a21be",
+                        "surface-bright": "#fdf8ff",
+                        "surface-tint": "#6341d6",
+                        "secondary-fixed-dim": "#ccbdff",
+                        "secondary": "#6242c8",
+                        "primary": "#6240d5",
+                        "error-container": "#ffdad6",
+                        "surface-variant": "#e6e0ed",
+                        "on-primary": "#ffffff",
+                        "tertiary-fixed-dim": "#ccbeff",
+                        "surface-container": "#f1ebf8",
+                        "primary-fixed-dim": "#cbbeff",
+                        "inverse-surface": "#312f39",
+                        "surface": "#fdf8ff",
+                        "on-secondary": "#ffffff",
+                        "surface-container-highest": "#e6e0ed",
+                        "on-tertiary-container": "#ffffff",
+                        "on-primary-fixed": "#1d0061",
+                        "background": "#fdf8ff",
+                        "surface-container-lowest": "#ffffff",
+                        "error": "#ba1a1a",
+                        "surface-container-high": "#ece6f3",
+                        "inverse-on-surface": "#f4eefb",
+                        "primary-container": "#7b5cf0",
+                        "primary-fixed": "#e6deff",
+                        "on-tertiary-fixed": "#1e0060",
+                        "on-secondary-container": "#fffbff",
+                        "outline": "#797586",
+                        "on-surface": "#1c1a23",
+                        "on-secondary-fixed-variant": "#4c27b2",
+                        "on-background": "#1c1a23",
+                        "inverse-primary": "#cbbeff",
+                        "on-surface-variant": "#484554",
+                        "surface-container-low": "#f7f1fe",
+                        "on-tertiary-fixed-variant": "#4c19c5",
+                        "secondary-container": "#7b5de3",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-container": "#ffffff",
+                        "tertiary": "#643cdc",
+                        "tertiary-container": "#7d59f7",
+                        "secondary-fixed": "#e7deff",
+                        "on-error": "#ffffff",
+                        "on-secondary-fixed": "#1f0060"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "8px",
+                        "card-gap": "24px",
+                        "gutter": "16px",
+                        "container-padding": "24px"
+                    },
+                    "fontFamily": {
+                        "title-md": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "label-sm": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "title-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "700"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #1c1a23; /* Overriding for the dark cyberpunk intent */
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1.5px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        .neon-glow-violet {
+            box-shadow: 0 0 15px rgba(123, 92, 240, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-nav-glow {
+            box-shadow: 0px 4px 12px rgba(123,92,240,0.3);
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .animate-float {
+            animation: float 4s ease-in-out infinite;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="font-body-md text-on-surface">
+<!-- Atmospheric Shader Background -->
+<!-- STITCH_SHADER_START:ANIMATION_54 class="fixed inset-0 w-full h-full z-0" -->
+<div class="fixed inset-0 w-full h-full z-0" style="display:block;">
+<canvas id="shader-canvas-ANIMATION_54" style="display:block;width:100%;height:100%"></canvas>
+<script>
+(function() {
+  const canvas = document.getElementById('shader-canvas-ANIMATION_54');
+
+  // Sync the WebGL drawing-buffer size with the CSS-driven layout size.
+  // This fires on initial layout and whenever the element is resized.
+  function syncSize() {
+    const w = canvas.clientWidth  || 1280;
+    const h = canvas.clientHeight || 720;
+    if (canvas.width !== w || canvas.height !== h) {
+      canvas.width  = w;
+      canvas.height = h;
+    }
+  }
+  if (typeof ResizeObserver !== 'undefined') {
+    new ResizeObserver(syncSize).observe(canvas);
+  }
+  syncSize();
+
+  const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+  if (!gl) return;
+  const vs = `attribute vec2 a_position;
+varying vec2 v_texCoord;
+void main() {
+  v_texCoord = a_position * 0.5 + 0.5;
+  gl_Position = vec4(a_position, 0.0, 1.0);
+}`;
+  const fs = `
+precision highp float;
+uniform float u_time;
+uniform vec2 u_resolution;
+
+void main() {
+    vec2 uv = gl_FragCoord.xy / u_resolution.xy;
+    
+    // Deep dark background with subtle moving violet glow
+    vec3 color1 = vec3(0.02, 0.01, 0.05); // Near black violet
+    vec3 color2 = vec3(0.05, 0.02, 0.12); // Deep dark violet
+    vec3 accent = vec3(0.48, 0.36, 0.94); // #7B5CF0
+    
+    float noise = sin(uv.x * 2.0 + u_time * 0.2) * cos(uv.y * 2.5 + u_time * 0.3);
+    float glow = smoothstep(1.0, 0.0, length(uv - vec2(0.5, 0.7)));
+    
+    vec3 finalColor = mix(color1, color2, uv.y + noise * 0.05);
+    finalColor += accent * glow * 0.1; // Atmospheric glow
+    
+    gl_FragColor = vec4(finalColor, 1.0);
+}
+`;
+  function cs(type, src) {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    return s;
+  }
+  const prog = gl.createProgram();
+  gl.attachShader(prog, cs(gl.VERTEX_SHADER, vs));
+  gl.attachShader(prog, cs(gl.FRAGMENT_SHADER, fs));
+  gl.linkProgram(prog);
+  gl.useProgram(prog);
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+  const pos = gl.getAttribLocation(prog, 'a_position');
+  gl.enableVertexAttribArray(pos);
+  gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+  const uTime = gl.getUniformLocation(prog, 'u_time');
+  const uRes = gl.getUniformLocation(prog, 'u_resolution');
+  const uMouse = gl.getUniformLocation(prog, 'u_mouse');
+
+  // u_mouse is in pixel coordinates matching u_resolution (ShaderToy convention).
+  // Shaders that need normalized coords should use: u_mouse / u_resolution.
+  let mouse = { x: canvas.width / 2, y: canvas.height / 2 };
+  window.addEventListener('mousemove', (event) => {
+    const rect = canvas.getBoundingClientRect();
+    if (rect.width && rect.height) {
+      const nx = (event.clientX - rect.left) / rect.width;
+      const ny = 1.0 - (event.clientY - rect.top) / rect.height;
+      mouse.x = nx * canvas.width;
+      mouse.y = ny * canvas.height;
+    }
+  });
+
+  function render(t) {
+    if (typeof ResizeObserver === 'undefined') syncSize();
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    if (uTime) gl.uniform1f(uTime, t * 0.001);
+    if (uRes) gl.uniform2f(uRes, canvas.width, canvas.height);
+    if (uMouse) gl.uniform2f(uMouse, mouse.x, mouse.y);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    requestAnimationFrame(render);
+  }
+  render(0);
+})();
+</script>
+</div>
+<!-- STITCH_SHADER_END:ANIMATION_54 -->
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 left-0 w-full z-50 bg-transparent">
+<div class="flex justify-between items-center px-gutter w-full h-16 border-b-[1.5px] border-white/10">
+<div class="flex items-center gap-3">
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-white/10 backdrop-blur-md text-white hover:bg-white/20 transition-all active:scale-95">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h1 class="font-title-md text-title-md-mobile text-white">나의 성장 지표</h1>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex gap-6 items-center mr-8">
+<span class="text-on-surface-variant text-label-sm font-label-sm cursor-pointer hover:text-white transition-colors">Home</span>
+<span class="text-primary font-bold text-label-sm font-label-sm cursor-pointer border-b-2 border-primary pb-1">Roadmap</span>
+<span class="text-on-surface-variant text-label-sm font-label-sm cursor-pointer hover:text-white transition-colors">Habits</span>
+<span class="text-on-surface-variant text-label-sm font-label-sm cursor-pointer hover:text-white transition-colors">Portfolio</span>
+</div>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-primary/50">
+<img class="w-full h-full object-cover" data-alt="A high-quality 3D rendered puppy mascot named Ari, wearing a futuristic VR headset, soft studio lighting, vibrant violet and lavender color palette, cute and approachable digital companion aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5wc7dUUMgjnjQhtsSvzAoer4Ru9WkV9N-4LzBoYrd4hF_adbsrGFSitOF36UbK5HKBTxbpPGwxQoIRVMieOVbBQhBJ066pO08uGM-hlASXYtyK605aHW58LDdOCFuA2ugShQSfYved1rJeel4OE_20W6sa1OJ6M68AzqPunV0fjYKPJtoKySN4YHp3or1OIigmf-mJhDsqwcqWNzCb0I06DiQzTV8aAgURPlnh4V2NfiRyP9Xub5_dAeLTCrHo_fIv_MC_TTfZZeo"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Canvas Area -->
+<main class="relative z-10 w-full h-screen flex flex-col items-center justify-center pt-16 pb-32">
+<!-- Center Interactive Radar -->
+<div class="w-full max-w-2xl aspect-square relative flex items-center justify-center animate-float">
+<!-- STITCH_THREEJS_START:ANIMATION_55 class="w-full h-full" -->
+<div class="w-full h-full" style="display:block;">
+<script src="https://ajax.googleapis.com/ajax/libs/threejs/r125/three.min.js"></script>
+<div id="threejs-container-ANIMATION_55" style="width:100%;height:100%"></div>
+<script>
+(function() {
+  const container = document.getElementById('threejs-container-ANIMATION_55');
+  const devicePixelRatio = window.devicePixelRatio || 1;
+  
+(function() {
+  const container = document.getElementById('threejs-container-ANIMATION_N'); // Placeholder ID handled by system
+  const width = container.clientWidth || window.innerWidth;
+  const height = container.clientHeight || window.innerHeight;
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+  const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+  renderer.setSize(width, height);
+  renderer.setPixelRatio(window.devicePixelRatio);
+  container.appendChild(renderer.domElement);
+
+  // Lighting
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+  scene.add(ambientLight);
+  const pointLight = new THREE.PointLight(0x7B5CF0, 2, 50);
+  pointLight.position.set(5, 5, 5);
+  scene.add(pointLight);
+
+  // Radar Chart Data
+  const categories = 5;
+  const radius = 2.5;
+  const points = [];
+  const targetValues = [0.8, 0.9, 0.7, 0.85, 0.6]; // Mock data
+  let currentValues = [0, 0, 0, 0, 0];
+
+  const group = new THREE.Group();
+  scene.add(group);
+
+  // Grid / Web structure
+  const gridMat = new THREE.LineBasicMaterial({ color: 0x7B5CF0, transparent: true, opacity: 0.2 });
+  for(let i = 1; i <= 4; i++) {
+    const ringGeom = new THREE.CircleGeometry(radius * (i/4), categories);
+    ringGeom.vertices.shift(); // Remove center vertex
+    const ring = new THREE.LineLoop(ringGeom, gridMat);
+    ring.rotation.x = Math.PI / 2;
+    group.add(ring);
+  }
+
+  // Spoke lines
+  for(let i = 0; i < categories; i++) {
+    const angle = (i / categories) * Math.PI * 2;
+    const points = [];
+    points.push(new THREE.Vector3(0, 0, 0));
+    points.push(new THREE.Vector3(Math.cos(angle) * radius, 0, Math.sin(angle) * radius));
+    const lineGeom = new THREE.BufferGeometry().setFromPoints(points);
+    const line = new THREE.Line(lineGeom, gridMat);
+    group.add(line);
+  }
+
+  // Data Shape (Curved Area)
+  const shapeGeom = new THREE.BufferGeometry();
+  const shapeMat = new THREE.MeshPhongMaterial({ 
+    color: 0x7B5CF0, 
+    side: THREE.DoubleSide, 
+    transparent: true, 
+    opacity: 0.5,
+    shininess: 100
+  });
+  const shape = new THREE.Mesh(shapeGeom, shapeMat);
+  group.add(shape);
+
+  // Glowing points (Spheres)
+  const sphereGeom = new THREE.SphereGeometry(0.12, 16, 16);
+  const sphereMat = new THREE.MeshPhongMaterial({ 
+    color: 0xffffff, 
+    emissive: 0x7B5CF0, 
+    emissiveIntensity: 1 
+  });
+  const pointMeshes = [];
+  for(let i = 0; i < categories; i++) {
+    const mesh = new THREE.Mesh(sphereGeom, sphereMat);
+    pointMeshes.push(mesh);
+    group.add(mesh);
+  }
+
+  camera.position.set(0, 4, 6);
+  camera.lookAt(0, 0, 0);
+
+  let clock = new THREE.Clock();
+  function animate() {
+    requestAnimationFrame(animate);
+    const t = clock.getElapsedTime();
+    
+    // Animate values growth
+    for(let i = 0; i < categories; i++) {
+      currentValues[i] += (targetValues[i] - currentValues[i]) * 0.05;
+      const val = currentValues[i] * radius;
+      const angle = (i / categories) * Math.PI * 2;
+      
+      const x = Math.cos(angle) * val;
+      const z = Math.sin(angle) * val;
+      const y = Math.sin(t * 2 + i) * 0.1; // Gentle bounce
+      
+      pointMeshes[i].position.set(x, y, z);
+    }
+
+    // Update shape geometry
+    const vertices = [];
+    const center = new THREE.Vector3(0, 0, 0);
+    for(let i = 0; i < categories; i++) {
+      const p1 = pointMeshes[i].position;
+      const p2 = pointMeshes[(i + 1) % categories].position;
+      vertices.push(center.x, center.y, center.z);
+      vertices.push(p1.x, p1.y, p1.z);
+      vertices.push(p2.x, p2.y, p2.z);
+    }
+    shapeGeom.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+    shapeGeom.computeVertexNormals();
+
+    group.rotation.y = t * 0.2;
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  window.addEventListener('resize', () => {
+    const w = container.clientWidth || window.innerWidth;
+    const h = container.clientHeight || window.innerHeight;
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+    renderer.setSize(w, h);
+  });
+})();
+
+})();
+</script>
+</div>
+<!-- STITCH_THREEJS_END:ANIMATION_55 -->
+<!-- Floating Decorative Elements -->
+<div class="absolute top-0 right-10 glass-card p-4 rounded-lg flex flex-col gap-1 items-center">
+<span class="text-primary text-[24px] font-bold">85%</span>
+<span class="text-white/60 text-[10px] uppercase tracking-wider">Overall Growth</span>
+</div>
+</div>
+<!-- Growth Trend Chips -->
+<div class="absolute bottom-36 w-full px-gutter flex flex-wrap justify-center gap-3">
+<div class="px-5 py-2 rounded-full glass-card border-primary/30 text-white font-label-sm text-label-sm flex items-center gap-2 neon-glow-violet hover:scale-105 transition-transform cursor-default">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                문제해결
+            </div>
+<div class="px-5 py-2 rounded-full glass-card border-primary/30 text-white font-label-sm text-label-sm flex items-center gap-2 neon-glow-violet hover:scale-105 transition-transform cursor-default">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+                탐구력
+            </div>
+<div class="px-5 py-2 rounded-full glass-card border-primary/30 text-white font-label-sm text-label-sm flex items-center gap-2 neon-glow-violet hover:scale-105 transition-transform cursor-default">
+<span class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span>
+                협동심
+            </div>
+<div class="px-5 py-2 rounded-full glass-card border-primary/30 text-white font-label-sm text-label-sm flex items-center gap-2 neon-glow-violet hover:scale-105 transition-transform cursor-default">
+<span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span>
+                창의성
+            </div>
+<div class="px-5 py-2 rounded-full glass-card border-primary/30 text-white font-label-sm text-label-sm flex items-center gap-2 neon-glow-violet hover:scale-105 transition-transform cursor-default">
+<span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
+                논리력
+            </div>
+</div>
+</main>
+<!-- FAB -->
+<button class="fixed right-6 bottom-28 z-50 flex items-center gap-2 px-6 py-4 rounded-full bg-gradient-to-r from-primary to-secondary text-white font-bold shadow-[0px_10px_30px_rgba(123,92,240,0.5)] hover:scale-105 active:scale-95 transition-all group">
+<span class="material-symbols-outlined group-hover:rotate-90 transition-transform">add</span>
+<span class="text-body-md font-body-md">기록 추가하기</span>
+</button>
+<!-- Bottom Navigation Bar (Mobile) -->
+<nav class="fixed bottom-0 w-full z-50 rounded-t-lg bg-inverse-surface/60 backdrop-blur-[20px] border-t-[1.5px] border-white/10 md:hidden">
+<div class="flex justify-around items-center px-4 pb-8 pt-3 w-full">
+<!-- Home -->
+<a class="flex flex-col items-center justify-center text-outline-variant p-2 hover:bg-surface-variant/30 rounded-lg transition-all active:translate-y-[-2px]" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-sm text-label-sm mt-1">Home</span>
+</a>
+<!-- Roadmap (Active) -->
+<a class="flex flex-col items-center justify-center bg-primary text-on-primary rounded-lg px-5 py-2 shadow-[0px_4px_12px_rgba(123,92,240,0.3)] border-t border-white/40 active:translate-y-[-2px] transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="auto_awesome">auto_awesome</span>
+<span class="font-label-sm text-label-sm mt-1">Roadmap</span>
+</a>
+<!-- Habits -->
+<a class="flex flex-col items-center justify-center text-outline-variant p-2 hover:bg-surface-variant/30 rounded-lg transition-all active:translate-y-[-2px]" href="#">
+<span class="material-symbols-outlined" data-icon="task_alt">task_alt</span>
+<span class="font-label-sm text-label-sm mt-1">Habits</span>
+</a>
+<!-- Portfolio -->
+<a class="flex flex-col items-center justify-center text-outline-variant p-2 hover:bg-surface-variant/30 rounded-lg transition-all active:translate-y-[-2px]" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-sm text-label-sm mt-1">Portfolio</span>
+</a>
+</div>
+</nav>
+<script>
+        // Simple micro-interaction for chips
+        document.querySelectorAll('.glass-card').forEach(chip => {
+            chip.addEventListener('mouseenter', () => {
+                chip.style.backgroundColor = 'rgba(255, 255, 255, 0.15)';
+            });
+            chip.addEventListener('mouseleave', () => {
+                chip.style.backgroundColor = 'rgba(255, 255, 255, 0.05)';
+            });
+        });
+    </script>
+</body></html>

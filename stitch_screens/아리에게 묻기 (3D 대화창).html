@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ReadyCareer AI - Ask Ari</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "error": "#ba1a1a",
+                    "outline-variant": "#cac4d7",
+                    "tertiary": "#643cdc",
+                    "tertiary-fixed": "#e7deff",
+                    "on-secondary-fixed-variant": "#4c27b2",
+                    "on-secondary": "#ffffff",
+                    "inverse-surface": "#312f39",
+                    "surface-variant": "#e6e0ed",
+                    "surface-tint": "#6341d6",
+                    "surface": "#fdf8ff",
+                    "primary-fixed-dim": "#cbbeff",
+                    "outline": "#797586",
+                    "on-secondary-fixed": "#1f0060",
+                    "on-background": "#1c1a23",
+                    "tertiary-container": "#7d59f7",
+                    "secondary-fixed": "#e7deff",
+                    "on-secondary-container": "#fffbff",
+                    "on-primary-container": "#ffffff",
+                    "on-primary-fixed": "#1d0061",
+                    "on-tertiary-fixed-variant": "#4c19c5",
+                    "on-error-container": "#93000a",
+                    "tertiary-fixed-dim": "#ccbeff",
+                    "secondary": "#6242c8",
+                    "on-surface-variant": "#484554",
+                    "inverse-primary": "#cbbeff",
+                    "surface-dim": "#ddd8e4",
+                    "surface-container": "#f1ebf8",
+                    "secondary-fixed-dim": "#ccbdff",
+                    "on-tertiary": "#ffffff",
+                    "on-surface": "#1c1a23",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-container": "#7b5cf0",
+                    "on-primary-fixed-variant": "#4a21be",
+                    "primary-fixed": "#e6deff",
+                    "inverse-on-surface": "#f4eefb",
+                    "error-container": "#ffdad6",
+                    "on-tertiary-fixed": "#1e0060",
+                    "background": "#fdf8ff",
+                    "surface-container-high": "#ece6f3",
+                    "on-error": "#ffffff",
+                    "secondary-container": "#7b5de3",
+                    "surface-container-highest": "#e6e0ed",
+                    "primary": "#6240d5",
+                    "on-primary": "#ffffff",
+                    "surface-container-low": "#f7f1fe",
+                    "on-tertiary-container": "#ffffff",
+                    "surface-bright": "#fdf8ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "unit": "8px",
+                    "card-gap": "24px",
+                    "gutter": "16px",
+                    "container-padding": "24px"
+            },
+            "fontFamily": {
+                    "body-md": ["Hanken Grotesk"],
+                    "title-md": ["Hanken Grotesk"],
+                    "headline-lg": ["Hanken Grotesk"],
+                    "label-sm": ["Hanken Grotesk"],
+                    "headline-lg-mobile": ["Hanken Grotesk"],
+                    "display-lg": ["Hanken Grotesk"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "title-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "700"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            font-family: 'Hanken Grotesk', sans-serif;
+            background-color: #fdf8ff;
+            background-image: radial-gradient(at 0% 0%, rgba(123, 92, 240, 0.05) 0px, transparent 50%),
+                              radial-gradient(at 100% 100%, rgba(100, 60, 220, 0.05) 0px, transparent 50%);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1.5px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0px 20px 40px rgba(123, 92, 240, 0.1);
+        }
+
+        .floating-shadow {
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05), 0px 20px 40px rgba(123, 92, 240, 0.12);
+        }
+
+        .primary-gradient {
+            background: linear-gradient(135deg, #7b5cf0 0%, #6240d5 100%);
+            box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.4);
+        }
+
+        .recessed-input {
+            background: #f1ebf8;
+            box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.03), inset -2px -2px 5px rgba(255, 255, 255, 0.8);
+        }
+
+        .ari-bubble-tail::after {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 20px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            clip-path: polygon(100% 0, 0% 50%, 100% 100%);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="sticky top-0 z-50 w-full bg-background/80 backdrop-blur-md px-5 py-4 flex justify-between items-center transition-all duration-300">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-fixed-dim shadow-sm">
+<img class="w-full h-full object-cover" data-alt="A 3D rendered character mascot named Ari, a friendly futuristic robot with a soft lavender and white finish. The mascot has large expressive glowing blue eyes and is set against a clean, soft-focus background with studio lighting that emphasizes its rounded, tactile textures and premium quality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2HFjWSzWO8CiIfMbOMWoDF810jzEYNZTjcwfyWE-sVrdGrkCvcWrLCnkCJNNIn4ZJNOUz7LoFc9wIqSKj-KV7y3KmjapYSB45k1WTZWbKVps-9MtwfjGHBaRj8BgLY62FXWc8Z6h8VCV48jZdq5tdp20DHH6Adaj-_P6vNvV0smewC70pfE5eA_bvGFI5opyNsMFyenwLKe0ZI-iG-rdSQzbfLtNBILghMy7BAP5qtEXPkI5Ru_-27s1ieePCpIiXqNVqbQU4AXE6"/>
+</div>
+<h1 class="text-headline-lg-mobile font-headline-lg-mobile text-primary font-extrabold tracking-tight">아리에게 묻기</h1>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-low transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined text-primary">notifications</span>
+</button>
+</header>
+<!-- Chat Canvas -->
+<main class="flex-1 overflow-y-auto px-gutter py-8 space-y-8 max-w-4xl mx-auto w-full pb-32">
+<!-- User Message -->
+<div class="flex justify-end animate-in fade-in slide-in-from-right duration-500">
+<div class="max-w-[80%] primary-gradient text-on-primary-container px-6 py-4 rounded-[28px] rounded-tr-sm shadow-lg">
+<p class="text-body-md font-body-md">나한테 어울리는 전공을 추천해줘!</p>
+</div>
+</div>
+<!-- Ari Response -->
+<div class="flex gap-4 items-start animate-in fade-in slide-in-from-left duration-700">
+<!-- Mascot Profile Mini -->
+<div class="w-10 h-10 flex-shrink-0 rounded-full overflow-hidden shadow-md mt-2">
+<img class="w-full h-full object-cover" data-alt="A close-up 3D portrait of Ari the mascot, smiling warmly with a gentle tilt of its head. The lighting is soft and atmospheric, highlighting the subtle metallic and pearlescent textures of its futuristic design. The color palette is dominated by soothing violets and clean whites consistent with a modern UI." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7kLaGGio4DSg33PsFQt3tLwanpAzBxLYXZ1kEpSZ6dlYA-IEVwPtkwSKtYHBbkol2UY4SUP-C5dEcXKsQXiNH8uURcMr2fGfjwBCWOnDGwiF5xCKj9H3OoaB_02S0Vkg7lqznRRb4ZE4tkjBAkgZNcwGck09ZWconxZFmuqnE2QsIOKNltArW7SD5T0AuA9xDZX45rNUqmxFPS_MI2zeAYGnq8RqA4e7qw2u0mqGntXedjgaEVLkDPRS0YrPxaw7iR8t-yUkkCWLs"/>
+</div>
+<!-- Content Area -->
+<div class="flex-1 space-y-4">
+<!-- Speech Bubble -->
+<div class="bg-surface-container-lowest glass-card px-6 py-4 rounded-[28px] rounded-tl-sm relative w-fit">
+<p class="text-on-surface text-body-md font-body-md">반가워요! 당신의 관심사와 학습 패턴을 분석해서 가장 잘 어울리는 학과를 찾아봤어요.</p>
+</div>
+<!-- Department Recommendation Card -->
+<div class="bg-surface-container-lowest glass-card rounded-lg p-6 space-y-6 floating-shadow">
+<div class="flex items-center gap-4">
+<div class="w-14 h-14 rounded-2xl bg-tertiary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary text-3xl" style="font-variation-settings: 'FILL' 1;">terminal</span>
+</div>
+<div>
+<span class="text-label-sm font-label-sm text-tertiary uppercase tracking-wider">추천 학과</span>
+<h2 class="text-title-md font-title-md text-on-surface">컴퓨터공학과</h2>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="p-4 rounded-lg bg-surface-container-low border border-outline-variant/30">
+<p class="text-label-sm font-label-sm text-outline mb-1">매칭 포인트</p>
+<p class="text-body-md font-body-md text-on-surface">논리적 사고와 문제 해결 능력이 매우 뛰어납니다.</p>
+</div>
+<div class="p-4 rounded-lg bg-surface-container-low border border-outline-variant/30">
+<p class="text-label-sm font-label-sm text-outline mb-1">주요 진로</p>
+<p class="text-body-md font-body-md text-on-surface">소프트웨어 엔지니어, AI 개발자, 데이터 사이언티스트</p>
+</div>
+</div>
+<div class="h-40 w-full rounded-lg overflow-hidden relative group">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="A futuristic laboratory or tech hub workspace with multiple glowing holographic screens showing complex code and 3D architectural models. The scene is bathed in a cool violet and blue ambient light, with soft bokeh effects in the background. The aesthetic is clean, professional, and optimistic, matching the Lumina Depth style guide." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCi8CDYPBY3x7vvZp6ZSoN6kKNyxGlXtZ9CDQpVg90W72qyjN0MOgaHaTGyuGz36GYz_dEixkNwKUL5vCKuNSCzMBthQ7th9RmymoEb1PRbEX7dA6T2nhjyKgXqEByxDIfprDD_3YKvqwF1J49JkglBm9u9AW8CkSBOPLDEBil8Gnvlzmd7-_SvhE5WvwLg7H2YAf9Muw8EPdbeG6VNCJMOZFDMRqOiIuUJeZ-xIvvQheLW8gubL-Q8WH4UlVfPjJ3z9uRr0NUVhi-h"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-4">
+<p class="text-white font-semibold text-body-md">학과 미리보기: 차세대 기술의 중심</p>
+</div>
+</div>
+<button class="w-full py-4 rounded-full primary-gradient text-white font-bold text-body-md hover:scale-[1.02] active:scale-95 transition-all duration-200">
+                        학과 상세 분석 보기
+                    </button>
+</div>
+<div class="bg-surface-container-lowest glass-card px-6 py-4 rounded-[28px] rounded-tl-sm relative w-fit">
+<p class="text-on-surface text-body-md font-body-md">이 학과에 대해 더 궁금한 점이 있나요? 예를 들어 어떤 과목을 배우는지 물어보세요!</p>
+</div>
+</div>
+</div>
+</main>
+<!-- Fixed Bottom Input -->
+<div class="fixed bottom-0 left-0 w-full px-5 pb-8 pt-4 bg-background/60 backdrop-blur-xl z-50">
+<div class="max-w-4xl mx-auto flex items-center gap-3">
+<div class="flex-1 relative">
+<input class="w-full recessed-input border-none rounded-full py-4 pl-6 pr-12 text-body-md focus:ring-2 focus:ring-primary/20 transition-all placeholder:text-outline/60" placeholder="아리에게 질문해보세요..." type="text"/>
+<button class="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center text-outline-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">attach_file</span>
+</button>
+</div>
+<button class="w-14 h-14 rounded-full primary-gradient text-white flex items-center justify-center shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">send</span>
+</button>
+</div>
+</div>
+<!-- Suggested Quick Replies (Float above input) -->
+<div class="fixed bottom-28 left-0 w-full px-5 pointer-events-none">
+<div class="max-w-4xl mx-auto flex gap-2 overflow-x-auto pb-2 pointer-events-auto no-scrollbar">
+<button class="whitespace-nowrap px-4 py-2 rounded-full bg-white/80 border border-outline-variant/30 text-label-sm font-label-sm text-on-surface-variant hover:bg-white transition-all shadow-sm">
+                📚 어떤 과목을 배우나��?
+            </button>
+<button class="whitespace-nowrap px-4 py-2 rounded-full bg-white/80 border border-outline-variant/30 text-label-sm font-label-sm text-on-surface-variant hover:bg-white transition-all shadow-sm">
+                💼 취업률은 어떤가요?
+            </button>
+<button class="whitespace-nowrap px-4 py-2 rounded-full bg-white/80 border border-outline-variant/30 text-label-sm font-label-sm text-on-surface-variant hover:bg-white transition-all shadow-sm">
+                🎓 필요한 자격증은?
+            </button>
+</div>
+</div>
+<script>
+        // Smooth entrance for messages
+        document.addEventListener('DOMContentLoaded', () => {
+            const messages = document.querySelectorAll('.animate-in');
+            messages.forEach((msg, index) => {
+                msg.style.animationDelay = `${index * 150}ms`;
+            });
+        });
+
+        // Interactivity for buttons
+        const sendBtn = document.querySelector('.primary-gradient');
+        sendBtn.addEventListener('click', function() {
+            // Placeholder for interaction
+            this.classList.add('scale-95');
+            setTimeout(() => this.classList.remove('scale-95'), 100);
+        });
+    </script>
+</body></html>

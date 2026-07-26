@@ -24,6 +24,18 @@ export const HabitManagement: React.FC = () => {
 
   const [selectedHabitId, setSelectedHabitId] = useState<string>("h-1");
   const [newTitle, setNewTitle] = useState("");
+  const [todayQuests, setTodayQuests] = useState([
+    { id: "q1", title: "전공 서적 30분 읽기", desc: "매일 꾸준한 지식 쌓기 및 진로 역량 강화", icon: "📚", exp: "+50 EXP", completed: true },
+    { id: "q2", title: "최신 진로 산업 뉴스 1건 스크랩", desc: "AI 인프라 및 전공 관련 트렌드 파악하기", icon: "📰", exp: "+40 EXP", completed: false },
+    { id: "q3", title: "아리에게 진로 고민 1회 실시간 질문하기", desc: "AI 상담을 통한 세특 가이드 아이디어 탐색", icon: "🤖", exp: "+70 EXP", completed: false },
+  ]);
+  const [flippedQuestId, setFlippedQuestId] = useState<string | null>(null);
+
+  const toggleQuest = (id: string) => {
+    setTodayQuests((prev) =>
+      prev.map((q) => (q.id === id ? { ...q, completed: !q.completed } : q))
+    );
+  };
 
   const activeHabit = habits.find((h) => h.id === selectedHabitId) || habits[0];
 
@@ -105,6 +117,75 @@ export const HabitManagement: React.FC = () => {
           </Button>
         </div>
       </div>
+
+      {/* Stitch 3D Today's Quests Interactive Grid */}
+      <section className="space-y-4">
+        <div className="flex items-center justify-between">
+          <div>
+            <span className="text-xs font-extrabold text-[#7B5CF0] uppercase tracking-widest block">3D QUEST LOG &middot; STITCH UI</span>
+            <h2 className="text-2xl font-extrabold text-[#1A1626] tracking-tight flex items-center gap-2">
+              <span>🚀 오늘의 맞춤 진로 퀘스트 (3D 인터랙션)</span>
+            </h2>
+          </div>
+          <span className="text-xs font-bold bg-[#e6deff] text-[#6240d5] px-3.5 py-1 rounded-full border border-[#cbbeff]">
+            완료 시 캐릭터 오오라 EXP 부여 ✨
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {todayQuests.map((q) => (
+            <div
+              key={q.id}
+              onClick={() => setFlippedQuestId(flippedQuestId === q.id ? null : q.id)}
+              className="bg-white rounded-[28px] p-6 border border-[#E3E1E9] shadow-[0_15px_35px_rgba(123,92,240,0.08)] hover:shadow-[0_25px_50px_rgba(123,92,240,0.16)] hover:border-[#7B5CF0]/50 transition-all duration-300 cursor-pointer flex flex-col justify-between group min-h-[170px] relative overflow-hidden"
+            >
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="w-12 h-12 rounded-2xl bg-[#f4f2fa] border border-[#cac4d7]/50 flex items-center justify-center text-2xl shadow-sm group-hover:scale-110 transition-transform">
+                    {q.icon}
+                  </div>
+                  <span className="text-xs font-black bg-[#7af1fc]/30 text-[#006970] px-3 py-1 rounded-full border border-[#006970]/20">
+                    {q.exp}
+                  </span>
+                </div>
+                <div>
+                  <h3 className={`text-lg font-extrabold transition-colors ${q.completed ? "text-[#7B5CF0] line-through" : "text-[#1A1626] group-hover:text-[#7B5CF0]"}`}>
+                    {q.title}
+                  </h3>
+                  <p className="text-xs text-[#6E6A80] font-normal leading-relaxed mt-0.5">{q.desc}</p>
+                </div>
+              </div>
+
+              <div className="pt-4 mt-2 border-t border-[#E3E1E9]/80 flex items-center justify-between">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleQuest(q.id);
+                  }}
+                  className={`px-4 py-2 rounded-full text-xs font-black flex items-center gap-1.5 transition-all ${
+                    q.completed
+                      ? "bg-[#006970] text-white shadow-md"
+                      : "bg-[#f4f2fa] text-[#484554] hover:bg-[#7B5CF0] hover:text-white"
+                  }`}
+                >
+                  <CheckCircle2 className="w-4 h-4" />
+                  <span>{q.completed ? "퀘스트 달성 완수!" : "클릭하여 완료하기"}</span>
+                </button>
+                <span className="text-[11px] font-semibold text-[#7B5CF0]">
+                  {flippedQuestId === q.id ? "▲ 닫기" : "▼ 3D 상세 보기"}
+                </span>
+              </div>
+
+              {flippedQuestId === q.id && (
+                <div className="mt-4 p-4 rounded-2xl bg-[#efedf5] border border-[#cac4d7]/60 text-xs text-[#1A1626] space-y-1.5 animate-fadeIn">
+                  <p className="font-extrabold text-[#6240d5]">💡 AI 3D 성장 연계 정보</p>
+                  <p className="text-text-muted leading-snug">이 퀘스트를 달성하면 생활기록부 '자기주도 학업역량' 및 '진로 탐색 태도' 평가 항목에 시도 포인트가 누적 기록됩니다!</p>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
 
       {/* Main Grid Work area */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">

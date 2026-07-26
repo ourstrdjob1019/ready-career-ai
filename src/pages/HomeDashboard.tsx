@@ -1,20 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Button, Card, MascotAri, ProgressBar } from "../components";
+import { Button } from "../components";
 import { useAuth } from "../context";
 import { executeAiPrompt } from "../services/aiService";
+import { ARI_BLOB_URL } from "../assets/mascotData";
 import {
   Sparkles,
   ArrowRight,
   Plus,
   CheckCircle2,
-  Brain,
-  Compass,
-  Award,
-  FolderKanban,
   Edit2,
   RefreshCw,
   Star,
+  Trophy,
+  FolderCheck,
+  Route,
+  ListCheck
 } from "lucide-react";
 
 export const HomeDashboard: React.FC = () => {
@@ -91,230 +92,210 @@ export const HomeDashboard: React.FC = () => {
 
   const currentJob = interestedJobs[selectedJobIdx] || { name: "AI 융합 개척자", image: "🤖", category: "탐색 중" };
   const userName = session?.name || "김수진";
+  const userSchool = session?.school || "서울창의고등학교";
+  const userGrade = session?.grade || 2;
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 py-8 space-y-10">
       
       {/* =========================================================================
-          SECTION 1: Hero Welcome & Character (우아하고 시각적인 상단 환영 영역)
+          SECTION 1: Stitch Welcome Area
          ========================================================================= */}
-      <div className="p-8 md:p-10 rounded-3xl bg-surface-container-lowest border border-surface-variant/60 shadow-3d-base grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+      <div className="space-y-2 pl-2">
+        <div className="flex flex-wrap items-center gap-2 mb-1">
+          <span className="text-xs font-headline font-black bg-primary/10 text-primary px-3 py-1 rounded-full border border-primary/20 flex items-center gap-1">
+            <Star className="w-3.5 h-3.5 fill-current text-primary" />
+            <span>★ 대표 꿈: {currentJob.name}</span>
+          </span>
+          <span className="text-xs font-black text-secondary bg-secondary/10 px-3 py-1 rounded-full border border-secondary/20">
+            RIASEC: {session?.riasecCode || "SI"} 유형
+          </span>
+        </div>
+        <h2 className="text-2xl md:text-3xl font-headline font-extrabold text-on-surface tracking-tight">
+          {userName}님, 안녕하세요! 🚀
+        </h2>
+        <p className="text-base font-body-md text-on-surface-variant">
+          {userSchool} {userGrade}학년 · 오늘의 진로 로드맵을 힘차게 펼쳐보세요!
+        </p>
+      </div>
+
+      {/* =========================================================================
+          SECTION 2: Stitch Hero Card with Prominent 3D Mascot Ari & Progress
+         ========================================================================= */}
+      <section className="relative rounded-[28px] overflow-hidden bg-gradient-to-br from-[#8E70F7] to-[#6B45E4] shadow-[0px_8px_24px_rgba(123,92,240,0.15),0px_32px_64px_rgba(123,92,240,0.25)] text-white p-7 md:p-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 min-h-[220px] border border-white/20">
         
-        {/* Left Info & Vision Statement */}
-        <div className="lg:col-span-8 space-y-6">
-          <div className="space-y-3">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="text-xs font-headline font-black bg-primary text-on-primary px-3 py-1 rounded-full shadow-sm flex items-center gap-1">
-                <Star className="w-3.5 h-3.5 fill-current" />
-                <span>★ 대표 꿈: {currentJob.name}</span>
-              </span>
-              <span className="text-xs font-bold text-text-muted bg-surface-container px-3 py-1 rounded-full border border-surface-variant/40">
-                {session?.school || "서울창의고등학교"} · {session?.grade || 2}학년 {session?.classNo || 4}반
-              </span>
-              <span className="text-xs font-black text-secondary bg-secondary/10 px-3 py-1 rounded-full">
-                RIASEC: {session?.riasecCode || "SI"} 유형
-              </span>
-            </div>
-            
-            <h1 className="text-3xl md:text-4xl font-headline font-black text-text-primary tracking-tight leading-tight">
-              <span className="text-primary">{userName}</span>님, 오늘도 힘찬<br />
-              진로 여정을 시작해 볼까요?
-            </h1>
+        <div className="space-y-6 z-10 w-full md:w-2/3">
+          <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md px-4 py-1.5 rounded-full font-headline font-extrabold text-xs tracking-wider border border-white/30 shadow-inner">
+            <span>✨ Lv.03 커리어 탐색 개척자</span>
+          </div>
+          
+          <div>
+            <p className="text-[#cbbeff] text-xs font-headline uppercase tracking-wider mb-1 font-bold">
+              나의 진로 여행 목표 (DREAM JOB)
+            </p>
+            <h3 className="text-3xl md:text-4xl font-headline font-black text-white tracking-tight leading-tight drop-shadow-sm">
+              {currentJob.name}
+            </h3>
           </div>
 
-          {/* Vision Statement Quote */}
-          <div className="p-5 rounded-2xl bg-surface-container border border-surface-variant/50 relative">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-headline font-black text-secondary-spot flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5 text-secondary" />
-                <span>나의 맞춤 비전 선언문 (Vision Statement)</span>
-              </span>
+          {/* Vision Statement box inside Hero */}
+          <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20 space-y-2">
+            <div className="flex items-center justify-between text-xs font-headline font-bold text-[#e6deff]">
+              <span>💡 맞춤 비전 선언문 (Vision Statement)</span>
               <div className="flex items-center gap-2">
                 <button
                   onClick={handleAiSuggestVision}
                   disabled={isAiLoading}
-                  className="text-[11px] font-headline font-extrabold px-2.5 py-1 rounded-lg bg-secondary text-white hover:bg-secondary-spot transition-colors shadow-sm flex items-center gap-1 disabled:opacity-50"
+                  className="px-2.5 py-1 rounded-lg bg-secondary text-white font-bold text-[11px] hover:brightness-110 transition-all flex items-center gap-1 shadow-sm disabled:opacity-50"
                 >
                   <RefreshCw className={`w-3 h-3 ${isAiLoading ? "animate-spin" : ""}`} />
-                  <span>AI 추천받기</span>
+                  <span>AI 추천</span>
                 </button>
                 <button
                   onClick={() => setIsEditingVision(!isEditingVision)}
-                  className="text-xs text-text-muted hover:text-text-primary transition-colors p-1"
-                  title="직접 문구 수정하기"
+                  className="p-1 hover:text-white transition-colors"
+                  title="직접 문구 수정"
                 >
-                  <Edit2 className="w-4 h-4" />
+                  <Edit2 className="w-3.5 h-3.5" />
                 </button>
               </div>
             </div>
-
             {isEditingVision ? (
-              <div className="flex gap-2 mt-2">
+              <div className="flex gap-2 mt-1">
                 <input
                   type="text"
                   value={visionStatement}
                   onChange={(e) => setVisionStatement(e.target.value)}
-                  className="flex-grow px-3 py-2 rounded-xl border border-primary text-sm bg-white font-body-md text-text-primary focus:outline-none"
+                  className="flex-grow px-3 py-1.5 rounded-xl border border-white/40 bg-black/30 text-xs font-body-md text-white placeholder:text-white/60 focus:outline-none"
                 />
-                <Button variant="primary" size="sm" onClick={handleSaveVision}>
+                <button onClick={handleSaveVision} className="px-3 py-1 bg-white text-primary rounded-xl text-xs font-bold font-headline">
                   저장
-                </Button>
+                </button>
               </div>
             ) : (
-              <p className="text-sm md:text-base font-headline font-extrabold text-text-primary italic leading-relaxed">
+              <p className="text-sm font-headline font-extrabold text-white italic leading-relaxed">
                 "{visionStatement}"
               </p>
             )}
           </div>
-        </div>
 
-        {/* Right Mascot & Level Progress */}
-        <div className="lg:col-span-4 flex flex-col items-center text-center p-6 rounded-3xl bg-gradient-to-b from-primary/5 to-surface-container border border-surface-variant/40 shadow-inner">
-          <MascotAri pose="celebrate" size="md" rotate={true} />
-          <div className="mt-3 space-y-2 w-full">
-            <span className="text-xs font-headline font-black text-secondary uppercase tracking-wider block">
-              아리 캐릭터 성장 지수
-            </span>
-            <strong className="text-lg font-headline font-black text-text-primary block">
-              Lv.05 중급 프로그래머
-            </strong>
-            <div className="space-y-1 pt-1">
-              <div className="flex justify-between text-[11px] font-bold text-text-muted">
-                <span>진행도</span>
-                <span className="text-primary font-extrabold">84%</span>
-              </div>
-              <ProgressBar value={84} max={100} variant="teal" />
+          <div className="space-y-2 w-full max-w-md pt-1">
+            <div className="flex justify-between text-xs font-bold text-[#e6deff]">
+              <span>경험치 진행도 (XP Progress)</span>
+              <span className="font-extrabold text-white">240 / 400 XP (60%)</span>
+            </div>
+            <div className="h-3.5 w-full bg-black/25 rounded-full overflow-hidden shadow-inner p-0.5 border border-white/20">
+              <div className="h-full bg-gradient-to-r from-[#7ef4fe] to-white rounded-full shadow-[0_0_12px_rgba(255,255,255,0.9)] transition-all duration-500" style={{ width: "60%" }}></div>
             </div>
           </div>
         </div>
 
-      </div>
+        {/* PROMINENT VERCEL BLOB MASCOT ARI EXTRAS */}
+        <div className="absolute -bottom-6 -right-4 md:-right-8 md:-bottom-8 w-52 h-52 md:w-80 md:h-80 z-0 transform translate-y-2 translate-x-2 md:translate-y-4 md:translate-x-4 drop-shadow-[0_25px_35px_rgba(0,0,0,0.45)] transition-transform duration-500 hover:scale-105 pointer-events-auto">
+          <img
+            src={ARI_BLOB_URL}
+            alt="Ari the 3D Puppy Mascot"
+            className="w-full h-full object-contain pointer-events-none select-none"
+          />
+        </div>
+      </section>
 
       {/* =========================================================================
-          SECTION 2: Core Career Navigator (깔끔한 4대 핵심 활동 카드)
+          SECTION 3: Stitch Bento Grid Activities ("나의 활동" - 4 Cards Layout)
          ========================================================================= */}
-      <div className="space-y-6">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-2 border-b border-surface-variant/40 pb-4">
-          <div>
-            <span className="text-xs font-headline font-black text-primary uppercase tracking-wider block mb-1">
-              READYCAREER HUB
-            </span>
-            <h2 className="text-2xl font-headline font-black text-text-primary">
-              나의 핵심 진로 탐색 메뉴
-            </h2>
-          </div>
-          <span className="text-xs text-text-muted">원하는 탭을 클릭하여 즉각 주도적인 진로 활동을 이어나가세요.</span>
+      <div className="space-y-4">
+        <div className="pt-2 pl-2 flex items-center justify-between">
+          <h3 className="text-xl font-headline font-bold text-on-surface">나의 활동 (Core Navigation)</h3>
+          <span className="text-xs font-headline font-medium text-on-surface-variant">원하는 탭을 클릭하여 활동을 시작하세요</span>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <section className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
           
-          {/* CARD 1: AI 자기이해 */}
-          <Link to="/self-understanding">
-            <Card variant="surface" padding="lg" className="border-2 border-surface-variant/60 hover:border-primary transition-all duration-200 h-full flex flex-col justify-between group shadow-sm hover:shadow-md">
-              <div className="space-y-4">
-                <div className="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center border border-primary/20 group-hover:scale-110 transition-transform">
-                  <Brain className="w-6 h-6 text-primary" />
+          {/* Card 1: 별자리 로드맵 */}
+          <Link to="/roadmap" className="block h-full">
+            <div className="bg-surface rounded-[24px] p-6 shadow-[0px_4px_12px_rgba(123,92,240,0.05),0px_20px_40px_rgba(123,92,240,0.1)] hover:shadow-[0px_8px_24px_rgba(123,92,240,0.1),0px_32px_64px_rgba(123,92,240,0.15)] transition-all duration-300 transform hover:-translate-y-1 cursor-pointer flex flex-col justify-between h-full min-h-[160px] group border border-surface-variant/40 bg-[#ffffff]">
+              <div className="w-12 h-12 rounded-full bg-[#7b5cf0] text-white flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
+                <Route className="w-6 h-6 text-white" />
+              </div>
+              <div className="mt-4">
+                <h4 className="text-lg font-headline font-extrabold text-on-surface mb-1 group-hover:text-primary transition-colors">별자리 로드맵</h4>
+                <p className="text-xs font-body-md text-on-surface-variant">2단계 진행 중 · 꿈 좌표 탐사</p>
+              </div>
+            </div>
+          </Link>
+
+          {/* Card 2: 습관 & 목표 */}
+          <Link to="/habits" className="block h-full">
+            <div className="bg-surface rounded-[24px] p-6 shadow-[0px_4px_12px_rgba(123,92,240,0.05),0px_20px_40px_rgba(123,92,240,0.1)] hover:shadow-[0px_8px_24px_rgba(123,92,240,0.1),0px_32px_64px_rgba(123,92,240,0.15)] transition-all duration-300 transform hover:-translate-y-1 cursor-pointer flex flex-col justify-between h-full min-h-[160px] group border border-surface-variant/40 bg-[#ffffff]">
+              <div className="w-12 h-12 rounded-full bg-[#7af1fc] text-[#006970] flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
+                <ListCheck className="w-6 h-6 text-[#006970]" />
+              </div>
+              <div className="mt-4">
+                <h4 className="text-lg font-headline font-extrabold text-on-surface mb-1 group-hover:text-secondary transition-colors">습관 &amp; 목표</h4>
+                <p className="text-xs font-body-md text-on-surface-variant">7일차 연속 달성 스트릭</p>
+              </div>
+            </div>
+          </Link>
+
+          {/* Card 3: 진로 포트폴리오 (Width Span 2 on Desktop) */}
+          <Link to="/portfolio" className="block col-span-2 md:col-span-2 h-full">
+            <div className="bg-surface rounded-[24px] p-6 shadow-[0px_4px_12px_rgba(123,92,240,0.05),0px_20px_40px_rgba(123,92,240,0.1)] hover:shadow-[0px_8px_24px_rgba(123,92,240,0.1),0px_32px_64px_rgba(123,92,240,0.15)] transition-all duration-300 transform hover:-translate-y-1 cursor-pointer flex flex-col justify-between h-full min-h-[160px] group border border-surface-variant/40 bg-[#ffffff]">
+              <div className="flex justify-between items-start h-full">
+                <div className="flex flex-col justify-between h-full">
+                  <div className="w-12 h-12 rounded-full bg-[#e4e1ee] text-[#1b1b24] flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
+                    <FolderCheck className="w-6 h-6 text-[#1b1b24]" />
+                  </div>
+                  <div className="mt-4">
+                    <h4 className="text-lg font-headline font-extrabold text-on-surface mb-1 group-hover:text-primary transition-colors">진로 포트폴리오</h4>
+                    <p className="text-xs font-body-md text-on-surface-variant">12개 활동 기록 보관 및 AI 세특 보고서</p>
+                  </div>
+                </div>
+                {/* Decorative Trophy Icon Trophy exactly as in Stitch */}
+                <div className="hidden md:flex w-20 h-20 rounded-2xl bg-[#f4f2fa] shadow-inner items-center justify-center border border-surface-variant/40 group-hover:bg-primary/5 transition-colors">
+                  <Trophy className="w-10 h-10 text-primary/70" />
+                </div>
+              </div>
+            </div>
+          </Link>
+
+          {/* Card 4: 아리에게 묻기 (Full Width Span 2 Mobile, Span 4 Desktop) */}
+          <Link to="/self-understanding" className="block col-span-2 md:col-span-4">
+            <div className="bg-gradient-to-r from-[#efedf5] to-[#e9e7ef] rounded-[24px] p-6 shadow-[0px_4px_12px_rgba(123,92,240,0.05),0px_20px_40px_rgba(123,92,240,0.1)] hover:shadow-[0px_8px_24px_rgba(123,92,240,0.1),0px_32px_64px_rgba(123,92,240,0.15)] transition-all duration-300 cursor-pointer flex items-center justify-between border border-white/80">
+              <div className="flex items-center gap-5">
+                <div className="w-16 h-16 rounded-full bg-white shadow-md flex items-center justify-center overflow-hidden border-2 border-primary-container p-1 flex-shrink-0">
+                  <img src={ARI_BLOB_URL} alt="Ari Icon" className="w-full h-full object-contain" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-headline font-black text-text-primary group-hover:text-primary transition-colors">
-                    AI 자기이해 진단
-                  </h3>
-                  <p className="text-xs text-text-muted font-body-md mt-1 leading-relaxed">
-                    6유형 RIASEC 강제선택 흥미유형 및 다중 역량 리포트 열람
+                  <h4 className="text-lg md:text-xl font-headline font-extrabold text-on-surface flex items-center gap-2">
+                    <span>AI 자기이해 진단 및 아리 가이던스</span>
+                    <span className="text-xs px-2.5 py-0.5 rounded-full bg-primary text-white font-bold uppercase tracking-wider">NEW</span>
+                  </h4>
+                  <p className="text-xs md:text-sm font-body-md text-on-surface-variant mt-0.5">
+                    6유형 RIASEC 진로 검사 결과를 확인하고 나만의 학부모·교사용 맞춤 조언 받기!
                   </p>
                 </div>
               </div>
-              <div className="mt-6 pt-3 border-t border-surface-variant/30 flex items-center justify-between text-xs font-headline font-bold text-primary">
-                <span>진단 및 리포트 보기</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              <div className="bg-[#6240d5] text-white rounded-full w-12 h-12 flex items-center justify-center shadow-md hover:scale-105 transition-transform flex-shrink-0 ml-2">
+                <ArrowRight className="w-6 h-6 text-white" />
               </div>
-            </Card>
+            </div>
           </Link>
 
-          {/* CARD 2: 50일 습관 관리 */}
-          <Link to="/habits">
-            <Card variant="surface" padding="lg" className="border-2 border-surface-variant/60 hover:border-secondary transition-all duration-200 h-full flex flex-col justify-between group shadow-sm hover:shadow-md">
-              <div className="space-y-4">
-                <div className="w-12 h-12 rounded-2xl bg-secondary/15 text-secondary flex items-center justify-center border border-secondary/30 group-hover:scale-110 transition-transform">
-                  <Award className="w-6 h-6 text-secondary" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-headline font-black text-text-primary group-hover:text-secondary transition-colors">
-                    50일 습관 챌린지
-                  </h3>
-                  <p className="text-xs text-text-muted font-body-md mt-1 leading-relaxed">
-                    매일 실천하는 알고리즘 및 진로 탐색 꾸준함 출석 스트릭
-                  </p>
-                </div>
-              </div>
-              <div className="mt-6 pt-3 border-t border-surface-variant/30 flex items-center justify-between text-xs font-headline font-bold text-secondary">
-                <span>습관 체커 가동 (14일차)</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </div>
-            </Card>
-          </Link>
-
-          {/* CARD 3: 별자리 로드맵 */}
-          <Link to="/roadmap">
-            <Card variant="surface" padding="lg" className="border-2 border-surface-variant/60 hover:border-primary transition-all duration-200 h-full flex flex-col justify-between group shadow-sm hover:shadow-md">
-              <div className="space-y-4">
-                <div className="w-12 h-12 rounded-2xl bg-surface-container-high text-primary flex items-center justify-center border border-surface-variant group-hover:scale-110 transition-transform">
-                  <Compass className="w-6 h-6 text-primary" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-headline font-black text-text-primary group-hover:text-primary transition-colors">
-                    별자리 로드맵
-                  </h3>
-                  <p className="text-xs text-text-muted font-body-md mt-1 leading-relaxed">
-                    꿈을 향한 학업 퀘스트 해금 및 전공 맞춤 로드맵 확인
-                  </p>
-                </div>
-              </div>
-              <div className="mt-6 pt-3 border-t border-surface-variant/30 flex items-center justify-between text-xs font-headline font-bold text-primary">
-                <span>로드맵 지도 열기</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </div>
-            </Card>
-          </Link>
-
-          {/* CARD 4: 진로 포트폴리오 DB */}
-          <Link to="/portfolio">
-            <Card variant="surface" padding="lg" className="border-2 border-surface-variant/60 hover:border-secondary transition-all duration-200 h-full flex flex-col justify-between group shadow-sm hover:shadow-md">
-              <div className="space-y-4">
-                <div className="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center border border-primary/20 group-hover:scale-110 transition-transform">
-                  <FolderKanban className="w-6 h-6 text-secondary-spot" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-headline font-black text-text-primary group-hover:text-secondary-spot transition-colors">
-                    진로 포트폴리오
-                  </h3>
-                  <p className="text-xs text-text-muted font-body-md mt-1 leading-relaxed">
-                    독서, 동아리, 세특 소재 및 학업 결과물 누적 저장고
-                  </p>
-                </div>
-              </div>
-              <div className="mt-6 pt-3 border-t border-surface-variant/30 flex items-center justify-between text-xs font-headline font-bold text-secondary-spot">
-                <span>내 포트폴리오 DB</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </div>
-            </Card>
-          </Link>
-
-        </div>
+        </section>
       </div>
 
       {/* =========================================================================
-          SECTION 3: Interested Jobs (나만의 관심직업 리스트 & 직각 직접 입력)
+          SECTION 4: Interested Jobs Management (관심직업군 칩 & 카드)
          ========================================================================= */}
-      <Card variant="surface" padding="lg" className="border border-surface-variant/60 shadow-sm space-y-6">
+      <div className="bg-white rounded-[28px] p-7 md:p-8 shadow-[0px_4px_12px_rgba(123,92,240,0.05),0px_20px_40px_rgba(123,92,240,0.1)] border border-surface-variant/50 space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-surface-variant/40 pb-4">
           <div>
-            <h3 className="text-lg font-headline font-black text-text-primary flex items-center gap-2">
+            <h3 className="text-lg md:text-xl font-headline font-extrabold text-on-surface flex items-center gap-2">
               <Sparkles className="w-5 h-5 text-secondary" />
-              <span>나의 관심 직업군 관리</span>
+              <span>나의 관심 직업군 관리 (Career Target List)</span>
             </h3>
-            <p className="text-xs text-text-muted font-body-md mt-0.5">
-              클릭(선택)하는 순간 즉시 상단의 대표 지망 직업으로 적용됩니다. 자유롭게 새로운 직업을 추가해 보세요!
+            <p className="text-xs text-on-surface-variant font-body-md mt-1">
+              카드를 터치하면 실각적으로 상단의 대표 지망 직업(DREAM JOB)으로 변경됩니다! 새로운 직업도 자유롭게 추가해 보세요.
             </p>
           </div>
 
@@ -325,11 +306,11 @@ export const HomeDashboard: React.FC = () => {
               placeholder="예: 3D AI 인터페이스 설계자..."
               value={newJobInput}
               onChange={(e) => setNewJobInput(e.target.value)}
-              className="flex-grow text-xs px-3.5 py-2.5 rounded-xl bg-surface-container border border-surface-variant text-text-primary focus:outline-none focus:ring-1 focus:ring-primary font-body-md"
+              className="flex-grow h-12 text-xs md:text-sm px-4 rounded-[20px] bg-[#f7f5fd] border border-transparent focus:border-primary text-on-surface placeholder:text-text-muted/70 focus:outline-none focus:ring-2 focus:ring-primary/20 font-body-md transition-all shadow-inner"
             />
-            <Button type="submit" variant="teal" size="sm" className="whitespace-nowrap font-headline font-bold">
+            <Button type="submit" variant="teal" size="sm" className="h-12 px-5 whitespace-nowrap font-headline font-bold rounded-full shadow-sm">
               <Plus className="w-4 h-4 mr-1" />
-              직업 추가
+              추가
             </Button>
           </form>
         </div>
@@ -342,29 +323,29 @@ export const HomeDashboard: React.FC = () => {
               <div
                 key={idx}
                 onClick={() => setSelectedJobIdx(idx)}
-                className={`p-4 rounded-2xl border-2 cursor-pointer transition-all duration-150 flex items-center justify-between ${
+                className={`p-5 rounded-[24px] border-2 cursor-pointer transition-all duration-200 flex items-center justify-between ${
                   isSelected
-                    ? "bg-secondary/15 border-secondary shadow-md scale-[1.02]"
-                    : "bg-surface-container-low border-surface-variant/50 hover:bg-surface-container hover:border-primary/40"
+                    ? "bg-[#7af1fc]/20 border-[#006970] shadow-md scale-[1.02]"
+                    : "bg-[#f4f2fa] border-surface-variant/40 hover:bg-[#efedf5] hover:border-primary/50"
                 }`}
               >
                 <div className="flex items-center gap-3">
-                  <span className="text-2xl">{job.image}</span>
+                  <span className="text-3xl p-2 rounded-2xl bg-white shadow-sm border border-surface-variant/30">{job.image}</span>
                   <div>
-                    <strong className="text-sm font-headline font-black text-text-primary block">
+                    <strong className="text-sm font-headline font-extrabold text-on-surface block">
                       {job.name}
                     </strong>
-                    <span className="text-[11px] text-text-muted font-bold">
-                      {isSelected ? "⭐ 대표 직업 선택됨" : job.category}
+                    <span className={`text-[11px] font-bold ${isSelected ? "text-[#006970]" : "text-text-muted"}`}>
+                      {isSelected ? "★ 대표 직업 선택됨" : job.category}
                     </span>
                   </div>
                 </div>
-                {isSelected && <CheckCircle2 className="w-5 h-5 text-secondary flex-shrink-0" />}
+                {isSelected && <CheckCircle2 className="w-6 h-6 text-[#006970] flex-shrink-0 ml-2" />}
               </div>
             );
           })}
         </div>
-      </Card>
+      </div>
 
     </div>
   );

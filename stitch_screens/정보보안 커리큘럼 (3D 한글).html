@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>정보보안 커리큘럼 - Career Path</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-error-container": "#93000a",
+                    "secondary-container": "#7b5de3",
+                    "surface-container-low": "#f7f1fe",
+                    "tertiary-fixed": "#e7deff",
+                    "error": "#ba1a1a",
+                    "on-secondary": "#ffffff",
+                    "surface-container-lowest": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "surface-container": "#f1ebf8",
+                    "inverse-surface": "#312f39",
+                    "on-error": "#ffffff",
+                    "inverse-on-surface": "#f4eefb",
+                    "primary-fixed-dim": "#cbbeff",
+                    "tertiary-fixed-dim": "#ccbeff",
+                    "surface-dim": "#ddd8e4",
+                    "background": "#fdf8ff",
+                    "tertiary-container": "#7d59f7",
+                    "on-primary-fixed": "#1d0061",
+                    "inverse-primary": "#cbbeff",
+                    "surface-tint": "#6341d6",
+                    "surface-container-highest": "#e6e0ed",
+                    "on-secondary-fixed": "#1f0060",
+                    "on-primary-fixed-variant": "#4a21be",
+                    "outline": "#797586",
+                    "surface-variant": "#e6e0ed",
+                    "on-tertiary-container": "#ffffff",
+                    "on-tertiary": "#ffffff",
+                    "outline-variant": "#cac4d7",
+                    "on-surface-variant": "#484554",
+                    "tertiary": "#643cdc",
+                    "surface-container-high": "#ece6f3",
+                    "secondary-fixed-dim": "#ccbdff",
+                    "on-secondary-container": "#fffbff",
+                    "on-primary": "#ffffff",
+                    "primary-container": "#7b5cf0",
+                    "primary-fixed": "#e6deff",
+                    "on-surface": "#1c1a23",
+                    "on-tertiary-fixed": "#1e0060",
+                    "surface": "#fdf8ff",
+                    "on-background": "#1c1a23",
+                    "primary": "#6240d5",
+                    "secondary": "#6242c8",
+                    "secondary-fixed": "#e7deff",
+                    "surface-bright": "#fdf8ff",
+                    "on-tertiary-fixed-variant": "#4c19c5",
+                    "on-secondary-fixed-variant": "#4c27b2",
+                    "on-primary-container": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "card-gap": "24px",
+                    "unit": "8px",
+                    "gutter": "16px",
+                    "container-padding": "24px"
+            },
+            "fontFamily": {
+                    "display-lg": ["Hanken Grotesk"],
+                    "title-md": ["Hanken Grotesk"],
+                    "label-sm": ["Hanken Grotesk"],
+                    "headline-lg-mobile": ["Hanken Grotesk"],
+                    "headline-lg": ["Hanken Grotesk"],
+                    "body-md": ["Hanken Grotesk"]
+            },
+            "fontSize": {
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "title-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #fdf8ff;
+            background-image: radial-gradient(at 0% 0%, rgba(123, 92, 240, 0.05) 0px, transparent 50%),
+                              radial-gradient(at 100% 100%, rgba(123, 92, 240, 0.05) 0px, transparent 50%);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(20px);
+            border-top: 1.5px solid rgba(255, 255, 255, 0.4);
+            border-left: 1.5px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0px 20px 40px rgba(123, 92, 240, 0.1);
+        }
+
+        .inner-glow {
+            box-shadow: inset 0 1px 2px rgba(255, 255, 255, 1);
+        }
+
+        .primary-gradient {
+            background: linear-gradient(135deg, #7b5cf0 0%, #6240d5 100%);
+            box-shadow: inset 0 1.5px 0 rgba(255, 255, 255, 0.3), 0 10px 20px rgba(123, 92, 240, 0.2);
+        }
+
+        .progress-bar-bg {
+            background: rgba(123, 92, 240, 0.1);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.03);
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .active-nav-glow {
+            box-shadow: 0 4px 12px rgba(123, 92, 240, 0.2);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        .animate-float {
+            animation: float 4s ease-in-out infinite;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-md text-on-surface antialiased overflow-x-hidden min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-white/60 dark:bg-on-surface/60 backdrop-blur-xl border-b border-white/40 dark:border-white/10 shadow-[0px_20px_40px_rgba(123,92,240,0.1)] h-16 flex justify-between items-center px-gutter">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-fixed-dim bg-surface-container-high ring-4 ring-white/30">
+<img class="w-full h-full object-cover" data-alt="A clean 3D render portrait of a friendly high school student character with modern casual clothing, soft studio lighting, and a shallow depth of field. The style is highly polished, professional 3D art consistent with a futuristic educational app aesthetic, featuring soft lavender and violet undertones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUzHev6qF8UxViOba62RzCPN1l_i3TvJnDhgWaH9p2wzorXuSY4_LL_IPjeI89XzE9uKaufjKdM-EsdWdWwK8fafplnHu0A3g7rrpWOl1cR6wtaIeNpm4M9NLISUDK7NTuGDpQcJnPKNi6NDLi800oJzQQf8-OoJBBsEdJNghsepgkll5uTOO84mj066OeNtspQ8mdXRTar6ek60SKyGzHaTN_5RLGYxwkQpzzPdMP-FrNjxRgyGI9ouGvnTkYfT-4vvhX81L9lLc0"/>
+</div>
+<h1 class="font-title-md text-title-md text-primary">정보보안 커리큘럼</h1>
+</div>
+<button class="material-symbols-outlined text-primary hover:opacity-80 transition-opacity p-2 rounded-full bg-white/50 active:scale-95 transition-transform" data-icon="notifications">
+            notifications
+        </button>
+</header>
+<!-- Content Canvas -->
+<main class="mt-24 px-gutter flex flex-col gap-8 max-w-2xl mx-auto">
+<!-- Header Section -->
+<section class="flex items-center justify-between gap-4 p-6 glass-card rounded-lg overflow-hidden relative group">
+<div class="flex-1 z-10">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface leading-tight">
+                    정보보안 전문가가<br/>되기 위한 핵심 코스예요.
+                </h2>
+<div class="mt-3 inline-flex items-center gap-2 bg-primary-container/10 px-3 py-1 rounded-full border border-primary/20">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="text-label-sm font-label-sm text-primary">현재 36% 진행 중</span>
+</div>
+</div>
+<div class="w-24 h-24 flex-shrink-0 animate-float">
+<img class="w-full h-full object-contain" data-alt="A high-quality 3D render of Ari, a cute robot mascot with soft round features and expressive digital eyes. Ari is holding a digital magnifying glass, symbolizing security and investigation. The lighting is soft and cinematic, with a color palette of white, metallic silver, and vibrant violet accents, set against a clean studio background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAP9OyLRwzaoILuD1e9Slstqa9SW9Ld_fuKGtncd97HowNPJA2Pf-JhIGbe2SKKIvaDg_GkRCGYmfANCOUC2M05bZjxSIzmOkQYdSvEXMi692PM9kXSEw_ERUvPpr87_VSKpf_CS3sBnZ-m6p0JfE6BiLn4J0Zse3piZti1qyiuUxT7xtTbyKGh1gKLQihzp9RV2VeQuU16OXFWzLhHoiFMRe7bxFTT_sdll8t0uEdafLFkg14mpv-N3XqrT7yDObq_-zab0_Y5HAHx"/>
+</div>
+<!-- Decorative atmospheric light -->
+<div class="absolute -right-10 -top-10 w-32 h-32 bg-primary/10 rounded-full blur-3xl group-hover:scale-125 transition-transform duration-700"></div>
+</section>
+<!-- Subject Card List -->
+<section class="flex flex-col gap-card-gap">
+<!-- Card 1 -->
+<article class="glass-card rounded-lg p-5 flex flex-col gap-4 group hover:shadow-[0px_25px_50px_rgba(123,92,240,0.15)] transition-all duration-300">
+<div class="flex items-center gap-4">
+<div class="w-16 h-16 rounded-2xl bg-surface-container-low flex items-center justify-center inner-glow overflow-hidden">
+<img class="w-12 h-12 object-contain group-hover:scale-110 transition-transform" data-alt="A premium 3D icon of a glowing blue shield with interconnecting network nodes and lines representing data security. The icon has a metallic finish and soft neon lighting effects, designed in a modern isometric perspective with high-end digital art fidelity, fitting a futuristic cyber-security theme." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxOdMHYK8Q8CNR54rENpVyr8hgl48gXK4d7ZFbCCfY6SidmBwIXPucZVCgmT1EyNINbobhai5JZXe-vGS3hwy6H7nO5Bh47ILzpNRlMfPpoJ5Vx0GAEq8iop_zDq2HNZtRyFKzEbMh3t1DhKxg6lqzUb1L4r_s8mj564T-oZ7KP9BlDSSY66QwOIEigf8DMVi3kpw5we-ew5hJ8T-TUKaUgGT4Wuwnk0tiqhBtw0lSZkcT17-CKgYf3M1LS60XavDcOPU9xzuyM8xO"/>
+</div>
+<div class="flex-1">
+<h3 class="font-title-md text-title-md text-on-surface">네트워크 보안 기초</h3>
+<p class="text-label-sm text-on-surface-variant mt-1">네트워크의 기본 구조와 위협 탐지</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex-1">
+<div class="flex justify-between items-center mb-2">
+<span class="text-label-sm font-label-sm text-on-surface-variant">학습 진도</span>
+<span class="text-label-sm font-label-sm text-primary">80%</span>
+</div>
+<div class="h-2.5 w-full progress-bar-bg rounded-full overflow-hidden">
+<div class="h-full bg-primary transition-all duration-1000 ease-out" style="width: 80%"></div>
+</div>
+</div>
+<button class="primary-gradient px-5 py-2.5 rounded-full text-on-primary font-label-sm hover:opacity-90 active:scale-95 transition-all flex items-center gap-2">
+                        학습 계속하기
+                        <span class="material-symbols-outlined text-[18px]" data-icon="play_arrow">play_arrow</span>
+</button>
+</div>
+</article>
+<!-- Card 2 -->
+<article class="glass-card rounded-lg p-5 flex flex-col gap-4 group hover:shadow-[0px_25px_50px_rgba(123,92,240,0.15)] transition-all duration-300">
+<div class="flex items-center gap-4">
+<div class="w-16 h-16 rounded-2xl bg-surface-container-low flex items-center justify-center inner-glow overflow-hidden">
+<img class="w-12 h-12 object-contain group-hover:scale-110 transition-transform" data-alt="A detailed 3D golden key and a matching heavy padlock with digital encryption symbols etched onto the surface. The objects are floating in a soft lavender void with sophisticated studio lighting that highlights the metallic textures and reflective surfaces, conveying trust and security." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDzAHrx3F6IrM9RdN-cydXm12T3VZeTSuPrNQBJBv2YVr5wPaOvBIy_OteWelhBJKwShjQXKiBGRrWN-9TWKMBWRcQYceuaWTy2wMcZGq_Ly1OBRF4TdOQD9cJ7n7GMIEU58sq1Fbm3pObXHjL9tivHPIRDYT9W4AgQEPKij_4JAJeTSe9XX3HMNWPhT3m3QckbtlNdXWdz0rUTowJbYdyQOavDddcp9VCJha3x3SS4nZN961qAntM6rmVk6WnnuJ6X2EwIg4s_F4CK"/>
+</div>
+<div class="flex-1">
+<h3 class="font-title-md text-title-md text-on-surface">암호학의 이해</h3>
+<p class="text-label-sm text-on-surface-variant mt-1">대칭키와 비대칭키의 원리</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex-1">
+<div class="flex justify-between items-center mb-2">
+<span class="text-label-sm font-label-sm text-on-surface-variant">학습 진도</span>
+<span class="text-label-sm font-label-sm text-primary">45%</span>
+</div>
+<div class="h-2.5 w-full progress-bar-bg rounded-full overflow-hidden">
+<div class="h-full bg-primary transition-all duration-1000 ease-out" style="width: 45%"></div>
+</div>
+</div>
+<button class="primary-gradient px-5 py-2.5 rounded-full text-on-primary font-label-sm hover:opacity-90 active:scale-95 transition-all">
+                        학습 계속하기
+                    </button>
+</div>
+</article>
+<!-- Card 3 -->
+<article class="glass-card rounded-lg p-5 flex flex-col gap-4 group hover:shadow-[0px_25px_50px_rgba(123,92,240,0.15)] transition-all duration-300">
+<div class="flex items-center gap-4">
+<div class="w-16 h-16 rounded-2xl bg-surface-container-low flex items-center justify-center inner-glow overflow-hidden">
+<img class="w-12 h-12 object-contain group-hover:scale-110 transition-transform" data-alt="A futuristic 3D computer terminal showing lines of glowing code and system monitoring graphs. The screen glows with a soft violet light, and the device has a sleek, minimalist hardware design with rounded edges and matte metallic textures, embodying the essence of operating system security." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvsbx43aUiXX307abL0Ms2099Bf7UYoDpLuZrFLydMOwWu_ONEJZYqdxLBjhnKZpk5yBeieUpt2J71oIls8nUljk1MAomTCLieA7fkdBfTqsEg4zWnRtzpMQNU7MjwecVAZRqa03vFtFZn-3W1Vy091j0n3FMfyC0rs2t231nn3R6L4-qgtO48NjK76r27WV7WZiL0DBJDeDMeWiBLlKpDelH53Iy5JfRLKWQkk-_du2xjaOOHeIwsE58V191mxInrsXchtJFFjjdj"/>
+</div>
+<div class="flex-1">
+<h3 class="font-title-md text-title-md text-on-surface">운영체제 및 시스템 보안</h3>
+<p class="text-label-sm text-on-surface-variant mt-1">리눅스 및 윈도우 보안 설정</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex-1">
+<div class="flex justify-between items-center mb-2">
+<span class="text-label-sm font-label-sm text-on-surface-variant">학습 진도</span>
+<span class="text-label-sm font-label-sm text-primary">10%</span>
+</div>
+<div class="h-2.5 w-full progress-bar-bg rounded-full overflow-hidden">
+<div class="h-full bg-primary transition-all duration-1000 ease-out" style="width: 10%"></div>
+</div>
+</div>
+<button class="primary-gradient px-5 py-2.5 rounded-full text-on-primary font-label-sm hover:opacity-90 active:scale-95 transition-all">
+                        학습 계속하기
+                    </button>
+</div>
+</article>
+<!-- Card 4 -->
+<article class="glass-card rounded-lg p-5 flex flex-col gap-4 group hover:shadow-[0px_25px_50px_rgba(123,92,240,0.15)] transition-all duration-300 opacity-90">
+<div class="flex items-center gap-4">
+<div class="w-16 h-16 rounded-2xl bg-surface-container-low flex items-center justify-center inner-glow overflow-hidden">
+<img class="w-12 h-12 object-contain group-hover:scale-110 transition-transform" data-alt="A 3D stylized web browser window with a vibrant red warning triangle icon and digital glitch effects. The browser looks like a translucent glass pane with depth and soft shadows, featuring small UI elements like buttons and address bars in a futuristic, neon-accented aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA77uK9Ypjw9Po6TfPyfsiB5F0elY7HheYZ5GTTH0YGsbQyfJCSOPuCylTzqXd3yoBLD6tByXBHYuKY35buBEM4kLbp5bpClZcC6-FG3wqk5upfcDYbEA7RbNAD8W19yTnuS7V5CM9Fyjm-t831rDzbtnzckOdg0dA_6H_k-sZXmtRGCMe9qsHk9lJdkuNG_8n6ZpppxgaIQqIEee_lS5c-uN_oBN-BKXuvjjGqioE4bnA4_Lns9CQzErUupY90fL_19J4UMbKpCJiO"/>
+</div>
+<div class="flex-1">
+<h3 class="font-title-md text-title-md text-on-surface">웹 해킹과 방어</h3>
+<p class="text-label-sm text-on-surface-variant mt-1">OWASP Top 10 취약점 분석</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex-1">
+<div class="flex justify-between items-center mb-2">
+<span class="text-label-sm font-label-sm text-on-surface-variant">학습 진도</span>
+<span class="text-label-sm font-label-sm text-outline">0%</span>
+</div>
+<div class="h-2.5 w-full progress-bar-bg rounded-full overflow-hidden">
+<div class="h-full bg-primary transition-all duration-1000 ease-out" style="width: 0%"></div>
+</div>
+</div>
+<button class="bg-white/80 border border-primary/30 px-5 py-2.5 rounded-full text-primary font-label-sm hover:bg-primary hover:text-white active:scale-95 transition-all">
+                        시작하기
+                    </button>
+</div>
+</article>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 bg-white/60 dark:bg-on-surface/60 backdrop-blur-xl border-t border-white/40 dark:border-white/10 shadow-[0px_-10px_30px_rgba(123,92,240,0.1)] flex justify-around items-center px-gutter py-3 pb-safe">
+<!-- Explore -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-4 py-1 hover:text-primary dark:hover:text-primary-fixed transition-colors active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="explore">explore</span>
+<span class="font-label-sm text-label-sm mt-1">Explore</span>
+</a>
+<!-- Learning (Roadmap Active) -->
+<a class="flex flex-col items-center justify-center bg-primary-container dark:bg-tertiary-container text-on-primary-container dark:text-on-tertiary-container rounded-2xl px-4 py-1 active-nav-glow active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="school" style="font-variation-settings: 'FILL' 1;">school</span>
+<span class="font-label-sm text-label-sm mt-1">Learning</span>
+</a>
+<!-- Achievements -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-4 py-1 hover:text-primary dark:hover:text-primary-fixed transition-colors active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="military_tech">military_tech</span>
+<span class="font-label-sm text-label-sm mt-1">Achievements</span>
+</a>
+<!-- Profile -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-4 py-1 hover:text-primary dark:hover:text-primary-fixed transition-colors active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-sm text-label-sm mt-1">Profile</span>
+</a>
+</nav>
+<script>
+        // Simple Micro-interactions
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('touchstart', () => {
+                card.style.transform = 'scale(0.98)';
+            });
+            card.addEventListener('touchend', () => {
+                card.style.transform = 'scale(1)';
+            });
+        });
+
+        // Dynamic Header Scroll Effect
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 20) {
+                header.classList.add('shadow-lg');
+            } else {
+                header.classList.remove('shadow-lg');
+            }
+        });
+    </script>
+</body></html>

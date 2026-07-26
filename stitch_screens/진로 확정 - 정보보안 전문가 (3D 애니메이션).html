@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ari's Career Lab - 선택 완료!</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface": "#fdf8ff",
+                    "on-surface-variant": "#484554",
+                    "on-primary-fixed-variant": "#4a21be",
+                    "tertiary-container": "#7d59f7",
+                    "on-error": "#ffffff",
+                    "on-secondary-container": "#fffbff",
+                    "background": "#fdf8ff",
+                    "tertiary": "#643cdc",
+                    "secondary-fixed-dim": "#ccbdff",
+                    "on-secondary-fixed": "#1f0060",
+                    "on-tertiary-fixed": "#1e0060",
+                    "on-error-container": "#93000a",
+                    "surface-container-high": "#ece6f3",
+                    "error": "#ba1a1a",
+                    "primary-fixed-dim": "#cbbeff",
+                    "inverse-primary": "#cbbeff",
+                    "on-background": "#1c1a23",
+                    "inverse-surface": "#312f39",
+                    "on-secondary": "#ffffff",
+                    "surface-container-low": "#f7f1fe",
+                    "secondary-fixed": "#e7deff",
+                    "on-primary-fixed": "#1d0061",
+                    "on-primary-container": "#ffffff",
+                    "primary-container": "#7b5cf0",
+                    "outline-variant": "#cac4d7",
+                    "on-tertiary-fixed-variant": "#4c19c5",
+                    "surface-dim": "#ddd8e4",
+                    "on-surface": "#1c1a23",
+                    "on-secondary-fixed-variant": "#4c27b2",
+                    "inverse-on-surface": "#f4eefb",
+                    "secondary": "#6242c8",
+                    "surface-variant": "#e6e0ed",
+                    "outline": "#797586",
+                    "surface-container-highest": "#e6e0ed",
+                    "surface-bright": "#fdf8ff",
+                    "primary-fixed": "#e6deff",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary-container": "#7b5de3",
+                    "error-container": "#ffdad6",
+                    "on-tertiary": "#ffffff",
+                    "on-tertiary-container": "#ffffff",
+                    "surface-tint": "#6341d6",
+                    "on-primary": "#ffffff",
+                    "primary": "#6240d5",
+                    "tertiary-fixed-dim": "#ccbeff",
+                    "surface-container": "#f1ebf8",
+                    "tertiary-fixed": "#e7deff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "card-gap": "24px",
+                    "unit": "8px",
+                    "gutter": "16px",
+                    "container-padding": "24px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Hanken Grotesk"],
+                    "label-sm": ["Hanken Grotesk"],
+                    "body-md": ["Hanken Grotesk"],
+                    "title-md": ["Hanken Grotesk"],
+                    "headline-lg-mobile": ["Hanken Grotesk"],
+                    "display-lg": ["Hanken Grotesk"]
+            },
+            "fontSize": {
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "title-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "700"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Hanken Grotesk', sans-serif;
+        background-color: #fdf8ff;
+        overflow-x: hidden;
+      }
+      .glass-card {
+        background: rgba(255, 255, 255, 0.6);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1.5px solid rgba(255, 255, 255, 0.4);
+        box-shadow: 0px 20px 40px rgba(123, 92, 240, 0.1);
+      }
+      .glass-button {
+        background: linear-gradient(135deg, #7b5cf0 0%, #6240d5 100%);
+        box-shadow: 0px 8px 24px rgba(98, 64, 213, 0.3), inset 0px 1px 1px rgba(255, 255, 255, 0.4);
+        transition: all 0.3s ease;
+      }
+      .glass-button:active {
+        transform: scale(0.96);
+      }
+      .floating-anim {
+        animation: floating 3s ease-in-out infinite;
+      }
+      @keyframes floating {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-15px); }
+      }
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .skill-pill {
+        background: rgba(125, 89, 247, 0.1);
+        color: #4a21be;
+        border: 1px solid rgba(125, 89, 247, 0.2);
+      }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center relative overflow-hidden">
+<!-- Background Shader -->
+<!-- STITCH_SHADER_START:ANIMATION_37 class="absolute inset-0 w-full h-full z-0" -->
+<div class="absolute inset-0 w-full h-full z-0" style="display:block;">
+<canvas id="shader-canvas-ANIMATION_37" style="display:block;width:100%;height:100%"></canvas>
+<script>
+(function() {
+  const canvas = document.getElementById('shader-canvas-ANIMATION_37');
+
+  // Sync the WebGL drawing-buffer size with the CSS-driven layout size.
+  // This fires on initial layout and whenever the element is resized.
+  function syncSize() {
+    const w = canvas.clientWidth  || 1280;
+    const h = canvas.clientHeight || 720;
+    if (canvas.width !== w || canvas.height !== h) {
+      canvas.width  = w;
+      canvas.height = h;
+    }
+  }
+  if (typeof ResizeObserver !== 'undefined') {
+    new ResizeObserver(syncSize).observe(canvas);
+  }
+  syncSize();
+
+  const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+  if (!gl) return;
+  const vs = `attribute vec2 a_position;
+varying vec2 v_texCoord;
+void main() {
+  v_texCoord = a_position * 0.5 + 0.5;
+  gl_Position = vec4(a_position, 0.0, 1.0);
+}`;
+  const fs = `
+precision highp float;
+uniform float u_time;
+uniform vec2 u_resolution;
+
+void main() {
+    vec2 uv = gl_FragCoord.xy / u_resolution.xy;
+    
+    // Smooth moving gradient logic
+    vec3 color1 = vec3(0.48, 0.36, 0.94); // #7B5CF0 (Violet)
+    vec3 color2 = vec3(0.1, 0.05, 0.3);  // Dark Deep Blue/Purple
+    
+    float noise = sin(uv.x * 3.0 + u_time * 0.5) * cos(uv.y * 3.0 + u_time * 0.5);
+    vec3 finalColor = mix(color1, color2, uv.y + noise * 0.2);
+    
+    gl_FragColor = vec4(finalColor, 1.0);
+}
+`;
+  function cs(type, src) {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    return s;
+  }
+  const prog = gl.createProgram();
+  gl.attachShader(prog, cs(gl.VERTEX_SHADER, vs));
+  gl.attachShader(prog, cs(gl.FRAGMENT_SHADER, fs));
+  gl.linkProgram(prog);
+  gl.useProgram(prog);
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+  const pos = gl.getAttribLocation(prog, 'a_position');
+  gl.enableVertexAttribArray(pos);
+  gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+  const uTime = gl.getUniformLocation(prog, 'u_time');
+  const uRes = gl.getUniformLocation(prog, 'u_resolution');
+  const uMouse = gl.getUniformLocation(prog, 'u_mouse');
+
+  // u_mouse is in pixel coordinates matching u_resolution (ShaderToy convention).
+  // Shaders that need normalized coords should use: u_mouse / u_resolution.
+  let mouse = { x: canvas.width / 2, y: canvas.height / 2 };
+  window.addEventListener('mousemove', (event) => {
+    const rect = canvas.getBoundingClientRect();
+    if (rect.width && rect.height) {
+      const nx = (event.clientX - rect.left) / rect.width;
+      const ny = 1.0 - (event.clientY - rect.top) / rect.height;
+      mouse.x = nx * canvas.width;
+      mouse.y = ny * canvas.height;
+    }
+  });
+
+  function render(t) {
+    if (typeof ResizeObserver === 'undefined') syncSize();
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    if (uTime) gl.uniform1f(uTime, t * 0.001);
+    if (uRes) gl.uniform2f(uRes, canvas.width, canvas.height);
+    if (uMouse) gl.uniform2f(uMouse, mouse.x, mouse.y);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    requestAnimationFrame(render);
+  }
+  render(0);
+})();
+</script>
+</div>
+<!-- STITCH_SHADER_END:ANIMATION_37 -->
+<!-- Content Container -->
+<main class="relative z-10 w-full max-w-md px-6 py-12 flex flex-col items-center min-h-screen">
+<!-- Header -->
+<header class="w-full text-center mb-4">
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-white drop-shadow-md">선택 완료!</h1>
+</header>
+<!-- Hero 3D Scene -->
+<div class="w-full aspect-square relative flex items-center justify-center mb-4 floating-anim">
+<!-- STITCH_THREEJS_START:ANIMATION_36 class="w-full h-full" -->
+<div class="w-full h-full" style="display:block;">
+<script src="https://ajax.googleapis.com/ajax/libs/threejs/r125/three.min.js"></script>
+<div id="threejs-container-ANIMATION_36" style="width:100%;height:100%"></div>
+<script>
+(function() {
+  const container = document.getElementById('threejs-container-ANIMATION_36');
+  const devicePixelRatio = window.devicePixelRatio || 1;
+  
+const width = container.clientWidth || window.innerWidth;
+const height = container.clientHeight || window.innerHeight;
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+renderer.setSize(width, height);
+renderer.setPixelRatio(window.devicePixelRatio);
+container.appendChild(renderer.domElement);
+
+// Lighting
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+scene.add(ambientLight);
+
+const pointLight = new THREE.PointLight(0x7B5CF0, 2, 50);
+pointLight.position.set(5, 5, 5);
+scene.add(pointLight);
+
+// Cybersecurity related 3D object: A floating digital shield/lock
+const group = new THREE.Group();
+scene.add(group);
+
+// Shield Body
+const shieldGeom = new THREE.CylinderGeometry(1, 1.2, 0.4, 6);
+const shieldMat = new THREE.MeshPhongMaterial({ 
+  color: 0x7B5CF0, 
+  shininess: 100,
+  transparent: true,
+  opacity: 0.9
+});
+const shield = new THREE.Mesh(shieldGeom, shieldMat);
+shield.rotation.x = Math.PI / 2;
+group.add(shield);
+
+// Inner Core (Glowing)
+const coreGeom = new THREE.SphereGeometry(0.5, 32, 32);
+const coreMat = new THREE.MeshBasicMaterial({ color: 0xFFFFFF });
+const core = new THREE.Mesh(coreGeom, coreMat);
+group.add(core);
+
+// Floating Bits
+for(let i=0; i<8; i++) {
+  const bitGeom = new THREE.BoxGeometry(0.1, 0.1, 0.1);
+  const bitMat = new THREE.MeshPhongMaterial({ color: 0xFFFFFF });
+  const bit = new THREE.Mesh(bitGeom, bitMat);
+  const angle = (i / 8) * Math.PI * 2;
+  bit.position.set(Math.cos(angle) * 1.5, Math.sin(angle) * 1.5, 0);
+  group.add(bit);
+}
+
+camera.position.z = 5;
+
+let clock = new THREE.Clock();
+function animate() {
+  requestAnimationFrame(animate);
+  const t = clock.getElapsedTime();
+  
+  group.rotation.y = t * 0.5;
+  group.rotation.z = Math.sin(t * 0.3) * 0.2;
+  group.position.y = Math.sin(t * 1.5) * 0.2;
+  
+  renderer.render(scene, camera);
+}
+animate();
+
+window.addEventListener('resize', () => {
+  const w = container.clientWidth || window.innerWidth;
+  const h = container.clientHeight || window.innerHeight;
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
+  renderer.setSize(w, h);
+});
+
+})();
+</script>
+</div>
+<!-- STITCH_THREEJS_END:ANIMATION_36 -->
+</div>
+<!-- Career Info Section -->
+<div class="text-center mb-8">
+<h2 class="font-display-lg text-display-lg text-white mb-2 drop-shadow-lg">정보보안 전문가</h2>
+<p class="font-title-md text-title-md-mobile text-white/90 px-4 leading-snug">
+                깊이 파고드는 '탐구형'인 당신에게<br/>딱 맞는 길이에요.
+            </p>
+</div>
+<!-- Glassmorphism Skills Card -->
+<div class="w-full relative">
+<div class="glass-card rounded-[28px] p-8 mb-24 w-full">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary">verified</span>
+<span class="font-title-md text-title-md-mobile text-on-surface">핵심 역량 리스트</span>
+</div>
+<div class="flex flex-wrap gap-3">
+<span class="skill-pill px-4 py-2 rounded-full font-label-sm text-label-sm">논리적 분석</span>
+<span class="skill-pill px-4 py-2 rounded-full font-label-sm text-label-sm">보안 아키텍처</span>
+<span class="skill-pill px-4 py-2 rounded-full font-label-sm text-label-sm">문제 해결 능력</span>
+</div>
+</div>
+<!-- Ari Mascot -->
+<div class="absolute -right-4 -top-16 w-32 h-48 z-20 transition-transform hover:scale-110">
+<img alt="Ari mascot waving" class="w-full h-full object-contain drop-shadow-2xl" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2E4cq05PwWTQGUjHhjf7AUAeOquzfvPrutl87Vz7t1gVnJAU21C2sfEaFxFdwJZIR7z93vfZ0hCO1mmKa3wvjNUvaXWbVyI2_vFU-Nu8D1Eq7fZ50-BCpJlVd1dCXSsUWB2y7KiMTVl-1wpuN-5ELe1hM2pu4IODcRKDXsiMVkIK1DzGk6gKc28qb_JHPP6ZZ9A6WQYLC_vQ2-6TTrgyHzq0qX1kLxDYja5bVCstpSH9qFSHhbn_Fj0voefT5VFw-OQQm9R1oGJMz"/>
+</div>
+</div>
+<!-- Bottom Action Button -->
+<footer class="fixed bottom-10 left-0 w-full px-6 flex justify-center">
+<button class="glass-button w-full max-w-sm py-5 rounded-[28px] text-white font-title-md text-title-md-mobile flex items-center justify-center gap-2 group">
+                시작하기 &amp; 확인
+                <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</footer>
+</main>
+<!-- Overlay Interaction Script -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('.glass-button');
+            btn.addEventListener('click', () => {
+                // Mock interaction for visual feedback
+                btn.classList.add('scale-95');
+                setTimeout(() => {
+                    btn.classList.remove('scale-95');
+                    alert('커리어 여정을 시작합니다!');
+                }, 150);
+            });
+
+            // Gentle parallax for the mascot
+            document.addEventListener('mousemove', (e) => {
+                const ari = document.querySelector('img[src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2E4cq05PwWTQGUjHhjf7AUAeOquzfvPrutl87Vz7t1gVnJAU21C2sfEaFxFdwJZIR7z93vfZ0hCO1mmKa3wvjNUvaXWbVyI2_vFU-Nu8D1Eq7fZ50-BCpJlVd1dCXSsUWB2y7KiMTVl-1wpuN-5ELe1hM2pu4IODcRKDXsiMVkIK1DzGk6gKc28qb_JHPP6ZZ9A6WQYLC_vQ2-6TTrgyHzq0qX1kLxDYja5bVCstpSH9qFSHhbn_Fj0voefT5VFw-OQQm9R1oGJMz"]');
+                if (ari) {
+                    const x = (window.innerWidth / 2 - e.pageX) / 40;
+                    const y = (window.innerHeight / 2 - e.pageY) / 40;
+                    ari.style.transform = `translate(${x}px, ${y}px)`;
+                }
+            });
+        });
+    </script>
+</body></html>

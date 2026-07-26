@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
-import { Header, BottomNav } from "./components";
+import { Header, BottomNav, AriChatModal } from "./components";
+import { ARI_BLOB_URL } from "./assets/mascotData";
 import {
   HomeDashboard,
   OnboardingCode,
@@ -60,8 +61,13 @@ const PublicAuthRoute: React.FC<{ children: React.ReactElement }> = ({ children 
 };
 
 const AppContent: React.FC = () => {
+  const { isAuthenticated } = useAuth();
+  const location = useLocation();
+  const [isChatOpen, setIsChatOpen] = useState(false);
+  const showChatButton = isAuthenticated && location.pathname !== "/start";
+
   return (
-    <div className="min-h-screen flex flex-col bg-[#FBF8FF] font-body-md text-[#1A1626] selection:bg-[#7B5CF0]/20 selection:text-[#7B5CF0] pb-20 lg:pb-0">
+    <div className="min-h-screen flex flex-col bg-[#FBF8FF] font-body-md text-[#1A1626] selection:bg-[#7B5CF0]/20 selection:text-[#7B5CF0] pb-20 lg:pb-0 relative">
       <Header />
 
       <main className="flex-grow">
@@ -103,6 +109,28 @@ const AppContent: React.FC = () => {
       </main>
 
       <BottomNav />
+
+      {/* Stitch 3D Floating Ask Ari Trigger Button */}
+      {showChatButton && (
+        <div className="fixed bottom-20 lg:bottom-8 right-5 lg:right-8 z-40">
+          <button
+            onClick={() => setIsChatOpen(true)}
+            className="flex items-center gap-2.5 bg-gradient-to-r from-[#8E70F7] to-[#6240d5] hover:from-[#7B5CF0] hover:to-[#4a21be] text-white pl-2.5 pr-5 py-2.5 rounded-full shadow-[0_12px_28px_rgba(98,64,213,0.35)] transform hover:-translate-y-1 active:scale-95 transition-all duration-300 border border-white/25 group"
+            title="아리에게 실시간 AI 질문하기"
+          >
+            <div className="w-9 h-9 rounded-full bg-white p-0.5 shadow-md flex items-center justify-center border border-[#cbbeff]">
+              <img src={ARI_BLOB_URL} alt="Ari" className="w-full h-full object-contain group-hover:scale-110 transition-transform" />
+            </div>
+            <div className="flex flex-col text-left">
+              <span className="text-[10px] text-[#7af1fc] font-extrabold leading-none tracking-wider uppercase">3D AI 어시스턴트</span>
+              <span className="text-sm font-extrabold font-headline leading-tight mt-0.5">아리에게 묻기 ✨</span>
+            </div>
+          </button>
+        </div>
+      )}
+
+      {/* Ask Ari Modal */}
+      <AriChatModal isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
     </div>
   );
 };

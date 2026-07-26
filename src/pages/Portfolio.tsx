@@ -50,11 +50,21 @@ const INITIAL_PORTFOLIOS: PortfolioItem[] = [
 
 export const Portfolio: React.FC = () => {
   const { report } = useSelfUnderstanding();
+  const [activeTab, setActiveTab] = useState<"list" | "drawers" | "badges">("list");
   const [selectedCategory, setSelectedCategory] = useState<string>("전체 보기");
   const [searchQuery, setSearchQuery] = useState("");
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
   const categories = ["전체 보기", "자기성찰/진도", "진학·탐구", "동아리", "독서·예술"];
+
+  const badges = [
+    { id: "b1", name: "⭐ 대표 시연 마스터", desc: "2026 박람회 시연 에디션 완벽 탑재 및 모든 기능 탐구 완수", icon: "👑", rarity: "LEGENDARY", unlocked: true },
+    { id: "b2", name: "🔬 AI 3D 자기이해 개척자", desc: "흥미유형 6유형 및 다중지능 AI 진단 리포트 활성화", icon: "🧬", rarity: "EPIC", unlocked: true },
+    { id: "b3", name: "🔥 50일 챌린지 도전자", desc: "진로 루틴 및 한입 퀘스트 14일 연속 완수", icon: "🎯", rarity: "RARE", unlocked: true },
+    { id: "b4", name: "📝 2026 기재요령 최신 가이드", desc: "NEIS 기재 지침 100% 준수 세특 텍스트 생성 3회 이상", icon: "🏆", rarity: "EPIC", unlocked: true },
+    { id: "b5", name: "🤖 아리의 단짝 친구", desc: "3D 대화창에서 AI 아리와 실시간 멘토링 상담 진행", icon: "🐶", rarity: "RARE", unlocked: true },
+    { id: "b6", name: "🌌 별자리 마스터 크리드", desc: "우주 밤하늘 모든 희망 진로 노드 100% 탐사 완료", icon: "✨", rarity: "LEGENDARY", unlocked: false },
+  ];
 
   // Dynamically merge Self-Understanding report as a Portfolio Item!
   const selfReportItem: PortfolioItem | null = report
@@ -119,6 +129,43 @@ export const Portfolio: React.FC = () => {
         </div>
       </div>
 
+      {/* Stitch Mode Switch Tabs (List / 3D Drawers / Badges) */}
+      <div className="flex items-center gap-2 bg-[#EFEDF5] p-1.5 rounded-2xl w-fit self-start md:self-center border border-[#E3E1E9]">
+        <button
+          onClick={() => setActiveTab("list")}
+          className={`px-5 py-2.5 rounded-xl font-headline font-black text-xs transition-all flex items-center gap-2 ${
+            activeTab === "list"
+              ? "bg-[#FFFFFF] text-[#7B5CF0] shadow-[0_4px_12px_rgba(123,92,240,0.15)] font-extrabold"
+              : "text-[#6E6A80] hover:text-[#1A1626]"
+          }`}
+        >
+          <span>📂 문서 보관 목록</span>
+        </button>
+        <button
+          onClick={() => setActiveTab("drawers")}
+          className={`px-5 py-2.5 rounded-xl font-headline font-black text-xs transition-all flex items-center gap-2 ${
+            activeTab === "drawers"
+              ? "bg-[#7B5CF0] text-white shadow-[0_4px_12px_rgba(123,92,240,0.25)] font-extrabold"
+              : "text-[#6E6A80] hover:text-[#1A1626]"
+          }`}
+        >
+          <span>🗄️ 진로 보관함 (3D 서랍장)</span>
+        </button>
+        <button
+          onClick={() => setActiveTab("badges")}
+          className={`px-5 py-2.5 rounded-xl font-headline font-black text-xs transition-all flex items-center gap-2 ${
+            activeTab === "badges"
+              ? "bg-[#006970] text-white shadow-[0_4px_12px_rgba(0,105,112,0.25)] font-extrabold"
+              : "text-[#6E6A80] hover:text-[#1A1626]"
+          }`}
+        >
+          <span>🏆 활동 배지 및 AI 업적</span>
+        </button>
+      </div>
+
+      {/* TAB 1: DEFAULT DOCUMENT LIST */}
+      {activeTab === "list" && (
+      <>
       {/* Filter & Search Toolbar */}
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-surface-container-low p-4 rounded-3xl border border-surface-variant/30 shadow-sm">
         <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
@@ -270,6 +317,105 @@ export const Portfolio: React.FC = () => {
           })
         )}
       </div>
+      </>
+      )}
+
+      {/* TAB 2: STITCH 3D CAREER STORAGE DRAWERS */}
+      {activeTab === "drawers" && (
+        <section className="space-y-6 animate-fadeIn">
+          <div className="bg-gradient-to-r from-[#7B5CF0]/15 via-white to-[#006970]/15 p-6 rounded-[28px] border border-[#E3E1E9] shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
+            <div>
+              <span className="text-xs font-black text-[#7B5CF0] uppercase tracking-widest block mb-1">STITCH 3D ARCHIVES</span>
+              <h2 className="text-2xl font-black text-[#1A1626]">🗄️ 3D 입체 진로 보관함 서랍장</h2>
+              <p className="text-xs text-[#6E6A80] mt-1">학년별/활동영역별 기록이 가상 3D 서랍 속에 구조화되어 영구 보관됩니다. 카드를 탭하여 세부 내역을 펼쳐보세요.</p>
+            </div>
+            <span className="text-xs bg-white text-[#7B5CF0] font-black px-4 py-2 rounded-full border border-[#cbbeff] shadow-sm">
+              총 {allItems.length}개의 3D 데이터 셀 탑재
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {allItems.map((item, idx) => (
+              <div
+                key={item.id}
+                className="bg-white rounded-[32px] p-6 border-2 border-[#E3E1E9] shadow-[0_20px_40px_rgba(123,92,240,0.08)] hover:shadow-[0_25px_50px_rgba(123,92,240,0.16)] hover:border-[#7B5CF0] transition-all duration-300 relative group flex flex-col justify-between"
+              >
+                <div className="absolute top-4 right-4 bg-[#f4f2fa] text-[#6240d5] text-[10px] font-black px-3 py-1 rounded-full border border-[#cac4d7]/60 shadow-inner">
+                  3D 서랍칸 #{idx + 1}
+                </div>
+                <div className="space-y-3 pr-20">
+                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#8E70F7] to-[#6240d5] text-white flex items-center justify-center text-xl shadow-md group-hover:scale-105 transition-transform">
+                    🗂️
+                  </div>
+                  <span className="text-xs font-extrabold text-[#006970] block">#{item.category}</span>
+                  <h3 className="text-lg font-extrabold text-[#1A1626] leading-snug group-hover:text-[#7B5CF0] transition-colors">{item.title}</h3>
+                  <p className="text-xs text-[#5B556D] line-clamp-2 leading-relaxed bg-[#f4f2fa] p-3.5 rounded-2xl border border-white">
+                    {item.content}
+                  </p>
+                </div>
+                <div className="mt-5 pt-3 border-t border-[#E3E1E9] flex items-center justify-between text-xs font-bold text-[#6E6A80]">
+                  <span>📅 {item.date}</span>
+                  <button
+                    onClick={() => handleCopyText(item.id, item.content)}
+                    className="px-3.5 py-1.5 rounded-full bg-[#7B5CF0] text-white font-extrabold flex items-center gap-1 hover:bg-[#6240d5] shadow-sm"
+                  >
+                    {copiedId === item.id ? "복사 성공! ✔" : "서면 복사 및 추출"}
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* TAB 3: ACTIVITY BADGES & ACHIEVEMENTS */}
+      {activeTab === "badges" && (
+        <section className="space-y-6 animate-fadeIn">
+          <div className="bg-[#ffffff] p-6 rounded-[28px] border border-[#E3E1E9] shadow-[0_15px_30px_rgba(0,105,112,0.06)] flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div>
+              <span className="text-xs font-black text-[#006970] uppercase tracking-widest block mb-1">AI ACHIEVEMENTS SHOWCASE</span>
+              <h2 className="text-2xl font-black text-[#1A1626] flex items-center gap-2">
+                <span>🏆 활동 배지 및 AI 업적 쇼케이스</span>
+              </h2>
+              <p className="text-xs text-[#6E6A80] mt-1">진로 탐색을 성실하게 수행하면 AI가 생기부 맞춤 배지와 오오라 칭호를 수여합니다!</p>
+            </div>
+            <div className="flex items-center gap-2 bg-[#7af1fc]/30 px-4 py-2 rounded-2xl border border-[#006970]/30 font-black text-xs text-[#006970]">
+              <span>해금 완료: 5 / 6 배지 ⭐</span>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {badges.map((b) => (
+              <div
+                key={b.id}
+                className={`rounded-[32px] p-6 border transition-all duration-300 flex flex-col justify-between items-center text-center space-y-4 ${
+                  b.unlocked
+                    ? "bg-white border-[#E3E1E9] shadow-[0_20px_40px_rgba(123,92,240,0.1)] hover:scale-[1.03]"
+                    : "bg-[#f4f2fa]/70 border-[#cac4d7]/40 opacity-60 grayscale"
+                }`}
+              >
+                <div className="space-y-3 flex flex-col items-center">
+                  <span className={`text-[10px] font-black px-3 py-0.5 rounded-full uppercase tracking-wider ${
+                    b.rarity === "LEGENDARY" ? "bg-[#ffe082]/40 text-[#b78103] border border-[#ffe082]" : "bg-[#cbbeff]/40 text-[#4a21be] border border-[#cbbeff]"
+                  }`}>
+                    {b.rarity}
+                  </span>
+                  <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-[#f4f2fa] to-[#efedf5] border-2 border-white shadow-md flex items-center justify-center text-4xl transform transition duration-500 hover:rotate-12">
+                    {b.icon}
+                  </div>
+                  <h3 className="text-base font-black text-[#1A1626] leading-tight">{b.name}</h3>
+                  <p className="text-xs text-[#5B556D] font-normal leading-relaxed">{b.desc}</p>
+                </div>
+                <div className="w-full pt-3 border-t border-[#E3E1E9]">
+                  <span className={`text-xs font-black flex items-center justify-center gap-1 ${b.unlocked ? "text-[#006970]" : "text-[#6E6A80]"}`}>
+                    {b.unlocked ? "✨ 획득 완수 (오오라 장착)" : "🔒 퀘스트 진행 필요"}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Footer advice */}
       <div className="mt-4 p-6 bg-surface-container-low rounded-3xl border border-surface-variant/40 flex flex-col md:flex-row items-center justify-between gap-6 shadow-sm">

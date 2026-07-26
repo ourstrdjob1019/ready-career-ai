@@ -154,6 +154,61 @@ export const SelfUnderstanding: React.FC = () => {
         </div>
       </section>
 
+      {/* Stitch 3D Competency Growth Visualization & Radar Dashboard */}
+      <section className="bg-white rounded-[32px] p-8 border border-[#E3E1E9] shadow-[0_20px_45px_rgba(123,92,240,0.08)] space-y-6 animate-fadeIn">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#E3E1E9]/80 pb-5">
+          <div>
+            <span className="text-xs font-black text-[#7B5CF0] uppercase tracking-wider bg-[#e6deff]/60 px-3 py-1 rounded-full inline-block mb-1 border border-[#cbbeff]/50">
+              STITCH 3D RADAR CHART &middot; GROWTH VISUALIZER
+            </span>
+            <h2 className="text-2xl font-black text-[#1A1626] flex items-center gap-2">
+              <span>📊 AI 3D 방사형 역량 성장 시각화 대시보드</span>
+            </h2>
+            <p className="text-xs text-[#6E6A80] mt-0.5">다중지능 및 습관 퀘스트 이행도에 따라 고유한 5대 핵심 학생부 역량 펜타곤이 확장됩니다.</p>
+          </div>
+          <div className="bg-[#7af1fc]/20 text-[#006970] px-4 py-2 rounded-2xl border border-[#006970]/20 font-black text-xs self-start md:self-auto flex items-center gap-1.5 shadow-sm">
+            <span>🚀 전월 대비 역량 성장율: +18.4% 상승</span>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          {/* Mock Radar Pentagon Graphic Card */}
+          <div className="lg:col-span-5 bg-gradient-to-tr from-[#f4f2fa] via-[#efedf5] to-[#fbf8ff] p-6 rounded-[28px] border border-[#cac4d7]/50 shadow-inner flex flex-col items-center justify-center text-center relative overflow-hidden min-h-[260px]">
+            <div className="w-40 h-40 rounded-full border-4 border-dashed border-[#7B5CF0]/40 flex items-center justify-center animate-spin-slow relative">
+              <div className="w-28 h-28 rounded-full bg-gradient-to-br from-[#7B5CF0]/20 to-[#006970]/30 border-2 border-[#006970] flex items-center justify-center shadow-lg transform rotate-12">
+                <span className="text-5xl drop-shadow-md">💎</span>
+              </div>
+            </div>
+            <div className="absolute bottom-4 left-0 right-0 px-4">
+              <span className="text-[11px] font-extrabold bg-white/90 px-4 py-1 rounded-full shadow-sm border border-[#E3E1E9] text-[#1A1626]">
+                3D Pentagon Level: <strong className="text-[#6240d5]">AURA DIAMOND</strong>
+              </span>
+            </div>
+          </div>
+
+          {/* 5 Core Axis Progress Bars */}
+          <div className="lg:col-span-7 space-y-4">
+            {[
+              { label: "자기주도 학업역량 (Self-Directed Study)", score: 94, color: "from-[#8E70F7] to-[#6240d5]" },
+              { label: "전공 심화 탐구력 (Major Exploration)", score: 88, color: "from-[#006970] to-[#7af1fc]" },
+              { label: "문제 해결 및 AI 알고리즘 직관 (Problem Solving)", score: 96, color: "from-[#7B5CF0] to-[#4a21be]" },
+              { label: "창의·융합 독서 및 윤리 의식 (Ethics & Arts)", score: 85, color: "from-[#006e75] to-[#006970]" },
+              { label: "협업 소통 리더십 & 동아리 참여도 (Leadership)", score: 91, color: "from-[#6240d5] to-[#7b5cf0]" },
+            ].map((axis, idx) => (
+              <div key={idx} className="space-y-1.5">
+                <div className="flex justify-between items-center text-xs font-extrabold text-[#1A1626]">
+                  <span>{axis.label}</span>
+                  <span className="text-[#7B5CF0] font-black">{axis.score} / 100</span>
+                </div>
+                <div className="w-full bg-[#E3E1E9] h-2.5 rounded-full overflow-hidden shadow-inner">
+                  <div className={`h-2.5 rounded-full bg-gradient-to-r ${axis.color} transition-all duration-1000`} style={{ width: `${axis.score}%` }} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Why Self-Understanding Card */}
       <Card variant="surface" padding="md" className="bg-gradient-to-r from-secondary/10 to-primary/10 border border-primary/20 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="flex flex-col gap-2">

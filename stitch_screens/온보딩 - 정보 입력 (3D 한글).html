@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+
+<html lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>회원가입 - 내 정보 입력</title>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-surface": "#312f39",
+                        "on-error-container": "#93000a",
+                        "tertiary-container": "#7d59f7",
+                        "surface-tint": "#6341d6",
+                        "surface-dim": "#ddd8e4",
+                        "tertiary-fixed": "#e7deff",
+                        "outline-variant": "#cac4d7",
+                        "tertiary-fixed-dim": "#ccbeff",
+                        "on-secondary-fixed-variant": "#4c27b2",
+                        "on-primary-container": "#ffffff",
+                        "tertiary": "#643cdc",
+                        "secondary-fixed-dim": "#ccbdff",
+                        "on-error": "#ffffff",
+                        "on-surface-variant": "#484554",
+                        "inverse-primary": "#cbbeff",
+                        "surface-container": "#f1ebf8",
+                        "on-primary-fixed-variant": "#4a21be",
+                        "on-tertiary-fixed": "#1e0060",
+                        "secondary": "#6242c8",
+                        "surface": "#fdf8ff",
+                        "on-tertiary": "#ffffff",
+                        "primary": "#6240d5",
+                        "secondary-container": "#7b5de3",
+                        "on-primary-fixed": "#1d0061",
+                        "error": "#ba1a1a",
+                        "on-secondary-fixed": "#1f0060",
+                        "surface-container-high": "#ece6f3",
+                        "surface-container-low": "#f7f1fe",
+                        "primary-fixed": "#e6deff",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed": "#e7deff",
+                        "on-surface": "#1c1a23",
+                        "outline": "#797586",
+                        "on-secondary-container": "#fffbff",
+                        "surface-variant": "#e6e0ed",
+                        "primary-fixed-dim": "#cbbeff",
+                        "on-background": "#1c1a23",
+                        "background": "#fdf8ff",
+                        "on-tertiary-container": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "inverse-on-surface": "#f4eefb",
+                        "primary-container": "#7b5cf0",
+                        "on-tertiary-fixed-variant": "#4c19c5",
+                        "surface-container-highest": "#e6e0ed",
+                        "surface-bright": "#fdf8ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "8px",
+                        "gutter": "16px",
+                        "container-padding": "24px",
+                        "card-gap": "24px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "title-md": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "700" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "title-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }]
+                    },
+                    "boxShadow": {
+                        'soft-ambient': '0px 20px 40px rgba(123, 92, 240, 0.1)',
+                        '3d-btn': '0 8px 0 0 rgba(98, 64, 213, 0.8), 0 15px 20px rgba(123, 92, 240, 0.2)',
+                        '3d-btn-active': '0 2px 0 0 rgba(98, 64, 213, 0.8), 0 4px 6px rgba(123, 92, 240, 0.2)',
+                        'inset-soft': 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)',
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        .bg-glass {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(20px);
+            border-top: 1.5px solid rgba(255, 255, 255, 0.4);
+            border-left: 1.5px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .btn-3d {
+            transition: all 0.15s ease-in-out;
+        }
+        
+        .btn-3d:active {
+            transform: translateY(6px);
+            box-shadow: 0 2px 0 0 rgba(98, 64, 213, 0.8), 0 4px 6px rgba(123, 92, 240, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-background min-h-screen text-on-surface antialiased overflow-x-hidden font-body-md">
+<!-- Top Nav Area (Transactional - Hidden typical nav, simplified back) -->
+<header class="flex justify-between items-center w-full px-5 py-4">
+<button class="w-10 h-10 rounded-full flex items-center justify-center bg-surface-container-low text-on-surface-variant hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<span class="text-title-md font-title-md text-on-surface">회원가입</span>
+<div class="w-10"></div> <!-- Spacer for centering -->
+</header>
+<main class="max-w-md mx-auto px-6 pb-24 pt-4">
+<!-- Mascot & Progress -->
+<div class="flex flex-col items-center mb-8 relative">
+<div class="w-32 h-32 rounded-full overflow-hidden bg-surface-container-lowest shadow-soft-ambient mb-4 relative flex items-center justify-center">
+<img alt="Ari Mascot" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJHRTlUnzFm8Sun1LPqE4kjO6TYkKcyxitCNTRAw3G8rDMnYrGNLZvVyX_mv7CF1t-4vU6ziWiTb4uD71FNeHVhlJxsqcFqBnJcQUfHUO_aTtjXv9t0tZDfhb-FzczLB7AL9jsmDGI79ddmIrM-R0QOPFMM9Fl-nr3DrBfTjWVjSErtVuWgFWjlwlsg_Rat2MwNIFaPsiPcxyjgzQg_UT4mnlcF9Z6vjczU6MWOHu6ufyy8Sa9NoM8s6G3haTN_hhhtDxGDiOLMXsM"/>
+</div>
+<div class="flex gap-2 mb-6">
+<div class="w-2 h-2 rounded-full bg-outline-variant"></div>
+<div class="w-6 h-2 rounded-full bg-primary"></div>
+<div class="w-2 h-2 rounded-full bg-outline-variant"></div>
+</div>
+<h1 class="text-headline-lg-mobile font-headline-lg-mobile text-on-surface text-center mb-2">내 정보를 입력해 주세요</h1>
+</div>
+<form class="space-y-6">
+<!-- Read-only Info Card -->
+<div class="bg-surface-container-lowest p-6 rounded-[32px] shadow-soft-ambient space-y-4">
+<div class="flex items-center gap-2 mb-2 text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span class="text-label-sm font-label-sm">학교 연동 완료</span>
+</div>
+<div class="flex gap-3">
+<div class="flex-1 bg-surface-container shadow-inset-soft rounded-[16px] px-4 py-3 relative">
+<label class="text-label-sm font-label-sm text-on-surface-variant block mb-1">학교</label>
+<div class="text-body-md font-body-md text-on-surface flex justify-between items-center">
+<span>한국고등학교</span>
+<span class="material-symbols-outlined text-outline-variant text-[18px]">lock</span>
+</div>
+</div>
+</div>
+<div class="flex gap-3">
+<div class="flex-1 bg-surface-container shadow-inset-soft rounded-[16px] px-4 py-3 relative">
+<label class="text-label-sm font-label-sm text-on-surface-variant block mb-1">학년</label>
+<div class="text-body-md font-body-md text-on-surface flex justify-between items-center">
+<span>2학년</span>
+<span class="material-symbols-outlined text-outline-variant text-[18px]">lock</span>
+</div>
+</div>
+<div class="flex-1 bg-surface-container shadow-inset-soft rounded-[16px] px-4 py-3 relative">
+<label class="text-label-sm font-label-sm text-on-surface-variant block mb-1">반</label>
+<div class="text-body-md font-body-md text-on-surface flex justify-between items-center">
+<span>3반</span>
+<span class="material-symbols-outlined text-outline-variant text-[18px]">lock</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Editable Fields -->
+<div class="bg-surface-container-lowest p-6 rounded-[32px] shadow-soft-ambient space-y-5">
+<div class="flex gap-3">
+<div class="flex-1">
+<label class="text-label-sm font-label-sm text-on-surface block mb-1.5 px-1">이름</label>
+<input class="w-full bg-surface-bright border-none shadow-inset-soft rounded-[24px] px-5 py-4 text-body-md font-body-md text-on-surface focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-all" placeholder="홍길동" type="text"/>
+</div>
+<div class="w-1/3">
+<label class="text-label-sm font-label-sm text-on-surface block mb-1.5 px-1">번호</label>
+<input class="w-full bg-surface-bright border-none shadow-inset-soft rounded-[24px] px-5 py-4 text-body-md font-body-md text-on-surface focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-all" placeholder="15" type="number"/>
+</div>
+</div>
+<div>
+<label class="text-label-sm font-label-sm text-on-surface block mb-1.5 px-1">출생연도</label>
+<div class="relative">
+<select class="w-full bg-surface-bright border-none shadow-inset-soft rounded-[24px] px-5 py-4 text-body-md font-body-md text-on-surface focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest appearance-none transition-all">
+<option disabled="" selected="" value="">선택해주세요</option>
+<option value="2005">2005년</option>
+<option value="2006">2006년</option>
+<option value="2007">2007년</option>
+<option value="2008">2008년</option>
+</select>
+<div class="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none">
+<span class="material-symbols-outlined text-on-surface-variant">expand_more</span>
+</div>
+</div>
+<p class="text-label-sm font-label-sm text-primary mt-2 px-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">info</span>
+                        생년월일이 아닌 연도만 수집합니다
+                    </p>
+</div>
+<div class="w-full h-px bg-surface-variant my-4"></div>
+<div>
+<label class="text-label-sm font-label-sm text-on-surface block mb-1.5 px-1">아이디</label>
+<input class="w-full bg-surface-bright border-none shadow-inset-soft rounded-[24px] px-5 py-4 text-body-md font-body-md text-on-surface focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-all" placeholder="영문, 숫자 조합" type="text"/>
+</div>
+<div>
+<label class="text-label-sm font-label-sm text-on-surface block mb-1.5 px-1">비밀번호</label>
+<div class="relative">
+<input class="w-full bg-surface-bright border-none shadow-inset-soft rounded-[24px] px-5 py-4 text-body-md font-body-md text-on-surface focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-all" placeholder="비밀번호 입력" type="password"/>
+<button class="absolute right-5 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-primary transition-colors" type="button">
+<span class="material-symbols-outlined">visibility_off</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Action Button Area -->
+<div class="pt-6 pb-8">
+<button class="btn-3d w-full bg-gradient-to-r from-primary to-primary-container text-on-primary font-title-md text-title-md py-4 rounded-[24px] shadow-3d-btn border-t border-white/30 flex items-center justify-center gap-2" type="button">
+                    다음 <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</form>
+</main>
+</body></html>

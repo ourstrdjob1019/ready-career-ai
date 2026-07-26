@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D 역량 지표 차트</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/threejs/r128/three.min.js"></script>
+</head>
+<body class="m-0 p-0 overflow-hidden bg-black">
+    <div id="canvas-container" class="w-full h-full fixed inset-0"></div>
+    
+    <script>
+    (function() {
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        container.appendChild(renderer.domElement);
+
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+        scene.add(ambientLight);
+        const pointLight = new THREE.PointLight(0x7B5CF0, 2, 50);
+        pointLight.position.set(5, 5, 5);
+        scene.add(pointLight);
+
+        // Radial Chart Group
+        const chartGroup = new THREE.Group();
+        scene.add(chartGroup);
+
+        const segments = 5;
+        const radius = 3;
+        const levels = 5;
+        const points = [];
+        const chartValues = [0.8, 0.6, 0.9, 0.7, 0.5]; // Initial mock values
+
+        // Create Grid
+        for (let l = 1; l <= levels; l++) {
+            const currentRadius = (radius / levels) * l;
+            const pts = [];
+            for (let i = 0; i <= segments; i++) {
+                const angle = (i / segments) * Math.PI * 2;
+                pts.push(new THREE.Vector3(Math.cos(angle) * currentRadius, Math.sin(angle) * currentRadius, 0));
+            }
+            const lineGeom = new THREE.BufferGeometry().setFromPoints(pts);
+            const lineMat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.1 });
+            const line = new THREE.Line(lineGeom, lineMat);
+            chartGroup.add(line);
+        }
+
+        // Radial Spikes
+        for (let i = 0; i < segments; i++) {
+            const angle = (i / segments) * Math.PI * 2;
+            const spikePts = [new THREE.Vector3(0,0,0), new THREE.Vector3(Math.cos(angle) * radius, Math.sin(angle) * radius, 0)];
+            const spikeGeom = new THREE.BufferGeometry().setFromPoints(spikePts);
+            const spikeMat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.1 });
+            const spike = new THREE.Line(spikeGeom, spikeMat);
+            chartGroup.add(spike);
+        }
+
+        // 3D Icons (Spheres as placeholders with glow)
+        const iconMeshes = [];
+        for (let i = 0; i < segments; i++) {
+            const angle = (i / segments) * Math.PI * 2;
+            const iconGeom = new THREE.SphereGeometry(0.2, 16, 16);
+            const iconMat = new THREE.MeshPhongMaterial({ color: 0xffffff, shininess: 100, emissive: 0x7B5CF0, emissiveIntensity: 0.5 });
+            const icon = new THREE.Mesh(iconGeom, iconMat);
+            iconMeshes.push(icon);
+            chartGroup.add(icon);
+        }
+
+        // Radar Shape (Fill)
+        const shapeGeom = new THREE.BufferGeometry();
+        const shapeMat = new THREE.MeshPhongMaterial({ 
+            color: 0x7B5CF0, 
+            side: THREE.DoubleSide, 
+            transparent: true, 
+            opacity: 0.6,
+            shininess: 100
+        });
+        const radarMesh = new THREE.Mesh(shapeGeom, shapeMat);
+        chartGroup.add(radarMesh);
+
+        camera.position.z = 8;
+
+        let clock = new THREE.Clock();
+        let targetValues = [...chartValues];
+        let currentValues = chartValues.map(v => v * 0.1); // Start small for intro
+
+        function updateRadarGeometry() {
+            const vertices = [];
+            const indices = [];
+            vertices.push(0, 0, 0); // Center point
+
+            for (let i = 0; i < segments; i++) {
+                const angle = (i / segments) * Math.PI * 2;
+                const r = currentValues[i] * radius;
+                const x = Math.cos(angle) * r;
+                const y = Math.sin(angle) * r;
+                vertices.push(x, y, 0);
+                
+                // Update icon positions
+                iconMeshes[i].position.set(x, y, 0.1);
+
+                // Build indices for triangles
+                const next = (i + 1) % segments;
+                indices.push(0, i + 1, next + 1);
+            }
+
+            shapeGeom.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+            shapeGeom.setIndex(indices);
+            shapeGeom.computeVertexNormals();
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            const t = clock.getElapsedTime();
+
+            // Smooth expansion animation logic
+            for (let i = 0; i < segments; i++) {
+                currentValues[i] += (targetValues[i] - currentValues[i]) * 0.05;
+            }
+
+            updateRadarGeometry();
+
+            chartGroup.rotation.y = Math.sin(t * 0.2) * 0.1;
+            chartGroup.rotation.x = Math.cos(t * 0.15) * 0.1;
+            
+            // Pulse icons
+            iconMeshes.forEach((m, i) => {
+                const s = 1 + Math.sin(t * 3 + i) * 0.1;
+                m.scale.set(s, s, s);
+            });
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // Handle expansion trigger (simulation)
+        window.addEventListener('click', () => {
+            targetValues = targetValues.map(v => Math.min(1.0, v + 0.05));
+        });
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+    })();
+    </script>
+</body>
+</html>
