@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button, Card, MascotAri } from "../components";
-import { Sparkles, Flame, CheckCircle2, Plus, Calendar } from "lucide-react";
+import { Sparkles, Flame, CheckCircle2, Plus, Calendar, FileText } from "lucide-react";
 
 interface Habit {
   id: string;
@@ -11,6 +12,7 @@ interface Habit {
 }
 
 export const HabitManagement: React.FC = () => {
+  const navigate = useNavigate();
   const [habits, setHabits] = useState<Habit[]>(() => {
     const saved = localStorage.getItem("my_habits_v2");
     if (saved) {
@@ -304,9 +306,14 @@ export const HabitManagement: React.FC = () => {
                 </p>
               </div>
             </div>
-            <Button variant="outline" size="sm" onClick={() => window.location.href = "/portfolio"} className="font-extrabold text-xs whitespace-nowrap">
-              포트폴리오 기록 &rarr;
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button variant="primary" size="sm" onClick={() => navigate("/activity-form")} className="font-extrabold text-xs whitespace-nowrap shadow-sm">
+                <FileText className="w-3.5 h-3.5 mr-1 inline" /> ✏️ 실천 활동 기록하기 &rarr;
+              </Button>
+              <Button variant="outline" size="sm" onClick={() => navigate("/portfolio")} className="font-extrabold text-xs whitespace-nowrap bg-white shadow-sm">
+                포트폴리오 보관함
+              </Button>
+            </div>
           </div>
         </Card>
 

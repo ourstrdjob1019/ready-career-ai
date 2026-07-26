@@ -7,12 +7,13 @@ import { Award, Search, Sparkles, Filter, CheckCircle2, Copy, FileText, External
 interface PortfolioItem {
   id: string;
   title: string;
-  category: "동아리" | "진학·탐구" | "독서·예술" | "자기성찰/진도";
+  category: string;
   date: string;
   content: string;
   tags: string[];
   aiFeedback?: string;
   isSelfReport?: boolean;
+  exp?: string;
 }
 
 const INITIAL_PORTFOLIOS: PortfolioItem[] = [
@@ -80,7 +81,30 @@ export const Portfolio: React.FC = () => {
       }
     : null;
 
-  const allItems: PortfolioItem[] = selfReportItem ? [selfReportItem, ...INITIAL_PORTFOLIOS] : INITIAL_PORTFOLIOS;
+  // 로컬 스토리지에 유저가 작성한 실제 활동 불러오기 (실천 기록 누적 엔진)
+  const savedUserActivities: PortfolioItem[] = (() => {
+    try {
+      const stored = JSON.parse(localStorage.getItem("readycareer_student_activities_v1") || "[]");
+      return stored.map((act: any) => ({
+        id: act.id || "act-" + Math.random(),
+        title: act.title || "새로 작성된 진로 활동",
+        category: act.category || "진학·탐구",
+        date: act.date || act.createdAt || "최근 작성",
+        content: act.content || "",
+        tags: ["학생직접기록", "AI문장교정", act.category ? act.category.replace(/[^가-힣]/g, "") : "세특"],
+        aiFeedback: act.reflection ? `[나의 소감/인문학적 통찰]: ${act.reflection}` : "AI 어시스턴트가 2026학년도 기재 지침에 맞게 정돈한 활동 팩트입니다.",
+        exp: act.exp || "+50 EXP",
+      }));
+    } catch {
+      return [];
+    }
+  })();
+
+  const allItems: PortfolioItem[] = [
+    ...(selfReportItem ? [selfReportItem] : []),
+    ...savedUserActivities,
+    ...INITIAL_PORTFOLIOS,
+  ];
 
   const filteredItems = allItems.filter((item) => {
     const matchesCategory = selectedCategory === "전체 보기" || item.category === selectedCategory;

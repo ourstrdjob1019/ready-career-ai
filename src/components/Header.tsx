@@ -9,7 +9,6 @@ import {
   Award,
   BookOpen,
   LogOut,
-  Brain,
   Home,
   UserCheck,
   ShieldCheck,
@@ -37,9 +36,8 @@ export const Header: React.FC = () => {
   ];
 
   const teacherNavItems = [
-    { label: "👨‍🏫 교사용 학급 보드", path: "/teacher", icon: BookOpen, badge: "NEIS 가이드" },
-    { label: "학급 포트폴리오 DB", path: "/portfolio", icon: Award },
-    { label: "자기이해 다중진단", path: "/self-understanding", icon: Brain },
+    { label: "👨‍🏫 학급 학생 활동·포트폴리오 감독", path: "/teacher", icon: BookOpen, badge: "실천도 조회" },
+    { label: "NEIS 세특 가이드 추출", path: "/teacher", icon: Award, badge: "2026 기재기준" },
   ];
 
   const superAdminNavItems = [

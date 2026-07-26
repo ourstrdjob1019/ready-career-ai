@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { supabase, isSupabaseConfigured } from "../lib/supabase";
 
 export interface AssessmentItem {
   id: string;
@@ -11,9 +12,9 @@ export interface AssessmentItem {
 }
 
 export interface ComprehensiveReport {
-  title: string; // e.g. "혁신적 AI 로봇 탐구자 (I-R-A)"
-  characterTitle: string; // Badge on mascot
-  characterAura: string; // Short aura quote
+  title: string;
+  characterTitle: string;
+  characterAura: string;
   aiAdvice: string;
   strengths: string[];
   recommendedCareers: string[];
@@ -28,27 +29,26 @@ interface SelfUnderstandingContextType {
   isPortfolioSync: boolean;
 }
 
-const STORAGE_KEY_ASSESSMENTS = "readycareer_assessments";
-const STORAGE_KEY_REPORT = "readycareer_self_report";
+const STORAGE_KEY_ASSESSMENTS = "readycareer_assessments_real_v1";
+const STORAGE_KEY_REPORT = "readycareer_self_report_real_v1";
 
+// 신규 유저 진입 시 3가지 진단 모두 '진행 전'(0점)으로 시작하도록 전면 개편
 const INITIAL_ASSESSMENTS: AssessmentItem[] = [
   {
     id: "test-interest",
     title: "AI 진로 흥미 무드검사 (Holland & 융합 DNA)",
     category: "흥미무드",
-    status: "완료됨",
-    score: 98,
-    summary: "탐구형(I)과 사회가치형(S)이 조화로운 'AI 혁신 개척자' 성향으로 나타났습니다.",
-    completedAt: "2026.07.25",
+    status: "진행 전",
+    score: 0,
+    summary: "검사 시작 시 실무 18문항 다선택지 분석을 통해 나만의 융합 RIASEC 코드를 도출합니다.",
   },
   {
     id: "test-intelligence",
     title: "미래 융합 다중지능 및 잠재력 진단",
     category: "다중지능",
-    status: "완료됨",
-    score: 94,
-    summary: "논리·수학적 직관력과 디지털 공간 인지 능력이 동급생 상위 2% 이내의 고소양을 기록했습니다.",
-    completedAt: "2026.07.25",
+    status: "진행 전",
+    score: 0,
+    summary: "검사를 이수하고 상위 퍼센트위 지능 영역(논리, 대인, 공간 등) 리포트 뱃지를 해금하세요.",
   },
   {
     id: "test-learning",
@@ -56,24 +56,9 @@ const INITIAL_ASSESSMENTS: AssessmentItem[] = [
     category: "학습스타일",
     status: "진행 전",
     score: 0,
-    summary: "검사 후 나만의 몰입형 공부 루틴과 세특 시간 배분 최적화 솔루션을 발판 삼아보세요.",
+    summary: "검사 후 나만의 몰입형 공부 루틴과 세특 시간 배분 최적화 AI 솔루션을 발판 삼아보세요.",
   },
 ];
-
-const INITIAL_REPORT: ComprehensiveReport = {
-  title: "🤖 미래 전도유망형: AI 소프트웨어 엔지니어",
-  characterTitle: "👑 AI 커리어 마이스터 Ari",
-  characterAura: "논리와 따뜻한 ESG 사유를 두루 갖춘 천부적인 미래 설계 커리어리스트!",
-  aiAdvice: "자기이해 다중 지능 분석 결과, 논리·수학 역량을 발휘할 수 있는 '데이터 시각화 프로젝트'를 본인 주도 학습으로 세특에 녹여내면 압도적인 최상위 경쟁력을 지닙니다.",
-  strengths: [
-    "상위 2% 논리수학 추론력",
-    "이타적 사회 통찰력",
-    "뛰어난 코드북 독해력",
-    "협업 토론 및 주도성",
-  ],
-  recommendedCareers: ["소프트웨어 개발자", "빅데이터 분석가", "컴퓨터 교육 교사"],
-  portfolioSavedAt: "2026.07.25 (포트폴리오 연동 완료)",
-};
 
 const SelfUnderstandingContext = createContext<SelfUnderstandingContextType | undefined>(undefined);
 
@@ -90,15 +75,34 @@ export const SelfUnderstandingProvider: React.FC<{ children: React.ReactNode }> 
   const [report, setReport] = useState<ComprehensiveReport | null>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY_REPORT);
-      return saved ? JSON.parse(saved) : INITIAL_REPORT;
+      return saved ? JSON.parse(saved) : null;
     } catch {
-      return INITIAL_REPORT;
+      return null;
     }
   });
 
   useEffect(() => {
     try {
       localStorage.setItem(STORAGE_KEY_ASSESSMENTS, JSON.stringify(assessments));
+      
+      // Supabase DB 연결 시 실시간 동기화 보전
+      if (isSupabaseConfigured) {
+        supabase.from("assessments").upsert(
+          assessments.map(item => ({
+            test_id: item.id,
+            category: item.category,
+            status: item.status,
+            score: item.score,
+            summary: item.summary,
+            updated_at: new Date().toISOString(),
+          })),
+          { onConflict: "test_id" }
+        ).then(({ error }) => {
+          if (error && !error.message.includes("does not exist")) {
+            console.warn("Supabase assessments upsert error:", error.message);
+          }
+        });
+      }
     } catch (e) {
       console.error("Save assessments error:", e);
     }
@@ -115,31 +119,32 @@ export const SelfUnderstandingProvider: React.FC<{ children: React.ReactNode }> 
   }, [report]);
 
   const completeAssessment = (id: string, score: number, summary: string) => {
+    const completedDate = new Date().toLocaleDateString("ko-KR");
     const updated = assessments.map((item) =>
       item.id === id
-        ? { ...item, status: "완료됨" as const, score, summary, completedAt: new Date().toLocaleDateString("ko-KR") }
+        ? { ...item, status: "완료됨" as const, score, summary, completedAt: completedDate }
         : item
     );
     setAssessments(updated);
-    // Auto trigger report update if all or any completed
+
+    // 진단 완료 즉시 종합 AI 리포트 개별 생성 및 해금
     generateComprehensiveReport();
   };
 
   const generateComprehensiveReport = () => {
-    // Generate interactive updated AI report
     const newReport: ComprehensiveReport = {
-      title: "🚀 완성형 커리어: 글로벌 AI·ESG 통합 솔루셔너",
-      characterTitle: "💎 빛나는 마스터 Ari",
-      characterAura: "3종 자기이해 검사 완결! 나에 대한 깊은 이해가 강력한 생기부의 뼈대입니다.",
-      aiAdvice: "자기이해 3종 진단이 포트폴리오에 자동 등재되었습니다. 이제 '나만의 강점 4가지'를 기반으로 활동 폼에 AI 교정을 씌우면 교육청 기준 완강한 세특 문장이 추출됩니다.",
+      title: "🤖 융합 성장 실증형: AI 솔루션 및 미래 엔지니어",
+      characterTitle: "👑 AI 커리어 마이스터 Ari",
+      characterAura: "진로 흥미와 다중지능 검사 이수를 통해 실효성 높은 미래 탐구력이 입증되었습니다!",
+      aiAdvice: "자가 진단 완료 데이터가 포트폴리오 자산으로 동기화되었습니다. 도출된 맞춤 강점 키워드를 바탕으로 학교 교과 수행이나 진로 탐구 시 주도적인 역량을 녹여내면 독보적인 생기부 경쟁력이 탄생합니다.",
       strengths: [
-        "종합 다중지능 마스터리",
-        "자기주도 학습 탄력성",
-        "비판적 인문공학 통찰력",
-        "데이터-현실 유도화 역량",
+        "논리수학 및 직관 추론력",
+        "자기주도 진도 완결성",
+        "비판적 디지털 리딩력",
+        "협업 소통 및 주도성",
       ],
-      recommendedCareers: ["AI 로보틱스 수석 연구원", "미래 전략 기술 홍보 디렉터", "클라우드 보안 설계사"],
-      portfolioSavedAt: new Date().toLocaleDateString("ko-KR") + " (포트폴리오에 실시간 스크랩됨)",
+      recommendedCareers: ["AI 로보틱스 연구원", "빅데이터 시각화 설계사", "미래 에듀테크 멘토"],
+      portfolioSavedAt: new Date().toLocaleDateString("ko-KR") + " (포트폴리오 실시간 연계 됨)",
     };
     setReport(newReport);
   };

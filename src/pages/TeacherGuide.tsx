@@ -206,7 +206,29 @@ export const TeacherGuide: React.FC = () => {
   const [generatedGuideline, setGeneratedGuideline] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
-  const activeStudent = MOCK_STUDENTS.find((s) => s.id === selectedStudentId) || MOCK_STUDENTS[0];
+  const baseStudent = MOCK_STUDENTS.find((s) => s.id === selectedStudentId) || MOCK_STUDENTS[0];
+  const activeStudent = (() => {
+    try {
+      const stored = JSON.parse(localStorage.getItem("readycareer_student_activities_v1") || "[]");
+      if (stored && stored.length > 0) {
+        const addedPortfolios = stored.map((act: any) => ({
+          title: act.title || "학생 자율 제출 세특 활동",
+          category: act.category ? act.category.split(" ")[0] : "학생 기록",
+          date: act.date || "오늘",
+          status: "검토 완료",
+        }));
+        const addedActivities = stored.map((act: any) => `${act.title} (학생 직접 서술 활동: ${act.content ? act.content.slice(0, 40) : ""}...)`);
+        return {
+          ...baseStudent,
+          portfolioCount: baseStudent.portfolioCount + stored.length,
+          recentPortfolios: [...addedPortfolios, ...baseStudent.recentPortfolios],
+          activities: [...addedActivities, ...baseStudent.activities],
+        };
+      }
+    } catch {}
+    return baseStudent;
+  })();
+
   const filteredStudents = MOCK_STUDENTS.filter(
     (s) => s.name.includes(searchQuery) || s.targetJob.includes(searchQuery) || s.riasecCode.includes(searchQuery)
   );

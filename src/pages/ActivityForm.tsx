@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Card, Input, Chip, MascotAri } from "../components";
 import { FileText, Calendar, Sparkles, Save } from "lucide-react";
+import { supabase, isSupabaseConfigured } from "../lib/supabase";
 
 export const ActivityForm: React.FC = () => {
   const navigate = useNavigate();
@@ -30,6 +31,38 @@ export const ActivityForm: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const newActivity = {
+      id: "act-" + Date.now(),
+      title,
+      category,
+      date,
+      content,
+      reflection,
+      exp: "+50 EXP",
+      status: "검토 완료",
+      createdAt: new Date().toLocaleDateString("ko-KR"),
+    };
+
+    try {
+      const existing = JSON.parse(localStorage.getItem("readycareer_student_activities_v1") || "[]");
+      const updated = [newActivity, ...existing];
+      localStorage.setItem("readycareer_student_activities_v1", JSON.stringify(updated));
+
+      if (isSupabaseConfigured) {
+        supabase.from("portfolios").insert([{
+          title,
+          category,
+          content: `${content}\n\n[느낀점/소감]\n${reflection}`,
+          created_at: new Date().toISOString()
+        }]).then(({ error }) => {
+          if (error) console.warn("Supabase portfolio insert note:", error.message);
+        });
+      }
+    } catch (err) {
+      console.error("Save activity error:", err);
+    }
+
+    alert("🎉 신규 진로 활동이 포트폴리오 및 교사용 생기부 보드에 실시간 누적되었습니다!\n🎁 실천 보상: +50 EXP 획득!");
     navigate("/portfolio");
   };
 

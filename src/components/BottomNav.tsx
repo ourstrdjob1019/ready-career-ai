@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../context";
-import { Home, Compass, Award, Brain, BookOpen, ShieldAlert, Flame } from "lucide-react";
+import { Home, Compass, Award, BookOpen, ShieldAlert, Flame } from "lucide-react";
 
 export const BottomNav: React.FC = () => {
   const location = useLocation();
@@ -19,9 +19,8 @@ export const BottomNav: React.FC = () => {
   ];
 
   const teacherItems = [
-    { label: "교사 보드", path: "/teacher", icon: BookOpen, isSpot: true },
-    { label: "자기이해 DB", path: "/self-understanding", icon: Brain },
-    { label: "학급 관리", path: "/portfolio", icon: Award },
+    { label: "학급 학생 감독", path: "/teacher", icon: BookOpen, isSpot: true },
+    { label: "세특 가이드", path: "/teacher", icon: Award },
   ];
 
   const superAdminItems = [

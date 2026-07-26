@@ -12,7 +12,6 @@ import {
   Edit2,
   RefreshCw,
   Star,
-  Trophy,
   FolderCheck,
   Route,
   ListCheck
@@ -237,28 +236,34 @@ export const HomeDashboard: React.FC = () => {
             </div>
           </Link>
 
-          {/* Card 3: 진로 포트폴리오 (Width Span 2 on Desktop) */}
-          <Link to="/portfolio" className="block col-span-2 md:col-span-2 h-full">
+          {/* Card 3: 진로 포트폴리오 */}
+          <Link to="/portfolio" className="block h-full">
             <div className="bg-surface rounded-[24px] p-6 shadow-[0px_4px_12px_rgba(123,92,240,0.05),0px_20px_40px_rgba(123,92,240,0.1)] hover:shadow-[0px_8px_24px_rgba(123,92,240,0.1),0px_32px_64px_rgba(123,92,240,0.15)] transition-all duration-300 transform hover:-translate-y-1 cursor-pointer flex flex-col justify-between h-full min-h-[160px] group border border-surface-variant/40 bg-[#ffffff]">
-              <div className="flex justify-between items-start h-full">
-                <div className="flex flex-col justify-between h-full">
-                  <div className="w-12 h-12 rounded-full bg-[#e4e1ee] text-[#1b1b24] flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
-                    <FolderCheck className="w-6 h-6 text-[#1b1b24]" />
-                  </div>
-                  <div className="mt-4">
-                    <h4 className="text-lg font-headline font-extrabold text-on-surface mb-1 group-hover:text-primary transition-colors">진로 포트폴리오</h4>
-                    <p className="text-xs font-body-md text-on-surface-variant">12개 활동 기록 보관 및 AI 세특 보고서</p>
-                  </div>
-                </div>
-                {/* Decorative Trophy Icon Trophy exactly as in Stitch */}
-                <div className="hidden md:flex w-20 h-20 rounded-2xl bg-[#f4f2fa] shadow-inner items-center justify-center border border-surface-variant/40 group-hover:bg-primary/5 transition-colors">
-                  <Trophy className="w-10 h-10 text-primary/70" />
-                </div>
+              <div className="w-12 h-12 rounded-full bg-[#e4e1ee] text-[#1b1b24] flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
+                <FolderCheck className="w-6 h-6 text-[#1b1b24]" />
+              </div>
+              <div className="mt-4">
+                <h4 className="text-lg font-headline font-extrabold text-on-surface mb-1 group-hover:text-primary transition-colors">진로 포트폴리오</h4>
+                <p className="text-xs font-body-md text-on-surface-variant">누적 보관함 &amp; AI 보고서</p>
               </div>
             </div>
           </Link>
 
-          {/* Card 4: 아리에게 묻기 (Full Width Span 2 Mobile, Span 4 Desktop) */}
+          {/* Card 4: 신규 활동 기록 (Activity Form) */}
+          <Link to="/activity-form" className="block h-full">
+            <div className="bg-gradient-to-br from-[#f0ebff] to-white rounded-[24px] p-6 shadow-[0px_4px_12px_rgba(123,92,240,0.08),0px_20px_40px_rgba(123,92,240,0.15)] hover:shadow-[0px_8px_24px_rgba(123,92,240,0.15)] transition-all duration-300 transform hover:-translate-y-1 cursor-pointer flex flex-col justify-between h-full min-h-[160px] group border-2 border-primary/30">
+              <div className="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
+                <Edit2 className="w-6 h-6 text-white" />
+              </div>
+              <div className="mt-4">
+                <div className="inline-block px-2 py-0.5 bg-primary text-white text-[10px] font-black rounded mb-1">NEW +50 EXP</div>
+                <h4 className="text-lg font-headline font-extrabold text-primary mb-1">➕ 활동 기록 작성</h4>
+                <p className="text-xs font-body-md text-on-surface-variant">세특 글 작성 &amp; AI 자동 교정</p>
+              </div>
+            </div>
+          </Link>
+
+          {/* Card 5: 아리에게 묻기 (Full Width Span 2 Mobile, Span 4 Desktop) */}
           <Link to="/self-understanding" className="block col-span-2 md:col-span-4">
             <div className="bg-gradient-to-r from-[#efedf5] to-[#e9e7ef] rounded-[24px] p-6 shadow-[0px_4px_12px_rgba(123,92,240,0.05),0px_20px_40px_rgba(123,92,240,0.1)] hover:shadow-[0px_8px_24px_rgba(123,92,240,0.1),0px_32px_64px_rgba(123,92,240,0.15)] transition-all duration-300 cursor-pointer flex items-center justify-between border border-white/80">
               <div className="flex items-center gap-5">

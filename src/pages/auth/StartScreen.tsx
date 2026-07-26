@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../context";
 import type { UserRole } from "../../context";
 import { MascotAri } from "../../components/MascotAri";
@@ -255,6 +255,33 @@ export const StartScreen: React.FC = () => {
                     </div>
                   </div>
                 ))}
+          </div>
+        </div>
+
+        {/* MANUAL AUTH CTA (Sign Up & Standard Login) */}
+        <div className="bg-white rounded-[32px] p-8 md:p-10 border-2 border-[#7B5CF0]/30 shadow-[0_20px_40px_rgba(123,92,240,0.08)] flex flex-col sm:flex-row sm:items-center justify-between gap-6 animate-fadeIn">
+          <div className="space-y-2 max-w-xl">
+            <span className="text-xs font-black text-[#7B5CF0] bg-[#7B5CF0]/10 px-3 py-1 rounded-full uppercase border border-[#7B5CF0]/20 inline-block">
+              🌟 정식 회원 가입 &amp; 일반 계정 로그인
+            </span>
+            <h3 className="text-2xl font-black text-[#1A1626]">
+              나만의 진짜 계정으로 시작하시겠어요?
+            </h3>
+            <p className="text-xs md:text-sm text-[#5B556D] leading-relaxed">
+              체험 아이디 외에도 <strong>직접 회원가입</strong>을 진행하시면, 초기 학교·학과 선택 온보딩과 RIASEC 검사, 포트폴리오 누적 기능을 정식 계정에서 완강하게 경험하실 수 있습니다.
+            </p>
+          </div>
+          <div className="flex flex-col sm:flex-row gap-3 sm:items-center flex-shrink-0">
+            <Link to="/signup" className="w-full sm:w-auto">
+              <button className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-[#7B5CF0] hover:bg-[#6240D5] text-white font-black text-sm shadow-[0_10px_20px_rgba(123,92,240,0.3)] transition-all flex items-center justify-center gap-2">
+                <span>📝 신규 회원가입 (온보딩)</span>
+              </button>
+            </Link>
+            <Link to="/login" className="w-full sm:w-auto">
+              <button className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-[#F4F2FA] hover:bg-[#E3E1E9] text-[#1A1626] font-bold text-sm border border-[#E3E1E9] transition-all flex items-center justify-center gap-2">
+                <span>🔑 일반 계정 로그인 &rarr;</span>
+              </button>
+            </Link>
           </div>
         </div>
 

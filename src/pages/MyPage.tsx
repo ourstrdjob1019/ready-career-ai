@@ -34,7 +34,23 @@ export const MyPage: React.FC = () => {
     { id: "b8", name: "AURA DIAMOND 달성자", desc: "학급 역량 성장율 및 레벨 10 달성 시 부여", icon: "👑", unlocked: false, requirement: "EXP 1,200 (Lv.10) 도달 시 해금" },
   ];
 
+  const savedUserActivities = (() => {
+    try {
+      const stored = JSON.parse(localStorage.getItem("readycareer_student_activities_v1") || "[]");
+      return stored.map((act: any) => ({
+        id: act.id || "act-" + Math.random(),
+        title: act.title || "새로 작성된 세특 실천 활동",
+        type: act.category ? act.category.split(" ")[0] : "학생 기록",
+        exp: act.exp || "+50 EXP",
+        date: act.date ? `${act.date} 완료` : "오늘 완료"
+      }));
+    } catch {
+      return [];
+    }
+  })();
+
   const completedQuests = [
+    ...savedUserActivities,
     { id: "q1", title: "공공 교육 데이터 활용 맞춤 멘토링 방안 작성", type: "심화 탐구", exp: "+50 EXP", date: "어제 완료" },
     { id: "q2", title: "Holland RIASEC 흥미무드 18문항 다면 진단 완수", type: "자기이해", exp: "+40 EXP", date: "2일 전 완료" },
     { id: "q3", title: "센서 기반 자율주행 모션 로봇 하드웨어 알고리즘 분석", type: "동아리", exp: "+60 EXP", date: "4일 전 완료" },
@@ -66,9 +82,14 @@ export const MyPage: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-3 flex-wrap">
-          <Link to="/self-understanding">
+          <Link to="/activity-form">
             <Button variant="primary" size="sm" className="font-extrabold whitespace-nowrap shadow-md">
-              <RefreshCw className="w-4 h-4 mr-1 inline" /> 진단 리포트 재검사 &rarr;
+              ➕ 신규 활동·세특 기록하기
+            </Button>
+          </Link>
+          <Link to="/self-understanding">
+            <Button variant="outline" size="sm" className="font-extrabold whitespace-nowrap border-primary text-primary bg-primary/5 shadow-sm">
+              <RefreshCw className="w-4 h-4 mr-1 inline" /> 진단 리포트 열람 &rarr;
             </Button>
           </Link>
           <Link to="/teacher">
