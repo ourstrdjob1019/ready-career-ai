@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Button, Chip, ProgressBar } from "../components";
+import { Button } from "../components";
 import { useAuth } from "../context";
 import { executeAiPrompt } from "../services/aiService";
 import {
@@ -12,10 +12,7 @@ import {
   FileText,
   RefreshCw,
   BarChart3,
-  BookOpen,
   Award,
-  Filter,
-  Sparkles,
   ExternalLink,
 } from "lucide-react";
 
