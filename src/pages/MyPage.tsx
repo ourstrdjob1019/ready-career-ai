@@ -97,10 +97,10 @@ export const MyPage: React.FC = () => {
             <span>ReadyCareer AI · 누적 성장 동기부여 엔진 마이페이지</span>
           </div>
           <h1 className="text-3xl md:text-4xl font-headline font-black text-text-primary tracking-tight flex items-center gap-3">
-            <span>🚀 {session?.name || "박상혁"} 님의 누적 커리어 히어로 볼트</span>
+            <span>🚀 {localStorage.getItem("readycareer_student_name") || (session?.name && session.name.trim() !== "" ? session.name : "신규 학생")} 님의 누적 커리어 히어로 볼트</span>
           </h1>
           <p className="text-sm text-text-muted font-medium">
-            소속: <strong className="text-primary">{session?.school || "서울창의고등학교"}</strong> · 나의 진단 리포트 이력, 해금된 레벨 뱃지, 실천 습관과 생기부 퀘스트 성과가 실시간 누적 기록됩니다.
+            소속: <strong className="text-primary">{localStorage.getItem("readycareer_student_school") || (session?.school && session.school.trim() !== "" ? session.school : "소속 학교 연동중")}</strong> · 나의 진단 리포트 이력, 해금된 레벨 뱃지, 실천 습관과 생기부 퀘스트 성과가 실시간 누적 기록됩니다.
           </p>
         </div>
 

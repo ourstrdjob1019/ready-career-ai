@@ -90,9 +90,9 @@ export const HomeDashboard: React.FC = () => {
   };
 
   const currentJob = interestedJobs[selectedJobIdx] || { name: "AI 융합 개척자", image: "🤖", category: "탐색 중" };
-  const userName = session?.name || "김수진";
-  const userSchool = session?.school || "서울창의고등학교";
-  const userGrade = session?.grade || 2;
+  const userName = localStorage.getItem("readycareer_student_name") || (session?.name && session.name.trim() !== "" ? session.name : "신규 학생");
+  const userSchool = localStorage.getItem("readycareer_student_school") || (session?.school && session.school.trim() !== "" ? session.school : "소속 학교 연동중");
+  const userGrade = parseInt(localStorage.getItem("readycareer_student_grade")?.replace(/[^0-9]/g, "") || "") || session?.grade || 1;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 py-8 space-y-10">

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Button, Card, Input, Chip, MascotAri } from "../components";
 import { School, User, Sparkles, ArrowRight, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
 import { supabase } from "../lib/supabase";
+import { useAuth } from "../context";
 
 interface SchoolItem {
   school_code?: string;
@@ -13,8 +14,17 @@ interface SchoolItem {
 
 export const OnboardingInfo: React.FC = () => {
   const navigate = useNavigate();
-  const [name, setName] = useState("김수진");
-  const [school, setSchool] = useState("");
+  const { session, startExpoDemo } = useAuth();
+  const [name, setName] = useState(() => {
+    const isNew = localStorage.getItem("is_new_student_clean_state") === "true";
+    if (isNew) return "";
+    return localStorage.getItem("readycareer_student_name") || "";
+  });
+  const [school, setSchool] = useState(() => {
+    const isNew = localStorage.getItem("is_new_student_clean_state") === "true";
+    if (isNew) return "";
+    return localStorage.getItem("readycareer_student_school") || "";
+  });
   const [grade, setGrade] = useState("3학년");
   const [targetCluster, setTargetCluster] = useState<string>("인공지능·공학");
 
@@ -108,7 +118,19 @@ export const OnboardingInfo: React.FC = () => {
     localStorage.removeItem("my_habits_v2");
     localStorage.removeItem("readycareer_student_activities_v1");
 
-    navigate("/interest-test");
+    if (session) {
+      startExpoDemo("student", {
+        ...session,
+        name: name.trim(),
+        school: school,
+        schoolCode: confirmedSchoolCode || "STUDENT-CUSTOM",
+        grade: parseInt(grade.replace(/[^0-9]/g, "")) || 1,
+        targetJob: "진로 탐색 중",
+        riasecCode: "미진단",
+      });
+    }
+
+    navigate("/self-understanding?onboarding=true");
   };
 
   return (
@@ -302,7 +324,7 @@ export const OnboardingInfo: React.FC = () => {
                 fullWidth
                 icon={<ArrowRight className="w-5 h-5" />}
               >
-                흥미유형 AI 검사 시작하기
+                ReadyCareer AI 시작하기
               </Button>
             </div>
           </form>

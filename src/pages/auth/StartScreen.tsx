@@ -79,14 +79,6 @@ export const StartScreen: React.FC = () => {
   const [expoTab, setExpoTab] = useState<"student" | "teacher">("student");
 
   const handleSelectExpoAccount = (account: ExpoAccountItem) => {
-    startExpoDemo(account.role, {
-      name: account.name === "신규 방문 학생" ? "" : account.name,
-      school: account.school === "신규 가입 대기" ? "" : account.school,
-      grade: account.grade || 2,
-      targetJob: account.targetJob || "AI 진로탐색",
-      riasecCode: account.riasecCode || "SI",
-    });
-    
     if (account.name === "신규 방문 학생") {
       // 신규학생 선택 시 세팅된 값 및 예제 내용을 100% 삭제(초기화)
       localStorage.setItem("is_new_student_clean_state", "true");
@@ -96,10 +88,36 @@ export const StartScreen: React.FC = () => {
       localStorage.removeItem("readycareer_student_activities_v1");
       localStorage.removeItem("readycareer_vision_v1");
       localStorage.removeItem("readycareer_selected_job");
+      localStorage.removeItem("readycareer_ai_custom_generated");
+      localStorage.removeItem("my_star_roadmap");
+      localStorage.removeItem("my_habits_v2");
+      localStorage.removeItem("my_interested_jobs");
+      localStorage.removeItem("readycareer_student_name");
+      localStorage.removeItem("readycareer_student_school");
+      localStorage.removeItem("readycareer_student_school_code");
+      localStorage.removeItem("readycareer_student_grade");
+      localStorage.removeItem("readycareer_student_cluster");
+      localStorage.removeItem("riasec_result_code");
+      localStorage.removeItem("riasec_primary");
       resetAssessments();
+
+      startExpoDemo(account.role, {
+        name: "",
+        school: "",
+        grade: 1,
+        targetJob: "진로 탐색 중",
+        riasecCode: "미진단",
+      });
       navigate("/onboarding-info");
     } else {
       localStorage.removeItem("is_new_student_clean_state");
+      startExpoDemo(account.role, {
+        name: account.name,
+        school: account.school,
+        grade: account.grade || 2,
+        targetJob: account.targetJob || "AI 진로탐색",
+        riasecCode: account.riasecCode || "SI",
+      });
       if (account.role === "super_admin") {
         navigate("/super-admin");
       } else if (account.role === "teacher") {

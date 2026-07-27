@@ -196,7 +196,7 @@ export const LearningStyleTest: React.FC = () => {
       const score = Math.floor(92 + Math.random() * 8); // 92 ~ 99점 고득점 부여
       const summary = `학습스타일 정밀 진단 완수: [${topName}] 역량 및 자기주도 학습 몰입도가 전국 최고 수준(상위 2% 내)으로 측정되었습니다.`;
       
-      completeAssessment("test-learning-style", score, summary);
+      completeAssessment("test-learning", score, summary);
       setResultData({
         topStyle: topName,
         score,

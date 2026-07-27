@@ -131,7 +131,7 @@ export const Header: React.FC = () => {
                   <UserCheck className="w-4 h-4 text-primary group-hover:scale-110 transition-transform flex-shrink-0" />
                 )}
                 <span className="text-xs font-headline font-black text-text-primary whitespace-nowrap group-hover:text-primary transition-colors">
-                  {session.name}
+                  {localStorage.getItem("readycareer_student_name") || (session.name && session.name.trim() !== "" ? session.name : "신규 방문 학생")}
                 </span>
                 <Chip size="sm" variant={session.role === "super_admin" || session.role === "teacher" ? "teal" : "default"} className="py-0.5 text-[10px] font-extrabold whitespace-nowrap">
                   {session.role === "super_admin" ? "마스터" : session.role === "teacher" ? "교직원" : "마이페이지 🌟"}

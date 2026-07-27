@@ -110,8 +110,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const mergedSession = { ...targetSession, ...customProfile };
     setSession(mergedSession);
 
-    // 학생용 체험 데이터 사전 세팅 (로그인 시 미리 채워둠)
-    if (role === "student") {
+    // 학생용 체험 데이터 사전 세팅 (김수진 등 기존 대표 시연 계정에만 미리 채워둠, 신규 방문 학생은 제외)
+    const isCleanNewStudent = localStorage.getItem("is_new_student_clean_state") === "true" || customProfile?.name === "" || customProfile?.targetJob === "진로 탐색 중";
+    if (role === "student" && !isCleanNewStudent) {
       if (mergedSession.targetJob) {
         localStorage.setItem(
           "my_interested_jobs",
