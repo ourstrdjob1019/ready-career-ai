@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Card, MascotAri } from "../components";
-import { Award, ArrowRight, Brain, Plus, CheckCircle2, Sparkles, Compass } from "lucide-react";
+import { Award, ArrowRight, Brain, Plus, CheckCircle2, Sparkles, Compass, BarChart3, Star, ShieldCheck } from "lucide-react";
 import configData from "../data/assessment_config.json";
 import { useSelfUnderstanding } from "../context";
 
@@ -27,6 +27,8 @@ export const TestResult: React.FC = () => {
     const primary = localStorage.getItem("riasec_primary") || "S";
     setResultCode(code);
     setPrimaryType(primary);
+    localStorage.setItem("readycareer_interest_type", primary);
+    localStorage.setItem("riasec_result_code", code);
 
     const clusters: JobData[] = (configData.job_clusters as any)[primary] || (configData.job_clusters as any)["I"] || [];
     setSavedJobs(clusters);
@@ -43,6 +45,21 @@ export const TestResult: React.FC = () => {
   const allTestsDone = otherTestsDone; // 흥미검사는 현재 페이지 진입 시 완료됨
 
   const interpText = (configData.interpretation_templates as any)[primaryType] || configData.interpretation_templates.S;
+
+  // 6유형 실전 점수 및 설명 로드 (Bento Grid 리포트용)
+  const rawScores = JSON.parse(localStorage.getItem("riasec_result_scores") || "{}");
+  const defaultScores: Record<string, number> = { R: 18, I: 24, A: 20, S: 28, E: 21, C: 16 };
+  const riasecScores: Record<string, number> = Object.keys(rawScores).length > 0 ? rawScores : defaultScores;
+  const maxScore = Math.max(...Object.values(riasecScores), 30);
+
+  const hollandInfo: Record<string, { title: string; subtitle: string; desc: string; color: string; badge: string }> = {
+    R: { title: "R 현실형", subtitle: "Doers · 현장 실천 역량", desc: "도구와 사물, 정교한 시스템을 실용적으로 다루며 즉각적이고 구체적인 성과를 도출해 내는 현장 실전형 역량입니다.", color: "from-blue-500 to-cyan-500", badge: "bg-blue-100/90 text-blue-950 border-blue-400" },
+    I: { title: "I 탐구형", subtitle: "Thinkers · 아이디어 분석 역량", desc: "논리적인 분석, AI 원리 파악 및 복잡한 데이터 이슈를 심도 있게 탐구하여 해답을 찾아내는 전문 학계 역량입니다.", color: "from-purple-500 to-indigo-500", badge: "bg-purple-100/90 text-purple-950 border-purple-400" },
+    A: { title: "A 예술형", subtitle: "Creators · 독창적 크리에이터", desc: "자유로운 상상력과 차별화된 방식으로 미적 직관, 감동적인 스토리텔링, 디자인 콘텐츠를 기획하는 창의 역량입니다.", color: "from-pink-500 to-rose-500", badge: "bg-pink-100/90 text-pink-950 border-pink-400" },
+    S: { title: "S 사회형", subtitle: "Helpers · 따뜻한 소통 리더십", desc: "사람들과 친밀하게 소통하고 봉사와 교육, 멘토링을 통해 구성원 모두의 동반 성장을 헌신적으로 이끄는 사회 역량입니다.", color: "from-amber-500 to-yellow-500", badge: "bg-amber-100/90 text-amber-950 border-amber-400" },
+    E: { title: "E 진취형", subtitle: "Persuaders · 비전 주도 챔피언", desc: "조직의 명확한 목표를 제시하고 열정적인 설득과 주도력을 발휘하여 프로젝트의 기회를 창출해 내는 도전 역량입니다.", color: "from-emerald-500 to-teal-500", badge: "bg-emerald-100/90 text-emerald-950 border-emerald-400" },
+    C: { title: "C 관습형", subtitle: "Organizers · 완벽한 체계 관리자", desc: "정확한 데이터 검증과 체계적인 질서 유지, 매뉴얼 준수와 책임감으로 조직의 깊은 신뢰를 유지하는 관리 역량입니다.", color: "from-sky-500 to-blue-600", badge: "bg-sky-100/90 text-sky-950 border-sky-400" },
+  };
 
   const handleAddCustomJob = (e: React.FormEvent) => {
     e.preventDefault();
@@ -69,6 +86,8 @@ export const TestResult: React.FC = () => {
 
   const handleFinish = () => {
     localStorage.setItem("my_interested_jobs", JSON.stringify(savedJobs));
+    localStorage.setItem("readycareer_interest_type", primaryType);
+    localStorage.setItem("riasec_result_code", resultCode);
     
     // 마이페이지에 활동 리포트 실천 내역으로 자동 저장
     const existingActs = JSON.parse(localStorage.getItem("readycareer_student_activities_v1") || "[]");
@@ -87,68 +106,143 @@ export const TestResult: React.FC = () => {
   };
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 space-y-10 selection:bg-primary/20 animate-fadeIn">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 space-y-12 selection:bg-primary/20 animate-fadeIn">
       
       {/* Title Header */}
       <div className="text-center space-y-3">
-        <span className="inline-flex items-center gap-1.5 bg-secondary/15 text-secondary px-4 py-1 rounded-full text-xs font-headline font-black shadow-inner whitespace-nowrap">
-          <Brain className="w-4 h-4 text-secondary-spot animate-pulse flex-shrink-0" />
-          <span>Holland RIASEC 실전 6유형 진단 분석 완료</span>
+        <span className="inline-flex items-center gap-1.5 bg-[#5538EE]/15 text-[#5538EE] px-4 py-1 rounded-full text-xs font-headline font-black shadow-inner whitespace-nowrap border border-[#5538EE]/20">
+          <Brain className="w-4 h-4 text-[#5538EE] animate-pulse flex-shrink-0" />
+          <span>Holland RIASEC 실전 6유형 진단 분석 완수 리포트</span>
         </span>
-        <h1 className="text-4xl md:text-5xl font-headline font-black text-text-primary tracking-tight">
-          회원님은 <span className="text-transparent bg-clip-text gradient-hero-card">[{resultCode}] 유형</span>에 가깝습니다!
+        <h1 className="text-4xl md:text-5xl font-headline font-black text-[#1A1626] tracking-tight">
+          회원님은 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#5538EE] to-[#7B5CF0]">[{resultCode}] 유형</span>에 가깝습니다!
         </h1>
-        <p className="text-sm md:text-base text-text-muted font-body-md max-w-2xl mx-auto leading-relaxed">
+        <p className="text-sm md:text-base text-[#4A435A] font-extrabold max-w-2xl mx-auto leading-relaxed">
           {interpText}
         </p>
       </div>
 
-      {/* Mascot Interpretation Card */}
-      <Card variant="hero" padding="lg" className="shadow-3d-ambient bg-gradient-to-r from-point to-white border-2 border-primary/30">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="space-y-3 flex-1">
-            <span className="text-xs font-headline font-extrabold text-primary block whitespace-nowrap">🤖 아리(Ari)의 맞춤 해석 리포트</span>
-            <h2 className="text-2xl font-headline font-black text-text-primary">
-              나에게 꼭 맞는 직업군을 선택하고 별자리 로드맵으로 떠나볼까요?
+      {/* Bento Grid & Glassmorphism RIASEC 6유형 실전 진단 정밀 리포트 */}
+      <section className="space-y-6">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-[#E3E1E9] pb-4">
+          <div>
+            <h2 className="text-2xl font-headline font-black text-[#1A1626] flex items-center gap-2">
+              <BarChart3 className="w-6 h-6 text-[#5538EE] flex-shrink-0" />
+              <span>실전 6유형 흥미 역량 정밀 리포트 (Bento Grid Assessment)</span>
             </h2>
-            <p className="text-xs md:text-sm text-text-muted leading-relaxed font-body-md">
-              하단 그리드의 추천 직업군을 클릭해 상세 정보(`jobs.summary`)를 열람해 보세요. <strong>"없으면 직접 입력해도 좋아요!"</strong> 진로를 확정하면 +20 EXP 보너스와 함께 마이페이지 및 AI 생기부 로드맵에 연동됩니다.
+            <p className="text-xs md:text-sm font-bold text-[#4A435A]">
+              회원님이 응답하신 실전 진단 데이터를 6대 지표로 시각화한 결과입니다. 상위 Top 2 역량이 조합되어 회원님의 맞춤 진로 성형을 결정합니다.
             </p>
           </div>
-          <MascotAri
-            pose="celebrate"
-            size="md"
-            rotate={true}
-            bubbleTitle={`💎 ${resultCode} 유형 커리어 개척자!`}
-            bubbleMessage="아래 그리드에서 직업을 터치해 상세 설명과 꿈을 확인해 봐요!"
-          />
+          <span className="bg-[#EBE9F8] text-[#3E25B7] font-extrabold text-xs px-3.5 py-1.5 rounded-xl self-start md:self-auto border border-[#B3A8EE]">
+            ✨ 글래스모피즘 정밀 리포트
+          </span>
         </div>
-      </Card>
 
-      {/* Interested Jobs Selection Grid & Custom Input - Only visible when all 3 diagnostic tests are completed */}
-      {!allTestsDone ? (
-        <Card variant="hero" padding="lg" className="bg-gradient-to-br from-primary-fixed/20 via-surface-container to-surface-container-low border-2 border-primary/40 text-center space-y-5 shadow-lg">
-          <div className="inline-flex items-center gap-2 bg-primary/20 text-primary px-4 py-1.5 rounded-full font-headline font-black text-sm shadow-sm">
-            <span>⏳ [진단 1/3 완료] 남은 2개 진단(다중지능, 학습스타일)을 마쳐야 최종 추천 직업군이 해금됩니다!</span>
-          </div>
-          <h3 className="text-xl md:text-2xl font-headline font-black text-text-primary">
-            🎉 1단계 흥미무드 검사 완수! 이제 진단 허브로 복귀하여 남은 2가지 검사를 이어가볼까요?
+        {/* Bento Grid layout */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {Object.keys(hollandInfo).map((typeKey) => {
+            const info = hollandInfo[typeKey];
+            const scoreVal = riasecScores[typeKey] || 15;
+            const percentage = Math.min(100, Math.round((scoreVal / maxScore) * 100));
+            const isTopType = resultCode.includes(typeKey);
+            const isFirstType = resultCode[0] === typeKey;
+
+            return (
+              <div
+                key={typeKey}
+                className={`relative rounded-[28px] p-6.5 bg-white/90 backdrop-blur-2xl border-2 shadow-[0_10px_30px_rgba(0,0,0,0.06)] transition-all duration-300 transform hover:-translate-y-1 flex flex-col justify-between ${
+                  isTopType
+                    ? "border-[#5538EE] bg-gradient-to-br from-purple-50/90 to-white shadow-[0_14px_35px_rgba(85,56,238,0.15)] ring-1 ring-[#5538EE]/40"
+                    : "border-[#E3E1E9] hover:border-[#5538EE]/40"
+                }`}
+              >
+                {isTopType && (
+                  <div className="absolute top-4 right-4 bg-[#5538EE] text-white text-[11px] font-black px-3 py-1 rounded-full shadow-sm flex items-center gap-1">
+                    <Star className="w-3.5 h-3.5 fill-current text-yellow-300" />
+                    <span>{isFirstType ? "Top 1 최우수 강점" : "Top 2 융합 강점"}</span>
+                  </div>
+                )}
+
+                <div className="space-y-4">
+                  <span className={`inline-block text-xs font-black px-3 py-1 rounded-xl border ${info.badge}`}>
+                    {info.title}
+                  </span>
+                  <div>
+                    <h3 className="text-lg font-headline font-black text-[#1A1626] mb-1">
+                      {info.subtitle}
+                    </h3>
+                    <p className="text-xs text-[#3E384D] font-bold leading-relaxed">
+                      {info.desc}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="pt-5 mt-4 border-t border-[#E8E6F0] space-y-2">
+                  <div className="flex justify-between items-center text-xs">
+                    <span className="font-extrabold text-[#4A435A]">역량 발도 지표</span>
+                    <span className="font-black text-[#1A1626] text-sm">{scoreVal}점 ({percentage}%)</span>
+                  </div>
+                  <div className="h-2.5 w-full bg-slate-200/80 rounded-full overflow-hidden p-0.5 shadow-inner">
+                    <div
+                      className={`h-full bg-gradient-to-r ${info.color} rounded-full transition-all duration-700`}
+                      style={{ width: `${percentage}%` }}
+                    />
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* AI 코칭 리포트 및 안내 (글래스모피즘 + 가독성 최적화) */}
+      <div className="bg-[#F6F4FF]/95 backdrop-blur-2xl border-2 border-[#5538EE]/30 rounded-[32px] p-7 md:p-9 shadow-xl flex flex-col md:flex-row items-center justify-between gap-6 text-[#1A1626]">
+        <div className="space-y-3 flex-1">
+          <span className="text-xs font-headline font-black text-[#5538EE] bg-white px-3.5 py-1.5 rounded-full inline-flex items-center gap-1.5 shadow-sm border border-[#5538EE]/20">
+            <ShieldCheck className="w-4 h-4 text-[#5538EE]" />
+            <span>🤖 AI 아리(Ari)의 6유형 실전 정밀 진단 리포트 요약</span>
+          </span>
+          <h3 className="text-xl md:text-2xl font-headline font-black text-[#1A1626] leading-snug">
+            회원님은 {resultCode} 성향의 독보적인 강점을 지닌 미래 커리어 프런티어입니다!
           </h3>
-          <p className="text-xs md:text-sm text-text-muted max-w-2xl mx-auto leading-relaxed font-medium">
-            본 프로그램을 100% 활용하기 위해서는 <strong>진단 검사 3종(흥미무드, 다중지능, 학습스타일)</strong>을 반드시 먼저 모두 완수해야 합니다.<br />
-            하단의 <strong>[리포트 마이페이지에 저장하고 남은 진단 마저 하기]</strong> 버튼을 누르면 이 결과가 실시간 마이페이지에 누적되고, 진단 선택 허브로 이동합니다!
+          <p className="text-sm text-[#3E384D] leading-relaxed font-extrabold">
+            본 1차 흥미무드 진단 리포트는 회원님의 마이페이지에 자동으로 보존됩니다. <strong>진단 3종 모듈(흥미무드 + 다중지능 + 학습스타일)</strong>의 3개 관문이 모두 완료되면, 세상에 단 하나뿐인 AI 맞춤 관심 직업 6선 및 실전 별자리 로드맵 스튜디오가 자동 열립니다.
+          </p>
+        </div>
+        <MascotAri
+          pose="celebrate"
+          size="md"
+          rotate={true}
+          bubbleTitle={`💎 ${resultCode} 실전 역량 완성!`}
+          bubbleMessage="마이페이지에 1차 리포트를 저장하고 다음 진단 관문을 이어가보자!"
+        />
+      </div>
+
+      {/* Interested Jobs Selection Grid - Only visible when ALL 3 diagnostic tests are completed */}
+      {!allTestsDone ? (
+        <Card variant="hero" padding="lg" className="bg-white/95 backdrop-blur-2xl border-2 border-[#5538EE]/40 text-center space-y-6 shadow-[0_15px_45px_rgba(85,56,238,0.12)] rounded-[32px] p-8 md:p-12">
+          <div className="inline-flex items-center gap-2 bg-[#ECE8FF] text-[#4127BE] px-5 py-2 rounded-full font-headline font-black text-sm border border-[#5538EE]/20 shadow-sm">
+            <span>⏳ [진단 1/3 완료] 남은 2개 진단(다중지능, 학습스타일)을 마쳐야 AI 직업 추천 창이 열립니다!</span>
+          </div>
+          <h3 className="text-2xl md:text-3xl font-headline font-black text-[#1A1626] tracking-tight">
+            🎉 1차 실전 6유형 진단 완수! 이제 진단 허브로 복귀하여 남은 검사 2종을 진행해볼까요?
+          </h3>
+          <p className="text-sm md:text-base text-[#3E384D] max-w-2xl mx-auto leading-relaxed font-extrabold">
+            본 ReadyCareer AI 시스템을 100% 활용하기 위해서는 <strong>진단 검사 3종(흥미무드, 다중지능, 학습스타일)</strong>을 모두 순서대로 완수해야 합니다.<br />
+            하단의 <strong>[💾 리포트 생성 및 마이페이지에 저장 후, 남은 진단 마저 하기 (목록 복귀)]</strong> 버튼을 누르면 진단 허브로 복귀하며, 다음 단계가 즉시 오픈됩니다!
           </p>
         </Card>
       ) : (
         <>
           <section className="space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-surface-variant/40 pb-3">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#E3E1E9] pb-3">
               <div>
-                <h3 className="text-2xl font-headline font-black text-text-primary flex items-center gap-2">
-                  <Award className="w-6 h-6 text-secondary flex-shrink-0" />
-                  <span>추천 직업군 및 내 관심 직업</span>
+                <h3 className="text-2xl font-headline font-black text-[#1A1626] flex items-center gap-2">
+                  <Award className="w-6 h-6 text-[#5538EE] flex-shrink-0" />
+                  <span>맞춤 추천 직업군 및 내 관심 직업 (3종 진단 완료 특권)</span>
                 </h3>
-                <span className="text-xs text-text-muted whitespace-nowrap">클릭하여 직업 상세 정보를 열람하고 대표 진로로 설정할 수 있습니다.</span>
+                <span className="text-xs text-[#4A435A] font-extrabold whitespace-nowrap">클릭하여 직업 상세 정보를 열람하고 대표 진로로 설정할 수 있습니다.</span>
               </div>
 
               {/* Custom job form */}
@@ -158,7 +252,7 @@ export const TestResult: React.FC = () => {
                   placeholder="예: 스포츠 데이터 전문 분석사"
                   value={customJob}
                   onChange={(e) => setCustomJob(e.target.value)}
-                  className="px-4 py-2 bg-surface-container-lowest border border-surface-variant/60 rounded-2xl text-xs md:text-sm focus:ring-2 focus:ring-primary font-bold w-52 md:w-64 shadow-inner"
+                  className="px-4 py-2.5 bg-white border-2 border-[#5538EE]/40 rounded-2xl text-xs md:text-sm focus:ring-2 focus:ring-[#5538EE] font-black text-[#1A1626] w-52 md:w-64 shadow-inner"
                 />
                 <Button variant="primary" size="sm" type="submit" icon={<Plus className="w-4 h-4 flex-shrink-0" />} className="font-extrabold whitespace-nowrap shadow-sm">
                   + 직접 작성 추가
@@ -166,7 +260,7 @@ export const TestResult: React.FC = () => {
               </form>
             </div>
 
-            {/* Job Grid */}
+            {/* Job Grid with Bento style & Glassmorphism */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {savedJobs.map((job, idx) => {
                 const isSelected = selectedJob?.name === job.name;
@@ -177,29 +271,29 @@ export const TestResult: React.FC = () => {
                       setSelectedJob(job);
                       setIsConfirmed(false);
                     }}
-                    className={`p-5 rounded-3xl border-2 cursor-pointer transition-all duration-200 flex flex-col items-center text-center justify-between gap-3 shadow-3d-base ${
+                    className={`p-5 rounded-[28px] border-2 cursor-pointer transition-all duration-300 flex flex-col items-center text-center justify-between gap-3 shadow-md backdrop-blur-xl ${
                       isSelected
-                        ? "bg-secondary/15 border-secondary scale-105 shadow-md"
-                        : "bg-surface-container-low border-surface-variant/50 hover:border-primary/50 hover:bg-surface-container"
+                        ? "bg-gradient-to-br from-purple-100/90 to-white border-[#5538EE] scale-105 shadow-xl ring-2 ring-[#5538EE]/30"
+                        : "bg-white/90 border-[#E3E1E9] hover:border-[#5538EE]/60 hover:shadow-lg hover:-translate-y-1"
                     }`}
                   >
-                    <div className="w-14 h-14 rounded-2xl bg-white flex items-center justify-center text-3xl shadow-sm">
+                    <div className="w-14 h-14 rounded-2xl bg-white flex items-center justify-center text-3xl shadow-sm border border-[#E3E1E9]">
                       {job.image}
                     </div>
                     <div>
-                      <span className="text-[10px] font-headline font-extrabold text-secondary-spot bg-surface-container px-2.5 py-0.5 rounded-full inline-block mb-1 whitespace-nowrap border border-surface-variant/30">
+                      <span className="text-[11px] font-headline font-black text-[#3E25B7] bg-[#EBE9F8] px-3 py-0.5 rounded-full inline-block mb-1.5 whitespace-nowrap border border-[#B3A8EE]/50">
                         {job.category}
                       </span>
-                      <strong className="text-sm md:text-base font-headline font-black text-text-primary block leading-tight">
+                      <strong className="text-sm md:text-base font-headline font-black text-[#1A1626] block leading-tight">
                         {job.name}
                       </strong>
                     </div>
                     {isSelected ? (
-                      <span className="w-full py-1.5 px-2 rounded-xl bg-secondary text-white text-[11px] font-black shadow-sm whitespace-nowrap text-center">
+                      <span className="w-full py-1.5 px-2 rounded-xl bg-[#5538EE] text-white text-[11px] font-black shadow-sm whitespace-nowrap text-center">
                         ★ 선택됨 (아래 상세 열람)
                       </span>
                     ) : (
-                      <span className="w-full py-1.5 px-2 rounded-xl bg-surface-container-high text-text-muted text-[11px] font-bold whitespace-nowrap text-center">
+                      <span className="w-full py-1.5 px-2 rounded-xl bg-slate-100 text-[#4A435A] text-[11px] font-extrabold whitespace-nowrap text-center">
                         터치하여 상세 보기
                       </span>
                     )}
@@ -211,21 +305,21 @@ export const TestResult: React.FC = () => {
 
           {/* DETAILED CAREER VIEW */}
           {selectedJob && (
-            <section className="bg-white rounded-[32px] p-8 border-2 border-primary/30 shadow-[0_20px_45px_rgba(123,92,240,0.12)] space-y-8 animate-fadeIn relative overflow-hidden">
+            <section className="bg-white/95 backdrop-blur-2xl rounded-[32px] p-8 border-2 border-[#5538EE]/40 shadow-[0_20px_50px_rgba(85,56,238,0.15)] space-y-8 animate-fadeIn relative overflow-hidden text-[#1A1626]">
               <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-[#7af1fc]/20 to-transparent rounded-bl-full pointer-events-none" />
               
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-surface-variant/50 pb-6">
-                <div className="space-y-2 max-w-2xl">
-                  <div className="inline-flex items-center gap-2 bg-[#7af1fc]/30 text-secondary px-3.5 py-1 rounded-full text-xs font-headline font-black border border-secondary/20 whitespace-nowrap">
-                    <Sparkles className="w-3.5 h-3.5 text-secondary-spot flex-shrink-0" />
-                    <span>ReadyCareer AI &middot; 직업 상세 정보 (Detailed Career View)</span>
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-[#E3E1E9] pb-6">
+                <div className="space-y-3 max-w-2xl">
+                  <div className="inline-flex items-center gap-2 bg-[#5538EE]/10 text-[#3E25B7] px-3.5 py-1 rounded-full text-xs font-headline font-black border border-[#5538EE]/30 whitespace-nowrap">
+                    <Sparkles className="w-3.5 h-3.5 text-[#5538EE] flex-shrink-0" />
+                    <span>ReadyCareer AI &middot; 직업 상세 정보 및 로드맵 연동</span>
                   </div>
                   <h2 className="text-2xl md:text-3xl font-black text-[#1A1626] flex items-center gap-3">
                     <span className="text-4xl">{selectedJob.image}</span>
                     <span>{selectedJob.name}</span>
                   </h2>
-                  <p className="text-sm text-text-primary font-medium leading-relaxed bg-surface-container-low p-4 rounded-2xl border border-surface-variant/40">
-                    💡 <strong>직무 개요 (`jobs.summary`):</strong> {selectedJob.summary || "청소년의 미래 비전과 맞춤 역량이 발아하는 2026 핵심 선도 직군입니다. 내 흥미 강점을 극대화하여 전문적인 진로 탐색을 떠나보세요."}
+                  <p className="text-sm text-[#1A1626] font-extrabold leading-relaxed bg-[#F8F9FE] p-4.5 rounded-2xl border border-[#D5D1EB]">
+                    💡 <strong>직무 개요 (`jobs.summary`):</strong> {selectedJob.summary || "청소년의 미래 비전과 맞춤 역량이 발달하는 2026 핵심 선도 직군입니다. 내 흥미 강점을 극대화하여 전문적인 진로 탐색을 떠나보세요."}
                   </p>
                 </div>
 
@@ -235,7 +329,7 @@ export const TestResult: React.FC = () => {
                     className={`px-7 py-4 rounded-full font-headline font-black text-sm transition-all duration-300 transform hover:scale-105 shadow-lg whitespace-nowrap flex items-center gap-2 ${
                       isConfirmed
                         ? "bg-[#006970] text-white shadow-[0_10px_25px_rgba(0,105,112,0.3)] ring-4 ring-[#7af1fc]/50"
-                        : "bg-gradient-to-r from-primary to-[#8E70F7] text-white shadow-[0_10px_25px_rgba(98,64,213,0.35)]"
+                        : "bg-gradient-to-r from-[#5538EE] to-[#7B5CF0] text-white shadow-[0_10px_25px_rgba(85,56,238,0.35)]"
                     }`}
                   >
                     <Compass className="w-4 h-4 flex-shrink-0" />
@@ -246,21 +340,21 @@ export const TestResult: React.FC = () => {
 
               {/* Confirmation Celebration */}
               {isConfirmed && (
-                <div className="bg-gradient-to-r from-primary-container to-secondary p-6 rounded-3xl text-white shadow-xl flex flex-col sm:flex-row items-center justify-between gap-4 animate-bounce-once border-2 border-white/30">
+                <div className="bg-gradient-to-r from-[#5538EE] to-[#3E25B7] p-7 rounded-[28px] text-white shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-5 animate-bounce-once border-2 border-white/30">
                   <div className="flex items-center gap-4">
                     <div className="w-16 h-16 rounded-2xl bg-white/20 flex items-center justify-center text-4xl shadow-inner flex-shrink-0">
                       🏆
                     </div>
-                    <div className="space-y-1">
+                    <div className="space-y-1.5">
                       <div className="flex items-center gap-2">
-                        <span className="text-xs font-black bg-white text-primary px-2.5 py-0.5 rounded-full whitespace-nowrap shadow-sm">
+                        <span className="text-xs font-black bg-white text-[#3E25B7] px-3 py-0.5 rounded-full whitespace-nowrap shadow-sm">
                           +20 EXP 획득! 🌟
                         </span>
-                        <span className="text-xs font-black text-secondary-container">누적 EXP 보증서 지급됨</span>
+                        <span className="text-xs font-black text-violet-200">누적 EXP 보증서 지급됨</span>
                       </div>
-                      <h4 className="text-lg font-black leading-tight">진로 확정 성공! '{selectedJob.name}' 별자리가 밝혀졌습니다.</h4>
-                      <p className="text-xs text-white/90 leading-relaxed">
-                        마이페이지 및 AI 생기부 별자리 로드맵에 선택하신 비전 목표가 저장되어 맞춤 퀘스트가 실시간 추천됩니다!
+                      <h4 className="text-lg font-black leading-tight text-white">진로 확정 성공! '{selectedJob.name}' 별자리 로드맵이 활성화되었습니다.</h4>
+                      <p className="text-xs text-white/95 leading-relaxed font-bold">
+                        마이페이지 및 AI 생기부 별자리 로드맵에 선택하신 비전 목표가 실각 연계되어 맞춤 퀘스트가 제공됩니다!
                       </p>
                     </div>
                   </div>
@@ -268,20 +362,20 @@ export const TestResult: React.FC = () => {
                     variant="outline"
                     size="sm"
                     onClick={() => navigate("/mypage")}
-                    className="font-extrabold whitespace-nowrap bg-white text-primary border-white shadow-md hover:bg-white/90"
+                    className="font-black whitespace-nowrap bg-white text-[#3E25B7] border-white shadow-md hover:bg-white/90 px-5 py-3 rounded-xl"
                   >
                     🏅 누적 마이페이지 확인 &rarr;
                   </Button>
                 </div>
               )}
 
-              <div className="bg-surface-container p-5 rounded-2xl border border-surface-variant/50 flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs font-bold text-text-muted">
+              <div className="bg-[#F6F4FF]/90 p-5 rounded-2xl border border-[#D5D1EB] flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs font-black text-[#3E384D]">
                 <span className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-secondary-spot flex-shrink-0" />
+                  <CheckCircle2 className="w-4 h-4 text-[#5538EE] flex-shrink-0" />
                   <span>선택한 직무(`riasec_code: {primaryType}`)는 현장 박람회 AI 서버리스 진로 분석 및 생기부 초안 가이드에 자동 연결됩니다.</span>
                 </span>
-                <span className="bg-white px-3 py-1 rounded-full text-text-primary border border-surface-variant/40 whitespace-nowrap font-black">
-                  ● ReadyCareer AI &middot; 데모 온보딩 완료
+                <span className="bg-white px-3.5 py-1 rounded-full text-[#1A1626] border border-[#B3A8EE] whitespace-nowrap font-black shadow-sm">
+                  ● ReadyCareer AI &middot; 맞춤 커리어 세팅 완료
                 </span>
               </div>
             </section>
@@ -290,13 +384,13 @@ export const TestResult: React.FC = () => {
       )}
 
       {/* Main CTA to proceed */}
-      <div className="pt-6 flex justify-center">
+      <div className="pt-4 flex justify-center">
         <Button
           variant="teal"
           size="lg"
           onClick={handleFinish}
           icon={<ArrowRight className="w-6 h-6 flex-shrink-0" />}
-          className="font-headline font-extrabold px-10 py-5 shadow-2xl hover:scale-105 transition-transform text-lg whitespace-nowrap"
+          className="font-headline font-extrabold px-10 py-5 shadow-2xl hover:scale-105 transition-transform text-lg whitespace-nowrap bg-[#5538EE] hover:bg-[#4127BE] text-white border-none"
         >
           {!allTestsDone
             ? "💾 리포트 생성 및 마이페이지에 저장 후, 남은 진단 마저 하기 (목록 복귀) →"
@@ -309,3 +403,4 @@ export const TestResult: React.FC = () => {
 };
 
 export default TestResult;
+

@@ -94,6 +94,21 @@ export const HomeDashboard: React.FC = () => {
   const userSchool = localStorage.getItem("readycareer_student_school") || (session?.school && session.school.trim() !== "" ? session.school : "소속 학교 연동중");
   const userGrade = parseInt(localStorage.getItem("readycareer_student_grade")?.replace(/[^0-9]/g, "") || "") || session?.grade || 1;
 
+  // 진단 완수 및 신규 유저 상태 실시간 반영 (미진단 표기 방지)
+  const storedRiasec = localStorage.getItem("riasec_result_code") || localStorage.getItem("readycareer_interest_type");
+  const displayRiasec = (storedRiasec && storedRiasec !== "미진단")
+    ? storedRiasec
+    : (session?.riasecCode && session.riasecCode !== "미진단" ? session.riasecCode : "SI");
+
+  // 경험치 진행도 동적 계산 (신규 회원가입 후 진단 및 별자리 세팅 직후에는 실천 활동 전이므로 깨끗이 0% 0 XP로 시작)
+  const isNewStudentClean = localStorage.getItem("is_new_student_clean_state") === "true";
+  const allActivities = JSON.parse(localStorage.getItem("readycareer_student_activities_v1") || "[]");
+  const practiceActivities = allActivities.filter((a: any) => !a.id?.startsWith("act-riasec-") && !a.id?.startsWith("act-star-"));
+  const computedXP = isNewStudentClean ? (practiceActivities.length * 40) : Math.min(400, 240 + (practiceActivities.length * 40));
+  const currentXP = Math.min(400, Math.max(0, computedXP));
+  const maxXP = 400;
+  const progressPercent = Math.round((currentXP / maxXP) * 100);
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 py-8 space-y-10">
       
@@ -106,8 +121,8 @@ export const HomeDashboard: React.FC = () => {
             <Star className="w-3.5 h-3.5 fill-current text-primary" />
             <span>★ 대표 꿈: {currentJob.name}</span>
           </span>
-          <span className="text-xs font-black text-secondary bg-secondary/10 px-3 py-1 rounded-full border border-secondary/20">
-            RIASEC: {session?.riasecCode || "SI"} 유형
+          <span className="text-xs font-black text-secondary bg-secondary/10 px-3.5 py-1 rounded-full border border-secondary/20 shadow-sm">
+            RIASEC: {displayRiasec} 유형
           </span>
         </div>
         <h2 className="text-2xl md:text-3xl font-headline font-extrabold text-on-surface tracking-tight">
@@ -125,7 +140,7 @@ export const HomeDashboard: React.FC = () => {
         
         <div className="space-y-6 z-10 w-full md:w-2/3">
           <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md px-4 py-1.5 rounded-full font-headline font-extrabold text-xs tracking-wider border border-white/30 shadow-inner">
-            <span>✨ Lv.03 커리어 탐색 개척자</span>
+            <span>{currentXP === 0 ? "🌱 Lv.01 진로 탐색의 싹 (0 XP 시작)" : "✨ Lv.03 커리어 탐색 개척자"}</span>
           </div>
           
           <div>
@@ -181,10 +196,10 @@ export const HomeDashboard: React.FC = () => {
           <div className="space-y-2 w-full max-w-md pt-1">
             <div className="flex justify-between text-xs font-bold text-[#e6deff]">
               <span>경험치 진행도 (XP Progress)</span>
-              <span className="font-extrabold text-white">240 / 400 XP (60%)</span>
+              <span className="font-extrabold text-white">{currentXP} / {maxXP} XP ({progressPercent}%)</span>
             </div>
             <div className="h-3.5 w-full bg-black/25 rounded-full overflow-hidden shadow-inner p-0.5 border border-white/20">
-              <div className="h-full bg-gradient-to-r from-[#7ef4fe] to-white rounded-full shadow-[0_0_12px_rgba(255,255,255,0.9)] transition-all duration-500" style={{ width: "60%" }}></div>
+              <div className="h-full bg-gradient-to-r from-[#7ef4fe] to-white rounded-full shadow-[0_0_12px_rgba(255,255,255,0.9)] transition-all duration-500" style={{ width: `${progressPercent}%` }}></div>
             </div>
           </div>
         </div>
