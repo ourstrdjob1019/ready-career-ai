@@ -61,11 +61,30 @@ export const MyPage: React.FC = () => {
     ]),
   ];
 
-  const habitsList = isNewClean ? [] : [
-    { title: "매일 아침 10분 진로 전공 헤드라인 뉴스 읽기", streak: "14일 연속 완수", rate: 94 },
-    { title: "방과 후 30분 융합 수학 및 파이썬 코딩 챌린지", streak: "8일 연속 완수", rate: 88 },
-    { title: "주말 세관·자율 활동 기록부 구조화 일지 1줄 정리", streak: "3주 연속 완수", rate: 96 },
-  ];
+  const habitsList = (() => {
+    try {
+      const savedHabits = JSON.parse(localStorage.getItem("my_habits_v2") || "null");
+      if (Array.isArray(savedHabits) && savedHabits.length > 0) {
+        return savedHabits.map((h: any) => {
+          const total = h.targetDays || 50;
+          const done = h.completedDays ? h.completedDays.length : 0;
+          const rate = Math.max(15, Math.min(100, Math.round((done / total) * 100) || 68));
+          return {
+            title: h.title || "50일 자기주도 진로 실현 챌린지",
+            streak: done > 0 ? `${done}일째 완수 중!` : "🚀 50일 챌린지 도전 시작!",
+            rate: done > 0 ? rate : 64
+          };
+        });
+      }
+    } catch (e) {
+      console.error(e);
+    }
+    return [
+      { title: "🔥 [50일 챌린지] 매일 AI 알고리즘 & 맞춤 전공 문제 1개 실습", streak: "14일 연속 실천 중", rate: 92 },
+      { title: "📚 [50일 루틴] 최신 관심 직무 저널 및 도서 15분 읽고 메모", streak: "8일 연속 실천 중", rate: 84 },
+      { title: "💡 [50일 목표] 주말 세특·자율 활동 탐구 기록부 1줄 구조화", streak: "3주차 달성 중", rate: 96 },
+    ];
+  })();
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10 selection:bg-primary/20 animate-fadeIn">
@@ -385,7 +404,7 @@ export const MyPage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="pt-6 mt-4 border-t border-surface-variant/40 flex items-center justify-between bg-primary-fixed/20 p-4 rounded-2xl">
+              <div className="pt-6 mt-4 border-t border-surface-variant/40 flex flex-col sm:flex-row items-center justify-between gap-4 bg-primary-fixed/20 p-4 rounded-2xl">
                 <div className="flex items-center gap-3">
                   <MascotAri pose="sticker" size="sm" rotate={false} />
                   <div>
@@ -393,6 +412,11 @@ export const MyPage: React.FC = () => {
                     <span className="text-[11px] text-text-muted">오늘 습관을 체크하면 레벨 6 고지에 도약할 수 있어요!</span>
                   </div>
                 </div>
+                <Link to="/habits" className="w-full sm:w-auto">
+                  <Button variant="teal" size="sm" className="w-full sm:w-auto font-black text-xs whitespace-nowrap shadow-md hover:scale-105 transition-transform">
+                    🎯 50일 습관 그리드 & 챌린지 관리 &rarr;
+                  </Button>
+                </Link>
               </div>
 
             </div>

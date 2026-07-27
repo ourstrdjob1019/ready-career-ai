@@ -91,33 +91,135 @@ export const SelfUnderstanding: React.FC = () => {
       </Card>
 
       {/* Onboarding Guide Banner when not all completed */}
+      {/* Onboarding Guide Banner when not all completed */}
       {!isAllCompleted && (
         <div className="bg-gradient-to-r from-secondary-container/30 via-primary-container/20 to-surface-container p-4 md:p-6 rounded-[28px] border-2 border-secondary/40 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm animate-pulse">
           <div className="flex items-center gap-3 text-left">
             <span className="text-3xl">📢</span>
             <div>
               <h3 className="font-headline font-black text-sm md:text-base text-text-primary">
-                신규 온보딩 필수 과제: 3대 진단 검사를 모두 완료해 주세요!
+                신규 온보딩 필수 과제: 3대 진단 검사 및 정밀 리포트 획득을 완료해 주세요!
               </h3>
               <p className="text-xs text-text-muted mt-0.5">
-                흥미무드(RIASEC) · 다중지능 · 학습스타일 3가지 네모박스를 모두 완수해야 종합 추천 직업을 선택하고 대시보드 로드맵을 수립할 수 있습니다.
+                흥미무드(RIASEC) · 다중지능(16문항) · 학습스타일(16문항) 3가지 네모박스 검사를 모두 마쳐야 종합 추천 직업 6선이 열리며, 이를 선택해야 대시보드의 별자리 로드맵을 작성할 수 있습니다.
               </p>
             </div>
           </div>
-          <span className="bg-primary text-white font-extrabold text-xs px-4 py-2 rounded-full whitespace-nowrap">
-            현재 {completedCount}개 완료 ({3 - completedCount}개 남음)
+          <span className="bg-primary text-white font-extrabold text-xs px-4 py-2 rounded-full whitespace-nowrap shadow-md">
+            현재 {completedCount}/3 완료 ({3 - completedCount}개 남음)
           </span>
         </div>
       )}
 
-      {/* 3 Core Self-Understanding Assessments List */}
+      {/* 🌟 3종 진단 완수 시 최상단 즉시 표출: 3개 진단 종합 분석 맞춤 추천 직업 6선 선택 허브 */}
+      {isAllCompleted && (
+        <section className="bg-gradient-to-b from-[#1A1626] via-[#241E36] to-[#1A1626] rounded-[36px] p-8 md:p-10 border-4 border-[#7B5CF0] shadow-[0_25px_60px_rgba(123,92,240,0.35)] space-y-8 animate-fadeIn text-white relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-[#7B5CF0]/20 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-80 h-80 bg-[#006970]/20 rounded-full blur-2xl pointer-events-none" />
+
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-white/15 pb-6 relative z-10">
+            <div className="space-y-2">
+              <span className="text-xs font-black bg-gradient-to-r from-teal-400 to-purple-400 text-[#1A1626] px-4 py-1.5 rounded-full inline-flex items-center gap-1.5 uppercase tracking-wider font-headline shadow-lg">
+                <Award className="w-4 h-4 text-[#1A1626] animate-bounce" /> 3개 진단 검사(흥미·다중지능·학습스타일) 100% 종합 완료!
+              </span>
+              <h2 className="text-2xl md:text-3xl font-black font-headline tracking-tight text-white flex items-center gap-2">
+                <span>🎯 3대 진단 종합 결과 기반 &apos;나만의 추천 관심 직업 6선&apos;</span>
+              </h2>
+              <p className="text-xs md:text-sm text-white/80 max-w-3xl leading-relaxed">
+                회원님이 완수한 <strong>[1] 진로흥미검사</strong> + <strong>[2] 다중지능검사(16문항)</strong> + <strong>[3] 학습스타일 검사(16문항)</strong> 데이터 알고리즘을 종합 분석하여, 미래 입시 및 사회에서 가장 성공 확률이 높은 6개 맞춤 직업군을 추출했습니다.
+              </p>
+            </div>
+            <div className="bg-white/10 px-5 py-3.5 rounded-2xl border border-white/20 text-center md:text-right flex flex-col justify-center shrink-0 shadow-inner">
+              <span className="text-[11px] text-teal-300 font-bold whitespace-nowrap">✔ 현재 선택된 목표 직업</span>
+              <span className="text-lg font-black text-[#7AF1FC] font-headline">{selectedJob}</span>
+            </div>
+          </div>
+
+          <div className="space-y-4 relative z-10">
+            <h3 className="text-sm sm:text-base font-black text-yellow-300 flex items-center gap-2 bg-white/5 px-4 py-2.5 rounded-xl border border-white/10">
+              <Target className="w-5 h-5 text-yellow-300 flex-shrink-0 animate-pulse" />
+              <span>아래 6대 맞춤 추천 직업 중 나에게 가장 설레는 꿈을 1개 선택(터치)하신 후, 하단 대시보드 이동 버튼을 눌러주세요!</span>
+            </h3>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+              {recommendedJobs.map((job) => {
+                const isSelected = selectedJob === job.title;
+                return (
+                  <div
+                    key={job.title}
+                    onClick={() => setSelectedJob(job.title)}
+                    className={`p-6 rounded-[28px] border-2 transition-all cursor-pointer flex flex-col justify-between relative ${
+                      isSelected
+                        ? "bg-gradient-to-tr from-[#7B5CF0]/50 to-[#006970]/60 border-[#7AF1FC] shadow-[0_0_30px_rgba(122,241,252,0.5)] scale-[1.03] ring-2 ring-[#7AF1FC]/40"
+                        : "bg-white/5 border-white/15 hover:border-white/40 hover:bg-white/10 hover:scale-[1.01]"
+                    }`}
+                  >
+                    <div>
+                      <div className="flex items-center justify-between gap-2 mb-3">
+                        <span className="text-[11px] font-black px-3 py-1 rounded-full bg-[#7AF1FC]/20 text-[#7AF1FC] border border-[#7AF1FC]/30 whitespace-nowrap">
+                          {job.cluster}
+                        </span>
+                        <span className="text-[11px] font-black text-emerald-300 whitespace-nowrap bg-emerald-950/60 px-2.5 py-0.5 rounded-md border border-emerald-500/30">
+                          ⚡ 3종 합산 일치도
+                        </span>
+                      </div>
+                      <h4 className="text-base sm:text-lg font-headline font-black text-white group-hover:text-[#7AF1FC] transition-colors mb-2">
+                        {job.title}
+                      </h4>
+                      <p className="text-xs text-white/75 leading-relaxed">
+                        {job.desc}
+                      </p>
+                    </div>
+
+                    <div className="mt-5 pt-3.5 border-t border-white/10 flex items-center justify-between">
+                      <span className={`text-[12px] font-black ${isSelected ? "text-yellow-300" : "text-white/60"}`}>
+                        {isSelected ? "✨ 내 목표 직업으로 최종 확정됨!" : "👆 터치하여 내 관심직업으로 선택"}
+                      </span>
+                      <div className={`w-7 h-7 rounded-full flex items-center justify-center font-black text-sm shadow-md ${
+                        isSelected ? "bg-[#7AF1FC] text-[#1A1626]" : "bg-white/20 text-white"
+                      }`}>
+                        {isSelected ? "✓" : "+"}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="bg-gradient-to-r from-white/10 via-white/15 to-white/10 p-6 rounded-[28px] border border-white/25 flex flex-col sm:flex-row items-center justify-between gap-6 relative z-10 shadow-2xl">
+            <div className="flex items-center gap-4 text-left">
+              <MascotAri pose="celebrate" size="sm" />
+              <div>
+                <h4 className="font-headline font-black text-lg text-white">
+                  &ldquo;축하해요! 3대 진단을 완수하고 &apos;{selectedJob}&apos; 꿈 좌표를 확정했습니다!&rdquo;
+                </h4>
+                <p className="text-xs text-white/80 mt-1 leading-relaxed">
+                  이제 대시보드로 출항하면 선택하신 <strong>[{selectedJob}]</strong> 직종에 100% 특화된 별자리 커리어 로드맵과 50일 습관&목표, 학급 포트폴리오 누적 관리가 완벽히 개장됩니다.
+                </p>
+              </div>
+            </div>
+            <Button
+              variant="teal"
+              size="lg"
+              onClick={handleFinishOnboarding}
+              className="font-headline font-black text-base sm:text-lg py-5 px-10 whitespace-nowrap shadow-[0_10px_30px_rgba(0,184,168,0.7)] hover:scale-105 transition-all duration-300 bg-gradient-to-r from-teal-400 via-emerald-400 to-cyan-400 text-slate-900 rounded-2xl border border-white/40"
+              icon={<ArrowRight className="w-6 h-6 ml-1 text-slate-900" />}
+            >
+              🚀 6선 중 관심 직업 선택 완료! 대시보드로 이동하기
+            </Button>
+          </div>
+        </section>
+      )}
+
+      {/* 3 Core Self-Understanding Assessments List (네모박스) */}
       <section className="flex flex-col gap-5">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
             <h2 className="text-headline-md font-headline font-extrabold text-text-primary flex items-center gap-2">
               <span>🔬 3대 핵심 자기이해 AI 진단 시리즈 (네모박스 뷰)</span>
             </h2>
-            <p className="text-xs text-text-muted mt-0.5">각 항목을 클릭하여 진단을 마지면 '완료됨' 표시와 함께 AI 통합 추천 알고리즘이 활성화됩니다.</p>
+            <p className="text-xs text-text-muted mt-0.5">각 네모박스를 클릭하여 검사 및 리포트 열람을 마치면 &apos;완료됨&apos;으로 전환됩니다.</p>
           </div>
           <Button variant="outline" size="sm" onClick={generateComprehensiveReport} icon={<Zap className="w-4 h-4" />}>
             모든 결과 리서치 AI 즉시 동기화
@@ -171,7 +273,7 @@ export const SelfUnderstanding: React.FC = () => {
 
                 <div className="pt-4 mt-4 border-t border-surface-variant/30 flex items-center justify-between">
                   <span className="text-xs font-bold text-text-muted whitespace-nowrap">
-                    {isCompleted ? `● 검사일: ${item.completedAt}` : "● 소요시간 약 2분 내외"}
+                    {isCompleted ? `● 검사일: ${item.completedAt}` : "● 필수 16문항 진단"}
                   </span>
                   <Button
                     variant={isCompleted ? "secondary" : "primary"}
@@ -188,104 +290,6 @@ export const SelfUnderstanding: React.FC = () => {
         </div>
       </section>
 
-      {/* WOW: Comprehensive Recommendation & Job Selection Panel (Triggers when all 3 completed) */}
-      {isAllCompleted && (
-        <section className="bg-gradient-to-b from-[#1A1626] via-[#241E36] to-[#1A1626] rounded-[36px] p-8 md:p-10 border-4 border-[#7B5CF0] shadow-[0_25px_60px_rgba(123,92,240,0.35)] space-y-8 animate-fadeIn text-white relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-[#7B5CF0]/20 rounded-full blur-3xl pointer-events-none" />
-
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-white/15 pb-6 relative z-10">
-            <div>
-              <span className="text-xs font-black bg-[#7B5CF0] text-white px-3.5 py-1.5 rounded-full inline-flex items-center gap-1.5 mb-2 uppercase tracking-wider shadow-sm">
-                <Award className="w-3.5 h-3.5" /> AI 종합 진단 100% 완수 축하 &middot; 맞춤 추천
-              </span>
-              <h2 className="text-2xl md:text-3xl font-black font-headline tracking-tight text-white flex items-center gap-2">
-                <span>🌟 3종 진단 종합 분석 기반 &apos;나만의 관심 직업&apos; 선택</span>
-              </h2>
-              <p className="text-xs md:text-sm text-white/80 mt-1">
-                흥미무드(RIASEC) · 다중지능 · 학습스타일 3가지 진단 결과를 통합하여 회원님의 잠재력에 90% 이상 일치하는 최적의 직업군을 추출했습니다.
-              </p>
-            </div>
-            <div className="bg-white/10 px-5 py-3 rounded-2xl border border-white/20 text-center md:text-right flex flex-col justify-center shrink-0">
-              <span className="text-[11px] text-white/70 font-semibold">현재 선택된 목표 꿈 좌표</span>
-              <span className="text-lg font-black text-[#7AF1FC] font-headline">{selectedJob}</span>
-            </div>
-          </div>
-
-          <div className="space-y-4 relative z-10">
-            <h3 className="text-sm font-bold text-white/90 flex items-center gap-2">
-              <Target className="w-4 h-4 text-[#7AF1FC]" />
-              <span>아래 맞춤 추천 직업 중 내 관심 직업을 1개 터치하여 목표를 확정하세요!</span>
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {recommendedJobs.map((job) => {
-                const isSelected = selectedJob === job.title;
-                return (
-                  <div
-                    key={job.title}
-                    onClick={() => setSelectedJob(job.title)}
-                    className={`p-5 rounded-[24px] border-2 transition-all cursor-pointer flex flex-col justify-between relative ${
-                      isSelected
-                        ? "bg-gradient-to-tr from-[#7B5CF0]/40 to-[#006970]/50 border-[#7AF1FC] shadow-[0_0_25px_rgba(122,241,252,0.4)] scale-[1.02]"
-                        : "bg-white/5 border-white/10 hover:border-white/40 hover:bg-white/10"
-                    }`}
-                  >
-                    <div>
-                      <div className="flex items-center justify-between gap-2 mb-2">
-                        <span className="text-[11px] font-black px-2.5 py-0.5 rounded-full bg-[#7AF1FC]/20 text-[#7AF1FC] border border-[#7AF1FC]/30">
-                          {job.cluster}
-                        </span>
-                        <span className="text-[10px] font-black text-emerald-300">
-                          ⚡ {job.match}
-                        </span>
-                      </div>
-                      <h4 className="text-base font-black text-white group-hover:text-[#7AF1FC] transition-colors mb-2">
-                        {job.title}
-                      </h4>
-                      <p className="text-xs text-white/75 leading-relaxed">
-                        {job.desc}
-                      </p>
-                    </div>
-
-                    <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between">
-                      <span className="text-[11px] font-extrabold text-white/60">
-                        {isSelected ? "✨ 목표 직업으로 확정됨" : "👆 터치하여 직업 선택"}
-                      </span>
-                      <div className={`w-6 h-6 rounded-full flex items-center justify-center font-black text-xs ${
-                        isSelected ? "bg-[#7AF1FC] text-[#1A1626]" : "bg-white/20 text-white"
-                      }`}>
-                        {isSelected ? "✓" : "+"}
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          <div className="bg-white/10 p-6 rounded-[28px] border border-white/20 flex flex-col sm:flex-row items-center justify-between gap-6 relative z-10">
-            <div className="flex items-center gap-4 text-left">
-              <MascotAri pose="celebrate" size="sm" />
-              <div>
-                <h4 className="font-headline font-black text-base text-white">
-                  &ldquo;축하해요! 3대 진단을 완수하고 &apos;{selectedJob}&apos; 꿈 좌표를 설정했습니다!&rdquo;
-                </h4>
-                <p className="text-xs text-white/80 mt-0.5">
-                  이제 대시보드로 이동하면 선택하신 직업에 최적화된 별자리 로드맵, 맞춤 습관 퀘스트, 포트폴리오 관리가 활성화됩니다.
-                </p>
-              </div>
-            </div>
-            <Button
-              variant="teal"
-              size="lg"
-              onClick={handleFinishOnboarding}
-              className="font-black text-base py-4 px-8 whitespace-nowrap shadow-[0_10px_30px_rgba(0,105,112,0.6)] hover:scale-105 transition-transform"
-              icon={<ArrowRight className="w-5 h-5 ml-1" />}
-            >
-              🚀 선택 완료! 대시보드로 출항하기
-            </Button>
-          </div>
-        </section>
-      )}
 
       {/* Stitch 3D Competency Growth Visualization & Radar Dashboard */}
       <section className="bg-white rounded-[32px] p-8 border border-[#E3E1E9] shadow-[0_20px_45px_rgba(123,92,240,0.08)] space-y-6 animate-fadeIn">
