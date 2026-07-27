@@ -71,6 +71,11 @@ const EXPO_SUPER_ADMIN_SESSION: UserSession = {
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [session, setSession] = useState<UserSession | null>(() => {
+    const activeTab = sessionStorage.getItem("readycareer_active_session");
+    if (!activeTab) {
+      localStorage.removeItem("readycareer_session_v3");
+      return null;
+    }
     const saved = localStorage.getItem("readycareer_session_v3");
     if (saved) {
       try { return JSON.parse(saved); } catch (e) { return null; }
@@ -102,6 +107,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const startExpoDemo = (role: UserRole, customProfile?: Partial<UserSession>) => {
     setIsExpoDemoMode(true);
     localStorage.setItem("readycareer_demo_mode", "true");
+    sessionStorage.setItem("readycareer_active_session", "true");
     
     let targetSession = EXPO_STUDENT_SESSION;
     if (role === "teacher") targetSession = EXPO_TEACHER_SESSION;
@@ -144,6 +150,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const login = async (email: string, _password?: string, overrideRole?: UserRole): Promise<boolean> => {
     setIsExpoDemoMode(false);
     localStorage.setItem("readycareer_demo_mode", "false");
+    sessionStorage.setItem("readycareer_active_session", "true");
 
     if (email.includes("master") || overrideRole === "super_admin") {
       setSession({ ...EXPO_SUPER_ADMIN_SESSION, name: "최종 마스터 (실사용)", isExpoDemo: false });
@@ -179,6 +186,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     setIsExpoDemoMode(false);
     localStorage.setItem("readycareer_demo_mode", "false");
+    sessionStorage.setItem("readycareer_active_session", "true");
 
     const newSession: UserSession = {
       id: `usr-${Date.now()}`,
@@ -202,6 +210,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   const logout = () => {
+    sessionStorage.removeItem("readycareer_active_session");
+    localStorage.removeItem("readycareer_session_v3");
     setSession(null);
   };
 

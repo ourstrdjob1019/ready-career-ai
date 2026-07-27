@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button, Card, MascotAri } from "../components";
+import { Button, MascotAri } from "../components";
 import { Award, ArrowRight, Brain, Plus, CheckCircle2, Sparkles, Compass, BarChart3, Star, ShieldCheck } from "lucide-react";
 import configData from "../data/assessment_config.json";
 import { useSelfUnderstanding } from "../context";
@@ -224,20 +224,7 @@ export const TestResult: React.FC = () => {
       </div>
 
       {/* Interested Jobs Selection Grid - Only visible when ALL 3 diagnostic tests are completed */}
-      {!allTestsDone ? (
-        <Card variant="hero" padding="lg" className="bg-white/95 backdrop-blur-2xl border-2 border-[#5538EE]/40 text-center space-y-6 shadow-[0_15px_45px_rgba(85,56,238,0.12)] rounded-[32px] p-8 md:p-12">
-          <div className="inline-flex items-center gap-2 bg-[#ECE8FF] text-[#4127BE] px-5 py-2 rounded-full font-headline font-black text-sm border border-[#5538EE]/20 shadow-sm">
-            <span>⏳ [진단 1/3 완료] 남은 2개 진단(다중지능, 학습스타일)을 마쳐야 AI 직업 추천 창이 열립니다!</span>
-          </div>
-          <h3 className="text-2xl md:text-3xl font-headline font-black text-[#1A1626] tracking-tight">
-            🎉 1차 실전 6유형 진단 완수! 이제 진단 허브로 복귀하여 남은 검사 2종을 진행해볼까요?
-          </h3>
-          <p className="text-sm md:text-base text-[#3E384D] max-w-2xl mx-auto leading-relaxed font-extrabold">
-            본 ReadyCareer AI 시스템을 100% 활용하기 위해서는 <strong>진단 검사 3종(흥미무드, 다중지능, 학습스타일)</strong>을 모두 순서대로 완수해야 합니다.<br />
-            하단의 <strong>[💾 리포트 생성 및 마이페이지에 저장 후, 남은 진단 마저 하기 (목록 복귀)]</strong> 버튼을 누르면 진단 허브로 복귀하며, 다음 단계가 즉시 오픈됩니다!
-          </p>
-        </Card>
-      ) : (
+      {!allTestsDone ? null : (
         <>
           <section className="space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#E3E1E9] pb-3">

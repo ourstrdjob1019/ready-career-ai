@@ -343,7 +343,7 @@ export const SelfUnderstanding: React.FC = () => {
                     {item.title}
                   </h3>
 
-                  <p className="text-sm font-body-md text-[#2C273D] font-extrabold leading-relaxed bg-[#F5F3FB] p-4.5 rounded-2xl border border-[#D5D1E3]/80 shadow-inner">
+                  <p className="text-sm sm:text-[15px] font-body text-[#322D42] font-extrabold leading-relaxed pt-1">
                     {item.summary}
                   </p>
                 </div>
