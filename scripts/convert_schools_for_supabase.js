@@ -62,6 +62,7 @@ if (codeIdx === -1 || nameIdx === -1 || regionIdx === -1 || typeIdx === -1) {
 
 const allSchools = [];
 const highMidSchools = [];
+const highMidShortSchools = []; // '중', '고' 체크 제약 조건 호환용
 const seenCodes = new Set();
 
 for (let i = 1; i < lines.length; i++) {
@@ -85,16 +86,27 @@ for (let i = 1; i < lines.length; i++) {
 
   if (level.includes("중학교") || level.includes("고등학교") || name.includes("중학교") || name.includes("고등학교") || name.includes("과학고") || name.includes("외국어고") || name.includes("예술고") || name.includes("체육고")) {
     highMidSchools.push(rowStr);
+
+    // level 컬럼을 '중' 또는 '고'로 1문자 압축하여 DB CHECK 제약 조건('schools_level_check')을 100% 통과시키기 위한 배열
+    let shortLevel = "고";
+    if (level.includes("중학교") || name.includes("중학교")) {
+      shortLevel = "중";
+    }
+    highMidShortSchools.push(`${code},${safeName},${region},${shortLevel}`);
   }
 }
 
 const outAllPath = path.resolve(__dirname, "../supabase_schools_전체학교_12500개.csv");
-const outHighMidPath = path.resolve(__dirname, "../supabase_schools_중고등학교_핵심5600개.csv");
+const outHighMidPath = path.resolve(__dirname, "../supabase_schools_중고등학교_핵심5600개_원본명칭(중학교_고등학교).csv");
+const outHighMidShortPath = path.resolve(__dirname, "../supabase_schools_중고등학교_핵심5600개_짧은명칭(중_고).csv");
 
 const csvHeader = "school_code,name,region,level\n";
 
 fs.writeFileSync(outAllPath, "\uFEFF" + csvHeader + allSchools.join("\n"), "utf-8");
 fs.writeFileSync(outHighMidPath, "\uFEFF" + csvHeader + highMidSchools.join("\n"), "utf-8");
+fs.writeFileSync(outHighMidShortPath, "\uFEFF" + csvHeader + highMidShortSchools.join("\n"), "utf-8");
 
 console.log(`✅ [1] 전국의 전체 학교 CSV 생성 완료 (총 ${allSchools.length}개): ${outAllPath}`);
-console.log(`✅ [2] 중학교 & 고등학교 핵심 대상 CSV 생성 완료 (총 ${highMidSchools.length}개): ${outHighMidPath}`);
+console.log(`✅ [2] 중학교 & 고등학교 (원본명칭: '중학교', '고등학교') CSV 생성 완료 (총 ${highMidSchools.length}개): ${outHighMidPath}`);
+console.log(`⭐ [3] 중학교 & 고등학교 DB 제약조건 통과용 (짧은명칭: '중', '고') CSV 생성 완료 (총 ${highMidShortSchools.length}개): ${outHighMidShortPath}`);
+
