@@ -53,12 +53,12 @@ export const TestResult: React.FC = () => {
   const maxScore = Math.max(...Object.values(riasecScores), 30);
 
   const hollandInfo: Record<string, { title: string; subtitle: string; desc: string; color: string; badge: string }> = {
-    R: { title: "R 현실형", subtitle: "Doers · 현장 실천 역량", desc: "도구와 사물, 정교한 시스템을 실용적으로 다루며 즉각적이고 구체적인 성과를 도출해 내는 현장 실전형 역량입니다.", color: "from-blue-500 to-cyan-500", badge: "bg-blue-100/90 text-blue-950 border-blue-400" },
-    I: { title: "I 탐구형", subtitle: "Thinkers · 아이디어 분석 역량", desc: "논리적인 분석, AI 원리 파악 및 복잡한 데이터 이슈를 심도 있게 탐구하여 해답을 찾아내는 전문 학계 역량입니다.", color: "from-purple-500 to-indigo-500", badge: "bg-purple-100/90 text-purple-950 border-purple-400" },
-    A: { title: "A 예술형", subtitle: "Creators · 독창적 크리에이터", desc: "자유로운 상상력과 차별화된 방식으로 미적 직관, 감동적인 스토리텔링, 디자인 콘텐츠를 기획하는 창의 역량입니다.", color: "from-pink-500 to-rose-500", badge: "bg-pink-100/90 text-pink-950 border-pink-400" },
-    S: { title: "S 사회형", subtitle: "Helpers · 따뜻한 소통 리더십", desc: "사람들과 친밀하게 소통하고 봉사와 교육, 멘토링을 통해 구성원 모두의 동반 성장을 헌신적으로 이끄는 사회 역량입니다.", color: "from-amber-500 to-yellow-500", badge: "bg-amber-100/90 text-amber-950 border-amber-400" },
-    E: { title: "E 진취형", subtitle: "Persuaders · 비전 주도 챔피언", desc: "조직의 명확한 목표를 제시하고 열정적인 설득과 주도력을 발휘하여 프로젝트의 기회를 창출해 내는 도전 역량입니다.", color: "from-emerald-500 to-teal-500", badge: "bg-emerald-100/90 text-emerald-950 border-emerald-400" },
-    C: { title: "C 관습형", subtitle: "Organizers · 완벽한 체계 관리자", desc: "정확한 데이터 검증과 체계적인 질서 유지, 매뉴얼 준수와 책임감으로 조직의 깊은 신뢰를 유지하는 관리 역량입니다.", color: "from-sky-500 to-blue-600", badge: "bg-sky-100/90 text-sky-950 border-sky-400" },
+    R: { title: "R 현실형", subtitle: "Doers · 현장 실천 역량", desc: "도구와 사물, 정교한 시스템을 실용적으로 다루며 즉각적이고 구체적인 성과를 도출해 내는 현장 실전형 역량입니다.", color: "from-blue-600 to-cyan-500", badge: "bg-[#EBF3FF] text-[#0C3D91] border-[#81AEF9]" },
+    I: { title: "I 탐구형", subtitle: "Thinkers · 아이디어 분석 역량", desc: "논리적인 분석, AI 원리 파악 및 복잡한 데이터 이슈를 심도 있게 탐구하여 해답을 찾아내는 전문 학문 역량입니다.", color: "from-purple-600 to-indigo-500", badge: "bg-[#F0ECFF] text-[#3E1A9E] border-[#A991EE]" },
+    A: { title: "A 예술형", subtitle: "Creators · 독창적 크리에이터", desc: "자유로운 상상력과 차별화된 방식으로 미적 직관, 감동적인 스토리텔링, 디자인 콘텐츠를 기획하는 창의 역량입니다.", color: "from-pink-600 to-rose-500", badge: "bg-[#FFEAF1] text-[#8E103E] border-[#F88BB4]" },
+    S: { title: "S 사회형", subtitle: "Helpers · 따뜻한 소통 리더십", desc: "사람들과 친밀하게 소통하고 봉사와 교육, 멘토링을 통해 구성원 모두의 동반 성장을 헌신적으로 이끄는 사회 역량입니다.", color: "from-amber-500 to-orange-500", badge: "bg-[#FFF6E5] text-[#8C5A00] border-[#FFCA6A]" },
+    E: { title: "E 진취형", subtitle: "Persuaders · 비전 주도 챔피언", desc: "조직의 명확한 목표를 제시하고 열정적인 설득과 주도력을 발휘하여 프로젝트의 기회를 창출해 내는 도전 역량입니다.", color: "from-emerald-600 to-teal-500", badge: "bg-[#E8FCF1] text-[#0A6032] border-[#75DDA4]" },
+    C: { title: "C 관습형", subtitle: "Organizers · 완벽한 체계 관리자", desc: "정확한 데이터 검증과 체계적인 질서 유지, 매뉴얼 준수와 책임감으로 조직의 깊은 신뢰를 유지하는 관리 역량입니다.", color: "from-sky-600 to-blue-600", badge: "bg-[#E8F6FF] text-[#0D5482] border-[#70BFEF]" },
   };
 
   const handleAddCustomJob = (e: React.FormEvent) => {
@@ -139,8 +139,8 @@ export const TestResult: React.FC = () => {
           </span>
         </div>
 
-        {/* Bento Grid layout */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {/* Bento Grid layout - 100% 가공 없는 정교한 간격 및 시인성 최적화 */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {Object.keys(hollandInfo).map((typeKey) => {
             const info = hollandInfo[typeKey];
             const scoreVal = riasecScores[typeKey] || 15;
@@ -151,42 +151,46 @@ export const TestResult: React.FC = () => {
             return (
               <div
                 key={typeKey}
-                className={`relative rounded-[28px] p-6.5 bg-white/90 backdrop-blur-2xl border-2 shadow-[0_10px_30px_rgba(0,0,0,0.06)] transition-all duration-300 transform hover:-translate-y-1 flex flex-col justify-between ${
+                className={`rounded-[30px] p-7 sm:p-8 transition-all duration-300 transform hover:-translate-y-1.5 flex flex-col justify-between min-h-[290px] border-2 shadow-lg ${
                   isTopType
-                    ? "border-[#5538EE] bg-gradient-to-br from-purple-50/90 to-white shadow-[0_14px_35px_rgba(85,56,238,0.15)] ring-1 ring-[#5538EE]/40"
-                    : "border-[#E3E1E9] hover:border-[#5538EE]/40"
+                    ? "border-[#6240D5] bg-gradient-to-b from-[#F5EEFF] via-white to-white shadow-[0_15px_35px_rgba(98,64,213,0.18)] ring-2 ring-[#6240D5]/25"
+                    : "border-[#D4CFE5] bg-white hover:border-[#6240D5]/60 hover:shadow-xl"
                 }`}
               >
-                {isTopType && (
-                  <div className="absolute top-4 right-4 bg-[#5538EE] text-white text-[11px] font-black px-3 py-1 rounded-full shadow-sm flex items-center gap-1">
-                    <Star className="w-3.5 h-3.5 fill-current text-yellow-300" />
-                    <span>{isFirstType ? "Top 1 최우수 강점" : "Top 2 융합 강점"}</span>
-                  </div>
-                )}
-
                 <div className="space-y-4">
-                  <span className={`inline-block text-xs font-black px-3 py-1 rounded-xl border ${info.badge}`}>
-                    {info.title}
-                  </span>
-                  <div>
-                    <h3 className="text-lg font-headline font-black text-[#1A1626] mb-1">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <span className={`inline-flex items-center px-3.5 py-1.5 rounded-full text-xs font-headline font-black border shadow-sm ${info.badge}`}>
+                      {info.title}
+                    </span>
+                    {isTopType && (
+                      <span className="inline-flex items-center gap-1 bg-[#6240D5] text-white text-[11px] font-black px-3 py-1 rounded-full shadow-md border border-[#8C6CEE]">
+                        <Star className="w-3.5 h-3.5 fill-current text-yellow-300 flex-shrink-0" />
+                        <span>{isFirstType ? "Top 1 최우수 강점" : "Top 2 융합 강점"}</span>
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="pt-1">
+                    <h3 className="text-xl font-headline font-black text-[#1A1626] mb-2.5 leading-snug">
                       {info.subtitle}
                     </h3>
-                    <p className="text-xs text-[#3E384D] font-bold leading-relaxed">
+                    <p className="text-sm text-[#2D283E] font-extrabold leading-relaxed">
                       {info.desc}
                     </p>
                   </div>
                 </div>
 
-                <div className="pt-5 mt-4 border-t border-[#E8E6F0] space-y-2">
-                  <div className="flex justify-between items-center text-xs">
-                    <span className="font-extrabold text-[#4A435A]">역량 발도 지표</span>
-                    <span className="font-black text-[#1A1626] text-sm">{scoreVal}점 ({percentage}%)</span>
+                <div className="pt-5 mt-6 border-t-2 border-[#E5E2F0] space-y-2.5">
+                  <div className="flex justify-between items-center text-xs sm:text-sm">
+                    <span className="font-black text-[#383348] flex items-center gap-1">
+                      <span>💡 역량 발현 지표</span>
+                    </span>
+                    <span className="font-black text-[#6240D5] text-sm sm:text-base">{scoreVal}점 ({percentage}%)</span>
                   </div>
-                  <div className="h-2.5 w-full bg-slate-200/80 rounded-full overflow-hidden p-0.5 shadow-inner">
+                  <div className="h-3 w-full bg-[#E4E1EF] rounded-full overflow-hidden p-0.5 shadow-inner border border-[#C5BFD9]/40">
                     <div
-                      className={`h-full bg-gradient-to-r ${info.color} rounded-full transition-all duration-700`}
-                      style={{ width: `${percentage}%` }}
+                      className={`h-full bg-gradient-to-r ${info.color} rounded-full transition-all duration-700 shadow-sm`}
+                      style={{ width: `${Math.max(8, percentage)}%` }}
                     />
                   </div>
                 </div>

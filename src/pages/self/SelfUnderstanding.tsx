@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Button, Card, Chip, ProgressBar, MascotAri } from "../../components";
+import { Button, Card, ProgressBar, MascotAri } from "../../components";
 import { useSelfUnderstanding, useAuth } from "../../context";
 import { Sparkles, Brain, CheckCircle2, ArrowRight, ShieldCheck, Zap, Award, Target, Loader2 } from "lucide-react";
 
@@ -272,19 +272,19 @@ export const SelfUnderstanding: React.FC = () => {
       </Card>
 
       {/* Onboarding Guide Banner */}
-      <div className="bg-gradient-to-r from-secondary-container/30 via-primary-container/20 to-surface-container p-4 md:p-6 rounded-[28px] border-2 border-secondary/40 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm animate-pulse">
+      <div className="bg-[#EEF2FF] p-5 md:p-7 rounded-[28px] border-2 border-[#5538EE]/40 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-md">
         <div className="flex items-center gap-3 text-left">
           <span className="text-3xl">📢</span>
           <div>
-            <h3 className="font-headline font-black text-sm md:text-base text-text-primary">
+            <h3 className="font-headline font-black text-base text-[#1A1626]">
               신규 온보딩 필수 과제: 3대 진단 검사 및 정밀 리포트 획득을 완료해 주세요!
             </h3>
-            <p className="text-xs text-text-muted mt-0.5">
+            <p className="text-xs sm:text-sm text-[#3E384D] font-bold mt-1 leading-relaxed">
               흥미무드(RIASEC) · 다중지능(16문항) · 학습스타일(16문항) 3가지 네모박스 검사를 모두 마쳐야 종합 추천 직업 6선 및 AI 로드맵·습관 설계 스튜디오가 단독으로 열립니다.
             </p>
           </div>
         </div>
-        <span className="bg-primary text-white font-extrabold text-xs px-4 py-2 rounded-full whitespace-nowrap shadow-md">
+        <span className="bg-[#6240d5] text-white font-extrabold text-xs sm:text-sm px-5 py-2 rounded-full whitespace-nowrap shadow-md border border-purple-300">
           현재 {completedCount}/3 완료 ({3 - completedCount}개 남음)
         </span>
       </div>
@@ -293,12 +293,12 @@ export const SelfUnderstanding: React.FC = () => {
       <section className="flex flex-col gap-5">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
-            <h2 className="text-headline-md font-headline font-extrabold text-text-primary flex items-center gap-2">
+            <h2 className="text-2xl font-headline font-extrabold text-[#1A1626] flex items-center gap-2">
               <span>🔬 3대 핵심 자기이해 AI 진단 시리즈</span>
             </h2>
-            <p className="text-xs text-text-muted mt-0.5">각 네모박스를 클릭하여 16개 문항을 직접 이수하고 심층 리포트를 확인하세요.</p>
+            <p className="text-xs sm:text-sm font-bold text-[#4A435A] mt-0.5">각 네모박스를 클릭하여 16개 문항을 직접 이수하고 심층 리포트를 확인하세요.</p>
           </div>
-          <Button variant="outline" size="sm" onClick={generateComprehensiveReport} icon={<Zap className="w-4 h-4" />}>
+          <Button variant="outline" size="sm" onClick={generateComprehensiveReport} icon={<Zap className="w-4 h-4" />} className="font-bold">
             모든 결과 리서치 AI 즉시 동기화
           </Button>
         </div>
@@ -314,42 +314,42 @@ export const SelfUnderstanding: React.FC = () => {
                 padding="md"
                 hoverEffect
                 onClick={() => handleQuickTakeTest(item.id)}
-                className={`flex flex-col justify-between border-2 transition-all group min-h-[300px] cursor-pointer ${
+                className={`flex flex-col justify-between border-2 transition-all group min-h-[320px] cursor-pointer rounded-[30px] p-7 ${
                   isCompleted
-                    ? "border-primary/40 bg-white shadow-3d-ambient"
-                    : "border-surface-variant/40 bg-surface-container-low/70 hover:border-secondary/60"
+                    ? "border-[#6240d5] bg-white shadow-xl ring-2 ring-[#6240d5]/20"
+                    : "border-[#C7C3D8] bg-white hover:border-[#6240d5]/60 shadow-md"
                 }`}
               >
-                <div className="flex flex-col gap-3">
-                  <div className="flex justify-between items-center">
-                    <span className={`text-xs font-headline font-bold px-3 py-1 rounded-full whitespace-nowrap ${
-                      item.category === "흥미무드" ? "bg-primary/10 text-primary" : item.category === "다중지능" ? "bg-secondary/15 text-secondary-spot" : "bg-surface-container text-text-primary"
+                <div className="flex flex-col gap-4">
+                  <div className="flex justify-between items-center gap-2">
+                    <span className={`text-xs font-headline font-black px-3.5 py-1 rounded-full whitespace-nowrap shadow-sm ${
+                      item.category === "흥미무드" ? "bg-[#EBF3FF] text-[#0C3D91] border border-[#A1BFF3]" : item.category === "다중지능" ? "bg-[#F0ECFF] text-[#3E1A9E] border border-[#B099F2]" : "bg-[#E8FCF1] text-[#0A6032] border border-[#83DCAB]"
                     }`}>
                       #{item.category}
                     </span>
 
                     {isCompleted ? (
-                      <Chip variant="teal" size="sm" active className="pointer-events-none whitespace-nowrap">
-                        <CheckCircle2 className="w-3.5 h-3.5 mr-1 inline" /> 완료됨 ({item.score}점)
-                      </Chip>
+                      <span className="inline-flex items-center gap-1 bg-[#10B981] text-white font-black text-xs px-3 py-1 rounded-full shadow-sm">
+                        <CheckCircle2 className="w-3.5 h-3.5" /> 완료됨 ({item.score}점)
+                      </span>
                     ) : (
-                      <Chip variant="default" size="sm" className="pointer-events-none whitespace-nowrap">
+                      <span className="inline-flex items-center bg-[#E6E4EE] text-[#4A435A] font-extrabold text-xs px-3 py-1 rounded-full border border-[#CAC5DA]">
                         도전 기다리는 중
-                      </Chip>
+                      </span>
                     )}
                   </div>
 
-                  <h3 className="font-headline font-extrabold text-title-md text-text-primary group-hover:text-primary transition-colors leading-snug mt-1">
+                  <h3 className="font-headline font-black text-xl text-[#1A1626] group-hover:text-[#6240d5] transition-colors leading-snug mt-1">
                     {item.title}
                   </h3>
 
-                  <p className="text-sm font-body-md text-text-muted leading-relaxed bg-surface-container/50 p-3 rounded-2xl border border-surface-variant/30">
+                  <p className="text-sm font-body-md text-[#2C273D] font-extrabold leading-relaxed bg-[#F5F3FB] p-4.5 rounded-2xl border border-[#D5D1E3]/80 shadow-inner">
                     {item.summary}
                   </p>
                 </div>
 
-                <div className="pt-4 mt-4 border-t border-surface-variant/30 flex items-center justify-between">
-                  <span className="text-xs font-bold text-text-muted whitespace-nowrap">
+                <div className="pt-4 mt-6 border-t-2 border-[#E3DFEE] flex items-center justify-between gap-2">
+                  <span className="text-xs font-black text-[#4A435A] whitespace-nowrap">
                     {isCompleted ? `● 검사일: ${item.completedAt}` : "● 필수 16문항 직접 검사"}
                   </span>
                   <Button
