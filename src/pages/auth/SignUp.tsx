@@ -1,16 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, Card } from "../../components";
 import { useAuth } from "../../context";
 import type { UserRole } from "../../context";
-import { UserPlus, School, KeyRound, AlertCircle, CheckCircle2 } from "lucide-react";
-import configData from "../../data/assessment_config.json";
+import { UserPlus, School, KeyRound, AlertCircle, CheckCircle2, Loader2 } from "lucide-react";
+import { supabase } from "../../lib/supabase";
+
+interface SchoolItem {
+  school_code?: string;
+  name: string;
+  region?: string;
+  level?: string;
+}
 
 export const SignUp: React.FC = () => {
   const [role, setRole] = useState<UserRole>("student");
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
-  const [selectedSchoolCode, setSelectedSchoolCode] = useState("SEOUL-701");
+  
+  // Supabase 실시간 학교 검색 상태
+  const [schoolInput, setSchoolInput] = useState("");
+  const [searchResults, setSearchResults] = useState<SchoolItem[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const [isSchoolConfirmed, setIsSchoolConfirmed] = useState(false);
+  const [confirmedSchoolCode, setConfirmedSchoolCode] = useState("SEOUL-701");
+  const [confirmedSchoolName, setConfirmedSchoolName] = useState("서울창의고등학교");
+
   const [inviteCode, setInviteCode] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
@@ -18,8 +33,53 @@ export const SignUp: React.FC = () => {
   const { register, signupOpen } = useAuth();
   const navigate = useNavigate();
 
-  const schoolList = configData.school_master_data || [];
-  const activeSchool = schoolList.find((s) => s.code === selectedSchoolCode) || schoolList[0];
+  // Supabase 학교 검색 효과
+  useEffect(() => {
+    if (!schoolInput.trim() || isSchoolConfirmed) {
+      setSearchResults([]);
+      setIsSearching(false);
+      return;
+    }
+
+    setIsSearching(true);
+    const timer = setTimeout(async () => {
+      try {
+        const { data, error } = await supabase
+          .from("schools")
+          .select("school_code, name, region, level")
+          .ilike("name", `%${schoolInput.trim()}%`)
+          .limit(15);
+
+        if (!error && data) {
+          setSearchResults(data);
+        } else {
+          setSearchResults([]);
+        }
+      } catch (e) {
+        console.error(e);
+        setSearchResults([]);
+      } finally {
+        setIsSearching(false);
+      }
+    }, 200);
+
+    return () => clearTimeout(timer);
+  }, [schoolInput, isSchoolConfirmed]);
+
+  const handleSelectSchool = (item: SchoolItem) => {
+    setSchoolInput(item.name);
+    setIsSchoolConfirmed(true);
+    setConfirmedSchoolCode(item.school_code || "OFFICIAL-CODE");
+    setConfirmedSchoolName(item.name);
+    setSearchResults([]);
+    setErrorMsg("");
+  };
+
+  const handleSchoolInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSchoolInput(e.target.value);
+    setIsSchoolConfirmed(false);
+    setErrorMsg("");
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,14 +91,27 @@ export const SignUp: React.FC = () => {
       return;
     }
 
+    if (!isSchoolConfirmed || !schoolInput.trim()) {
+      setErrorMsg("❌ 학교는 임의로 작성할 수 없습니다. 검색된 Supabase 공식 학교 명단 중 정확한 학교를 터치하여 선택해 주세요.");
+      return;
+    }
+
     if (!inviteCode.trim()) {
       setErrorMsg("슈퍼관리자 또는 담임 선생님으로부터 받은 B2B 초대코드를 입력해야 합니다.");
       return;
     }
 
-    const res = await register(name, email, role, activeSchool?.name || "서울창의고등학교", selectedSchoolCode, inviteCode);
+    const res = await register(name, email, role, confirmedSchoolName, confirmedSchoolCode, inviteCode);
     if (res.success) {
       setSuccessMsg("🎉 학교 마스터코드 승인 및 회원가입이 100% 성공했습니다!");
+      
+      // 신규 가입 학생 초기화 (0점 출발)
+      localStorage.setItem("readycareer_student_name", name.trim());
+      localStorage.setItem("readycareer_student_school", confirmedSchoolName);
+      localStorage.removeItem("my_star_roadmap");
+      localStorage.removeItem("my_habits_v2");
+      localStorage.removeItem("readycareer_student_activities_v1");
+
       setTimeout(() => {
         navigate(role === "teacher" ? "/teacher" : "/");
       }, 1000);
@@ -60,7 +133,7 @@ export const SignUp: React.FC = () => {
             학교 승인코드 신규가입
           </h1>
           <p className="text-xs text-text-muted font-body-md">
-            표준학교코드 마스터 목록에서 학교를 선택하고 발급된 <strong>초대코드</strong>를 입력해 가입하세요. (자유입력 방지)
+            Supabase 공식 학교 명단에서 학교를 자동 검색하여 터치 선택하고 발급된 <strong>초대코드</strong>를 입력하세요. (자유입력 차단)
           </p>
         </div>
 
@@ -79,7 +152,7 @@ export const SignUp: React.FC = () => {
             </Link>
           </Card>
         ) : (
-          <Card variant="surface" padding="lg" className="border border-surface-variant/50 shadow-3d-base">
+          <Card variant="surface" padding="lg" className="border border-surface-variant/50 shadow-3d-base relative overflow-visible">
             <form onSubmit={handleSubmit} className="space-y-5">
 
               {/* Role Selection */}
@@ -110,24 +183,88 @@ export const SignUp: React.FC = () => {
                 </div>
               </div>
 
-              {/* Standard School Code Selection (NO FREE INPUT per §5.1) */}
-              <div className="space-y-1.5">
+              {/* Realtime Supabase School Code Selection (NO FREE INPUT per §5.1) */}
+              <div className="space-y-2 relative">
                 <label className="text-xs font-headline font-bold text-text-primary flex items-center justify-between">
-                  <span className="flex items-center gap-1.5"><School className="w-3.5 h-3.5 text-primary" /> 소속 학교 선택 (표준학교코드)</span>
-                  <span className="text-[10px] text-error font-black">자유입력 금지 규정 적용</span>
+                  <span className="flex items-center gap-1.5"><School className="w-3.5 h-3.5 text-primary" /> 소속 학교 검색 및 필수 선택</span>
+                  {isSchoolConfirmed ? (
+                    <span className="inline-flex items-center gap-1 text-[10px] text-teal-700 font-extrabold bg-teal-50 px-2 py-0.5 rounded-md border border-teal-200">
+                      <CheckCircle2 className="w-3 h-3" />
+                      <span>공식 명단 연계 완료</span>
+                    </span>
+                  ) : (
+                    <span className="text-[10px] text-error font-black">자유입력 금지 (명단 클릭 필수)</span>
+                  )}
                 </label>
-                <select
-                  value={selectedSchoolCode}
-                  onChange={(e) => setSelectedSchoolCode(e.target.value)}
-                  className="w-full px-4 py-2.5 bg-surface-container-lowest border border-surface-variant/60 rounded-2xl text-sm text-text-primary font-body-md focus:outline-none focus:ring-2 focus:ring-primary font-bold shadow-inner"
-                >
-                  {schoolList.map((s) => (
-                    <option key={s.code} value={s.code}>
-                      [{s.code}] {s.name} ({s.region})
-                    </option>
-                  ))}
-                </select>
-                <p className="text-[11px] text-text-muted">💡 나이스(NEIS) 교육정보 개방포털 기반 승인 학교만 선택 가능합니다.</p>
+
+                <div className="relative">
+                  <input
+                    type="text"
+                    placeholder="예: 구로 (학교명을 2자 이상 입력해 주세요)"
+                    value={schoolInput}
+                    onChange={handleSchoolInputChange}
+                    className={`w-full px-4 py-3 rounded-2xl border-2 text-sm font-bold placeholder:font-normal focus:outline-none transition-all pl-11 ${
+                      isSchoolConfirmed
+                        ? "bg-teal-50/60 border-teal-500 text-teal-950 shadow-inner"
+                        : "bg-surface-container-lowest border-surface-variant focus:border-primary focus:bg-white focus:shadow-md text-text-primary"
+                    }`}
+                  />
+                  <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-text-muted">
+                    {isSearching ? (
+                      <Loader2 className="w-5 h-5 animate-spin text-primary" />
+                    ) : (
+                      <School className={`w-5 h-5 ${isSchoolConfirmed ? "text-teal-600" : "text-primary"}`} />
+                    )}
+                  </div>
+                </div>
+
+                {!isSchoolConfirmed && schoolInput.trim().length > 0 && (
+                  <div className="absolute top-16 left-0 right-0 z-50 bg-white rounded-2xl border-2 border-primary/50 shadow-[0_10px_30px_rgba(0,0,0,0.18)] max-h-56 overflow-y-auto overflow-x-hidden divide-y divide-slate-100 animate-fadeIn">
+                    {isSearching ? (
+                      <div className="p-3 text-center text-xs font-bold text-primary flex items-center justify-center gap-2">
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        <span>Supabase DB 실시간 검색 중...</span>
+                      </div>
+                    ) : searchResults.length > 0 ? (
+                      <div className="p-1">
+                        <div className="px-3 py-1 bg-slate-100 text-[10px] font-black text-slate-600 rounded-md m-1">
+                          👇 하단 학교 리스트에서 우리 학교를 클릭하세요!
+                        </div>
+                        {searchResults.map((item, index) => (
+                          <button
+                            key={item.school_code || index}
+                            type="button"
+                            onClick={() => handleSelectSchool(item)}
+                            className="w-full text-left p-2.5 hover:bg-teal-50/80 active:bg-teal-100 transition-colors flex items-center justify-between group rounded-xl my-0.5"
+                          >
+                            <div className="flex items-center gap-2">
+                              <span className="w-7 h-7 rounded-lg bg-teal-100 text-teal-800 flex items-center justify-center font-black text-[11px] group-hover:bg-teal-600 group-hover:text-white transition-colors">
+                                {item.level ? item.level : "🏫"}
+                              </span>
+                              <div>
+                                <div className="font-extrabold text-xs text-slate-800 group-hover:text-teal-900 transition-colors">
+                                  {item.name}
+                                </div>
+                                <div className="text-[10px] font-semibold text-slate-500">
+                                  {item.region || "전국 공식 학교"} {item.school_code ? `(#${item.school_code})` : ""}
+                                </div>
+                              </div>
+                            </div>
+                            <span className="text-[11px] font-bold text-teal-700 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap bg-teal-100 px-2 py-0.5 rounded">
+                              선택 ✔
+                            </span>
+                          </button>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="p-3 text-center text-xs text-red-600 font-extrabold">
+                        "{schoolInput}"에 해당하는 학교를 찾을 수 없습니다.<br />
+                        <span className="text-[10px] text-slate-500 font-normal">공식 학교명을 끝까지(예: OO고등학교) 입력해 보세요.</span>
+                      </div>
+                    )}
+                  </div>
+                )}
+                <p className="text-[11px] text-text-muted">💡 나이스(NEIS) 교육정보 및 Supabase DB에 등록된 정식 학교만 연동 가능합니다.</p>
               </div>
 
               {/* Name & Email */}
