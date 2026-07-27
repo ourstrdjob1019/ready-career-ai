@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, Card } from "../../components";
-import { useAuth, useSelfUnderstanding } from "../../context";
+import { useAuth } from "../../context";
 import type { UserRole } from "../../context";
 import { UserPlus, School, KeyRound, AlertCircle, CheckCircle2 } from "lucide-react";
 import configData from "../../data/assessment_config.json";
@@ -16,7 +16,6 @@ export const SignUp: React.FC = () => {
   const [successMsg, setSuccessMsg] = useState("");
 
   const { register, signupOpen } = useAuth();
-  const { resetAssessments } = useSelfUnderstanding();
   const navigate = useNavigate();
 
   const schoolList = configData.school_master_data || [];
@@ -40,18 +39,8 @@ export const SignUp: React.FC = () => {
     const res = await register(name, email, role, activeSchool?.name || "서울창의고등학교", selectedSchoolCode, inviteCode);
     if (res.success) {
       setSuccessMsg("🎉 학교 마스터코드 승인 및 회원가입이 100% 성공했습니다!");
-      if (role === "student") {
-        localStorage.setItem("is_new_student_clean_state", "true");
-        localStorage.removeItem("readycareer_assessment_state");
-        localStorage.removeItem("readycareer_assessments_real_v1");
-        localStorage.removeItem("readycareer_self_report_real_v1");
-        localStorage.removeItem("readycareer_student_activities_v1");
-        localStorage.removeItem("readycareer_vision_v1");
-        localStorage.removeItem("readycareer_selected_job");
-        resetAssessments();
-      }
       setTimeout(() => {
-        navigate(role === "teacher" ? "/teacher" : "/onboarding-info");
+        navigate(role === "teacher" ? "/teacher" : "/");
       }, 1000);
     } else {
       setErrorMsg(res.message || "회원가입에 실패했습니다.");
@@ -61,7 +50,7 @@ export const SignUp: React.FC = () => {
   return (
     <div className="min-h-[85vh] flex items-center justify-center px-4 py-10 bg-surface">
       <div className="max-w-md w-full space-y-6">
-        
+
         {/* Title */}
         <div className="text-center space-y-2">
           <Link to="/start" className="text-xs font-bold text-text-muted hover:text-primary transition-colors block">
@@ -92,7 +81,7 @@ export const SignUp: React.FC = () => {
         ) : (
           <Card variant="surface" padding="lg" className="border border-surface-variant/50 shadow-3d-base">
             <form onSubmit={handleSubmit} className="space-y-5">
-              
+
               {/* Role Selection */}
               <div className="space-y-2">
                 <span className="text-xs font-headline font-bold text-text-muted block">가입 계정 역할 선택</span>
@@ -100,11 +89,10 @@ export const SignUp: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setRole("student")}
-                    className={`p-3 rounded-2xl font-headline font-extrabold text-xs flex items-center justify-center gap-2 border transition-all ${
-                      role === "student"
+                    className={`p-3 rounded-2xl font-headline font-extrabold text-xs flex items-center justify-center gap-2 border transition-all ${role === "student"
                         ? "bg-primary text-on-primary border-primary shadow-sm"
                         : "bg-surface-container-low text-text-muted border-surface-variant/40 hover:bg-surface-container"
-                    }`}
+                      }`}
                   >
                     <span>🧑‍🎓 학생 계정</span>
                   </button>
@@ -112,11 +100,10 @@ export const SignUp: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setRole("teacher")}
-                    className={`p-3 rounded-2xl font-headline font-extrabold text-xs flex items-center justify-center gap-2 border transition-all ${
-                      role === "teacher"
+                    className={`p-3 rounded-2xl font-headline font-extrabold text-xs flex items-center justify-center gap-2 border transition-all ${role === "teacher"
                         ? "bg-secondary text-white border-secondary shadow-sm"
                         : "bg-surface-container-low text-text-muted border-surface-variant/40 hover:bg-surface-container"
-                    }`}
+                      }`}
                   >
                     <span>👨‍🏫 학교관리자(교직원)</span>
                   </button>
