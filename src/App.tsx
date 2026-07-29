@@ -23,6 +23,7 @@ import {
   IntelligenceTest,
   LearningStyleTest,
   MyPage,
+  OnboardingTestFlow,
 } from "./pages";
 import { AuthProvider, SelfUnderstandingProvider, useAuth } from "./context";
 import "./App.css";
@@ -91,6 +92,7 @@ const AppContent: React.FC = () => {
           <Route path="/self-report" element={<PrivateRoute><SelfReport /></PrivateRoute>} />
 
           {/* Onboarding & Assessments */}
+          <Route path="/onboarding-test" element={<PrivateRoute><OnboardingTestFlow /></PrivateRoute>} />
           <Route path="/onboarding-code" element={<PrivateRoute><OnboardingCode /></PrivateRoute>} />
           <Route path="/onboarding-info" element={<PrivateRoute><OnboardingInfo /></PrivateRoute>} />
           <Route path="/interest-test" element={<PrivateRoute><InterestTest /></PrivateRoute>} />

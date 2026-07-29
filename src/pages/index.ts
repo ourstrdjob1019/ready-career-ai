@@ -11,3 +11,4 @@ export * from "./TeacherGuide";
 export * from "./auth";
 export * from "./self";
 export * from "./MyPage";
+export * from "./OnboardingTestFlow";
