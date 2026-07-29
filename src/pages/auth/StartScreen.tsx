@@ -3,12 +3,9 @@ import { useNavigate, Link } from "react-router-dom";
 import { useAuth, useSelfUnderstanding } from "../../context";
 import type { UserRole } from "../../context";
 import { JOB_VENGERS_LIST } from "../../assets/mascotData";
-import { MascotAri } from "../../components/MascotAri";
 import {
   Sparkles,
   CheckCircle2,
-  BookOpen,
-  Award,
   ChevronDown,
   ChevronUp,
   Play,
