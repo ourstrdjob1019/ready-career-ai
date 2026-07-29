@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context";
-import { JOB_VENGERS_LIST, JobVengerItem, ARI_BLOB_URL, ARI_BLOB_NEW_URL } from "../assets/mascotData";
-import { Sparkles, ArrowRight, ArrowLeft, CheckCircle2, RotateCcw, Award, Star, TrendingUp } from "lucide-react";
+import { JOB_VENGERS_LIST, type JobVengerItem, ARI_BLOB_URL, ARI_BLOB_NEW_URL } from "../assets/mascotData";
+import { Sparkles, ArrowRight, ArrowLeft, CheckCircle2, RotateCcw, Award, Star } from "lucide-react";
 
 interface DiagnosticQuestion {
   id: number;
