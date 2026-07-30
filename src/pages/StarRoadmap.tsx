@@ -5,15 +5,10 @@ import { ARI_BLOB_URL } from "../assets/mascotData";
 import {
   Sparkles,
   CheckCircle2,
-  Plus,
   BookOpen,
-  Award,
-  RefreshCw,
   FolderCheck,
   Brain,
-  HelpCircle,
-  X,
-  FileText
+  X
 } from "lucide-react";
 
 interface CornellNote {
@@ -127,7 +122,7 @@ export const StarRoadmap: React.FC = () => {
       keywords: keywordsInput.trim() || "융합 사고, 교과 심화",
       mySummary: summaryInput.trim(),
       aiSummary: aiGeneratedSummary,
-      date: new Date().toISOString().slice(0, 10).replace/-/g,
+      date: new Date().toISOString().slice(0, 10).replace(/-/g, "."),
     };
 
     const updated = [newNote, ...notes];
