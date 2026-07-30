@@ -21,7 +21,7 @@ import {
 } from "lucide-react";
 
 export const HomeDashboard: React.FC = () => {
-  const { session } = useAuth();
+  const { session, startExpoDemo } = useAuth();
 
   const [visionStatement, setVisionStatement] = useState<string>(() => {
     return localStorage.getItem("readycareer_vision_v1") || "AI 역량과 따뜻한 공감 능력으로 미래 산업을 혁신하는 차세대 마스터가 되겠습니다!";
@@ -119,6 +119,31 @@ export const HomeDashboard: React.FC = () => {
       localStorage.setItem("readycareer_roadmap_generated", "true");
       setIsGeneratingAnim(false);
     }, 600);
+  };
+
+  // 🎯 관심 직업 클릭 시 전체 시스템(진로포트폴리오/학습포트폴리오/보고서) 테마 완벽 동기화 핸들러
+  const handleSelectJob = (idx: number) => {
+    setSelectedJobIdx(idx);
+    const selected = interestedJobs[idx];
+    if (selected) {
+      localStorage.setItem("readycareer_target_job_name", selected.name);
+      localStorage.setItem("readycareer_selected_job", JSON.stringify({
+        title: selected.name,
+        category: selected.category || "선택 직무",
+        imageUrl: selected.imageUrl || ARI_BLOB_URL,
+        bgGradient: "from-[#F3EAFE] to-[#E3FBF5]",
+        badgeColor: "bg-[#7B5CF0] text-white"
+      }));
+      if (selected.imageUrl) {
+        localStorage.setItem("readycareer_custom_avatar_url", selected.imageUrl);
+      }
+      if (session) {
+        startExpoDemo(session.role, {
+          ...session,
+          targetJob: selected.name,
+        });
+      }
+    }
   };
 
   const currentJob = interestedJobs[selectedJobIdx] || { name: "AI 융합 개척자", image: "🤖", category: "탐색 중", imageUrl: ARI_BLOB_URL };
@@ -378,18 +403,18 @@ export const HomeDashboard: React.FC = () => {
                     </div>
                     <div>
                       <span className="text-[11px] font-black bg-purple-100 text-[#7B5CF0] px-2.5 py-0.5 rounded-md block w-fit mb-1.5">
-                        STEP 1. 진로 경로
+                        STEP 1. 심화 지식
                       </span>
                       <h4 className="text-xl font-headline font-black text-[#1A1626] group-hover:text-[#7B5CF0] transition-colors">
-                        ⭐ 나의활동 별자리 로드맵
+                        📘 AI 학습포트폴리오 (코넬노트)
                       </h4>
                       <p className="text-xs text-[#5B556D] mt-2 font-bold leading-relaxed bg-[#F9F7FF] p-3 rounded-2xl border border-purple-50">
-                        희망 학과 및 직업 진입을 위한 단계별 교과·경험 별자리 좌표 탐색
+                        과목별 핵심 요약 작성 시 AI가 스마트 정리 및 셀프 퀴즈 생성 누적!
                       </p>
                     </div>
                   </div>
                   <div className="mt-4 pt-3 border-t border-purple-100 flex items-center justify-between text-xs font-black text-[#7B5CF0]">
-                    <span>별자리 지도 접속 &rarr;</span>
+                    <span>학습 노트 보관함 접속 &rarr;</span>
                     <Play className="w-4 h-4 fill-current" />
                   </div>
                 </div>
@@ -519,7 +544,7 @@ export const HomeDashboard: React.FC = () => {
             return (
               <div
                 key={idx}
-                onClick={() => setSelectedJobIdx(idx)}
+                onClick={() => handleSelectJob(idx)}
                 className={`p-6 rounded-[28px] border-3 cursor-pointer transition-all duration-300 flex flex-col justify-between space-y-4 transform ${
                   isSelected
                     ? "bg-gradient-to-b from-[#E6FAFE] to-[#F2FEFF] border-[#008A90] shadow-[0_12px_30px_rgba(0,138,144,0.25)] scale-[1.03]"

@@ -29,9 +29,9 @@ export const Header: React.FC = () => {
 
   const studentNavItems = [
     { label: "홈", path: "/", icon: Home },
-    { label: "별자리 로드맵", path: "/roadmap", icon: Compass },
     { label: "습관&목표", path: "/habits", icon: Award },
-    { label: "포트폴리오", path: "/portfolio", icon: Award },
+    { label: "진로포트폴리오", path: "/portfolio", icon: Award },
+    { label: "학습포트폴리오", path: "/roadmap", icon: Compass },
     { label: "마이페이지", path: "/mypage", icon: UserCheck, badge: "누적" },
   ];
 
