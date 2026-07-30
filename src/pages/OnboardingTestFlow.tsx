@@ -155,47 +155,47 @@ export const OnboardingTestFlow: React.FC = () => {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                {/* 선택지 A (Positive / 동기 극대화 박스) */}
+                {/* 선택지 A (Positive / 에메랄드 시안 그림자 글래스 박스) */}
                 <div
                   onClick={handleAnswerQuestion}
-                  className="p-1.5 rounded-[38px] bg-gradient-to-br from-[#7B5CF0] via-[#FF4081] to-[#008A90] shadow-[0_15px_40px_rgba(123,92,240,0.25)] hover:shadow-[0_20px_55px_rgba(255,64,129,0.45)] transition-all duration-300 cursor-pointer group"
+                  className="rounded-[38px] bg-white/75 backdrop-blur-2xl p-1.5 border-2 border-[#008A90]/40 shadow-[0_15px_45px_rgba(0,186,180,0.22)] hover:shadow-[0_22px_65px_rgba(0,186,180,0.42)] hover:border-[#008A90] transition-all duration-300 cursor-pointer group transform hover:-translate-y-1.5"
                 >
-                  <button className="w-full h-full py-8 px-6 sm:px-8 rounded-[34px] bg-gradient-to-b from-[#7B5CF0] via-[#8660FF] to-[#6340DD] group-hover:from-[#8968FF] group-hover:to-[#714DF0] text-white text-left font-black border-2 border-white/80 border-b-[10px] border-b-[#4627AB] active:border-b-[2px] active:translate-y-2 transition-all flex flex-col justify-between space-y-4">
+                  <button className="w-full h-full py-8 px-6 sm:px-8 rounded-[34px] bg-transparent group-hover:bg-white/60 text-[#1A1626] text-left font-black border border-white/80 border-b-[6px] border-b-[#86EBEF] group-hover:border-b-[#008A90] active:border-b-2 active:translate-y-2 transition-all flex flex-col justify-between space-y-4">
                     <div className="flex items-center justify-between w-full">
                       <span className="text-3xl sm:text-4xl group-hover:scale-125 transition-transform duration-200">
                         💖
                       </span>
-                      <span className="text-xs font-black bg-white/20 px-3 py-1 rounded-full text-white tracking-wider">
+                      <span className="text-xs font-black bg-[#E5FCFD] text-[#008A90] px-3.5 py-1.5 rounded-full border border-[#B3F4F8] shadow-sm">
                         가슴 이끄는 선택
                       </span>
                     </div>
-                    <span className="text-xl sm:text-2xl font-extrabold tracking-tight leading-snug block drop-shadow-md">
+                    <span className="text-xl sm:text-2xl font-extrabold tracking-tight leading-snug block text-[#1A1626]">
                       "네! 가슴이 막 뛰어! 엄청 설레고 꼭 도전해보고 싶어!"
                     </span>
-                    <div className="w-full flex items-center justify-end text-sm font-black gap-1 opacity-90 group-hover:opacity-100 pt-2">
+                    <div className="w-full flex items-center justify-end text-sm font-black text-[#008A90] group-hover:translate-x-1 transition-transform gap-1.5 pt-2">
                       <span>이 직무 흥미 선택 &rarr;</span>
                     </div>
                   </button>
                 </div>
 
-                {/* 선택지 B (Alternative / 다른 관심 모색 박스) */}
+                {/* 선택지 B (Alternative / 바이올렛 퍼플 그림자 글래스 박스) */}
                 <div
                   onClick={handleAnswerQuestion}
-                  className="p-1.5 rounded-[38px] bg-[#E3E0EE] hover:bg-gradient-to-br hover:from-[#B1A7FF] hover:to-[#78DEEE] shadow-[0_12px_30px_rgba(0,0,0,0.06)] hover:shadow-[0_18px_45px_rgba(0,0,0,0.12)] transition-all duration-300 cursor-pointer group"
+                  className="rounded-[38px] bg-white/75 backdrop-blur-2xl p-1.5 border-2 border-[#7B5CF0]/40 shadow-[0_15px_45px_rgba(123,92,240,0.18)] hover:shadow-[0_22px_65px_rgba(123,92,240,0.38)] hover:border-[#7B5CF0] transition-all duration-300 cursor-pointer group transform hover:-translate-y-1.5"
                 >
-                  <button className="w-full h-full py-8 px-6 sm:px-8 rounded-[34px] bg-white group-hover:bg-[#F9FAFE] text-[#2E2840] text-left font-black border-2 border-[#E1DBF5] group-hover:border-purple-200 border-b-[10px] border-b-[#CCC5E4] active:border-b-[2px] active:translate-y-2 transition-all flex flex-col justify-between space-y-4">
+                  <button className="w-full h-full py-8 px-6 sm:px-8 rounded-[34px] bg-transparent group-hover:bg-white/60 text-[#1A1626] text-left font-black border border-white/80 border-b-[6px] border-b-[#D7CFFF] group-hover:border-b-[#7B5CF0] active:border-b-2 active:translate-y-2 transition-all flex flex-col justify-between space-y-4">
                     <div className="flex items-center justify-between w-full">
-                      <span className="text-3xl sm:text-4xl group-hover:scale-110 transition-transform duration-200">
+                      <span className="text-3xl sm:text-4xl group-hover:scale-125 transition-transform duration-200">
                         🤔
                       </span>
-                      <span className="text-xs font-black bg-[#EFEDF5] text-[#5C5672] px-3 py-1 rounded-full">
+                      <span className="text-xs font-black bg-[#F0ECFF] text-[#6240D5] px-3.5 py-1.5 rounded-full border border-[#D5CAFF] shadow-sm">
                         다른 분야 탐색
                       </span>
                     </div>
-                    <span className="text-xl sm:text-2xl font-extrabold tracking-tight leading-snug block text-[#3F3952]">
+                    <span className="text-xl sm:text-2xl font-extrabold tracking-tight leading-snug block text-[#1A1626]">
                       "글쎄? 괜찮긴 하지만, 난 다른 미래 분야에 더 관심이 있어."
                     </span>
-                    <div className="w-full flex items-center justify-end text-sm font-bold text-[#6E6A80] group-hover:text-[#7B5CF0] gap-1 pt-2">
+                    <div className="w-full flex items-center justify-end text-sm font-black text-[#7B5CF0] group-hover:translate-x-1 transition-transform gap-1.5 pt-2">
                       <span>다음 질문으로 넘어가기 &rarr;</span>
                     </div>
                   </button>

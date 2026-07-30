@@ -153,7 +153,7 @@ export const Header: React.FC = () => {
           ) : (
             /* 비로그인 혹은 첫 진입 시 우측은 깔끔하게 유지 */
             <div className="text-xs font-headline font-bold text-text-muted">
-              <span>2026 교육박람회 시연 에디션</span>
+              <span>2026 ReadyCareer AI 스마트 에듀테크 플랫폼</span>
             </div>
           )}
         </div>

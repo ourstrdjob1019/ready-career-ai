@@ -328,53 +328,52 @@ export const HomeDashboard: React.FC = () => {
                 <span>AI 자기이해 진단 및 아리 가이던스</span>
               </div>
               <h3 className="text-2xl sm:text-3xl font-black text-[#1A1626] tracking-tight">
-                나만의 맞춤 진로 보고서 &amp; 별자리 로드맵 개설하기
+                나만의 맞춤 진로 보고서 &amp; AI 포트폴리오 개설하기
               </h3>
               <p className="text-xs sm:text-sm font-bold text-[#5C5672] leading-relaxed">
-                6유형 진학 흥미 검사 결과를 분석하여, 오직 회원님만을 위한 <strong>별자리 로드맵 · 습관 &amp; 목표 · 포트폴리오 · 세특 활동기록</strong>을 원클릭으로 생성해 드립니다!
+                6유형 진학 흥미 검사 및 선택 직업 결과를 분석하여, 오직 회원님만을 위한 <strong>AI 학습포트폴리오 · 습관 &amp; 목표 · 진로포트폴리오 · 세특 활동기록</strong> 모듈을 즉시 생성해 드립니다!
               </p>
             </div>
           </div>
 
-          {/* + 부분 로드맵 생성 버튼 (클릭 시 4개 모듈 나타남!) */}
+          {/* + 맞춤 포트폴리오 제작 버튼 (클릭 시 아래 4대 실전 활동 모듈 등장!) */}
           <div className="flex-shrink-0 w-full sm:w-auto text-center">
             {!isRoadmapGenerated ? (
               <div className="p-2 rounded-[34px] bg-gradient-to-r from-[#7B5CF0] via-[#FF4081] to-[#008A90] shadow-[0_10px_35px_rgba(123,92,240,0.4)] hover:shadow-[0_15px_50px_rgba(255,64,129,0.6)] transition-all duration-300 animate-bounce-once">
                 <button
                   onClick={handleGenerateRoadmap}
                   disabled={isGeneratingAnim}
-                  className="w-full sm:w-auto py-5 px-8 rounded-[28px] bg-gradient-to-r from-[#7B5CF0] to-[#5C32E3] hover:from-[#886AF7] hover:to-[#4A20D2] text-white font-black text-lg sm:text-xl border-2 border-white/85 border-b-[8px] border-b-[#3F1BA6] active:translate-y-1 active:border-b-2 transition-all flex items-center justify-center gap-3 whitespace-nowrap cursor-pointer shadow-2xl"
+                  className="w-full sm:w-auto py-5 px-9 rounded-[28px] bg-gradient-to-r from-[#7B5CF0] via-[#6340D5] to-[#008A90] hover:brightness-110 text-white font-black text-lg sm:text-xl border-2 border-white/85 border-b-[8px] border-b-[#3F1BA6] active:translate-y-1 active:border-b-2 transition-all flex items-center justify-center gap-3 whitespace-nowrap cursor-pointer shadow-2xl"
                 >
-                  <span className="text-2xl sm:text-3xl">🚀</span>
-                  <span>{isGeneratingAnim ? "AI 로드맵 생성 및 변환 중..." : "+ ReadyCareer AI 로드맵 생성하기"}</span>
-                  <Plus className="w-7 h-7 stroke-[3] text-white" />
+                  <Sparkles className="w-7 h-7 text-amber-300 animate-spin-slow" />
+                  <span>{isGeneratingAnim ? "AI 맞춤 포트폴리오 모듈 생성 중..." : "✨ 나만의 맞춤 포트폴리오 제작하기"}</span>
                 </button>
               </div>
             ) : (
               <div className="flex flex-col items-center gap-3">
                 <span className="inline-flex items-center gap-2 px-5 py-2.5 bg-green-500/15 text-[#059669] rounded-2xl font-black text-xs sm:text-sm border border-green-300 shadow-sm">
                   <Unlock className="w-4 h-4 text-green-600" />
-                  <span>✅ 4대 실전 진로 활동 모듈 개방 완료!</span>
+                  <span>✅ 실전 맞춤 진로 활동 모듈 개방 완료!</span>
                 </span>
                 <button
                   onClick={() => { setIsRoadmapGenerated(false); localStorage.removeItem("readycareer_roadmap_generated"); }}
                   className="text-xs font-bold text-[#6E6A80] hover:text-[#7B5CF0] underline decoration-1"
                 >
-                  (시연용: 로드맵 접기/초기화)
+                  (활동 모듈 화면 접기 / 리셋)
                 </button>
               </div>
             )}
           </div>
         </div>
 
-        {/* 생성기 애니메이션 또는 4대 활동 모듈 오버뷰 (별자리 로드맵, 습관&목표, 진로포트폴리오, 활동기록작성이 그때 보여지게!) */}
+        {/* 생성기 애니메이션 또는 4대 활동 모듈 오버뷰 */}
         {isGeneratingAnim && (
           <div className="w-full py-12 text-center space-y-4 animate-pulse">
             <div className="w-16 h-16 rounded-full bg-[#7B5CF0] text-white text-3xl flex items-center justify-center mx-auto shadow-xl animate-spin-slow">
               ✨
             </div>
             <h4 className="text-xl font-black text-[#6240D5]">
-              AI 멘토 아리가 회원님의 4대 실전 활동 별자리를 구축하고 있습니다...
+              AI 멘토 아리가 회원님의 맞춤 포트폴리오 및 실전 진로 활동 모듈을 구축하고 있습니다...
             </h4>
           </div>
         )}
