@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useAuth, useSelfUnderstanding } from "../context";
+import { useAuth } from "../context";
 import { executeAiPrompt } from "../services/aiService";
 import { ARI_BLOB_URL } from "../assets/mascotData";
 import {
@@ -9,14 +9,10 @@ import {
   Plus,
   Edit2,
   Trash2,
-  CheckCircle2,
   Upload,
   Calendar,
   Image as ImageIcon,
-  BookOpen,
-  FileText,
   X,
-  Share2,
   Save
 } from "lucide-react";
 
@@ -92,7 +88,6 @@ const RECOMMENDED_POOLS = [
 
 export const Portfolio: React.FC = () => {
   const { session } = useAuth();
-  const { report } = useSelfUnderstanding();
 
   const targetJobName = localStorage.getItem("readycareer_target_job_name") || session?.targetJob || "AI 융합 개척자";
   const customAvatarUrl = localStorage.getItem("readycareer_custom_avatar_url") || ARI_BLOB_URL;
@@ -328,7 +323,10 @@ export const Portfolio: React.FC = () => {
           </p>
         </div>
 
-        <div className="flex-shrink-0 z-10 flex flex-col items-center gap-4 w-full sm:w-auto">
+        <div className="flex-shrink-0 z-10 flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+          <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-3xl bg-white/20 backdrop-blur-md p-2 border-2 border-white/50 shadow-xl hidden sm:flex items-center justify-center">
+            <img src={customAvatarUrl} alt="Target Avatar" className="w-full h-full object-contain filter drop-shadow-lg" />
+          </div>
           <button
             onClick={() => setShowInputForm(!showInputForm)}
             className="w-full sm:w-auto py-5 px-9 rounded-[28px] bg-gradient-to-r from-[#FF3B7C] to-[#FF7043] hover:brightness-110 text-white font-black text-lg shadow-[0_12px_35px_rgba(255,59,124,0.4)] transition-all flex items-center justify-center gap-2.5 cursor-pointer transform hover:scale-105 border-2 border-white"

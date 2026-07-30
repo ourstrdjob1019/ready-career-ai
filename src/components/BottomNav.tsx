@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../context";
-import { Home, Compass, Award, BookOpen, ShieldAlert, Flame, Sparkles } from "lucide-react";
+import { Home, Compass, Award, BookOpen, ShieldAlert, Sparkles } from "lucide-react";
 
 export const BottomNav: React.FC = () => {
   const location = useLocation();

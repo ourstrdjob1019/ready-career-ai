@@ -13,8 +13,7 @@ import {
   X,
   Award,
   BarChart2,
-  Target,
-  Printer
+  Target
 } from "lucide-react";
 
 interface DiagnosticTest {
