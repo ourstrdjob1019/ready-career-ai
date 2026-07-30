@@ -148,9 +148,12 @@ export const OnboardingTestFlow: React.FC = () => {
 
             {/* 하단(Below): 2개 선택 박스형 클릭 (큼직한 3D 입체 게임 컨트롤러 버튼) */}
             <div className="w-full space-y-4 pt-4">
-              <div className="text-center mb-2">
-                <span className="text-xs sm:text-sm font-black text-[#6E6A80] bg-white/80 px-4 py-1.5 rounded-full border border-purple-200">
-                   👇 마음이 가는 박스를 클릭(터치)하시면 즉시 다음 단계로 진행합니다
+              <div className="text-center mb-4 space-y-2 flex flex-col items-center">
+                <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-gradient-to-r from-[#7B5CF0] via-[#FF3B7C] to-[#008A90] text-white shadow-md animate-pulse">
+                  <span className="text-sm sm:text-base font-black tracking-wide">✨ 여러분의 마음을 끌어당기는 방향을 지금 선택하세요!</span>
+                </div>
+                <span className="text-xs sm:text-sm font-extrabold text-[#5B556D] bg-white/90 px-4 py-1.5 rounded-full border border-purple-200 shadow-sm inline-block">
+                   👇 두 가지 선택지 중 마음에 드는 박스를 터치(클릭)하여 선택하세요!
                 </span>
               </div>
 

@@ -62,9 +62,40 @@ export const StartScreen: React.FC = () => {
         }
       `}</style>
 
-      {/* Ambient Pastel Glassmorphism Halo Spheres (선생님과 학생들이 감탄할 극강의 공간감) */}
+      {/* Ambient Pastel Glassmorphism Halo Spheres */}
       <div className="absolute top-10 left-1/4 -translate-x-1/2 w-[550px] h-[550px] bg-gradient-to-tr from-[#E6DEFF]/70 via-[#FEE2FA]/60 to-[#CFFBFF]/60 rounded-full blur-[110px] pointer-events-none -z-0" />
       <div className="absolute top-1/3 right-10 w-[500px] h-[500px] bg-gradient-to-tl from-[#FFEBF2]/70 via-[#DCEBFF]/60 to-[#E8D4FF]/50 rounded-full blur-[100px] pointer-events-none -z-0" />
+
+      {/* 🔮 3D 직업 캐릭터 부유 배경 레이어 (투명하고 몽환적으로 떠다니는 배경 캐릭터들) */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+        {[
+          { pos: "top-[4%] left-[3%]", size: "w-32 h-32 md:w-48 md:h-48", idx: 0, delay: "0s", transform: "rotate-[-12deg]" },
+          { pos: "top-[8%] right-[5%]", size: "w-36 h-36 md:w-52 md:h-52", idx: 1, delay: "1s", transform: "rotate-[15deg]" },
+          { pos: "top-[32%] left-[2%]", size: "w-36 h-36 md:w-52 md:h-52", idx: 2, delay: "2s", transform: "rotate-[8deg]" },
+          { pos: "top-[35%] right-[3%]", size: "w-36 h-36 md:w-48 md:h-48", idx: 3, delay: "1.5s", transform: "rotate-[-10deg]" },
+          { pos: "top-[64%] left-[5%]", size: "w-36 h-36 md:w-52 md:h-52", idx: 4, delay: "0.5s", transform: "rotate-[18deg]" },
+          { pos: "top-[67%] right-[5%]", size: "w-40 h-40 md:w-56 md:h-56", idx: 5, delay: "2.5s", transform: "rotate-[-15deg]" },
+          { pos: "bottom-[5%] left-[12%]", size: "w-32 h-32 md:w-44 md:h-44", idx: 6, delay: "1.2s", transform: "rotate-[10deg]" },
+          { pos: "bottom-[6%] right-[12%]", size: "w-36 h-36 md:w-48 md:h-48", idx: 7, delay: "0.8s", transform: "rotate-[-8deg]" },
+        ].map((item, i) => {
+          const character = JOB_VENGERS_LIST[item.idx % JOB_VENGERS_LIST.length];
+          return (
+            <div
+              key={i}
+              className={`absolute ${item.pos} ${item.size} opacity-[0.22] sm:opacity-[0.28] filter drop-shadow-lg transition-all duration-700 animate-float`}
+              style={{ transform: item.transform, animationDelay: item.delay }}
+            >
+              <img
+                src={character.imageUrl}
+                alt={character.title}
+                className="w-full h-full object-contain pointer-events-auto cursor-pointer hover:scale-115 hover:opacity-95 transition-all duration-300"
+                onClick={handleStartExperience}
+                title={`${character.title}와 함께 바로 진로 탐험 퀘스트 시작하기!`}
+              />
+            </div>
+          );
+        })}
+      </div>
 
       {/* Main Landing Hero Container */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-20 relative z-10 flex flex-col items-center justify-center flex-grow w-full space-y-12">
