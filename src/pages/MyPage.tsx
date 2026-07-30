@@ -11,11 +11,66 @@ import {
   Flame,
   ChevronRight,
   RefreshCw,
+  History,
+  Briefcase,
+  SwitchCamera
 } from "lucide-react";
 
 export const MyPage: React.FC = () => {
   const { session } = useAuth();
   const [activeCategory, setActiveCategory] = useState<"all" | "badges" | "quests">("all");
+
+  // --- 멀티 커리어 직업 덱 (다중 직업 히스토리 및 스위칭) 상태 ---
+  const currentJobName = localStorage.getItem("readycareer_target_job_name") || (session?.targetJob || "AI 융합 미래 크리에이터");
+  const currentAvatarUrl = localStorage.getItem("readycareer_custom_avatar_url") || "https://fea6nfqj9cdttjmk.public.blob.vercel-storage.com/%EC%BA%90%EB%A6%AD%ED%84%B0/Character%201.png";
+
+  const [jobHistoryList, setJobHistoryList] = useState<any[]>(() => {
+    try {
+      const stored = JSON.parse(localStorage.getItem("readycareer_my_job_history_v1") || "[]");
+      if (stored.length === 0) {
+        // 교사나 학생이 다중 직업 시스템을 바로 체감할 수 있도록 더미 초기화
+        return [
+          { name: "바이오 신약 데이터 과학자", category: "생명공학 연구", imageUrl: "https://fea6nfqj9cdttjmk.public.blob.vercel-storage.com/%EC%BA%90%EB%A6%AD%ED%84%B0/Character%206-wOq9XfUeG2b7TIf9N0DkYjW5qP2B6k.png", lastActive: "2일 전 완료", recordsCount: 14, rank: "다이아 마스터", bgColor: "bg-emerald-50" },
+          { name: "글로벌 마케팅 기획 디렉터", category: "미래 경영전략", imageUrl: "https://fea6nfqj9cdttjmk.public.blob.vercel-storage.com/%EC%BA%90%EB%A6%AD%ED%84%B0/KakaoTalk_20260729_161916710.png", lastActive: "1주일 전 완료", recordsCount: 5, rank: "실버 챌린저", bgColor: "bg-orange-50" },
+        ];
+      }
+      return stored;
+    } catch { return []; }
+  });
+
+  const handleSwitchCareerJob = (job: any) => {
+    // 1. 기존 메인 직업을 히스토리로 안전하게 보관 (중복이 없을 경우만)
+    const newHistory = [...jobHistoryList];
+    if (!newHistory.some(h => h.name === currentJobName)) {
+      newHistory.push({
+        name: currentJobName,
+        category: localStorage.getItem("readycareer_selected_job") ? JSON.parse(localStorage.getItem("readycareer_selected_job")!).category : "진로 탐색 중",
+        imageUrl: currentAvatarUrl,
+        lastActive: "방금 전 보관됨",
+        recordsCount: 8,
+        rank: "골드 리더",
+        bgColor: "bg-purple-50"
+      });
+    }
+
+    // 2. 선택한 직업으로 메인 타겟 직업 스위칭!
+    localStorage.setItem("readycareer_target_job_name", job.name);
+    if (job.imageUrl) localStorage.setItem("readycareer_custom_avatar_url", job.imageUrl);
+    
+    // 선택 직업군 디테일 업데이트
+    localStorage.setItem("readycareer_selected_job", JSON.stringify({
+      title: job.name,
+      category: job.category || "선택 직무",
+      imageUrl: job.imageUrl,
+      bgGradient: "from-[#E6FAFE] to-[#F2FEFF]",
+      badgeColor: "bg-[#008A90] text-white"
+    }));
+
+    // 3. 상태 리렌더링 및 새로고침하여 전 페이지 테마 동기화 적용
+    setJobHistoryList(newHistory);
+    localStorage.setItem("readycareer_my_job_history_v1", JSON.stringify(newHistory));
+    window.location.reload();
+  };
 
   const level = 5;
   const currentExp = 380;
@@ -230,6 +285,105 @@ export const MyPage: React.FC = () => {
           </Card>
         </div>
 
+      </div>
+
+      {/* =====================================================================
+          SECTION: 나의 희망 직업 히스토리 & 스위칭 모듈 (Multi-Career Deck)
+         ===================================================================== */}
+      <div className="bg-white/95 backdrop-blur-xl border-4 border-[#F3EAFE] rounded-[36px] p-8 sm:p-10 shadow-[0_15px_45px_rgba(123,92,240,0.08)] space-y-8 animate-fadeIn">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-2 border-purple-100 pb-5">
+          <div className="space-y-1">
+            <h3 className="text-xl sm:text-2xl font-headline font-black text-[#1A1626] flex items-center gap-2">
+              <Briefcase className="w-6 h-6 text-[#7B5CF0]" />
+              <span>나의 다중 커리어 히스토리 덱 (Career Decks)</span>
+            </h3>
+            <p className="text-xs sm:text-sm text-[#5C5672] font-semibold">
+              ✨ 과거에 꿈꿨던 진로 목표와 누적 포트폴리오가 모두 보존됩니다! <strong className="text-[#008A90]">해당 직업 카드의 스위칭 버튼을 누르면 그 시점부터 그 직업으로 이어서 활동</strong>을 전개할 수 있습니다.
+            </p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* 1. 현재 실시간 활성 (진행중인) 직업 모듈 */}
+          <div className="bg-gradient-to-br from-[#E6FAFE] to-[#F2FEFF] border-[3px] border-[#008A90] rounded-[32px] p-6 shadow-[0_15px_40px_rgba(0,138,144,0.18)] flex flex-col justify-between space-y-6 relative overflow-hidden transform scale-[1.02]">
+            <div className="absolute top-0 right-0 w-24 h-24 bg-cyan-100/50 rounded-bl-full -z-0 pointer-events-none" />
+            <div className="flex items-center justify-between z-10">
+              <span className="text-[11px] font-black px-3 py-1.5 rounded-full shadow-sm bg-[#008A90] text-white flex items-center gap-1.5">
+                <Flame className="w-3.5 h-3.5" /> ★ 현재 퀘스트 진행중 메인 직업
+              </span>
+            </div>
+            
+            <div className="flex items-center gap-5 z-10">
+              <div className="w-20 h-20 rounded-full bg-white p-2 shadow-lg border-2 border-[#B0EFF7] flex items-center justify-center flex-shrink-0">
+                <img src={currentAvatarUrl} alt="Main Avatar" className="w-full h-full object-contain filter drop-shadow-md" />
+              </div>
+              <div>
+                <span className="text-[10px] font-black text-[#006970] block mb-1">나의 최우선 타겟 직무</span>
+                <strong className="text-lg font-black text-[#1A1626] leading-tight block">{currentJobName}</strong>
+              </div>
+            </div>
+
+            <div className="bg-white/80 p-3.5 rounded-2xl border border-cyan-100 shadow-inner z-10 flex flex-col gap-1.5">
+              <div className="flex justify-between text-xs font-black text-[#3F3952]">
+                <span>📁 누적 진로 포트폴리오</span>
+                <span className="text-[#008A90]">{savedUserActivities.length + 3}건 기록됨</span>
+              </div>
+              <div className="flex justify-between text-xs font-black text-[#3F3952]">
+                <span>🏆 현재 도달 랭크</span>
+                <span className="text-[#008A90]">다이아 엑스퍼트 (Lv.5)</span>
+              </div>
+            </div>
+
+            <button disabled className="w-full py-3.5 rounded-[18px] bg-[#E8F8FA] border-2 border-[#008A90]/20 text-[#008A90] font-black text-sm transition-all flex items-center justify-center gap-2 cursor-default z-10">
+              <CheckCircle2 className="w-4 h-4" />
+              <span>현재 실시간 가동 중입니다</span>
+            </button>
+          </div>
+
+          {/* 2. 과거 누적 히스토리 직업 모듈들 */}
+          {jobHistoryList.map((job, idx) => (
+            <div key={idx} className={`bg-[#FAFAFF] border-2 border-[#E8DFFA] rounded-[32px] p-6 shadow-sm hover:shadow-[0_12px_35px_rgba(123,92,240,0.12)] flex flex-col justify-between space-y-6 transition-all duration-300 transform hover:-translate-y-1 ${job.bgColor}`}>
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] font-black px-3 py-1.5 rounded-full shadow-sm bg-purple-100 text-[#6240D5] flex items-center gap-1.5">
+                  <History className="w-3.5 h-3.5" /> 과거 누적 히스토리 보존중
+                </span>
+              </div>
+              
+              <div className="flex items-center gap-5">
+                <div className="w-20 h-20 rounded-full bg-white p-2 shadow-md border-2 border-[#E2DAFF] flex items-center justify-center flex-shrink-0 opacity-90 group-hover:opacity-100 transition-opacity">
+                  <img src={job.imageUrl} alt={job.name} className="w-full h-full object-contain filter drop-shadow-md" />
+                </div>
+                <div>
+                  <span className="text-[10px] font-black text-[#7B5CF0] block mb-1">{job.category}</span>
+                  <strong className="text-base font-black text-[#1A1626] leading-tight block">{job.name}</strong>
+                </div>
+              </div>
+
+              <div className="bg-white/80 p-3.5 rounded-2xl border border-purple-50 shadow-inner flex flex-col gap-1.5 opacity-90">
+                <div className="flex justify-between text-[11px] font-black text-[#5C5672]">
+                  <span>마지막 활동 일자</span>
+                  <span>{job.lastActive}</span>
+                </div>
+                <div className="flex justify-between text-[11px] font-black text-[#5C5672]">
+                  <span>📁 누적 진로 포트폴리오</span>
+                  <span className="text-[#7B5CF0]">{job.recordsCount}건 안전 보존됨</span>
+                </div>
+                <div className="flex justify-between text-[11px] font-black text-[#5C5672]">
+                  <span>🏆 도달했던 랭크</span>
+                  <span className="text-[#7B5CF0]">{job.rank}</span>
+                </div>
+              </div>
+
+              <button
+                onClick={() => handleSwitchCareerJob(job)}
+                className="w-full py-3.5 rounded-[18px] bg-gradient-to-r from-[#7B5CF0] to-[#6240D5] hover:brightness-110 text-white font-black text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer transform hover:scale-105"
+              >
+                <SwitchCamera className="w-4 h-4" />
+                <span>이 직업으로 변경하고 이어하기</span>
+              </button>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* TABS SELECTOR (BADGES vs QUESTS vs HABIT TRENDS) */}

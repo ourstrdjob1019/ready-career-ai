@@ -28,9 +28,10 @@ export const HomeDashboard: React.FC = () => {
   });
   const [isEditingVision, setIsEditingVision] = useState(false);
   
-  // 관심 직업군 관리 상태 (온보딩 추천 직무 기본 연계)
+  // 관심 직업군 관리 상태
   const [interestedJobs, setInterestedJobs] = useState<Array<{ name: string; image: string; category: string; imageUrl?: string }>>([]);
   const [selectedJobIdx, setSelectedJobIdx] = useState(0);
+  const [jobIntroModalIdx, setJobIntroModalIdx] = useState<number | null>(null);
   const [newJobInput, setNewJobInput] = useState("");
   const [isAiLoading, setIsAiLoading] = useState(false);
 
@@ -121,10 +122,32 @@ export const HomeDashboard: React.FC = () => {
     }, 600);
   };
 
-  // 🎯 관심 직업 클릭 시 전체 시스템(진로포트폴리오/학습포트폴리오/보고서) 테마 완벽 동기화 핸들러
+  // 🎯 관심 직업 카드에서 '직업 변경하기' 클릭 시 진화 스토리 모달 띄우기
   const handleSelectJob = (idx: number) => {
-    setSelectedJobIdx(idx);
-    const selected = interestedJobs[idx];
+    setJobIntroModalIdx(idx);
+  };
+
+  // 👑 모달 내에서 최종 '이 직업으로 변경' 승인 시 시스템 테마 완벽 동기화 및 히스토리 보존
+  const handleConfirmJobChange = () => {
+    if (jobIntroModalIdx === null) return;
+    const selected = interestedJobs[jobIntroModalIdx];
+    
+    // 이전 직업 히스토리에 현재 메인 직업 백업 보존
+    const prevJobName = localStorage.getItem("readycareer_target_job_name") || "AI 융합 미래 전문가";
+    const historyStored = JSON.parse(localStorage.getItem("readycareer_my_job_history_v1") || "[]");
+    if (!historyStored.some((h: any) => h.name === prevJobName)) {
+       historyStored.push({
+         name: prevJobName,
+         category: localStorage.getItem("readycareer_selected_job") ? JSON.parse(localStorage.getItem("readycareer_selected_job")!).category : "과거 관심 직무",
+         imageUrl: localStorage.getItem("readycareer_custom_avatar_url") || ARI_BLOB_URL,
+         lastActive: new Date().toLocaleDateString("ko-KR"),
+         recordsCount: 3
+       });
+       localStorage.setItem("readycareer_my_job_history_v1", JSON.stringify(historyStored));
+    }
+
+    // 신규 메인 직업 세팅
+    setSelectedJobIdx(jobIntroModalIdx);
     if (selected) {
       localStorage.setItem("readycareer_target_job_name", selected.name);
       localStorage.setItem("readycareer_selected_job", JSON.stringify({
@@ -144,6 +167,8 @@ export const HomeDashboard: React.FC = () => {
         });
       }
     }
+    setJobIntroModalIdx(null);
+    window.scrollTo({ top: 0, behavior: "smooth" }); // 변경 후 위로 스크롤
   };
 
   const currentJob = interestedJobs[selectedJobIdx] || { name: "AI 융합 개척자", image: "🤖", category: "탐색 중", imageUrl: ARI_BLOB_URL };
@@ -506,25 +531,21 @@ export const HomeDashboard: React.FC = () => {
       </div>
 
       {/* =========================================================================
-          SECTION 4: 나의 관심 직업군 관리 (처음 추천했던 직업군이 기본으로 등장)
+          SECTION 4: 나의 관심 직업군 (멀티 커리어 스위칭 시스템)
          ========================================================================= */}
       <div className="bg-white/90 backdrop-blur-xl rounded-[36px] p-8 sm:p-10 shadow-[0_15px_45px_rgba(123,92,240,0.1)] border-2 border-[#E7E0FF] space-y-8">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b-2 border-purple-100 pb-5">
           <div className="space-y-1">
             <h3 className="text-xl sm:text-2xl font-headline font-black text-[#1A1626] flex items-center gap-2">
-              <Sparkles className="w-6 h-6 text-[#7B5CF0] animate-spin-slow" />
-              <span>나의 관심 직업군 관리 (Career Target List)</span>
+              <Sparkles className="w-6 h-6 text-[#7B5CF0]" />
+              <span>진로 탐험 목표 변경 (Career Switching)</span>
             </h3>
-            <p className="text-xs sm:text-sm text-[#5C5672] font-semibold">
-              ✨ <strong>처음 진단에서 추천받았던 직급군들</strong>이 자동으로 보존되어 있습니다! 카드를 클릭(터치)하면 상단 히어로 영역의 메인 마스코트로 실각 변경됩니다.
-            </p>
           </div>
 
-          {/* Add Job Form */}
           <form onSubmit={handleAddJob} className="flex items-center gap-2 max-w-md w-full">
             <input
               type="text"
-              placeholder="예: AI 바이오 신약 데이터 연구원..."
+              placeholder="예: AI 바이오 데이터 연구원..."
               value={newJobInput}
               onChange={(e) => setNewJobInput(e.target.value)}
               className="flex-grow h-12 text-xs md:text-sm px-5 rounded-2xl bg-[#F8F5FF] border-2 border-[#E2DAFF] focus:border-[#7B5CF0] text-[#1A1626] placeholder:text-[#8D88A0] focus:outline-none focus:ring-2 focus:ring-[#7B5CF0]/20 font-bold transition-all shadow-inner"
@@ -536,49 +557,115 @@ export const HomeDashboard: React.FC = () => {
           </form>
         </div>
 
-        {/* Interested Jobs Grid List */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {interestedJobs.map((job, idx) => {
             const isSelected = selectedJobIdx === idx;
             return (
               <div
                 key={idx}
-                onClick={() => handleSelectJob(idx)}
-                className={`p-6 rounded-[28px] border-3 cursor-pointer transition-all duration-300 flex flex-col justify-between space-y-4 transform ${
+                className={`p-6 rounded-[28px] border-3 transition-all duration-300 flex flex-col justify-between space-y-5 transform ${
                   isSelected
-                    ? "bg-gradient-to-b from-[#E6FAFE] to-[#F2FEFF] border-[#008A90] shadow-[0_12px_30px_rgba(0,138,144,0.25)] scale-[1.03]"
-                    : "bg-[#FAFAFF] border-[#E8DFFA] hover:bg-[#F3EFFF] hover:border-[#7B5CF0] hover:scale-101"
+                    ? "bg-gradient-to-b from-[#E6FAFE] to-[#F2FEFF] border-[#008A90] shadow-[0_15px_40px_rgba(0,138,144,0.25)] scale-[1.03]"
+                    : "bg-[#FAFAFF] border-[#E8DFFA] shadow-sm hover:shadow-lg"
                 }`}
               >
                 <div className="flex items-center justify-between">
                   <span className={`text-[11px] font-black px-3 py-1 rounded-full shadow-sm ${isSelected ? "bg-[#008A90] text-white" : "bg-purple-100 text-[#6240D5]"}`}>
-                    {isSelected ? "★ 현재 장착 메인" : `#${idx + 1} 후보 직문`}
+                    {isSelected ? "★ 현재 활성 메인 직업" : `후보 직군`}
                   </span>
-                  {isSelected ? <CheckCircle2 className="w-6 h-6 text-[#008A90] fill-white animate-bounce-short" /> : <Star className="w-5 h-5 text-[#C3B7E8]" />}
+                  {isSelected && <CheckCircle2 className="w-6 h-6 text-[#008A90] fill-white animate-bounce-short" />}
                 </div>
 
-                {/* Thumbnail Avatar or Icon */}
-                <div className="w-20 h-20 rounded-full bg-white p-2 shadow-sm border border-purple-100 mx-auto flex items-center justify-center my-2">
+                <div className="w-24 h-24 rounded-full bg-white p-2.5 shadow-sm border-2 border-white mx-auto flex items-center justify-center my-2">
                   {job.imageUrl ? (
-                    <img src={job.imageUrl} alt={job.name} className="w-full h-full object-contain filter drop-shadow-sm" />
+                    <img src={job.imageUrl} alt={job.name} className="w-full h-full object-contain filter drop-shadow-md" />
                   ) : (
                     <span className="text-4xl">{job.image}</span>
                   )}
                 </div>
 
-                <div className="text-center bg-white/90 p-3 rounded-2xl border border-purple-50 shadow-inner">
-                  <span className="text-[10px] font-bold text-[#6E6A80] block mb-1">
+                <div className="text-center space-y-1">
+                  <span className="text-[10px] font-bold text-[#6E6A80] block">
                     {job.category}
                   </span>
-                  <strong className={`text-sm font-black block tracking-tight truncate ${isSelected ? "text-[#008A90]" : "text-[#1A1626]"}`}>
+                  <strong className={`text-base font-black block tracking-tight ${isSelected ? "text-[#008A90]" : "text-[#1A1626]"}`}>
                     {job.name}
                   </strong>
                 </div>
+
+                {/* 변경 액션 버튼 */}
+                {!isSelected && (
+                  <button
+                    onClick={() => handleSelectJob(idx)}
+                    className="w-full py-3 rounded-2xl bg-gradient-to-r from-[#7B5CF0] to-[#6240D5] hover:brightness-110 text-white font-black text-xs shadow-md transition-all flex items-center justify-center gap-1.5 cursor-pointer transform hover:scale-105"
+                  >
+                    <RefreshCw className="w-3.5 h-3.5" />
+                    <span>이 직업으로 변경하기</span>
+                  </button>
+                )}
               </div>
             );
           })}
         </div>
       </div>
+
+      {/* =========================================================================
+          MODAL: 직업 변경 및 Lv.0 ~ Lv.5 마스코트 진화 로드맵
+         ========================================================================= */}
+      {jobIntroModalIdx !== null && interestedJobs[jobIntroModalIdx] && (
+        <div className="fixed inset-0 z-[100] bg-black/75 backdrop-blur-md flex items-center justify-center p-4 sm:p-8 animate-fadeIn">
+          <div className="bg-white w-full max-w-5xl rounded-[44px] shadow-[0_30px_90px_rgba(0,0,0,0.5)] border-4 border-[#E2DAFF] max-h-[95vh] overflow-y-auto relative">
+            <button onClick={() => setJobIntroModalIdx(null)} className="absolute top-6 right-6 p-2 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors z-50">
+              <Plus className="w-6 h-6 rotate-45" />
+            </button>
+            
+            <div className="p-8 sm:p-12 space-y-10">
+              <div className="text-center space-y-3">
+                <span className="text-sm font-black text-[#7B5CF0] bg-purple-100 px-4 py-1.5 rounded-full inline-block">
+                  새로운 꿈을 향한 위대한 여정
+                </span>
+                <h2 className="text-3xl sm:text-5xl font-black text-[#1A1626] leading-tight">
+                  <span className="text-[#008A90]">{interestedJobs[jobIntroModalIdx].name}</span> <br className="hidden sm:block"/>
+                  진화 레벨업 스토리!
+                </h2>
+              </div>
+
+              {/* Lv.0 ~ Lv.5 순차적 레벨업 진화 화면 (군더더기 설명 박스 100% 제거) */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 relative items-stretch">
+                {[
+                  { lv: "Lv.0", badge: "🌱 새싹 탐구", name: "꿈결 탐험 아리", bg: "from-[#F5EFFF] to-[#E6DBFF]", scale: "w-20 h-20" },
+                  { lv: "Lv.1", badge: "📖 지식 융합", name: "호기심 장착 아리", bg: "from-[#E3FAFF] to-[#C0F3FC]", scale: "w-24 h-24" },
+                  { lv: "Lv.2", badge: "⚡ 챌린지", name: "프로젝트 리더", bg: "from-[#FFEBF2] to-[#FFCFE2]", scale: "w-24 h-24" },
+                  { lv: "Lv.3", badge: "🏆 포폴 왕", name: "포트폴리오 왕", bg: "from-[#FFF8E4] to-[#FFECD2]", scale: "w-28 h-28" },
+                  { lv: "Lv.4", badge: "🚀 차세대 고수", name: "미래 엑스퍼트", bg: "from-[#E6F0FF] to-[#C8E0FF]", scale: "w-28 h-28" },
+                  { lv: "Lv.5", badge: "👑 마스터", name: "최상위 마스터", bg: "from-[#EBFFF8] to-[#9EFAEA]", scale: "w-32 h-32 animate-bounce-short" },
+                ].map((item, i) => (
+                  <div key={i} className={`rounded-[32px] bg-gradient-to-b ${item.bg} p-4 border border-white shadow-lg flex flex-col items-center justify-between space-y-3 transform hover:-translate-y-2 transition-all`}>
+                    <div className="w-full flex flex-col items-center space-y-1">
+                      <span className="text-xs font-black bg-white px-2.5 py-0.5 rounded-full">{item.lv}</span>
+                      <span className="text-[10px] font-bold text-slate-700 bg-white/50 px-2 py-0.5 rounded-md">{item.badge}</span>
+                    </div>
+                    <div className={`rounded-full bg-white/90 p-2 shadow-inner border border-white flex items-center justify-center my-2 ${item.scale}`}>
+                      <img src={interestedJobs[jobIntroModalIdx].imageUrl || ARI_BLOB_URL} alt="Ari" className="w-full h-full object-contain drop-shadow-md" />
+                    </div>
+                    <strong className="text-[11px] sm:text-xs font-black text-[#1A1626] text-center w-full bg-white/80 rounded-xl py-1">{item.name}</strong>
+                  </div>
+                ))}
+              </div>
+
+              <div className="pt-6 w-full max-w-2xl mx-auto">
+                <button
+                  onClick={handleConfirmJobChange}
+                  className="w-full py-5 px-8 rounded-full bg-gradient-to-r from-[#FF3B7C] via-[#FF7043] to-[#FF9800] hover:brightness-110 text-white font-black text-xl shadow-[0_15px_40px_rgba(255,59,124,0.4)] transition-all flex items-center justify-center gap-3 cursor-pointer transform hover:scale-105"
+                >
+                  <Award className="w-6 h-6 text-white" />
+                  <span>이 직업으로 내 홈화면 & 포트폴리오 맞춤 스위칭!</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
     </div>
   );
