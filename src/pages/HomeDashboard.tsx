@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Button } from "../components";
 import { useAuth } from "../context";
 import { executeAiPrompt } from "../services/aiService";
@@ -21,7 +21,6 @@ import {
 } from "lucide-react";
 
 export const HomeDashboard: React.FC = () => {
-  const navigate = useNavigate();
   const { session } = useAuth();
 
   const [visionStatement, setVisionStatement] = useState<string>(() => {
@@ -517,7 +516,6 @@ export const HomeDashboard: React.FC = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5">
           {interestedJobs.map((job, idx) => {
             const isSelected = selectedJobIdx === idx;
-            const itemAvatar = job.imageUrl || ARI_BLOB_URL;
             return (
               <div
                 key={idx}
