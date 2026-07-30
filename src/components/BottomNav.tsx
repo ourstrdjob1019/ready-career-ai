@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../context";
-import { Home, Compass, Award, BookOpen, ShieldAlert, Flame } from "lucide-react";
+import { Home, Compass, Award, BookOpen, ShieldAlert, Flame, Sparkles } from "lucide-react";
 
 export const BottomNav: React.FC = () => {
   const location = useLocation();
@@ -13,9 +13,9 @@ export const BottomNav: React.FC = () => {
 
   const studentItems = [
     { label: "홈", path: "/", icon: Home },
-    { label: "습관&목표", path: "/habits", icon: Flame },
+    { label: "자기이해", path: "/self-understanding", icon: Sparkles, isSpot: true },
     { label: "진로포트폴리오", path: "/portfolio", icon: Award },
-    { label: "학습포트폴리오", path: "/roadmap", icon: Compass, isSpot: true },
+    { label: "학습포트폴리오", path: "/roadmap", icon: Compass },
   ];
 
   const teacherItems = [

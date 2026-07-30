@@ -13,6 +13,7 @@ import {
   UserCheck,
   ShieldCheck,
   ShieldAlert,
+  Sparkles,
 } from "lucide-react";
 
 export const Header: React.FC = () => {
@@ -29,6 +30,7 @@ export const Header: React.FC = () => {
 
   const studentNavItems = [
     { label: "홈", path: "/", icon: Home },
+    { label: "자기이해진단", path: "/self-understanding", icon: Sparkles, badge: "6종" },
     { label: "습관&목표", path: "/habits", icon: Award },
     { label: "진로포트폴리오", path: "/portfolio", icon: Award },
     { label: "학습포트폴리오", path: "/roadmap", icon: Compass },

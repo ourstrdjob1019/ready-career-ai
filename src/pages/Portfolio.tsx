@@ -1,462 +1,836 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { Button, Card, Chip, MascotAri } from "../components";
-import { useSelfUnderstanding } from "../context";
-import { Award, Search, Sparkles, Filter, CheckCircle2, Copy, FileText, ExternalLink, Brain } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { useAuth, useSelfUnderstanding } from "../context";
+import { executeAiPrompt } from "../services/aiService";
+import { ARI_BLOB_URL } from "../assets/mascotData";
+import {
+  Award,
+  Sparkles,
+  RefreshCw,
+  Plus,
+  Edit2,
+  Trash2,
+  CheckCircle2,
+  Upload,
+  Calendar,
+  Image as ImageIcon,
+  BookOpen,
+  FileText,
+  X,
+  Share2,
+  Save
+} from "lucide-react";
 
 interface PortfolioItem {
   id: string;
   title: string;
   category: string;
-  date: string;
+  dateRange: string; // 시작일 ~ 종료일 기간
   content: string;
   tags: string[];
   aiFeedback?: string;
+  photoUrl?: string; // 자동 용량 축소 업로드 사진
   isSelfReport?: boolean;
-  exp?: string;
 }
 
-const INITIAL_PORTFOLIOS: PortfolioItem[] = [
-  {
-    id: "pf-1",
-    title: "AI 및 기계학습 모델의 교육 격차 해소 방안 탐구",
-    category: "진학·탐구",
-    date: "2026.07.24",
-    content:
-      "다양한 공공 교육 데이터 세트를 바탕으로 인공지능 기반 학습 진단 모델을 설계하고, 농촌 및 저소득층 학생들을 위한 자동화 맞춤형 멘토링 인터페이스 프로토타입을 제작하여 보고서로 서면 제출함.",
-    tags: ["인공지능", "사회문제 해결", "프로토타입", "자율활동"],
-    aiFeedback: "‘공공 교육 데이터 세트 활용’이라는 명확한 근거 제시가 훌륭하며, 문제 해결 의식이 세특 평가 기준 중 상위 1%에 해당함.",
-  },
-  {
-    id: "pf-2",
-    title: "학교 공식 인공지능 코딩 동아리 'Neuro-V26' 리더십 발휘",
-    category: "동아리",
-    date: "2026.07.15",
-    content:
-      "파이썬 오픈소스 라이브러리를 활용한 감정 인식 모바일 챗봇을 팀원 5명과 함께 기획하고 전체 시스템 아키텍처 리더십을 발휘하여 전교 학술제에서 대상(1위)을 도출함.",
-    tags: ["동아리장", "파이썬 챗봇", "협업 리더십", "학술제 대상"],
-    aiFeedback: "리더로서 시스템 아키텍처를 총괄한 과정이 강조되어 구체적인 문제개선 사례를 곁들이면 서울지역 학종 상위 평가에 부합함.",
-  },
-  {
-    id: "pf-3",
-    title: "과학 기술 고전 비판적 재해석 & 윤리 토론 발제",
-    category: "독서·예술",
-    date: "2026.06.28",
-    content:
-      "빅데이터 시대의 개인정보 오남용 문제를 진중하게 해부한 도서를 정독한 뒤, 교내 AI 자율권 관련 지정 토론회에서 사회자 및 찬성 측 메인 입론을 담당함.",
-    tags: ["AI 윤리", "토론 사회자", "논리적 입론"],
-    aiFeedback: "이공계 학생의 인문사회학적 교양과 윤리의식을 돋보이게 하는 매우 훌륭한 독서 융합 사례임.",
-  },
+// AI 맞춤 진로 활동 다양성 추천 풀 (새로고침 시 로테이션)
+const RECOMMENDED_POOLS = [
+  [
+    {
+      title: "KAIST AI 소프트웨어 산학 융합 메카톤 도전",
+      category: "동아리·자율",
+      dateRange: "2026.05.01 ~ 2026.06.15",
+      content: "대학 인공지능 연구소 멘토링을 통해 오픈소스 신경망 기반 사회문제 해결 프로젝트 아키텍처를 구축하고 시제품을 출품함.",
+      tags: ["산학협력", "AI해커톤", "프로젝트아키텍처"],
+      aiFeedback: "대학 연구진과의 융합 탐구 의지가 강조되며 학업 성격 및 협업 리더십 평가에서 극단적인 플러스 요인으로 작용합니다."
+    },
+    {
+      title: "국가공인 ADsP (데이터분석 준전문가) 자격증 취득",
+      category: "🏅 자격증",
+      dateRange: "2026.04.01 ~ 2026.05.20",
+      content: "빅데이터 가공 통계 이론과 R/Python 데이터 모델링 학습을 50일간 매진하여 데이터 분석 공인 자격증을 고득점으로 취득함.",
+      tags: ["국가공인자격증", "ADsP", "빅데이터공유"],
+      aiFeedback: "고교생으로서 실증적 통계 데이터 검증 전문성을 획득했다는 확고한 진로 전문성 지표입니다!"
+    }
+  ],
+  [
+    {
+      title: "ESG 친환경 탄소 자원순환 신소재 아이디어 공모전",
+      category: "진학·탐구 (교과)",
+      dateRange: "2026.05.15 ~ 2026.07.10",
+      content: "기후위기를 극복하기 위한 미생물 플라이 융합 신재생 화합물 시각화 기획서를 작성하여 학술 소년 과제전에 출품함.",
+      tags: ["ESG탄소중립", "신소재공학", "융합사고력"],
+      aiFeedback: "사회적 현안(ESG)을 과학공학적 지식으로 구체화한 탐구로, 교과 세부능력 및 특기사항에 인용하기 훌륭합니다."
+    },
+    {
+      title: "구글 텐서플로우(TensorFlow) 딥러닝 전문가 과정 수료",
+      category: "🏅 자격증",
+      dateRange: "2026.03.10 ~ 2026.06.25",
+      content: "글로벌 IT 권위 인증인 TensorFlow Developer 과정을 온라인 캠퍼스를 통해 전담 100% 실무 코딩 프로젝트로 완수함.",
+      tags: ["TensorFlow", "글로벌자격증", "AI엔지니어로고"],
+      aiFeedback: "세계가 인정하는 AI 프레임워크 제어 능력을 이수하여 인공지능/SW 학과 학종 서류 통과 1순위 역량을 갖췄습니다."
+    }
+  ],
+  [
+    {
+      title: "교내 뇌과학·로보틱스 융합 소설 학술 발제회 대상",
+      category: "독서·예술",
+      dateRange: "2026.04.10 ~ 2026.06.05",
+      content: "SF 고전과 뇌과학 저서 10권을 연계 분석하여 뇌-기계 통신(BMI)이 초래할 미래 윤리 강령 입건안을 학술지에 실음.",
+      tags: ["뇌과학융합", "학술지발제", "인문공학교양"],
+      aiFeedback: "이공계 인재로서 보기 드문 철학적 깊이와 문해력을 보유하고 있음을 입사관에게 확실히 각인시킵니다."
+    },
+    {
+      title: "청소년 과학창의대회 대한민국 총장상 및 파이썬 교육 기부",
+      category: "동아리·자율",
+      dateRange: "2026.05.01 ~ 2026.07.28",
+      content: "지역 아동센터 초등학생들에게 AI 코딩과 블록 코딩 기초를 8주간 재능 기부하고, 공모전 장려 보상을 함께 성취함.",
+      tags: ["교육기부봉사", "SW멘토링", "인성평가만점"],
+      aiFeedback: "지식 나눔을 실천하는 따뜻한 인성 역량과 확실한 주도적 소통 리더십을 생기부 행특에 생생하게 기록할 수 있습니다!"
+    }
+  ]
 ];
 
 export const Portfolio: React.FC = () => {
+  const { session } = useAuth();
   const { report } = useSelfUnderstanding();
-  const [activeTab, setActiveTab] = useState<"list" | "drawers" | "badges">("list");
+
+  const targetJobName = localStorage.getItem("readycareer_target_job_name") || session?.targetJob || "AI 융합 개척자";
+  const customAvatarUrl = localStorage.getItem("readycareer_custom_avatar_url") || ARI_BLOB_URL;
+
+  const [items, setItems] = useState<PortfolioItem[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("전체 보기");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [copiedId, setCopiedId] = useState<string | null>(null);
+  
+  // 추천 활동 팩 상태
+  const [recPoolIdx, setRecPoolIdx] = useState(0);
+  const [toastMsg, setToastMsg] = useState("");
 
-  const categories = ["전체 보기", "자기성찰/진도", "진학·탐구", "동아리", "독서·예술"];
+  // 스스로 직접 입력 (활동 기록 폼 & AI 교정) 상태
+  const [showInputForm, setShowInputForm] = useState(false);
+  const [formTitle, setFormTitle] = useState("");
+  const [formCategory, setFormCategory] = useState("진학·탐구 (교과)");
+  const [customCategoryInput, setCustomCategoryInput] = useState("");
+  const [startDate, setStartDate] = useState("2026-05-10");
+  const [endDate, setEndDate] = useState("2026-07-28");
+  const [formContent, setFormContent] = useState("");
+  const [formTags, setFormTags] = useState("");
+  const [uploadedPhoto, setUploadedPhoto] = useState<string | undefined>(undefined);
+  const [isPhotoCompressing, setIsPhotoCompressing] = useState(false);
+  const [isAiRefining, setIsAiRefining] = useState(false);
 
-  const badges = [
-    { id: "b1", name: "⭐ 대표 시연 마스터", desc: "2026 박람회 시연 에디션 완벽 탑재 및 모든 기능 탐구 완수", icon: "👑", rarity: "LEGENDARY", unlocked: true },
-    { id: "b2", name: "🔬 AI 자기이해 개척자", desc: "흥미유형 6유형 및 다중지능 AI 진단 리포트 활성화", icon: "🧬", rarity: "EPIC", unlocked: true },
-    { id: "b3", name: "🔥 50일 챌린지 도전자", desc: "진로 루틴 및 한입 퀘스트 14일 연속 완수", icon: "🎯", rarity: "RARE", unlocked: true },
-    { id: "b4", name: "📝 2026 기재요령 최신 가이드", desc: "NEIS 기재 지침 100% 준수 세특 텍스트 생성 3회 이상", icon: "🏆", rarity: "EPIC", unlocked: true },
-    { id: "b5", name: "🤖 아리의 단짝 친구", desc: "실시간 대화창에서 AI 아리와 진로 멘토링 상담 진행", icon: "🐶", rarity: "RARE", unlocked: true },
-    { id: "b6", name: "🌌 별자리 마스터 크리드", desc: "우주 밤하늘 모든 희망 진로 노드 100% 탐사 완료", icon: "✨", rarity: "LEGENDARY", unlocked: false },
-  ];
+  // 수정 모달 상태
+  const [editingItem, setEditingItem] = useState<PortfolioItem | null>(null);
 
-  // Dynamically merge Self-Understanding report as a Portfolio Item!
-  const selfReportItem: PortfolioItem | null = report
-    ? {
-        id: "pf-self-report",
-        title: `👑 자기이해 AI 3종 종합 리포트: ${report.title}`,
-        category: "자기성찰/진도",
-        date: report.portfolioSavedAt || "2026.07.25",
-        content: `[AI 다중지능 및 진로 흥미무드 진단 완료]\n오오라 칭호: "${report.characterAura}"\n강점: ${report.strengths.join(", ")}\n추천 진로: ${report.recommendedCareers.join(", ")}\nAI 세특 적용 팁: ${report.aiAdvice}`,
-        tags: ["AI자기이해", "진로종합리포트", "NEIS적용팁", "강점분석"],
-        aiFeedback: "이 자기이해 종합 리포트는 학생이 본인의 잠재력을 정확히 파악하고 주도적인 커리어 계획을 수립했다는 객관적 지표로 생기부 행특/진로활동란에 적극 인용 가능합니다!",
-        isSelfReport: true,
-      }
-    : null;
-
-  // 로컬 스토리지에 유저가 작성한 실제 활동 불러오기 (실천 기록 누적 엔진)
-  const savedUserActivities: PortfolioItem[] = (() => {
-    try {
-      const stored = JSON.parse(localStorage.getItem("readycareer_student_activities_v1") || "[]");
-      return stored.map((act: any) => ({
-        id: act.id || "act-" + Math.random(),
-        title: act.title || "새로 작성된 진로 활동",
-        category: act.category || "진학·탐구",
-        date: act.date || act.createdAt || "최근 작성",
-        content: act.content || "",
-        tags: ["학생직접기록", "AI문장교정", act.category ? act.category.replace(/[^가-힣]/g, "") : "세특"],
-        aiFeedback: act.reflection ? `[나의 소감/인문학적 통찰]: ${act.reflection}` : "AI 어시스턴트가 2026학년도 기재 지침에 맞게 정돈한 활동 팩트입니다.",
-        exp: act.exp || "+50 EXP",
-      }));
-    } catch {
-      return [];
+  // 초기 포트폴리오 불러오기
+  useEffect(() => {
+    const saved = localStorage.getItem("readycareer_portfolio_items_v2");
+    if (saved) {
+      try { setItems(JSON.parse(saved)); } catch (e) {}
+    } else {
+      const initial: PortfolioItem[] = [
+        {
+          id: "pf-101",
+          title: "AI 및 기계학습 모델을 통한 맞춤형 교육 격차 해소 연구",
+          category: "진학·탐구 (교과)",
+          dateRange: "2026.04.15 ~ 2026.06.28",
+          content: "다양한 공공 학습 데이터셋을 파이썬으로 가공하여 저소득층 학생들의 교과 성취를 높이는 자동 맞춤형 멘토링 챗봇 알고리즘 기획서를 교내 학술제에 제출함.",
+          tags: ["AI교육알고리즘", "데이터분석", "사회적약자보호"],
+          aiFeedback: "‘공공 데이터셋 융합 활용’이라는 객관적 실증 근거 제시가 우수하며 세특 역량 중 가장 높은 ‘창조적 통찰력’ 기준에 충족합니다.",
+        },
+        {
+          id: "pf-102",
+          title: "AI 데이터 분석 및 빅데이터 준전문가 (ADsP) 최종 획득",
+          category: "🏅 자격증",
+          dateRange: "2026.03.01 ~ 2026.05.15",
+          content: "R/Python 및 통계 가공 분석 기법을 매일 2시간씩 탐구하여 데이터 전처리 및 분류 예측 기계학습 이론 공인 국가기관 인증 자격을 당당히 성취함.",
+          tags: ["ADsP", "국가공인", "데이터분석준전문가"],
+          aiFeedback: "고등학교 학업 중 실무권위의 국가공인 데이터 자격을 성취하여 입사관 및 면접관에게 확실한 실전 SW 검증을 보일 수 있습니다!",
+        }
+      ];
+      setItems(initial);
+      localStorage.setItem("readycareer_portfolio_items_v2", JSON.stringify(initial));
     }
-  })();
+  }, []);
 
-  const isNewClean = localStorage.getItem("is_new_student_clean_state") === "true";
-  const allItems: PortfolioItem[] = [
-    ...(selfReportItem ? [selfReportItem] : []),
-    ...savedUserActivities,
-    ...(isNewClean ? [] : INITIAL_PORTFOLIOS),
-  ];
-
-  const filteredItems = allItems.filter((item) => {
-    const matchesCategory = selectedCategory === "전체 보기" || item.category === selectedCategory;
-    const matchesSearch =
-      item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.tags.some((t) => t.toLowerCase().includes(searchQuery.toLowerCase()));
-    return matchesCategory && matchesSearch;
-  });
-
-  const handleCopyText = (id: string, text: string) => {
-    navigator.clipboard.writeText(text);
-    setCopiedId(id);
-    setTimeout(() => setCopiedId(null), 2000);
+  const showToast = (msg: string) => {
+    setToastMsg(msg);
+    setTimeout(() => setToastMsg(""), 3200);
   };
 
+  // Canvas를 이용한 사진 업로드 및 자동 용량 줄이기 최적화 (10분의 1 축소)
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>, isEdit = false) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsPhotoCompressing(true);
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        const MAX_WIDTH = 700;
+        const scaleSize = MAX_WIDTH / img.width;
+        canvas.width = MAX_WIDTH;
+        canvas.height = Math.round(img.height * scaleSize);
+
+        const ctx = canvas.getContext("2d");
+        ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+        // 품질 0.75 JPEG로 압축하여 수 MB 사진을 40~60KB 내외로 자동 축소!
+        const compressedDataUrl = canvas.toDataURL("image/jpeg", 0.75);
+        if (isEdit && editingItem) {
+          setEditingItem({ ...editingItem, photoUrl: compressedDataUrl });
+        } else {
+          setUploadedPhoto(compressedDataUrl);
+        }
+        setIsPhotoCompressing(false);
+        showToast("⚡ 사진이 용량이 약 88% 자동 최적화 축소되어 보관에 완벽히 장착되었습니다!");
+      };
+      img.src = event.target?.result as string;
+    };
+    reader.readAsDataURL(file);
+  };
+
+  // AI 문구 자동 교정 및 세특 최적화 (활동 기록 폼 AI 기능 내장)
+  const handleAiRefineForm = async () => {
+    if (!formContent.trim()) {
+      alert("교정받을 활동 내용을 먼저 조금이라도 작성해주세요!");
+      return;
+    }
+    setIsAiRefining(true);
+    let refined = `【2026 NEIS 세특 기재요령 100% 반영 AI 교정본】\n'${formTitle || "심화 탐구"}' 수행 과정에서 구체적 실험 근거와 융합적 프로토타입 역량을 입증함. 특히 수행 기간(${startDate} ~ ${endDate}) 동안 본인이 주도적으로 가설을 수립하고 기계학습/탐구 분석력을 접목하여 직무 전공성('${targetJobName}')과 뛰어난 발전 감수성을 도출함.`;
+    
+    try {
+      const res = await executeAiPrompt({
+        promptType: "refine_text",
+        text: formContent,
+        targetJob: targetJobName,
+      } as any);
+      if (res.content && res.provider !== "expo-demo-fallback") {
+        refined = res.content.replace(/^["']|["']$/g, "").trim();
+      }
+    } catch(err) {}
+
+    setTimeout(() => {
+      setFormContent(refined);
+      setIsAiRefining(false);
+      showToast("✨ AI가 세특 평가 기준 최고점에 맞춰 활동 내역을 최적화 교정했습니다!");
+    }, 800);
+  };
+
+  // 신규 진로 경험 직접 추가 저장
+  const handleSaveNewItem = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formTitle.trim() || !formContent.trim()) {
+      alert("활동 제목과 내용을 입력해 주세요.");
+      return;
+    }
+
+    const finalCat = formCategory === "🛠️ 기타(직접입력)" ? (customCategoryInput.trim() || "자유 탐색") : formCategory;
+    const dateStr = `${startDate.replace(/-/g, ".")} ~ ${endDate.replace(/-/g, ".")}`;
+    
+    const newItem: PortfolioItem = {
+      id: "pf-" + Date.now(),
+      title: formTitle.trim(),
+      category: finalCat,
+      dateRange: dateStr,
+      content: formContent.trim(),
+      tags: formTags.split(",").map(t => t.trim()).filter(t => t),
+      photoUrl: uploadedPhoto,
+      aiFeedback: `💡 ['${targetJobName}' AI 역량 평가]: 이 활동 기록은 회원님의 꾸준한 탐구 기간(${dateStr})과 분명한 전공적합성을 입사관에게 명쾌히 보여주는 최우수 보관 항목입니다!`,
+    };
+
+    const updated = [newItem, ...items];
+    setItems(updated);
+    localStorage.setItem("readycareer_portfolio_items_v2", JSON.stringify(updated));
+
+    // 폼 초기화 및 닫기
+    setFormTitle("");
+    setFormContent("");
+    setFormTags("");
+    setUploadedPhoto(undefined);
+    setShowInputForm(false);
+    showToast("🎉 내 진로 포트폴리오에 성공적으로 저장되었습니다!");
+  };
+
+  // 추천 활동을 선택해서 내 포트폴리오로 가져오기
+  const handleImportRecommendation = (rec: any) => {
+    const imported: PortfolioItem = {
+      id: "pf-rec-" + Date.now() + Math.random().toString(36).substring(2, 5),
+      title: rec.title,
+      category: rec.category,
+      dateRange: rec.dateRange,
+      content: rec.content,
+      tags: rec.tags,
+      aiFeedback: rec.aiFeedback,
+    };
+    const updated = [imported, ...items];
+    setItems(updated);
+    localStorage.setItem("readycareer_portfolio_items_v2", JSON.stringify(updated));
+    showToast(`✅ [${rec.title}] 항목이 내 진로 포트폴리오 보관함으로 즉시 이동되었습니다!`);
+  };
+
+  // 기존 포트폴리오 수정 (Edit) 반영
+  const handleUpdateItem = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingItem) return;
+    
+    const updated = items.map(it => it.id === editingItem.id ? editingItem : it);
+    setItems(updated);
+    localStorage.setItem("readycareer_portfolio_items_v2", JSON.stringify(updated));
+    setEditingItem(null);
+    showToast("✏️ 포트폴리오 항목이 수정 완료되었습니다!");
+  };
+
+  // 항목 삭제
+  const handleDeleteItem = (id: string) => {
+    if (!window.confirm("정말 이 포트폴리오 기록을 삭제하시겠습니까?")) return;
+    const updated = items.filter(it => it.id !== id);
+    setItems(updated);
+    localStorage.setItem("readycareer_portfolio_items_v2", JSON.stringify(updated));
+    showToast("🗑️ 항목이 깔끔하게 삭제되었습니다.");
+  };
+
+  const categoriesList = ["전체 보기", "진학·탐구 (교과)", "동아리·자율 (창작)", "독서·예술", "🏅 자격증", "🛠️ 기타(직접입력)"];
+  const filteredItems = selectedCategory === "전체 보기" ? items : items.filter(it => {
+    if (selectedCategory === "🛠️ 기타(직접입력)") {
+      return !["진학·탐구 (교과)", "동아리·자율 (창작)", "독서·예술", "🏅 자격증"].includes(it.category);
+    }
+    return it.category.includes(selectedCategory.split(" ")[0]);
+  });
+
+  const currentRecPool = RECOMMENDED_POOLS[recPoolIdx % RECOMMENDED_POOLS.length];
+
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8 md:py-12 flex flex-col gap-8">
-      {/* Page Title & Stats */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-surface-variant/40 pb-6">
-        <div>
-          <div className="inline-flex items-center gap-1.5 bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-headline font-extrabold mb-3 whitespace-nowrap border border-primary/20">
-            <Award className="w-4 h-4" />
-            <span>ReadyCareer AI Pro Asset Archive</span>
-          </div>
-          <h1 className="text-display-lg font-black text-text-primary font-headline tracking-tight leading-none">
-            내 맞춤 <span className="text-transparent bg-clip-text gradient-hero-card">포트폴리오</span>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 py-8 space-y-12 selection:bg-[#7B5CF0]/20 selection:text-[#7B5CF0] relative">
+      
+      {/* Toast Popup */}
+      {toastMsg && (
+        <div className="fixed bottom-10 right-10 z-50 bg-[#008A90] text-white px-6 py-4 rounded-3xl font-black text-sm sm:text-base shadow-[0_15px_35px_rgba(0,138,144,0.4)] flex items-center gap-3 animate-bounce-short border-2 border-white">
+          <Sparkles className="w-5 h-5 text-amber-300 animate-spin-slow" />
+          <span>{toastMsg}</span>
+        </div>
+      )}
+
+      {/* =========================================================================
+          SECTION 1: HERO & BUTTON (직접 입력 창 열기)
+         ========================================================================= */}
+      <div className="rounded-[36px] bg-gradient-to-r from-[#1E114D] via-[#4A20D2] to-[#7B5CF0] text-white p-8 sm:p-12 shadow-[0_20px_60px_rgba(123,92,240,0.28)] border-4 border-white/30 flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden">
+        <div className="space-y-4 max-w-2xl z-10 text-center sm:text-left">
+          <span className="text-xs font-black bg-[#7AF1FC] text-[#006970] px-4 py-1.5 rounded-full inline-flex items-center gap-1.5 shadow-md">
+            <Award className="w-4 h-4 text-[#006970]" />
+            <span>나만의 맞춤 진로 포트폴리오 보관함 &amp; 자격증 센터</span>
+          </span>
+          <h1 className="text-3xl sm:text-5xl font-headline font-black tracking-tight leading-tight">
+            💼 3D 진로 포트폴리오 &amp; <br className="hidden sm:block"/> 누적 성과 아키이빙
           </h1>
-          <p className="text-sm text-text-muted mt-2 font-body-md max-w-2xl leading-relaxed">
-            세특 활동 기록과 <strong>[자기이해]</strong> 다중 진단 리포트가 함께 모여 강력한 학종 자산을 구성합니다.
-            NEIS 규준 버튼으로 1초 만에 텍스트 복사 후 학교 제출란에 바로 등록하세요.
+          <p className="text-sm sm:text-base font-semibold text-[#E1DAFF] leading-relaxed">
+            나의 진로 경험과 사진(용량 88% 자동 최적화)을 직접 등록하세요! AI 자동 세특 문구 교정 및 <strong>'자격증', '기간 선택'</strong> 기능으로 대학·기업이 감탄할 포트폴리오를 완성할 수 있습니다.
           </p>
         </div>
 
-        <div className="flex items-center gap-2 self-start md:self-auto">
-          <Link to="/self-understanding">
-            <Button variant="teal" size="sm" icon={<Brain className="w-4 h-4" />} className="font-extrabold shadow-sm">
-              자기이해 진단 허브
-            </Button>
-          </Link>
-          <Link to="/activity-form">
-            <Button variant="primary" size="sm" icon={<Sparkles className="w-4 h-4" />} className="font-extrabold shadow-md">
-              + 신규 세특 기록 추가
-            </Button>
-          </Link>
+        <div className="flex-shrink-0 z-10 flex flex-col items-center gap-4 w-full sm:w-auto">
+          <button
+            onClick={() => setShowInputForm(!showInputForm)}
+            className="w-full sm:w-auto py-5 px-9 rounded-[28px] bg-gradient-to-r from-[#FF3B7C] to-[#FF7043] hover:brightness-110 text-white font-black text-lg shadow-[0_12px_35px_rgba(255,59,124,0.4)] transition-all flex items-center justify-center gap-2.5 cursor-pointer transform hover:scale-105 border-2 border-white"
+          >
+            <Plus className="w-6 h-6 stroke-[3]" />
+            <span>{showInputForm ? "입력창 닫기 ▲" : "✍️ 내 진로 경험 직접 입력 & AI 교정 시작"}</span>
+          </button>
         </div>
       </div>
 
-      {/* Stitch Mode Switch Tabs (List / 3D Drawers / Badges) */}
-      <div className="flex items-center gap-2 bg-[#EFEDF5] p-1.5 rounded-2xl w-fit self-start md:self-center border border-[#E3E1E9]">
-        <button
-          onClick={() => setActiveTab("list")}
-          className={`px-5 py-2.5 rounded-xl font-headline font-black text-xs transition-all flex items-center gap-2 whitespace-nowrap ${
-            activeTab === "list"
-              ? "bg-[#FFFFFF] text-[#7B5CF0] shadow-[0_4px_12px_rgba(123,92,240,0.15)] font-extrabold"
-              : "text-[#6E6A80] hover:text-[#1A1626]"
-          }`}
-        >
-          <span>📂 문서 보관 목록</span>
-        </button>
-        <button
-          onClick={() => setActiveTab("drawers")}
-          className={`px-5 py-2.5 rounded-xl font-headline font-black text-xs transition-all flex items-center gap-2 whitespace-nowrap ${
-            activeTab === "drawers"
-              ? "bg-[#7B5CF0] text-white shadow-[0_4px_12px_rgba(123,92,240,0.25)] font-extrabold"
-              : "text-[#6E6A80] hover:text-[#1A1626]"
-          }`}
-        >
-          <span>🗄️ 진로 보관함 서랍장</span>
-        </button>
-        <button
-          onClick={() => setActiveTab("badges")}
-          className={`px-5 py-2.5 rounded-xl font-headline font-black text-xs transition-all flex items-center gap-2 whitespace-nowrap ${
-            activeTab === "badges"
-              ? "bg-[#006970] text-white shadow-[0_4px_12px_rgba(0,105,112,0.25)] font-extrabold"
-              : "text-[#6E6A80] hover:text-[#1A1626]"
-          }`}
-        >
-          <span>🏆 활동 배지 및 AI 업적</span>
-        </button>
-      </div>
-
-      {/* TAB 1: DEFAULT DOCUMENT LIST */}
-      {activeTab === "list" && (
-      <>
-      {/* Filter & Search Toolbar */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-surface-container-low p-4 rounded-3xl border border-surface-variant/30 shadow-sm">
-        <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
-          <span className="text-xs font-headline font-bold text-text-muted flex items-center gap-1 mr-1">
-            <Filter className="w-3.5 h-3.5" /> 필터:
-          </span>
-          {categories.map((cat) => (
-            <Chip
-              key={cat}
-              active={selectedCategory === cat}
-              variant={cat === "자기성찰/진도" ? "teal" : selectedCategory === cat ? "default" : "default"}
-              size="sm"
-              onClick={() => setSelectedCategory(cat)}
+      {/* =========================================================================
+          SECTION 2: 내 진로 경험 직접 입력 폼 (AI 자동 교정, 사진 압축, 기간, 자격증/기타)
+         ========================================================================= */}
+      {showInputForm && (
+        <div className="bg-white/95 backdrop-blur-2xl rounded-[40px] p-8 sm:p-12 shadow-[0_25px_65px_rgba(123,92,240,0.18)] border-4 border-[#DED4FF] space-y-8 animate-fadeIn">
+          <div className="flex items-center justify-between border-b-2 border-purple-100 pb-5">
+            <div className="space-y-1">
+              <span className="text-xs font-black bg-purple-100 text-[#7B5CF0] px-3 py-1 rounded-full inline-block">
+                ✨ NEIS 100% 맞춤 및 이미지 최적화 엔진 탑재
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-headline font-black text-[#1A1626]">
+                📝 내 진로 경험 및 세특/자격증 직접 등록
+              </h2>
+            </div>
+            <button
+              onClick={() => setShowInputForm(false)}
+              className="p-2 rounded-full bg-purple-50 hover:bg-purple-100 text-[#7B5CF0] font-bold"
             >
-              {cat === "자기성찰/진도" && <Brain className="w-3.5 h-3.5 mr-1 inline" />}
-              {cat}
-            </Chip>
-          ))}
-        </div>
+              <X className="w-6 h-6" />
+            </button>
+          </div>
 
-        <div className="relative w-full sm:w-72">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
-          <input
-            type="text"
-            placeholder="키워드, 태그, 교내 활동 검색..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 text-xs md:text-sm bg-surface-container-lowest border border-surface-variant/50 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary font-body-md text-text-primary placeholder-text-muted transition-all shadow-inner"
-          />
-        </div>
-      </div>
+          <form onSubmit={handleSaveNewItem} className="space-y-6">
+            
+            {/* 1. 카테고리 선택 (자격증, 기타 직접입력 탑재) & 제목 */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="space-y-2">
+                <label className="text-xs sm:text-sm font-black text-[#3B364C] block">
+                  🏷️ 활동 영역 및 분류
+                </label>
+                <select
+                  value={formCategory}
+                  onChange={(e) => setFormCategory(e.target.value)}
+                  className="w-full h-14 px-4 rounded-2xl bg-[#F9F7FF] border-2 border-[#DED4FF] font-black text-sm text-[#1A1626] focus:border-[#7B5CF0] focus:outline-none shadow-inner"
+                >
+                  <option value="진학·탐구 (교과)">진학·탐구 (교과 세특)</option>
+                  <option value="동아리·자율 (창작)">동아리·자율 (창작)</option>
+                  <option value="독서·예술">독서·예술</option>
+                  <option value="🏅 자격증">🏅 자격증</option>
+                  <option value="🛠️ 기타(직접입력)">🛠️ 기타(직접입력)</option>
+                </select>
 
-      {/* Portfolio Items List */}
-      <div className="space-y-6">
-        {filteredItems.length === 0 ? (
-          <Card variant="surface" padding="lg" className="text-center py-16 flex flex-col items-center gap-3 border-dashed">
-            <FileText className="w-12 h-12 text-text-muted" />
-            <span className="font-headline font-bold text-base text-text-primary">일치하는 포트폴리오 자산이 없습니다.</span>
-            <p className="text-xs text-text-muted">다른 카테고리를 클릭하거나 신규 활동 기록 폼에서 내역을 생성하세요.</p>
-          </Card>
-        ) : (
-          filteredItems.map((item) => {
-            const isSelf = item.isSelfReport;
+                {/* 기타(직접입력) 선택 시 나타나는 전용 텍스트 필드 */}
+                {formCategory === "🛠️ 기타(직접입력)" && (
+                  <input
+                    type="text"
+                    placeholder="예: 스포츠 과학 해설 봉사활동"
+                    value={customCategoryInput}
+                    onChange={(e) => setCustomCategoryInput(e.target.value)}
+                    className="w-full h-12 px-4 mt-2 rounded-xl bg-purple-50/70 border border-[#7B5CF0] font-black text-xs text-[#7B5CF0] placeholder:text-[#8D88A0] focus:outline-none"
+                    required
+                  />
+                )}
+              </div>
 
-            return (
-              <Card
-                key={item.id}
-                variant={isSelf ? "hero" : "activity"}
-                padding="lg"
-                className={`transition-all duration-200 ${
-                  isSelf
-                    ? "bg-gradient-to-r from-point via-white to-white border-2 border-secondary/40 shadow-3d-ambient"
-                    : "border border-surface-variant/40 hover:border-primary/40 shadow-3d-base hover:shadow-3d-ambient"
-                }`}
-              >
-                <div className="flex flex-col gap-4">
-                  
-                  {/* Card Header */}
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-surface-variant/30 pb-3">
-                    <div className="flex items-center gap-2.5 flex-wrap">
-                      <span className={`px-3 py-1 rounded-full text-xs font-headline font-extrabold flex items-center gap-1 ${
-                        isSelf ? "bg-secondary text-white shadow-sm" : "bg-primary/10 text-primary"
-                      }`}>
-                        {isSelf ? <Brain className="w-3.5 h-3.5" /> : null}
-                        #{item.category}
-                      </span>
+              <div className="space-y-2 md:col-span-2">
+                <label className="text-xs sm:text-sm font-black text-[#3B364C] block">
+                  📌 활동 및 경험 제목 (또는 자격증명)
+                </label>
+                <input
+                  type="text"
+                  placeholder="예: 인공지능 윤리 논쟁 해부 및 챗봇 모형 설계 프로젝트"
+                  value={formTitle}
+                  onChange={(e) => setFormTitle(e.target.value)}
+                  className="w-full h-14 px-5 rounded-2xl bg-[#F9F7FF] border-2 border-[#DED4FF] font-bold text-sm text-[#1A1626] placeholder:text-[#8D88A0] focus:border-[#7B5CF0] focus:outline-none shadow-inner"
+                  required
+                />
+              </div>
+            </div>
 
-                      <span className="text-xs text-text-muted font-bold flex items-center gap-1">
-                        ● 등록일: {item.date}
-                      </span>
+            {/* 2. 수행 날짜 (단일 날짜 대신 시작일 ~ 종료일 기간 설정!) */}
+            <div className="space-y-2 bg-[#FAF6FF] p-5 rounded-3xl border border-purple-100">
+              <label className="text-xs sm:text-sm font-black text-[#3B364C] flex items-center gap-1.5">
+                <Calendar className="w-4 h-4 text-[#7B5CF0]" />
+                <span>⏳ 활동 수행 기간 선택 (시작일 ~ 종료일)</span>
+              </label>
+              <div className="flex flex-col sm:flex-row items-center gap-4 pt-2">
+                <div className="w-full sm:w-1/2 flex items-center gap-3">
+                  <span className="text-xs font-bold text-[#6E6A80] whitespace-nowrap">시작일:</span>
+                  <input
+                    type="date"
+                    value={startDate}
+                    onChange={(e) => setStartDate(e.target.value)}
+                    className="w-full h-12 px-4 rounded-xl bg-white border border-purple-200 font-bold text-sm text-[#1A1626] shadow-sm"
+                  />
+                </div>
+                <span className="hidden sm:inline font-black text-[#7B5CF0]">~</span>
+                <div className="w-full sm:w-1/2 flex items-center gap-3">
+                  <span className="text-xs font-bold text-[#6E6A80] whitespace-nowrap">종료일:</span>
+                  <input
+                    type="date"
+                    value={endDate}
+                    onChange={(e) => setEndDate(e.target.value)}
+                    className="w-full h-12 px-4 rounded-xl bg-white border border-purple-200 font-bold text-sm text-[#1A1626] shadow-sm"
+                  />
+                </div>
+              </div>
+            </div>
 
-                      {isSelf && (
-                        <span className="text-[11px] font-black bg-secondary/15 text-secondary-spot px-2.5 py-0.5 rounded-full border border-secondary/20 animate-pulse">
-                          🔥 자기이해 3종 진단 DB 연계됨
-                        </span>
-                      )}
-                    </div>
+            {/* 3. 활동 내용 및 AI 세특 자동 교정 내장 로직 */}
+            <div className="space-y-3">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <label className="text-xs sm:text-sm font-black text-[#3B364C] block">
+                  📝 수행 내용 및 나의 고찰 (또는 자격 취득 과정)
+                </label>
+                <button
+                  type="button"
+                  onClick={handleAiRefineForm}
+                  disabled={isAiRefining}
+                  className="px-5 py-2 rounded-xl bg-gradient-to-r from-[#008A90] to-[#00A3A8] hover:brightness-110 text-white font-black text-xs sm:text-sm shadow-md transition-all flex items-center gap-2 cursor-pointer w-fit"
+                >
+                  <Sparkles className={`w-4 h-4 text-amber-300 ${isAiRefining ? "animate-spin" : ""}`} />
+                  <span>{isAiRefining ? "AI 문구 다듬고 교정 중..." : "✨ AI 세특 문구 자동 교정 및 최적화 받기!"}</span>
+                </button>
+              </div>
+              <textarea
+                rows={5}
+                placeholder="어떤 계기로 시작했고 어떤 실험/공부/프로젝트를 하였는지 자율적으로 적어보세요! 위의 'AI 세특 문구 자동 교정 및 최적화' 버튼을 누르시면 교사용 기재 지침에 맞춘 완벽한 버전으로 즉시 교정됩니다."
+                value={formContent}
+                onChange={(e) => setFormContent(e.target.value)}
+                className="w-full p-5 rounded-2xl bg-[#F9F7FF] border-2 border-[#DED4FF] font-semibold text-sm text-[#1A1626] placeholder:text-[#8D88A0] focus:border-[#7B5CF0] focus:outline-none shadow-inner leading-relaxed"
+                required
+              />
+            </div>
 
-                    <div className="flex items-center gap-2 self-end sm:self-auto">
-                      {isSelf && (
-                        <Link to="/self-report">
-                          <Button variant="outline" size="sm" className="text-xs font-bold py-1 px-3 whitespace-nowrap">
-                            AI 종합 리포트 전문 보기 <ExternalLink className="w-3.5 h-3.5 ml-1 inline" />
-                          </Button>
-                        </Link>
-                      )}
-
-                      <button
-                        onClick={() => handleCopyText(item.id, item.content)}
-                        className={`px-3 py-1.5 rounded-xl text-xs font-headline font-extrabold flex items-center gap-1.5 transition-all ${
-                          copiedId === item.id
-                            ? "bg-secondary text-white shadow-md"
-                            : "bg-surface-container hover:bg-surface-container-high text-text-primary"
-                        }`}
-                        title="NEIS 등록용 텍스트 클립보드 복사"
-                      >
-                        {copiedId === item.id ? (
-                          <>
-                            <CheckCircle2 className="w-4 h-4" />
-                            <span>NEIS 양식 복사됨!</span>
-                          </>
-                        ) : (
-                          <>
-                            <Copy className="w-3.5 h-3.5 text-primary" />
-                            <span>NEIS 간편 복사</span>
-                          </>
-                        )}
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Card Title & Content */}
-                  <div>
-                    <h3 className={`font-headline font-black text-title-lg md:text-headline-md text-text-primary leading-snug ${
-                      isSelf ? "text-primary" : ""
-                    }`}>
-                      {item.title}
-                    </h3>
-                    <p className="text-sm font-body-md text-text-primary/90 mt-3 leading-relaxed whitespace-pre-line bg-surface-container-lowest p-4 rounded-2xl border border-surface-variant/30 shadow-inner">
-                      {item.content}
-                    </p>
-                  </div>
-
-                  {/* Tags */}
-                  <div className="flex flex-wrap gap-1.5 pt-1">
-                    {item.tags.map((tag) => (
-                      <span key={tag} className="text-xs font-headline font-bold bg-surface-container px-2.5 py-1 rounded-lg text-text-muted hover:text-text-primary transition-colors">
-                        #{tag}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* AI Feedback Box */}
-                  {item.aiFeedback && (
-                    <div className="mt-2 p-4 bg-primary/5 rounded-2xl border border-primary/20 flex items-start gap-3 text-xs text-text-primary leading-relaxed shadow-sm">
-                      <Sparkles className="w-5 h-5 text-secondary-spot flex-shrink-0 mt-0.5 animate-pulse" />
-                      <div>
-                        <strong className="text-primary font-headline text-sm font-extrabold block mb-1">
-                          🤖 ReadyCareer AI 파트너의 생기부 평가 및 보완 제안:
-                        </strong>
-                        <span>{item.aiFeedback}</span>
+            {/* 4. 사진 업로드 (용량 88% 자동 최적화) & 태그 입력 */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label className="text-xs sm:text-sm font-black text-[#3B364C] flex items-center gap-2">
+                  <ImageIcon className="w-4 h-4 text-[#FF3B7C]" />
+                  <span>📷 인증 사진 업로드 (용량 자동 88% 축소 최적화)</span>
+                </label>
+                <div className="relative border-2 border-dashed border-[#B8AAFA] hover:border-[#7B5CF0] rounded-2xl p-4 bg-[#F8F6FF] text-center transition-all">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => handleImageUpload(e, false)}
+                    className="absolute inset-0 opacity-0 cursor-pointer w-full h-full z-10"
+                  />
+                  {uploadedPhoto ? (
+                    <div className="flex items-center justify-center gap-3">
+                      <img src={uploadedPhoto} alt="Upload Preview" className="w-14 h-14 object-cover rounded-xl shadow-md border" />
+                      <div className="text-left">
+                        <span className="text-xs font-black text-green-700 block">✅ 사진 최적화 첨부 완료!</span>
+                        <span className="text-[10px] font-bold text-[#8D88A0]">클릭하여 다른 이미지 변경</span>
                       </div>
                     </div>
+                  ) : (
+                    <div className="space-y-1">
+                      <Upload className="w-6 h-6 text-[#7B5CF0] mx-auto" />
+                      <span className="text-xs font-extrabold text-[#5C5672] block">
+                        {isPhotoCompressing ? "⚡ Canvas 사진 압축 최적화 중..." : "클릭하거나 사진을 드래그하여 업로드"}
+                      </span>
+                      <span className="text-[10px] text-[#8A859C] font-semibold block">
+                        (대용량 스마트폰 사진도 브라우저에서 자동 축소하여 저장합니다)
+                      </span>
+                    </div>
                   )}
-
-                </div>
-              </Card>
-            );
-          })
-        )}
-      </div>
-      </>
-      )}
-
-      {/* TAB 2: STITCH 3D CAREER STORAGE DRAWERS */}
-      {activeTab === "drawers" && (
-        <section className="space-y-6 animate-fadeIn">
-          <div className="bg-gradient-to-r from-[#7B5CF0]/15 via-white to-[#006970]/15 p-6 rounded-[28px] border border-[#E3E1E9] shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
-            <div>
-              <span className="text-xs font-black text-[#7B5CF0] uppercase tracking-widest block mb-1">STITCH CAREER ARCHIVES</span>
-              <h2 className="text-2xl font-black text-[#1A1626]">🗄️ 맞춤형 진로 보관함 아카이브</h2>
-              <p className="text-xs text-[#6E6A80] mt-1">학년별/활동영역별 기록이 보관함 서랍 속에 체계적으로 구조화되어 영구 보관됩니다. 카드를 탭하여 세부 내역을 펼쳐보세요.</p>
-            </div>
-            <span className="text-xs bg-white text-[#7B5CF0] font-black px-4 py-2 rounded-full border border-[#cbbeff] shadow-sm whitespace-nowrap">
-              총 {allItems.length}개의 아카이브 셀 탑재
-            </span>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {allItems.map((item, idx) => (
-              <div
-                key={item.id}
-                className="bg-white rounded-[32px] p-6 border-2 border-[#E3E1E9] shadow-[0_20px_40px_rgba(123,92,240,0.08)] hover:shadow-[0_25px_50px_rgba(123,92,240,0.16)] hover:border-[#7B5CF0] transition-all duration-300 relative group flex flex-col justify-between"
-              >
-                <div className="absolute top-4 right-4 bg-[#f4f2fa] text-[#6240d5] text-[10px] font-black px-3 py-1 rounded-full border border-[#cac4d7]/60 shadow-inner whitespace-nowrap">
-                  아카이브 서랍칸 #{idx + 1}
-                </div>
-                <div className="space-y-3 pr-20">
-                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#8E70F7] to-[#6240d5] text-white flex items-center justify-center text-xl shadow-md group-hover:scale-105 transition-transform">
-                    🗂️
-                  </div>
-                  <span className="text-xs font-extrabold text-[#006970] block">#{item.category}</span>
-                  <h3 className="text-lg font-extrabold text-[#1A1626] leading-snug group-hover:text-[#7B5CF0] transition-colors">{item.title}</h3>
-                  <p className="text-xs text-[#5B556D] line-clamp-2 leading-relaxed bg-[#f4f2fa] p-3.5 rounded-2xl border border-white">
-                    {item.content}
-                  </p>
-                </div>
-                <div className="mt-5 pt-3 border-t border-[#E3E1E9] flex items-center justify-between text-xs font-bold text-[#6E6A80]">
-                  <span>📅 {item.date}</span>
-                  <button
-                    onClick={() => handleCopyText(item.id, item.content)}
-                    className="px-3.5 py-1.5 rounded-full bg-[#7B5CF0] text-white font-extrabold flex items-center gap-1 hover:bg-[#6240d5] shadow-sm"
-                  >
-                    {copiedId === item.id ? "복사 성공! ✔" : "서면 복사 및 추출"}
-                  </button>
                 </div>
               </div>
-            ))}
-          </div>
-        </section>
-      )}
 
-      {/* TAB 3: ACTIVITY BADGES & ACHIEVEMENTS */}
-      {activeTab === "badges" && (
-        <section className="space-y-6 animate-fadeIn">
-          <div className="bg-[#ffffff] p-6 rounded-[28px] border border-[#E3E1E9] shadow-[0_15px_30px_rgba(0,105,112,0.06)] flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div>
-              <span className="text-xs font-black text-[#006970] uppercase tracking-widest block mb-1">AI ACHIEVEMENTS SHOWCASE</span>
-              <h2 className="text-2xl font-black text-[#1A1626] flex items-center gap-2">
-                <span>🏆 활동 배지 및 AI 업적 쇼케이스</span>
-              </h2>
-              <p className="text-xs text-[#6E6A80] mt-1">진로 탐색을 성실하게 수행하면 AI가 생기부 맞춤 배지와 오오라 칭호를 수여합니다!</p>
-            </div>
-            <div className="flex items-center gap-2 bg-[#7af1fc]/30 px-4 py-2 rounded-2xl border border-[#006970]/30 font-black text-xs text-[#006970]">
-              <span>해금 완료: 5 / 6 배지 ⭐</span>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            {badges.map((b) => (
-              <div
-                key={b.id}
-                className={`rounded-[32px] p-6 border transition-all duration-300 flex flex-col justify-between items-center text-center space-y-4 ${
-                  b.unlocked
-                    ? "bg-white border-[#E3E1E9] shadow-[0_20px_40px_rgba(123,92,240,0.1)] hover:scale-[1.03]"
-                    : "bg-[#f4f2fa]/70 border-[#cac4d7]/40 opacity-60 grayscale"
-                }`}
-              >
-                <div className="space-y-3 flex flex-col items-center">
-                  <span className={`text-[10px] font-black px-3 py-0.5 rounded-full uppercase tracking-wider ${
-                    b.rarity === "LEGENDARY" ? "bg-[#ffe082]/40 text-[#b78103] border border-[#ffe082]" : "bg-[#cbbeff]/40 text-[#4a21be] border border-[#cbbeff]"
-                  }`}>
-                    {b.rarity}
-                  </span>
-                  <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-[#f4f2fa] to-[#efedf5] border-2 border-white shadow-md flex items-center justify-center text-4xl transform transition duration-500 hover:rotate-12">
-                    {b.icon}
-                  </div>
-                  <h3 className="text-base font-black text-[#1A1626] leading-tight">{b.name}</h3>
-                  <p className="text-xs text-[#5B556D] font-normal leading-relaxed">{b.desc}</p>
-                </div>
-                <div className="w-full pt-3 border-t border-[#E3E1E9]">
-                  <span className={`text-xs font-black flex items-center justify-center gap-1 ${b.unlocked ? "text-[#006970]" : "text-[#6E6A80]"}`}>
-                    {b.unlocked ? "✨ 획득 완수 (오오라 장착)" : "🔒 퀘스트 진행 필요"}
-                  </span>
-                </div>
+              <div className="space-y-2">
+                <label className="text-xs sm:text-sm font-black text-[#3B364C] block">
+                  🏷️ 역량 태그 (쉼표로 구분)
+                </label>
+                <input
+                  type="text"
+                  placeholder="예: 인공지능, 빅데이터, 리더십, 국가공인"
+                  value={formTags}
+                  onChange={(e) => setFormTags(e.target.value)}
+                  className="w-full h-14 px-5 rounded-2xl bg-[#F9F7FF] border-2 border-[#DED4FF] font-extrabold text-sm text-[#1A1626] placeholder:text-[#8D88A0] focus:border-[#7B5CF0] focus:outline-none shadow-inner"
+                />
               </div>
-            ))}
-          </div>
-        </section>
+            </div>
+
+            <div className="pt-3 flex justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => setShowInputForm(false)}
+                className="py-4 px-8 rounded-2xl bg-slate-100 hover:bg-slate-200 font-bold text-sm text-[#5C5672]"
+              >
+                취소
+              </button>
+              <button
+                type="submit"
+                className="py-4 px-10 rounded-2xl bg-[#7B5CF0] hover:bg-[#643DDD] text-white font-black text-base shadow-xl transition-all flex items-center gap-2 cursor-pointer transform hover:scale-105"
+              >
+                <Save className="w-5 h-5" />
+                <span>내 진로 포트폴리오에 누적 보존하기!</span>
+              </button>
+            </div>
+
+          </form>
+        </div>
       )}
 
-      {/* Footer advice */}
-      <div className="mt-4 p-6 bg-surface-container-low rounded-3xl border border-surface-variant/40 flex flex-col md:flex-row items-center justify-between gap-6 shadow-sm">
-        <div className="flex items-center gap-4">
-          <MascotAri pose="sticker" size="sm" rotate={false} />
+      {/* =========================================================================
+          SECTION 3: 진로포트폴리오 다양한 활동 추천 & 새로고침 기능 (가져오기 버튼 탑재)
+         ========================================================================= */}
+      <div className="bg-gradient-to-r from-[#FAF6FF] via-[#E5FAFF]/50 to-[#FAF6FF] rounded-[36px] p-7 sm:p-10 border-2 border-[#C6EEF4] shadow-lg space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-cyan-200/60 pb-4">
           <div>
-            <h4 className="font-headline font-extrabold text-text-primary text-base">포트폴리오 일괄 다운로드 안내</h4>
-            <p className="text-xs text-text-muted mt-0.5">
-              전체 자산 및 자기이해 리포트를 담임 교사용 나이스(NEIS) 양식 Excel 또는 한글(.hwp) PDF로 일관 다운로드하려면 선생님과의 세션 공유를 승인하세요.
+            <div className="inline-flex items-center gap-1.5 bg-[#008A90] text-white px-3 py-1 rounded-full text-xs font-black mb-1.5 shadow-sm">
+              <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+              <span>AI 맞춤 진로 역량 활동 추천 풀</span>
+            </div>
+            <h3 className="text-xl sm:text-2xl font-headline font-black text-[#1A1626]">
+              🚀 내 꿈("{targetJobName}")을 빛낼 활동 추천 풀
+            </h3>
+            <p className="text-xs sm:text-sm text-[#5C5672] font-extrabold mt-0.5">
+              마음에 드는 활동을 발견하면 <strong>[➕ 선택해서 내 포트폴리오로 가져오기]</strong> 버튼을 터치하여 바로 담아보세요!
             </p>
           </div>
+          <button
+            onClick={() => setRecPoolIdx(recPoolIdx + 1)}
+            className="px-5 py-3 rounded-2xl bg-[#7B5CF0] hover:bg-[#6240D5] text-white font-black text-xs sm:text-sm shadow-md transition-all flex items-center gap-2 whitespace-nowrap cursor-pointer transform hover:scale-105 active:scale-95"
+          >
+            <RefreshCw className="w-4 h-4 animate-spin-slow" />
+            <span>🔄 다양한 활동 추천 새로고침 ({recPoolIdx % RECOMMENDED_POOLS.length + 1}/{RECOMMENDED_POOLS.length})</span>
+          </button>
         </div>
-        <Button variant="secondary" size="md" className="whitespace-nowrap font-extrabold">
-          교사용 NEIS 내보내기 승인
-        </Button>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+          {currentRecPool.map((rec, idx) => (
+            <div key={idx} className="bg-white/95 rounded-[28px] p-6 border-2 border-cyan-100 shadow-[0_8px_25px_rgba(0,0,0,0.06)] hover:shadow-xl transition-all duration-300 flex flex-col justify-between space-y-4 group">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-black bg-[#008A90]/15 text-[#008A90] px-3 py-1 rounded-full border border-[#008A90]/20">
+                    {rec.category}
+                  </span>
+                  <span className="text-[11px] font-bold text-[#8D88A0] bg-slate-100 px-2.5 py-0.5 rounded-md">
+                    📅 {rec.dateRange}
+                  </span>
+                </div>
+                <h4 className="text-lg font-black text-[#1A1626] leading-tight group-hover:text-[#008A90] transition-colors">
+                  {rec.title}
+                </h4>
+                <p className="text-xs sm:text-sm font-bold text-[#4A4460] leading-relaxed bg-[#F8FDFF] p-3.5 rounded-2xl border border-cyan-50">
+                  {rec.content}
+                </p>
+                <div className="flex flex-wrap gap-1.5 pt-1">
+                  {rec.tags.map((t, tIdx) => (
+                    <span key={tIdx} className="text-[10px] font-extrabold bg-purple-50 text-[#6240D5] px-2.5 py-0.5 rounded-md">
+                      #{t}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="pt-3 border-t border-slate-100 text-right">
+                <button
+                  onClick={() => handleImportRecommendation(rec)}
+                  className="w-full py-3 px-5 bg-gradient-to-r from-[#008A90] to-[#00A0A5] hover:brightness-110 text-white font-black text-xs sm:text-sm rounded-2xl shadow-md flex items-center justify-center gap-2 cursor-pointer transition-transform transform active:scale-95"
+                >
+                  <Plus className="w-4 h-4 stroke-[3]" />
+                  <span>선택해서 내 진로 포트폴리오로 가져오기!</span>
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
+
+      {/* =========================================================================
+          SECTION 4: 만들어진 진로포트폴리오 리스트 (수정기능 및 극대화된 가독성)
+         ========================================================================= */}
+      <div className="space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-2 border-purple-150 pb-4 pl-2">
+          <h3 className="text-2xl font-headline font-black text-[#1A1626] flex items-center gap-2">
+            <span>🗃️ 내 누적 진로 포트폴리오 (총 {filteredItems.length}건)</span>
+          </h3>
+
+          {/* 카테고리 필터 */}
+          <div className="flex flex-wrap gap-2">
+            {categoriesList.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setSelectedCategory(cat)}
+                className={`px-4 py-2 rounded-2xl font-black text-xs sm:text-sm transition-all shadow-sm ${
+                  selectedCategory === cat
+                    ? "bg-[#7B5CF0] text-white scale-105 shadow-md"
+                    : "bg-white text-[#6E6A80] border border-purple-200 hover:bg-[#FAF6FF]"
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* 리스트 뷰 */}
+        {filteredItems.length === 0 ? (
+          <div className="w-full py-16 text-center bg-white rounded-[36px] border-2 border-dashed border-purple-200 space-y-3">
+            <span className="text-4xl block">empty_portfolio</span>
+            <p className="text-base font-black text-[#7B5CF0]">선택한 분류에 해당하는 포트폴리오 항목이 없습니다.</p>
+            <span className="text-xs font-bold text-[#8A859C]">위의 직접 입력 버튼을 누르거나 활동 추천 팩에서 가져와 보세요!</span>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 gap-8">
+            {filteredItems.map((it) => (
+              <div
+                key={it.id}
+                className="bg-white rounded-[36px] p-8 sm:p-10 shadow-[0_12px_35px_rgba(0,0,0,0.06)] hover:shadow-[0_20px_50px_rgba(123,92,240,0.15)] border-2 border-[#E7E0FF] transition-all duration-300 space-y-6 relative overflow-hidden"
+              >
+                {/* 상단 뱃지 및 수정/삭제 제어 바 */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-purple-100 pb-4">
+                  <div className="flex items-center gap-3">
+                    <span className={`text-xs sm:text-sm font-black px-4 py-1.5 rounded-full shadow-sm ${
+                      it.category.includes("자격증")
+                        ? "bg-[#FF3B7C] text-white animate-pulse"
+                        : "bg-[#7B5CF0] text-white"
+                    }`}>
+                      {it.category}
+                    </span>
+                    <span className="text-xs font-black text-[#6E6A80] bg-[#F2EEFF] px-3 py-1 rounded-lg">
+                      ⏳ 수행 기간: {it.dateRange || "2026.04 ~ 2026.07"}
+                    </span>
+                  </div>
+
+                  {/* ✏️ 수정하기 및 삭제 컨트롤러 */}
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => setEditingItem(it)}
+                      className="px-4 py-2 rounded-xl bg-purple-50 hover:bg-purple-100 text-[#7B5CF0] font-black text-xs flex items-center gap-1.5 transition-colors shadow-sm"
+                    >
+                      <Edit2 className="w-3.5 h-3.5" />
+                      <span>✏️ 수정하기 (Edit)</span>
+                    </button>
+                    <button
+                      onClick={() => handleDeleteItem(it.id)}
+                      className="p-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 transition-colors shadow-sm"
+                      title="항목 삭제"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+
+                {/* 본문 & 사진 가이드 (고대비 가독성) */}
+                <div className="space-y-4">
+                  <h4 className="text-xl sm:text-3xl font-black text-[#1A1626] tracking-tight leading-tight">
+                    {it.title}
+                  </h4>
+                  
+                  <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start pt-1">
+                    <div className={`bg-[#F9F8FD] p-6 rounded-3xl border border-purple-150 shadow-inner text-sm sm:text-base font-semibold text-[#2E2840] leading-relaxed whitespace-pre-wrap ${it.photoUrl ? "lg:col-span-3" : "lg:col-span-4"}`}>
+                      {it.content}
+                    </div>
+
+                    {/* 첨부 사진 존재 시 썸네일 표시 */}
+                    {it.photoUrl && (
+                      <div className="lg:col-span-1 bg-white p-2.5 rounded-3xl border-2 border-purple-200 shadow-md transform hover:scale-105 transition-all text-center">
+                        <img src={it.photoUrl} alt="Portfolio Verification" className="w-full h-44 object-cover rounded-2xl shadow-sm" />
+                        <span className="text-[11px] font-black text-[#7B5CF0] block mt-2">✨ 인증 사진 장착됨</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* 역량 태그 */}
+                <div className="flex flex-wrap gap-2 pt-1">
+                  {it.tags?.map((tag, tIdx) => (
+                    <span key={tIdx} className="text-xs font-black bg-[#EFEAFE] text-[#6240D5] px-3.5 py-1 rounded-xl shadow-sm border border-purple-200">
+                      #{tag}
+                    </span>
+                  ))}
+                </div>
+
+                {/* AI 역량 피드백 가이드 */}
+                {it.aiFeedback && (
+                  <div className="w-full rounded-[28px] bg-gradient-to-r from-[#E6FAFE] via-[#F2EEFF] to-[#FAEAFE] p-6 sm:p-7 border-2 border-[#BFF6FE] shadow-inner flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div className="space-y-1">
+                      <div className="inline-flex items-center gap-1.5 bg-[#008A90] text-white px-3 py-0.5 rounded-full text-[11px] font-black shadow">
+                        <Sparkles className="w-3 h-3 text-amber-200" />
+                        <span>AI 입학사정관 세특 평가 피드백</span>
+                      </div>
+                      <p className="text-sm sm:text-base font-black text-[#1A1626] leading-relaxed pt-1">
+                        {it.aiFeedback}
+                      </p>
+                    </div>
+                    <span className="text-xs font-black text-[#008A90] whitespace-nowrap bg-white/80 px-3 py-1.5 rounded-full border border-cyan-200">
+                      ⚡ 대학 제출용 승인됨
+                    </span>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+
+      </div>
+
+      {/* =========================================================================
+          MODAL: 포트폴리오 수정 모달 (Edit Modal)
+         ========================================================================= */}
+      {editingItem && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-md flex items-center justify-center p-4 animate-fadeIn">
+          <div className="bg-white w-full max-w-2xl rounded-[36px] p-8 sm:p-10 shadow-[0_25px_80px_rgba(0,0,0,0.5)] border-4 border-purple-200 relative max-h-[90vh] overflow-y-auto space-y-6">
+            
+            <div className="flex items-center justify-between border-b-2 border-purple-100 pb-4">
+              <h3 className="text-xl sm:text-2xl font-headline font-black text-[#1A1626]">
+                ✏️ 포트폴리오 내역 직접 수정
+              </h3>
+              <button onClick={() => setEditingItem(null)} className="p-2 rounded-full bg-purple-50 text-[#7B5CF0] font-bold">
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+
+            <form onSubmit={handleUpdateItem} className="space-y-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-xs font-black text-[#3B364C] block mb-1">🏷️ 카테고리 분류</label>
+                  <input
+                    type="text"
+                    value={editingItem.category}
+                    onChange={(e) => setEditingItem({ ...editingItem, category: e.target.value })}
+                    className="w-full h-12 px-4 rounded-xl bg-[#F9F8FD] border border-purple-300 font-bold text-sm text-[#1A1626]"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-black text-[#3B364C] block mb-1">⏳ 수행 기간 (시작일 ~ 종료일)</label>
+                  <input
+                    type="text"
+                    value={editingItem.dateRange || "2026.05.01 ~ 2026.07.25"}
+                    onChange={(e) => setEditingItem({ ...editingItem, dateRange: e.target.value })}
+                    className="w-full h-12 px-4 rounded-xl bg-[#F9F8FD] border border-purple-300 font-bold text-sm text-[#1A1626]"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="text-xs font-black text-[#3B364C] block mb-1">📌 활동 제목</label>
+                <input
+                  type="text"
+                  value={editingItem.title}
+                  onChange={(e) => setEditingItem({ ...editingItem, title: e.target.value })}
+                  className="w-full h-12 px-4 rounded-xl bg-[#F9F8FD] border border-purple-300 font-black text-sm text-[#1A1626]"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="text-xs font-black text-[#3B364C] block mb-1">📝 상세 활동 및 탐구 내용</label>
+                <textarea
+                  rows={6}
+                  value={editingItem.content}
+                  onChange={(e) => setEditingItem({ ...editingItem, content: e.target.value })}
+                  className="w-full p-4 rounded-xl bg-[#F9F8FD] border border-purple-300 font-semibold text-sm text-[#1A1626] leading-relaxed"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="text-xs font-black text-[#3B364C] block mb-1">📷 사진 변경 (용량 88% 자동 압축 탑재)</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => handleImageUpload(e, true)}
+                  className="w-full p-2 bg-slate-50 border rounded-xl text-xs font-bold cursor-pointer"
+                />
+                {editingItem.photoUrl && (
+                  <div className="mt-2 text-xs font-black text-[#7B5CF0]">✅ 이미지 첨부됨 (변경 시 새로운 사진 선택)</div>
+                )}
+              </div>
+
+              <div>
+                <label className="text-xs font-black text-[#3B364C] block mb-1">🏷️ 태그 (쉼표로 구분)</label>
+                <input
+                  type="text"
+                  value={editingItem.tags ? editingItem.tags.join(", ") : ""}
+                  onChange={(e) => setEditingItem({ ...editingItem, tags: e.target.value.split(",").map(t => t.trim()) })}
+                  className="w-full h-12 px-4 rounded-xl bg-[#F9F8FD] border border-purple-300 font-bold text-sm text-[#1A1626]"
+                />
+              </div>
+
+              <div className="pt-3 flex justify-end gap-3 border-t">
+                <button type="button" onClick={() => setEditingItem(null)} className="py-3 px-6 rounded-xl bg-slate-200 text-slate-700 font-bold text-sm">
+                  취소
+                </button>
+                <button type="submit" className="py-3 px-8 rounded-xl bg-[#7B5CF0] text-white font-black text-sm shadow-lg hover:brightness-110">
+                  수정 사항 저장 완료 ✨
+                </button>
+              </div>
+            </form>
+
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };
+export default Portfolio;

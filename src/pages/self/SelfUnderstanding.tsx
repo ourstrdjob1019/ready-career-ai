@@ -1,447 +1,627 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Button, Card, ProgressBar, MascotAri } from "../../components";
-import { useSelfUnderstanding, useAuth } from "../../context";
-import { Sparkles, Brain, CheckCircle2, ArrowRight, ShieldCheck, Zap, Award, Target, Loader2 } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context";
+import { ARI_BLOB_URL } from "../../assets/mascotData";
+import {
+  Sparkles,
+  Brain,
+  CheckCircle2,
+  FileText,
+  Download,
+  RefreshCw,
+  Play,
+  X,
+  Award,
+  BarChart2,
+  Target,
+  Printer
+} from "lucide-react";
+
+interface DiagnosticTest {
+  id: string;
+  title: string;
+  category: string;
+  timeEst: string;
+  desc: string;
+  status: "completed" | "pending";
+  resultType?: string;
+  scoreSummary?: string;
+  reportDetails: {
+    summary: string;
+    scores: { label: string; val: number }[];
+    recommendedActivities: string[];
+    aiCareerComment: string;
+  };
+}
 
 export const SelfUnderstanding: React.FC = () => {
   const navigate = useNavigate();
-  const { assessments, report, generateComprehensiveReport } = useSelfUnderstanding();
-  const { session, startExpoDemo } = useAuth();
+  const { session } = useAuth();
+  const targetJobName = localStorage.getItem("readycareer_target_job_name") || session?.targetJob || "AI 융합 소프트웨어 디렉터";
 
-  const [selectedJob, setSelectedJob] = useState<string>(session?.targetJob || "AI 융합 소프트웨어 디렉터");
+  const [tests, setTests] = useState<DiagnosticTest[]>([]);
+  const [activeReportTest, setActiveReportTest] = useState<DiagnosticTest | null>(null);
+  
+  // 4~6번 즉석 쾌속 진단 모달 상태
+  const [quickTestModal, setQuickTestModal] = useState<DiagnosticTest | null>(null);
+  const [currentQuestionIdx, setCurrentQuestionIdx] = useState(0);
+  const [toastMsg, setToastMsg] = useState("");
 
-  // AI 실시간 로드맵 & 습관 생성 상태
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [generationStep, setGenerationStep] = useState(0);
+  // 6대 검사 초기화 및 로컬 스토리지 보존
+  useEffect(() => {
+    const saved = localStorage.getItem("readycareer_6_diagnostics_v1");
+    if (saved) {
+      try { setTests(JSON.parse(saved)); } catch (e) {}
+    } else {
+      const defaultTests: DiagnosticTest[] = [
+        {
+          id: "test-interest",
+          title: "K-RIASEC 진로 흥미 및 성향 진단",
+          category: "흥미/성격",
+          timeEst: "약 3분 소요",
+          desc: "홀랜드(Holland) 6대 성형 이론을 현대 인공지능 산업 역량과 결합하여 나에게 꼭 맞는 최적 진로 무드와 업무 특성을 진단합니다.",
+          status: "completed",
+          resultType: "EI (Enterprising + Investigative) 탐구 리더형",
+          scoreSummary: "탐구적 독창성 96점 / 주도적 비즈니스 기획 92점",
+          reportDetails: {
+            summary: "회원님은 복잡한 데이터 사이버네틱스를 논리적으로 해부하는 학구열과 이를 세상에 출시하는 주도적인 리더십을 동시에 품고 있습니다.",
+            scores: [
+              { label: "I (탐구연구형)", val: 96 },
+              { label: "E (기업진취형)", val: 92 },
+              { label: "A (예술창의형)", val: 88 },
+              { label: "R (현실실용형)", val: 82 }
+            ],
+            recommendedActivities: [
+              "교내 AI/SW 프로그래밍 동아리 리더 및 학술제 메인 발표자 참여",
+              "빅데이터 기반의 사회문제 해결 스타트업 아이디에이션 공모전 도전"
+            ],
+            aiCareerComment: `희망 직직인 **'${targetJobName}'** 분야에서 프로젝트 팀 전체를 리딩하며 기술 논리를 명쾌하게 프레젠테이션하는 핵심 설계 책임자로 대성할 수 있습니다!`
+          }
+        },
+        {
+          id: "test-intelligence",
+          title: "AI 다중지능 및 최적 강점 역량 검사",
+          category: "적성/재능",
+          timeEst: "약 4분 소요",
+          desc: "가상공간, 논리수학, 대인관계, 언어 직관 등 하워드 가드너 8대 다중지능 중 나의 가장 뛰어난 타고난 마스터 역량을 발굴합니다.",
+          status: "completed",
+          resultType: "논리수학 지능 & 공간 감각 지능 극대화",
+          scoreSummary: "수리 알고리즘 직관 98% / 시스템 구조 3D 조망 95%",
+          reportDetails: {
+            summary: "수치와 통계, 복잡한 인과관계 고리(Loop)를 시각화하여 파파악하는 공간 수학적 통찰력이 전국 최상위 상위권 레벨에 위치해 있습니다.",
+            scores: [
+              { label: "논리/수리 지능", val: 98 },
+              { label: "공간/시각 지능", val: 95 },
+              { label: "대인/공유 지능", val: 89 },
+              { label: "언어/논술 지능", val: 85 }
+            ],
+            recommendedActivities: [
+              "Python, C++, TensorFlow를 활용한 3D 가상 시뮬레이션 알고리즘 제작",
+              "차세대 신경망 모형 혹은 첨단 바이오 물리 현상의 수학적 수식 시각화"
+            ],
+            aiCareerComment: `이공계열 학업 역량 중 가장 난이도가 높은 수리 및 시스템 조망 재능을 증명하며 **'${targetJobName}'** 진입을 위한 완벽한 엔진을 보유하고 있습니다.`
+          }
+        },
+        {
+          id: "test-learning",
+          title: "SRL 자기주도 학습 루틴 및 인지 스타일 진단",
+          category: "학술/학업",
+          timeEst: "약 3분 소요",
+          desc: "나의 주의 몰입 집중력 패턴, 복습 방식, 멘탈 무너짐 극복 방식을 평가하여 성격을 올려줄 최적의 학습 타이머 전략을 수립합니다.",
+          status: "completed",
+          resultType: "고몰입 주도형 & 코넬 학습 요약 특화",
+          scoreSummary: "스스로 시간 통제 94점 / 심화 메타인지 복습 91점",
+          reportDetails: {
+            summary: "단순 수동적인 암기보다 가설을 스스로 던지고 인과를 코넬 노트로 필기하며 메타인지를 키우는 능동적 공부 습관을 가졌습니다.",
+            scores: [
+              { label: "메타인지 자기제어", val: 94 },
+              { label: "목표 시간 타임아 아비지", val: 91 },
+              { label: "시험 불안 통제력", val: 86 },
+              { label: "교사/멘토 피드백 활용", val: 92 }
+            ],
+            recommendedActivities: [
+              "레디커리어 AI 학습포트폴리오(코넬노트)를 통한 과목별 심화 보고서 도출",
+              "매일 50일 연속 '한입 퀘스트' 루틴 달성을 통한 꾸준한 학업 지표 획득"
+            ],
+            aiCareerComment: `입사관이 생기부 세특 및 행특에서 가장 눈여겨보는 '스스로 탐구를 무한 팽창시키는 열정'을 입증해 주는 훌륭한 진단입니다.`
+          }
+        },
+        {
+          id: "test-digital",
+          title: "AI 디지털 리터러시 & 차세대 신기술 마인드셋 진단",
+          category: "AI/신기술",
+          timeEst: "약 3분 소요",
+          desc: "생성형 AI (ChatGPT/Gemini 등), 파이썬 기초 도구, 3D 프롬프트 제어, 테크 윤리 의식에 대한 현대 IT 수용도와 친밀도를 측정합니다.",
+          status: "pending",
+          reportDetails: {
+            summary: "최신의 신기술을 장벽 없이 습득하며, 텍스트와 프롬프트를 넘나들며 창의적인 실무 산출물을 찍어내는 AI 네이티브 인재입니다!",
+            scores: [
+              { label: "AI 도구 수용도", val: 95 },
+              { label: "프롬프트 제어 역량", val: 93 },
+              { label: "디지털 정보 문해력", val: 89 },
+              { label: "AI 사회윤리 의식", val: 97 }
+            ],
+            recommendedActivities: [
+              "국가공인 빅데이터 준전문가(ADsP) 또는 AI 활용 자격증 시험 도전",
+              "인공지능 윤리 강령을 주제로 한 교내 인문사회 논술 공모전 수상"
+            ],
+            aiCareerComment: `미래 산업을 혁신할 디지털 리터러시 지수가 90점대를 상회하며 **'${targetJobName}'**의 전문 역량과 100% 매칭됩니다.`
+          }
+        },
+        {
+          id: "test-vision",
+          title: "K-SLCA 생애 진로 비전 및 커리어 성향 검사",
+          category: "비전/가치",
+          timeEst: "약 2분 소요",
+          desc: "사회적 공헌, 명예와 전문성, 자유와 창조, 경제적 보상 중 내가 평생의 꿈을 선택할 때 가장 가치 있게 이끌어주는 인생 침판을 밝힙니다.",
+          status: "pending",
+          reportDetails: {
+            summary: "본인만의 고유한 기술력으로 인류의 삶을 이롭게 만들고자 하는 숭고한 보람과 전문적 장인 정신을 최선위에 두는 진실된 꿈 탐구어입니다.",
+            scores: [
+              { label: "전문적 권위성", val: 96 },
+              { label: "사회적 공인/이타심", val: 92 },
+              { label: "창조적 독창성", val: 88 },
+              { label: "자율 및 안정 균형", val: 82 }
+            ],
+            recommendedActivities: [
+              "소외 계층 및 초중등 동생들을 위한 교육 재능기부 멘토링 봉사",
+              "ESG 친환경 및 첨단 보조공학 로보틱스 관련 자율 탐구 과제 제출"
+            ],
+            aiCareerComment: `따뜻한 공감 능력과 뛰어난 이학 실무 능력을 겸비한 인재로서 최고의 리스펙트를 받을 자격이 있습니다.`
+          }
+        },
+        {
+          id: "test-grit",
+          title: "GRIT 과제 집념 및 도전 회복탄력성 (Resilience) 진단",
+          category: "그릿/끈기",
+          timeEst: "약 2분 소요",
+          desc: "실패와 난관을 마주했을 때 좌절하지 않고 집요한 끈기와 강인한 회복탄력성으로 끝내 목표와 장려상을 쟁취하는 근성 지수를 판별합니다.",
+          status: "pending",
+          reportDetails: {
+            summary: "한 번 맡은 과제는 역경이 찾아와도 반드시 돌파 방안을 모색하여 해결해 내는 강인한 불굴의 마라토너형 마인드를 소유했습니다.",
+            scores: [
+              { label: "불굴의 과제 집념", val: 95 },
+              { label: "실패 복구 회복탄력성", val: 91 },
+              { label: "장기 비전 유지력", val: 94 },
+              { label: "정서적 냉정 균형", val: 88 }
+            ],
+            recommendedActivities: [
+              "1년 단위 장기 융합 프로젝트(논문 탐구 혹은 대회) 도전 및 출품",
+              "학교 대표 학술제에서 팀의 멘탈을 든든하게 지켜내는 PM 총괄 리딩"
+            ],
+            aiCareerComment: `아무리 고난이도의 연구과제라 해도 결코 포기하지 않고 돌파하는 근성 역량을 입체적으로 돋보이게 합니다!`
+          }
+        }
+      ];
+      setTests(defaultTests);
+      localStorage.setItem("readycareer_6_diagnostics_v1", JSON.stringify(defaultTests));
+    }
+  }, [targetJobName]);
 
-  const completedCount = assessments.filter((a) => a.status === "완료됨").length;
-  const totalCount = assessments.length;
-  const isAllCompleted = completedCount === totalCount;
+  const showToast = (msg: string) => {
+    setToastMsg(msg);
+    setTimeout(() => setToastMsg(""), 3200);
+  };
 
-  const recommendedJobs = [
-    { title: "AI 융합 소프트웨어 디렉터", cluster: "인공지능·공학", match: "SI 사회·탐구형 매핑 99%", desc: "인간 중심의 따뜻한 인공지능 서비스를 기획하고 핵심 소프트웨어를 총괄 설계하는 미래 핵심 직업" },
-    { title: "스마트 바이오 헬스 데이터 과학자", cluster: "바이오·메디컬", match: "탐구·논리 분석 지능 매핑 97%", desc: "유전체 정보와 생체 데이터를 AI로 알고리즘 분석하여 정밀 의료 및 무병장수 시대를 선도하는 전문가" },
-    { title: "가상·증강현실 혁신 크리에이터", cluster: "문화 콘텐츠·디자인", match: "시각·공간 감각 매핑 96%", desc: "메타버스, 초실감 혼합현실(XR) 몰입 공간과 스토리텔링을 3D 그래픽으로 창조해 내는 아티스트" },
-    { title: "친환경 탄소중립 ESG 컨설턴트", cluster: "사회서비스·교육", match: "대인·공감 소통 리더십 95%", desc: "글로벌 기후 위기와 친환경 경영 전략을 수립하고 사회적 도약을 이끄는 전략 컨설턴트" },
-    { title: "AI 금융 핀테크 프로그래머", cluster: "경제·금융 비즈니스", match: "수리·직관 알고리즘 95%", desc: "빅데이터와 양자 컴퓨팅 기반의 인공지능 자동 투자 알고리즘 및 보안 금융 인프라를 구축하는 엔지니어" },
-    { title: "차세대 반도체 및 양자역학 연구원", cluster: "기초과학·연구", match: "고밀도 학업 몰입 루틴 94%", desc: "초지능 시대의 물적 뼈대가 되는 신경망 반도체와 양자 센싱 원천 기술을 개발하는 핵심 과학자" },
-  ];
+  // 검사 진행하기 or 재검사하기 라우팅/모달 트리거
+  const handleStartOrRetakeTest = (test: DiagnosticTest, isRetake = false) => {
+    if (isRetake && !window.confirm(`'${test.title}' 검사를 초기화하고 다시 재검사를 진행하시겠습니까?`)) {
+      return;
+    }
 
-  const handleQuickTakeTest = (id: string) => {
-    if (id === "test-interest") {
+    if (test.id === "test-interest") {
       navigate("/interest-test");
-    } else if (id === "test-intelligence") {
+    } else if (test.id === "test-intelligence") {
       navigate("/intelligence-test");
-    } else if (id === "test-learning") {
+    } else if (test.id === "test-learning") {
       navigate("/learning-test");
+    } else {
+      // 4~6번 신규 추가 검사는 인터랙티브 AI 즉석 진단 모달 띄우기!
+      setCurrentQuestionIdx(0);
+      setQuickTestModal(test);
     }
   };
 
-  const handleGenerateAiRoadmapAndHabits = () => {
-    setIsGenerating(true);
-    setGenerationStep(1);
-
-    setTimeout(() => {
-      setGenerationStep(2);
-    }, 900);
-
-    setTimeout(() => {
-      setGenerationStep(3);
-    }, 1800);
-
-    setTimeout(() => {
-      setGenerationStep(4);
-    }, 2600);
-
-    setTimeout(() => {
-      // 진단 결과 및 선택 직업 기반 로드맵/습관 생성 로드 저장
-      localStorage.setItem("readycareer_target_job", selectedJob);
-      localStorage.setItem("readycareer_selected_job", JSON.stringify(selectedJob));
-      localStorage.setItem("readycareer_ai_custom_generated", "true");
-
-      const aiCustomHabits = [
-        { id: "h-ai-1", title: `[${selectedJob}] 최신 진로 및 산업 트렌드 10분 스크랩 · 50일 루틴`, targetDays: 50, completedDays: [1], category: "전공·심화" },
-        { id: "h-ai-2", title: `[3종 진단 매핑] 나의 학습스타일 기반 전공 도서 및 기사 요약 15분`, targetDays: 50, completedDays: [1], category: "독서·탐구" },
-        { id: "h-ai-3", title: `AI 아리에게 [${selectedJob}] 세목별 심층 탐구 주제 1일 1문답`, targetDays: 50, completedDays: [], category: "AI·탐구" },
-      ];
-      localStorage.setItem("my_habits_v2", JSON.stringify(aiCustomHabits));
-
-      startExpoDemo("student", {
-        ...session,
-        targetJob: selectedJob
-      });
-
-      setIsGenerating(false);
-      navigate("/");
-    }, 3200);
+  // 쾌속 즉석 진단 답변 선택 및 완료 처리
+  const handleAnswerQuickTest = () => {
+    if (!quickTestModal) return;
+    if (currentQuestionIdx < 2) {
+      setCurrentQuestionIdx(currentQuestionIdx + 1);
+    } else {
+      // 3항목 완수 시 완료 처리!
+      const updated = tests.map(t => t.id === quickTestModal.id ? {
+        ...t,
+        status: "completed" as const,
+        resultType: "AI 첨단 융합 마스터 & 상위 2% 성취",
+        scoreSummary: "종합 진도 적합도 96점 / 실증적 탐구 열정 최다"
+      } : t);
+      setTests(updated);
+      localStorage.setItem("readycareer_6_diagnostics_v1", JSON.stringify(updated));
+      const completedTest = updated.find(t => t.id === quickTestModal.id) || null;
+      setQuickTestModal(null);
+      setActiveReportTest(completedTest);
+      showToast(`🎉 [${quickTestModal.title}] 진단이 성공적으로 완료되어 맞춤 리포트가 개방되었습니다!`);
+    }
   };
 
-  // 🌟 3종 진단 모두 완수 시: 다시 진단 모듈로 돌아가지 않고 '나만의 관심 직업 6선 & AI 실시간 별자리/습관 생성' 단독 화면 표출
-  if (isAllCompleted) {
-    return (
-      <div className="max-w-6xl mx-auto px-4 py-8 md:py-12 flex flex-col gap-8 animate-fadeIn">
-        <section className="bg-gradient-to-b from-[#1A1626] via-[#241E36] to-[#1A1626] rounded-[36px] p-8 md:p-12 border-4 border-[#7B5CF0] shadow-[0_25px_60px_rgba(123,92,240,0.35)] space-y-10 text-white relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-[#7B5CF0]/25 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute bottom-0 left-0 w-80 h-80 bg-[#006970]/25 rounded-full blur-2xl pointer-events-none" />
+  // 맞춤 리포트 PDF 다운로드 & 인쇄 처리
+  const handleDownloadPDF = () => {
+    showToast("📥 리포트를 PDF 문서로 다운로드(또는 100% 최적화 인쇄)하기 위해 시스템 인쇄 엔진을 구동합니다!");
+    setTimeout(() => {
+      window.print();
+    }, 600);
+  };
 
-          {/* Header Banner */}
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 border-b border-white/20 pb-8 relative z-10">
-            <div className="space-y-3">
-              <span className="text-xs font-black bg-gradient-to-r from-teal-400 via-cyan-400 to-purple-400 text-[#1A1626] px-4 py-1.5 rounded-full inline-flex items-center gap-2 uppercase tracking-wider font-headline shadow-lg">
-                <Award className="w-4 h-4 text-[#1A1626] animate-bounce" /> 3개 필수 진단 (흥미·다중지능·학습스타일) 100% 종합 완수!
-              </span>
-              <h1 className="text-3xl md:text-4xl font-black font-headline tracking-tight text-white flex items-center gap-3">
-                <span>🎯 나만의 맞춤 관심 직업 6선 선택 허브</span>
-              </h1>
-              <p className="text-sm text-white/90 max-w-3xl leading-relaxed">
-                회원님이 직접 완수하신 <strong>[1차 진로흥미]</strong> + <strong>[2차 다중지능]</strong> + <strong>[3차 학습스타일]</strong> 데이터 알고리즘을 종합하여, 최상의 융합 가능성을 가진 6대 추천 직업군을 추출했습니다.<br />
-                원하는 꿈을 터치(선택)한 후 <strong>하단의 [AI 아리와 별자리 로드맵 & 습관 만들기] 버튼</strong>을 눌러보세요!
-              </p>
-            </div>
-            <div className="bg-white/10 px-6 py-4 rounded-3xl border-2 border-[#7AF1FC]/50 text-center md:text-right flex flex-col justify-center shrink-0 shadow-2xl backdrop-blur-md">
-              <span className="text-xs text-teal-300 font-extrabold whitespace-nowrap mb-1">✔ 현재 내가 선택한 꿈</span>
-              <span className="text-xl font-black text-[#7AF1FC] font-headline">{selectedJob}</span>
-            </div>
-          </div>
-
-          {/* Job Selection Cards Grid */}
-          <div className="space-y-5 relative z-10">
-            <h2 className="text-base font-black text-yellow-300 flex items-center gap-2 bg-white/5 px-5 py-3 rounded-2xl border border-white/15">
-              <Target className="w-5 h-5 text-yellow-300 flex-shrink-0 animate-pulse" />
-              <span>👇 6대 맞춤 추천 직업 중 나에게 가장 설레는 진로를 1개 선택(터치)해 주세요.</span>
-            </h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {recommendedJobs.map((job) => {
-                const isSelected = selectedJob === job.title;
-                return (
-                  <div
-                    key={job.title}
-                    onClick={() => !isGenerating && setSelectedJob(job.title)}
-                    className={`p-7 rounded-[30px] border-2 transition-all cursor-pointer flex flex-col justify-between relative ${
-                      isSelected
-                        ? "bg-gradient-to-tr from-[#7B5CF0]/60 to-[#006970]/70 border-[#7AF1FC] shadow-[0_0_35px_rgba(122,241,252,0.55)] scale-[1.03] ring-2 ring-[#7AF1FC]/40"
-                        : "bg-white/5 border-white/15 hover:border-white/40 hover:bg-white/10 hover:scale-[1.01]"
-                    }`}
-                  >
-                    <div>
-                      <div className="flex items-center justify-between gap-2 mb-3">
-                        <span className="text-xs font-black px-3.5 py-1 rounded-full bg-[#7AF1FC]/20 text-[#7AF1FC] border border-[#7AF1FC]/30 whitespace-nowrap">
-                          {job.cluster}
-                        </span>
-                        <span className="text-xs font-black text-emerald-300 whitespace-nowrap bg-emerald-950/70 px-2.5 py-1 rounded-lg border border-emerald-500/40">
-                          ⚡ {job.match.split(" ")[0]} 100% 매칭
-                        </span>
-                      </div>
-                      <h3 className="text-lg sm:text-xl font-headline font-black text-white group-hover:text-[#7AF1FC] transition-colors mb-2.5">
-                        {job.title}
-                      </h3>
-                      <p className="text-xs sm:text-sm text-white/80 leading-relaxed">
-                        {job.desc}
-                      </p>
-                    </div>
-
-                    <div className="mt-6 pt-4 border-t border-white/15 flex items-center justify-between">
-                      <span className={`text-xs font-black ${isSelected ? "text-yellow-300" : "text-white/60"}`}>
-                        {isSelected ? "✨ 내 목표 직업으로 최종 확정됨!" : "👆 터치하여 선택하기"}
-                      </span>
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center font-black text-sm shadow-md ${
-                        isSelected ? "bg-[#7AF1FC] text-[#1A1626]" : "bg-white/20 text-white"
-                      }`}>
-                        {isSelected ? "✔" : "+"}
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* AI아리와 함께 별자리 로드맵, 습관 만들기 실시간 설계 스튜디오 */}
-          <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-teal-950 p-8 rounded-[32px] border-2 border-[#7AF1FC]/50 flex flex-col items-center justify-center text-center relative z-10 shadow-2xl space-y-6">
-            {isGenerating ? (
-              <div className="py-6 space-y-6 w-full max-w-2xl mx-auto animate-fadeIn">
-                <div className="relative flex justify-center">
-                  <MascotAri pose="celebrate" size="lg" rotate={true} className="animate-bounce drop-shadow-[0_10px_25px_rgba(122,241,252,0.5)]" />
-                </div>
-                
-                <div className="space-y-3">
-                  <h3 className="text-xl md:text-2xl font-black text-white font-headline tracking-tight flex items-center justify-center gap-3">
-                    <Loader2 className="w-7 h-7 text-[#7AF1FC] animate-spin" />
-                    <span>
-                      {generationStep === 1 && "🧠 3차례 진단(흥미무드·다중지능·학습스타일) 데이터 융합 분석 중..."}
-                      {generationStep === 2 && `🌌 '[${selectedJob}]' 맞춤 별자리 포트폴리오 로드맵 설계 중...`}
-                      {generationStep === 3 && "💪 2026학년도 입시 대비 50일 커리어 자기계발 습관 생성 중..."}
-                      {generationStep === 4 && "🎉 맞춤 로딩 100% 완료! 내 꿈이 담긴 대시보드로 자동 출항합니다!"}
-                    </span>
-                  </h3>
-                  <p className="text-xs md:text-sm text-[#7AF1FC]/90 font-bold">
-                    AI 아리가 회원님의 종합 진단 결과를 분석하여 최적화된 꿈 좌표와 루틴을 구축하고 있습니다!
-                  </p>
-                </div>
-
-                <div className="w-full bg-white/10 h-3 rounded-full overflow-hidden p-0.5 border border-white/20">
-                  <div 
-                    className="h-full bg-gradient-to-r from-purple-400 via-teal-300 to-[#7AF1FC] rounded-full transition-all duration-700 shadow-[0_0_15px_rgba(122,241,252,0.8)]"
-                    style={{ width: `${generationStep * 25}%` }}
-                  />
-                </div>
-              </div>
-            ) : (
-              <div className="flex flex-col md:flex-row items-center justify-between gap-8 w-full">
-                <div className="flex items-center gap-5 text-left">
-                  <div className="w-24 h-24 sm:w-28 sm:h-28 flex-shrink-0 bg-white/10 rounded-3xl p-2 border border-white/20 shadow-inner flex items-center justify-center">
-                    <MascotAri pose="avatar" size="md" />
-                  </div>
-                  <div className="space-y-1.5">
-                    <span className="text-xs font-black text-teal-300 tracking-wide uppercase bg-teal-950/60 px-3 py-1 rounded-full border border-teal-500/30 inline-block">
-                      🤖 AI 자동 포트폴리오 제네레이터 개장
-                    </span>
-                    <h3 className="font-headline font-black text-xl sm:text-2xl text-white tracking-tight">
-                      &ldquo;선택하신 &apos;{selectedJob}&apos; 꿈으로 별자리와 습관을 로드할까요?&rdquo;
-                    </h3>
-                    <p className="text-xs sm:text-sm text-white/85 leading-relaxed">
-                      이 버튼을 누르면 AI가 나의 <strong>3대 진단 결과 + [{selectedJob}]</strong> 데이터 가이드 라인을 결합하여, 맞춤형 <strong>[별자리 로드맵]</strong>과 <strong>[50일 실천 습관]</strong>을 완성한 후 대시보드로 안내해 드립니다!
-                    </p>
-                  </div>
-                </div>
-
-                <Button
-                  variant="teal"
-                  size="lg"
-                  onClick={handleGenerateAiRoadmapAndHabits}
-                  className="font-headline font-black text-base sm:text-lg py-6 px-8 whitespace-nowrap shadow-[0_15px_35px_rgba(0,184,168,0.7)] hover:scale-105 active:scale-95 transition-all duration-300 bg-gradient-to-r from-teal-400 via-emerald-400 to-cyan-300 text-slate-950 rounded-2xl border-2 border-white"
-                  icon={<Sparkles className="w-6 h-6 ml-2 text-slate-950 animate-pulse" />}
-                >
-                  ✨ AI 아리와 별자리 로드맵 &amp; 습관 만들기
-                </Button>
-              </div>
-            )}
-          </div>
-        </section>
-      </div>
-    );
-  }
+  const completedCount = tests.filter(t => t.status === "completed").length;
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8 md:py-12 flex flex-col gap-8">
-      {/* Hero Banner: Self-Understanding Hub */}
-      <Card variant="hero" padding="lg" className="shadow-3d-ambient flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden">
-        <div className="flex flex-col gap-3 max-w-xl z-10 text-center md:text-left">
-          <div className="inline-flex items-center self-center md:self-start gap-2 bg-white/20 px-3.5 py-1 rounded-full text-xs font-headline font-bold text-white whitespace-nowrap border border-white/20">
-            <Brain className="w-4 h-4 text-secondary-container animate-pulse" />
-            <span>나만의 커리어 역량 다면 진단 허브</span>
-          </div>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 py-8 space-y-12 selection:bg-[#7B5CF0]/20 selection:text-[#7B5CF0] relative">
+      
+      {/* Toast */}
+      {toastMsg && (
+        <div className="fixed bottom-10 right-10 z-50 bg-[#7B5CF0] text-white px-6 py-4 rounded-3xl font-black text-sm sm:text-base shadow-[0_15px_35px_rgba(123,92,240,0.4)] flex items-center gap-3 animate-bounce-short border-2 border-white">
+          <Sparkles className="w-5 h-5 text-amber-300 animate-spin-slow" />
+          <span>{toastMsg}</span>
+        </div>
+      )}
 
-          <h1 className="text-headline-lg md:text-display-lg font-black text-white font-headline tracking-tight leading-tight">
-            자기이해 <span className="text-secondary-container">스튜디오</span>
+      {/* =========================================================================
+          SECTION 1: HERO TITLE (6대 자기이해 진단 센터)
+         ========================================================================= */}
+      <div className="rounded-[36px] bg-gradient-to-r from-[#2B0E68] via-[#5A24CA] to-[#008A90] text-white p-8 sm:p-12 shadow-[0_20px_60px_rgba(90,36,202,0.3)] border-4 border-white/30 flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden">
+        <div className="space-y-4 max-w-2xl z-10 text-center sm:text-left">
+          <span className="text-xs font-black bg-[#FF3B7C] text-white px-4 py-1.5 rounded-full inline-flex items-center gap-1.5 shadow-md">
+            <Brain className="w-4 h-4 text-amber-200" />
+            <span>AI 맞춤 커리어·학술 종합 자기이해 진단 센터</span>
+          </span>
+          <h1 className="text-3xl sm:text-5xl font-headline font-black tracking-tight leading-tight text-white">
+            🧪 AI 진로·학업 6대 <br className="hidden sm:block"/> 자기이해 진단검사 모음
           </h1>
-
-          <p className="text-white/90 text-sm md:text-base font-body-md leading-relaxed">
-            포트폴리오와 맞춤 별자리 로드맵의 기초는 <strong>나에 대한 3종 진단 검사</strong>입니다.<br />
-            아래 3개의 네모박스 검사를 모두 완수하면 <strong>나만의 AI 추천 직업군 선택 화면</strong>이 단독으로 해금됩니다!
+          <p className="text-sm sm:text-base font-semibold text-[#DFD7FF] leading-relaxed">
+            나의 흥미, 강점 다중지능, 학습 루틴, 디지털 리터러시, 비전, GRIT 끈기를 진단받으세요! 완료된 검사는 <strong>[맞춤 리포트 PDF 다운로드]</strong> 및 언제든 <strong>[재검사하기]</strong>가 가능합니다.
           </p>
-
-          <div className="mt-4 flex items-center justify-center md:justify-start gap-4">
-            <Link to="/self-report">
-              <Button variant="teal" size="sm" icon={<Sparkles className="w-4 h-4" />} className="font-black shadow-lg">
-                내 종합 AI 리포트 보러가기 &rarr;
-              </Button>
-            </Link>
-            {report && (
-              <span className="text-xs bg-white/15 px-3 py-1.5 rounded-full text-white font-semibold border border-white/20">
-                ✨ {report.characterTitle} 오오라 활성
+          
+          <div className="pt-2 flex flex-wrap items-center gap-3 justify-center sm:justify-start">
+            <span className="text-xs font-extrabold px-4 py-2 rounded-2xl bg-white/20 backdrop-blur-md border border-white/40">
+              📊 내 진행 상태: <strong>6개 중 {completedCount}개 완료!</strong>
+            </span>
+            {completedCount === 6 && (
+              <span className="text-xs font-black px-4 py-2 rounded-2xl bg-gradient-to-r from-amber-400 to-amber-500 text-[#1A1626] shadow-lg animate-pulse">
+                👑 6대 전수 진단 그랜드 마스터 달성!
               </span>
             )}
           </div>
         </div>
 
-        <div className="flex-shrink-0 z-10 flex flex-col items-center">
-          <MascotAri pose="sticker" size="lg" rotate={true} className="drop-shadow-[0_20px_40px_rgba(0,0,0,0.35)]" />
-          <div className="w-64 mt-2 bg-surface-container-lowest/90 backdrop-blur-md p-4 rounded-3xl border border-white/40 shadow-lg flex flex-col gap-2">
-            <div className="flex justify-between items-center text-xs font-bold text-text-primary">
-              <span>진도 완결 수치 100% 달성하기</span>
-              <span className="text-primary font-black">{completedCount}/{totalCount} 완료</span>
-            </div>
-            <ProgressBar value={completedCount} max={totalCount} variant="teal" />
-          </div>
+        <div className="flex-shrink-0 z-10 w-36 h-36 sm:w-48 sm:h-48 rounded-[36px] bg-white/20 backdrop-blur-xl p-4 border-4 border-white/50 shadow-2xl flex items-center justify-center transform hover:scale-105 transition-all">
+          <img src={ARI_BLOB_URL} alt="Ari Mascot" className="w-full h-full object-contain filter drop-shadow-2xl" />
         </div>
-
-        <div className="absolute -left-10 -bottom-20 w-80 h-80 bg-white/10 rounded-full blur-3xl pointer-events-none" />
-      </Card>
-
-      {/* Onboarding Guide Banner */}
-      <div className="bg-[#EEF2FF] p-5 md:p-7 rounded-[28px] border-2 border-[#5538EE]/40 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-md">
-        <div className="flex items-center gap-3 text-left">
-          <span className="text-3xl">📢</span>
-          <div>
-            <h3 className="font-headline font-black text-base text-[#1A1626]">
-              신규 온보딩 필수 과제: 3대 진단 검사 및 정밀 리포트 획득을 완료해 주세요!
-            </h3>
-            <p className="text-xs sm:text-sm text-[#3E384D] font-bold mt-1 leading-relaxed">
-              흥미무드(RIASEC) · 다중지능(16문항) · 학습스타일(16문항) 3가지 네모박스 검사를 모두 마쳐야 종합 추천 직업 6선 및 AI 로드맵·습관 설계 스튜디오가 단독으로 열립니다.
-            </p>
-          </div>
-        </div>
-        <span className="bg-[#6240d5] text-white font-extrabold text-xs sm:text-sm px-5 py-2 rounded-full whitespace-nowrap shadow-md border border-purple-300">
-          현재 {completedCount}/3 완료 ({3 - completedCount}개 남음)
-        </span>
       </div>
 
-      {/* 3 Core Self-Understanding Assessments List (네모박스 뷰 - 직접 16문항 진단으로 완벽 이동) */}
-      <section className="flex flex-col gap-5">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-          <div>
-            <h2 className="text-2xl font-headline font-extrabold text-[#1A1626] flex items-center gap-2">
-              <span>🔬 3대 핵심 자기이해 AI 진단 시리즈</span>
-            </h2>
-            <p className="text-xs sm:text-sm font-bold text-[#4A435A] mt-0.5">각 네모박스를 클릭하여 16개 문항을 직접 이수하고 심층 리포트를 확인하세요.</p>
-          </div>
-          <Button variant="outline" size="sm" onClick={generateComprehensiveReport} icon={<Zap className="w-4 h-4" />} className="font-bold">
-            모든 결과 리서치 AI 즉시 동기화
-          </Button>
+      {/* =========================================================================
+          SECTION 2: 6대 진단검사 모음 그리드 카드
+         ========================================================================= */}
+      <div className="space-y-6">
+        <div className="border-b-2 border-purple-150 pb-4 pl-2">
+          <h2 className="text-2xl sm:text-3xl font-headline font-black text-[#1A1626] flex items-center gap-2.5">
+            <Sparkles className="w-7 h-7 text-[#7B5CF0]" />
+            <span>📋 2026 레디커리어 공식 6대 맞춤 진단검사 라인업</span>
+          </h2>
+          <p className="text-xs sm:text-sm font-extrabold text-[#5C5672] mt-1">
+            원하는 진단 카드를 선택해 검사를 받거나, 이미 완료된 검사의 <strong>고품격 AI 리포트</strong>를 조회해보세요.
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {assessments.map((item) => {
-            const isCompleted = item.status === "완료됨";
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pt-2">
+          {tests.map((test) => {
+            const isDone = test.status === "completed";
 
             return (
-              <Card
-                key={item.id}
-                variant={isCompleted ? "activity" : "surface"}
-                padding="md"
-                hoverEffect
-                onClick={() => handleQuickTakeTest(item.id)}
-                className={`flex flex-col justify-between border-2 transition-all group min-h-[320px] cursor-pointer rounded-[30px] p-7 ${
-                  isCompleted
-                    ? "border-[#6240d5] bg-white shadow-xl ring-2 ring-[#6240d5]/20"
-                    : "border-[#C7C3D8] bg-white hover:border-[#6240d5]/60 shadow-md"
+              <div
+                key={test.id}
+                className={`rounded-[36px] p-8 transition-all duration-300 flex flex-col justify-between space-y-6 border-3 relative ${
+                  isDone
+                    ? "bg-gradient-to-b from-[#F2FEFF] via-[#FAF6FF] to-white border-[#008A90]/60 shadow-[0_12px_30px_rgba(0,138,144,0.15)] hover:shadow-[0_18px_40px_rgba(0,138,144,0.25)]"
+                    : "bg-white border-[#E4DCFF] shadow-[0_10px_25px_rgba(0,0,0,0.06)] hover:border-[#7B5CF0] hover:shadow-xl"
                 }`}
               >
-                <div className="flex flex-col gap-4">
-                  <div className="flex justify-between items-center gap-2">
-                    <span className={`text-xs font-headline font-black px-3.5 py-1 rounded-full whitespace-nowrap shadow-sm ${
-                      item.category === "흥미무드" ? "bg-[#EBF3FF] text-[#0C3D91] border border-[#A1BFF3]" : item.category === "다중지능" ? "bg-[#F0ECFF] text-[#3E1A9E] border border-[#B099F2]" : "bg-[#E8FCF1] text-[#0A6032] border border-[#83DCAB]"
-                    }`}>
-                      #{item.category}
+                {/* 상단 뱃지 및 상태 구별 */}
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-black bg-purple-100 text-[#6240D5] px-3 py-1 rounded-full">
+                      {test.category}
                     </span>
-
-                    {isCompleted ? (
-                      <span className="inline-flex items-center gap-1 bg-[#10B981] text-white font-black text-xs px-3 py-1 rounded-full shadow-sm">
-                        <CheckCircle2 className="w-3.5 h-3.5" /> 완료됨 ({item.score}점)
+                    {isDone ? (
+                      <span className="text-xs font-black bg-[#008A90] text-white px-3.5 py-1 rounded-full flex items-center gap-1 shadow-sm animate-pulse">
+                        <CheckCircle2 className="w-3.5 h-3.5" />
+                        <span>진단 완료!</span>
                       </span>
                     ) : (
-                      <span className="inline-flex items-center bg-[#E6E4EE] text-[#4A435A] font-extrabold text-xs px-3 py-1 rounded-full border border-[#CAC5DA]">
-                        도전 기다리는 중
+                      <span className="text-xs font-black bg-slate-100 text-slate-600 px-3.5 py-1 rounded-full">
+                        ⚡ 미완료 ({test.timeEst})
                       </span>
                     )}
                   </div>
 
-                  <h3 className="font-headline font-black text-xl text-[#1A1626] group-hover:text-[#6240d5] transition-colors leading-snug mt-1">
-                    {item.title}
+                  <h3 className="text-xl sm:text-2xl font-black text-[#1A1626] leading-tight tracking-tight">
+                    {test.title}
                   </h3>
-
-                  <p className="text-sm sm:text-[15px] font-body text-[#322D42] font-extrabold leading-relaxed pt-1">
-                    {item.summary}
+                  <p className="text-xs sm:text-sm font-semibold text-[#5B556D] leading-relaxed">
+                    {test.desc}
                   </p>
                 </div>
 
-                <div className="pt-4 mt-6 border-t-2 border-[#E3DFEE] flex items-center justify-between gap-2">
-                  <span className="text-xs font-black text-[#4A435A] whitespace-nowrap">
-                    {isCompleted ? `● 검사일: ${item.completedAt}` : "● 필수 16문항 직접 검사"}
-                  </span>
-                  <Button
-                    variant={isCompleted ? "secondary" : "primary"}
-                    size="sm"
-                    className="font-black whitespace-nowrap shadow-sm"
-                  >
-                    {isCompleted ? "결과 다시 보기 / 재진단" : "진단 시작하기"}
-                    <ArrowRight className="w-4 h-4 ml-1" />
-                  </Button>
+                {/* 완료되었을 경우 요약 결과 미리보기 */}
+                {isDone && (
+                  <div className="bg-white p-4.5 rounded-2xl border-2 border-cyan-150 shadow-inner space-y-2">
+                    <span className="text-[11px] font-black text-[#008A90] flex items-center gap-1">
+                      👑 진단 결과 요약:
+                    </span>
+                    <p className="text-xs font-black text-[#1A1626]">
+                      {test.resultType}
+                    </p>
+                    {test.scoreSummary && (
+                      <span className="text-[11px] font-extrabold text-[#6E6A80] block bg-slate-50 p-1.5 rounded-lg border">
+                        📈 {test.scoreSummary}
+                      </span>
+                    )}
+                  </div>
+                )}
+
+                {/* 하단 제어 버튼 (리포트 보기/PDF vs 재검사하기 vs 시작하기) */}
+                <div className="pt-2 border-t border-slate-100 space-y-2.5">
+                  {isDone ? (
+                    <>
+                      <button
+                        onClick={() => setActiveReportTest(test)}
+                        className="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-[#008A90] to-[#00A3A8] hover:brightness-110 text-white font-black text-sm shadow-lg flex items-center justify-center gap-2 cursor-pointer transform hover:scale-102 transition-all"
+                      >
+                        <FileText className="w-4 h-4" />
+                        <span>📑 맞춤 리포트 보기 (PDF 다운로드)</span>
+                      </button>
+                      <button
+                        onClick={() => handleStartOrRetakeTest(test, true)}
+                        className="w-full py-3 px-6 rounded-2xl bg-[#FAF7FF] hover:bg-[#F2EEFF] text-[#7B5CF0] border-2 border-purple-200 font-black text-xs sm:text-sm transition-colors flex items-center justify-center gap-2 cursor-pointer"
+                      >
+                        <RefreshCw className="w-3.5 h-3.5" />
+                        <span>🔄 재검사하기 (무제한 다시 풀기)</span>
+                      </button>
+                    </>
+                  ) : (
+                    <button
+                      onClick={() => handleStartOrRetakeTest(test, false)}
+                      className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-[#7B5CF0] to-[#6240D5] hover:brightness-110 text-white font-black text-base shadow-xl flex items-center justify-center gap-2 cursor-pointer transform hover:scale-105 transition-all"
+                    >
+                      <Play className="w-5 h-5 fill-current" />
+                      <span>🚀 검사 시작하기 ({test.timeEst})</span>
+                    </button>
+                  )}
                 </div>
-              </Card>
+
+              </div>
             );
           })}
         </div>
-      </section>
+      </div>
 
-      {/* Stitch 3D Competency Growth Visualization & Radar Dashboard */}
-      <section className="bg-white rounded-[32px] p-8 border border-[#E3E1E9] shadow-[0_20px_45px_rgba(123,92,240,0.08)] space-y-6 animate-fadeIn">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#E3E1E9]/80 pb-5">
-          <div>
-            <span className="text-xs font-black text-[#7B5CF0] uppercase tracking-wider bg-[#e6deff]/60 px-3 py-1 rounded-full inline-block mb-1 border border-[#cbbeff]/50 whitespace-nowrap">
-              AI RADAR CHART &middot; GROWTH VISUALIZER
-            </span>
-            <h2 className="text-2xl font-black text-[#1A1626] flex items-center gap-2">
-              <span>📊 AI 방사형 역량 성장 시각화 대시보드</span>
-            </h2>
-            <p className="text-xs text-[#6E6A80] mt-0.5">다중지능 및 습관 퀘스트 이행도에 따라 고유한 5대 핵심 학생부 역량 펜타곤이 확장됩니다.</p>
-          </div>
-          <div className="bg-[#7af1fc]/20 text-[#006970] px-4 py-2 rounded-2xl border border-[#006970]/20 font-black text-xs self-start md:self-auto flex items-center gap-1.5 shadow-sm whitespace-nowrap">
-            <span>🚀 전월 대비 역량 성장율: +18.4% 상승</span>
-          </div>
-        </div>
+      {/* =========================================================================
+          MODAL 1: 각 진단검사별 맞춤 리포트 보기 & PDF 다운로드 기능
+         ========================================================================= */}
+      {activeReportTest && (
+        <div className="fixed inset-0 z-50 bg-black/65 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 animate-fadeIn">
+          <div className="bg-white w-full max-w-4xl rounded-[44px] p-8 sm:p-14 shadow-[0_30px_90px_rgba(0,0,0,0.6)] border-4 border-purple-200 relative max-h-[92vh] overflow-y-auto space-y-9 selection:bg-[#008A90]/20">
+            
+            {/* 상단 모달 닫기 */}
+            <button
+              onClick={() => setActiveReportTest(null)}
+              className="absolute top-7 right-8 p-3 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold shadow-sm transition-all"
+            >
+              <X className="w-6 h-6" />
+            </button>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          {/* Mock Radar Pentagon Graphic Card */}
-          <div className="lg:col-span-5 bg-gradient-to-tr from-[#f4f2fa] via-[#efedf5] to-[#fbf8ff] p-6 rounded-[28px] border border-[#cac4d7]/50 shadow-inner flex flex-col items-center justify-center text-center relative overflow-hidden min-h-[260px]">
-            <div className="w-40 h-40 rounded-full border-4 border-dashed border-[#7B5CF0]/40 flex items-center justify-center animate-spin-slow relative">
-              <div className="w-28 h-28 rounded-full bg-gradient-to-br from-[#7B5CF0]/20 to-[#006970]/30 border-2 border-[#006970] flex items-center justify-center shadow-lg transform rotate-12">
-                <span className="text-5xl drop-shadow-md">💎</span>
+            {/* 리포트 헤더 (PDF 인쇄 버튼 배치) */}
+            <div className="border-b-4 border-[#7B5CF0] pb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+              <div className="space-y-2">
+                <div className="inline-flex items-center gap-2 bg-[#008A90] text-white px-4 py-1 rounded-full text-xs font-black shadow">
+                  <Award className="w-4 h-4 text-amber-300" />
+                  <span>2026 ReadyCareer AI Official Diagnostic Report</span>
+                </div>
+                <h2 className="text-2xl sm:text-4xl font-headline font-black text-[#1A1626]">
+                  📑 {activeReportTest.title} 결과 리포트
+                </h2>
+                <p className="text-xs sm:text-sm font-black text-[#5C5672]">
+                  진단 일자: <strong>{new Date().toLocaleDateString("ko-KR")}</strong> | 희망 직무 연계를 위한 100% 맞춤 데이터
+                </p>
+              </div>
+
+              {/* 📥 PDF 다운로드 및 인쇄 실행 버튼 */}
+              <button
+                onClick={handleDownloadPDF}
+                className="py-4 px-8 rounded-2xl bg-gradient-to-r from-[#FF3B7C] to-[#FF7043] hover:brightness-110 text-white font-black text-sm sm:text-base shadow-xl flex items-center justify-center gap-3 transform hover:scale-105 transition-all cursor-pointer flex-shrink-0"
+              >
+                <Download className="w-5 h-5 stroke-[2.5]" />
+                <span>📥 리포트 PDF 다운로드 &amp; 인쇄</span>
+              </button>
+            </div>
+
+            {/* 본문 1: 종합 요약 & 강점 지표 */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="md:col-span-1 bg-[#FAF7FF] p-6 rounded-[32px] border-2 border-purple-200 shadow-inner flex flex-col justify-between space-y-4 text-center">
+                <div className="space-y-2">
+                  <span className="text-xs font-black bg-[#7B5CF0] text-white px-3 py-1 rounded-full inline-block">
+                    대표 판정 결과
+                  </span>
+                  <h4 className="text-xl font-black text-[#1A1626] pt-2 leading-snug">
+                    {activeReportTest.resultType || "AI 고위험 융합 주도형"}
+                  </h4>
+                </div>
+                <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-[#7B5CF0] to-[#008A90] p-1 shadow-lg mx-auto flex items-center justify-center text-white font-black text-2xl">
+                  A+
+                </div>
+                <span className="text-xs font-black text-[#008A90] bg-white py-2 rounded-2xl border border-cyan-200 block">
+                  ✨ 상위 3% 이내 우수지표
+                </span>
+              </div>
+
+              <div className="md:col-span-2 bg-[#F8FAFF] p-7 rounded-[32px] border-2 border-indigo-100 shadow-sm space-y-4 flex flex-col justify-center">
+                <span className="text-xs font-black text-indigo-700 flex items-center gap-1.5">
+                  <Brain className="w-4 h-4" />
+                  <span>AI 사정관의 종합 심층 해부 요약</span>
+                </span>
+                <p className="text-base sm:text-lg font-black text-[#1A1626] leading-relaxed">
+                  "{activeReportTest.reportDetails.summary}"
+                </p>
+                <div className="pt-2">
+                  <span className="text-xs font-bold text-[#6E6A80]">
+                    💡 위 지표는 회원님의 진로 꿈을 학교 생기부나 대학 면접에서 증빙할 때 가장 핵심적인 '학문적·인성적 근거'가 됩니다.
+                  </span>
+                </div>
               </div>
             </div>
-            <div className="absolute bottom-4 left-0 right-0 px-4">
-              <span className="text-[11px] font-extrabold bg-white/90 px-4 py-1 rounded-full shadow-sm border border-[#E3E1E9] text-[#1A1626] whitespace-nowrap inline-block">
-                역량 Pentagon Level: <strong className="text-[#6240d5]">AURA DIAMOND</strong>
+
+            {/* 본문 2: 영역별 상세 수치 지표 (바 차트) */}
+            <div className="bg-white p-7 sm:p-8 rounded-[32px] border-2 border-purple-100 shadow-sm space-y-6">
+              <h4 className="text-xl font-black text-[#1A1626] flex items-center gap-2">
+                <BarChart2 className="w-6 h-6 text-[#7B5CF0]" />
+                <span>📈 4대 핵심 하위 영역 및 성취 지수</span>
+              </h4>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                {activeReportTest.reportDetails.scores.map((sc, idx) => (
+                  <div key={idx} className="bg-[#FAF8FD] p-5 rounded-2xl border border-purple-200/60 space-y-2">
+                    <div className="flex items-center justify-between text-sm font-black text-[#1A1626]">
+                      <span>{sc.label}</span>
+                      <span className="text-[#7B5CF0] text-base">{sc.val}점 / 100점</span>
+                    </div>
+                    <div className="w-full h-3 bg-purple-100 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-gradient-to-r from-[#7B5CF0] to-[#008A90] rounded-full transition-all duration-1000"
+                        style={{ width: `${sc.val}%` }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* 본문 3: 맞춤 실전 활동 권고 및 진로 매칭 멘트 */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="bg-[#FAF7FF] p-7 rounded-[32px] border-2 border-[#DED4FF] space-y-4">
+                <span className="text-sm font-black text-[#6240D5] flex items-center gap-2">
+                  <Target className="w-5 h-5" />
+                  <span>🎯 진정성 100% 실천 가이드 &amp; 과제 추천</span>
+                </span>
+                <ul className="space-y-3 pt-1 text-xs sm:text-sm font-extrabold text-[#3F3952]">
+                  {activeReportTest.reportDetails.recommendedActivities.map((act, idx) => (
+                    <li key={idx} className="flex items-start gap-2.5">
+                      <CheckCircle2 className="w-4 h-4 text-[#008A90] flex-shrink-0 mt-0.5" />
+                      <span>{act}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="bg-gradient-to-br from-[#E6FAFE] to-[#FAF3FF] p-7 rounded-[32px] border-2 border-[#BFF6FE] space-y-3 flex flex-col justify-between">
+                <div className="space-y-2">
+                  <span className="text-xs font-black bg-[#008A90] text-white px-3 py-1 rounded-full inline-block">
+                    ✨ 희망 직무("{targetJobName}") 시너지 효과
+                  </span>
+                  <p className="text-sm sm:text-base font-black text-[#1A1626] leading-relaxed pt-1">
+                    {activeReportTest.reportDetails.aiCareerComment}
+                  </p>
+                </div>
+                <span className="text-[11px] font-black text-[#006970] text-right">
+                  - ReadyCareer AI 스마트 사정관 -
+                </span>
+              </div>
+            </div>
+
+            {/* 하단 제어 바 */}
+            <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-4 border-t-2 border-purple-100">
+              <span className="text-xs font-bold text-[#6E6A80]">
+                💡 이 맞춤 리포트는 언제든 다시 열어보고 다운로드할 수 있습니다.
               </span>
-            </div>
-          </div>
-
-          {/* 5 Core Axis Progress Bars */}
-          <div className="lg:col-span-7 space-y-4">
-            {[
-              { label: "자기주도 학업역량 (Self-Directed Study)", score: 94, color: "from-[#8E70F7] to-[#6240d5]" },
-              { label: "전공 심화 탐구력 (Major Exploration)", score: 88, color: "from-[#006970] to-[#7af1fc]" },
-              { label: "문제 해결 및 AI 알고리즘 직관 (Problem Solving)", score: 96, color: "from-[#7B5CF0] to-[#4a21be]" },
-              { label: "창의·융합 독서 및 윤리 의식 (Ethics & Arts)", score: 85, color: "from-[#006e75] to-[#006970]" },
-              { label: "협업 소통 리더십 & 동아리 참여도 (Leadership)", score: 91, color: "from-[#6240d5] to-[#7b5cf0]" },
-            ].map((axis, idx) => (
-              <div key={idx} className="space-y-1.5">
-                <div className="flex justify-between items-center text-xs font-extrabold text-[#1A1626]">
-                  <span>{axis.label}</span>
-                  <span className="text-[#7B5CF0] font-black">{axis.score} / 100</span>
-                </div>
-                <div className="w-full bg-[#E3E1E9] h-2.5 rounded-full overflow-hidden shadow-inner">
-                  <div className={`h-2.5 rounded-full bg-gradient-to-r ${axis.color} transition-all duration-1000`} style={{ width: `${axis.score}%` }} />
-                </div>
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => {
+                    setActiveReportTest(null);
+                    handleStartOrRetakeTest(activeReportTest, true);
+                  }}
+                  className="py-3.5 px-6 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-black text-xs sm:text-sm"
+                >
+                  🔄 검사 다시 치르기 (Retake)
+                </button>
+                <button
+                  onClick={() => setActiveReportTest(null)}
+                  className="py-3.5 px-8 rounded-2xl bg-[#7B5CF0] hover:bg-[#6240D5] text-white font-black text-xs sm:text-sm shadow-lg"
+                >
+                  확인 및 창 닫기 &rarr;
+                </button>
               </div>
-            ))}
+            </div>
+
           </div>
         </div>
-      </section>
+      )}
 
-      {/* Why Self-Understanding Card */}
-      <Card variant="surface" padding="md" className="bg-gradient-to-r from-secondary/10 to-primary/10 border border-primary/20 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6">
-        <div className="flex flex-col gap-2">
-          <div className="flex items-center gap-2 text-primary font-headline font-extrabold text-base">
-            <ShieldCheck className="w-5 h-5 text-secondary" />
-            <span>왜 ‘자기이해’ 검사가 포트폴리오에 필요한가요?</span>
+      {/* =========================================================================
+          MODAL 2: 신규 즉석 쾌속 진단 모달 (4~6번 항목 진행 시)
+         ========================================================================= */}
+      {quickTestModal && (
+        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center p-4 animate-fadeIn">
+          <div className="bg-white w-full max-w-2xl rounded-[40px] p-8 sm:p-12 shadow-2xl border-4 border-[#DED4FF] relative text-center space-y-8">
+            
+            <button onClick={() => setQuickTestModal(null)} className="absolute top-6 right-6 p-2 rounded-full bg-slate-100 font-bold">
+              <X className="w-6 h-6" />
+            </button>
+
+            <div className="space-y-2 border-b border-purple-100 pb-5">
+              <span className="text-xs font-black bg-[#7B5CF0] text-white px-3.5 py-1 rounded-full inline-block">
+                ⚡ 2026 실무 맞춤 쾌속 3제 진단 진행 중
+              </span>
+              <h3 className="text-2xl sm:text-3xl font-black text-[#1A1626]">
+                {quickTestModal.title}
+              </h3>
+              <p className="text-xs font-bold text-[#6E6A80]">
+                현재 <strong>[문제 {currentQuestionIdx + 1} / 총 3문항]</strong> | 나에게 가장 어울리는 선택지를 직관적으로 터치하세요!
+              </p>
+            </div>
+
+            <div className="bg-[#FAF7FF] p-7 rounded-[32px] border-2 border-purple-200 shadow-inner space-y-6 text-left">
+              <h4 className="text-lg sm:text-xl font-black text-[#1A1626] leading-relaxed">
+                {currentQuestionIdx === 0 && "Q1. 새로운 인공지능 기술이나 낯선 학문적 난제를 마주했을 때 나의 반응은?"}
+                {currentQuestionIdx === 1 && "Q2. 실패를 하거나 성과가 즉시 나오지 않는 장기 프로젝트를 맡게 된다면?"}
+                {currentQuestionIdx === 2 && "Q3. 미래 진로 직문에서 내가 가장 소중히 가슴에 새기고자 하는 핵심 비전은?"}
+              </h4>
+
+              <div className="space-y-3.5">
+                {[
+                  "🔥 흥미와 호기심을 품고 즉시 원리를 스스로 끝까지 탐구하여 내 무기로 만든다!",
+                  "⚡ 팀원이나 멘토에게 조언을 구하며 효율적이고 스마트한 협업 전략으로 해결한다!",
+                  "🛡️ 논리적 통계 근거를 모으며 실수나 리스크 없이 완벽하고 차분하게 진행한다!",
+                ].map((opt, idx) => (
+                  <button
+                    key={idx}
+                    onClick={handleAnswerQuickTest}
+                    className="w-full p-4.5 rounded-2xl bg-white hover:bg-[#EAFEFE] border-2 border-purple-200 hover:border-[#008A90] text-left font-extrabold text-xs sm:text-sm text-[#3B364C] hover:text-[#006970] shadow-sm hover:shadow-md transition-all flex items-center justify-between group cursor-pointer"
+                  >
+                    <span>{opt}</span>
+                    <CheckCircle2 className="w-5 h-5 text-purple-300 group-hover:text-[#008A90] transition-colors" />
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="text-xs font-extrabold text-[#8D88A0]">
+              💡 3번째 답변을 선택하는 즉시 <strong>[진단 완료 상태 변경 및 리포트 PDF 기능]</strong>이 잠금 해제됩니다!
+            </div>
+
           </div>
-          <p className="text-xs md:text-sm text-text-primary leading-relaxed max-w-3xl">
-            단순히 외부 공공 데이터나 경시대회 이름만 늘어놓는 스펙은 이제 입학사정관을 설득하지 못합니다.
-            <strong> 나의 다중지능 강점과 흥미무드를 정확히 분석하고</strong> 그에 맞는 독서를 수행하거나 창의적체험활동을 해결해 낼 때,
-            선생님과 AI가 작성해주는 세부능력 및 특기사항(세특)의 신뢰도가 최고치에 달합니다!
-          </p>
         </div>
+      )}
 
-        <Link to="/portfolio">
-          <Button variant="outline" size="sm" className="whitespace-nowrap font-extrabold bg-white">
-            내 포트폴리오 스크랩 확인 &rarr;
-          </Button>
-        </Link>
-      </Card>
     </div>
   );
 };
+
+export default SelfUnderstanding;
