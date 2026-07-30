@@ -60,38 +60,60 @@ export const StartScreen: React.FC = () => {
         .animate-jobvenger-marquee:hover {
           animation-play-state: paused;
         }
+
+        /* 리얼 3D 무중력 둥둥 부유 애니메이션 (3가지 다채로운 입체 궤도) */
+        @keyframes float3D_1 {
+          0%, 100% { transform: translate3d(0px, 0px, 0px) rotate(-8deg) scale(1); }
+          33% { transform: translate3d(18px, -28px, 0px) rotate(5deg) scale(1.07); }
+          66% { transform: translate3d(-12px, -15px, 0px) rotate(-14deg) scale(0.95); }
+        }
+        @keyframes float3D_2 {
+          0%, 100% { transform: translate3d(0px, 0px, 0px) rotate(12deg) scale(1); }
+          50% { transform: translate3d(-22px, 32px, 0px) rotate(24deg) scale(1.08); }
+        }
+        @keyframes float3D_3 {
+          0%, 100% { transform: translate3d(0px, 0px, 0px) rotate(-15deg) scale(0.95); }
+          50% { transform: translate3d(25px, -35px, 0px) rotate(-2deg) scale(1.1); }
+        }
+        .animate-3d-float-1 { animation: float3D_1 6.5s ease-in-out infinite; }
+        .animate-3d-float-2 { animation: float3D_2 8s ease-in-out infinite; }
+        .animate-3d-float-3 { animation: float3D_3 9.5s ease-in-out infinite; }
       `}</style>
 
       {/* Ambient Pastel Glassmorphism Halo Spheres */}
       <div className="absolute top-10 left-1/4 -translate-x-1/2 w-[550px] h-[550px] bg-gradient-to-tr from-[#E6DEFF]/70 via-[#FEE2FA]/60 to-[#CFFBFF]/60 rounded-full blur-[110px] pointer-events-none -z-0" />
       <div className="absolute top-1/3 right-10 w-[500px] h-[500px] bg-gradient-to-tl from-[#FFEBF2]/70 via-[#DCEBFF]/60 to-[#E8D4FF]/50 rounded-full blur-[100px] pointer-events-none -z-0" />
 
-      {/* 🔮 3D 직업 캐릭터 부유 배경 레이어 (투명하고 몽환적으로 떠다니는 배경 캐릭터들) */}
+      {/* 🔮 3D 직업 캐릭터 부유 배경 레이어 (리얼 무중력 3D 둥둥 유영 애니메이션) */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
         {[
-          { pos: "top-[4%] left-[3%]", size: "w-32 h-32 md:w-48 md:h-48", idx: 0, delay: "0s", transform: "rotate-[-12deg]" },
-          { pos: "top-[8%] right-[5%]", size: "w-36 h-36 md:w-52 md:h-52", idx: 1, delay: "1s", transform: "rotate-[15deg]" },
-          { pos: "top-[32%] left-[2%]", size: "w-36 h-36 md:w-52 md:h-52", idx: 2, delay: "2s", transform: "rotate-[8deg]" },
-          { pos: "top-[35%] right-[3%]", size: "w-36 h-36 md:w-48 md:h-48", idx: 3, delay: "1.5s", transform: "rotate-[-10deg]" },
-          { pos: "top-[64%] left-[5%]", size: "w-36 h-36 md:w-52 md:h-52", idx: 4, delay: "0.5s", transform: "rotate-[18deg]" },
-          { pos: "top-[67%] right-[5%]", size: "w-40 h-40 md:w-56 md:h-56", idx: 5, delay: "2.5s", transform: "rotate-[-15deg]" },
-          { pos: "bottom-[5%] left-[12%]", size: "w-32 h-32 md:w-44 md:h-44", idx: 6, delay: "1.2s", transform: "rotate-[10deg]" },
-          { pos: "bottom-[6%] right-[12%]", size: "w-36 h-36 md:w-48 md:h-48", idx: 7, delay: "0.8s", transform: "rotate-[-8deg]" },
+          { pos: "top-[4%] left-[3%]", size: "w-32 h-32 md:w-48 md:h-48", idx: 0, anim: "animate-3d-float-1", delay: "0s" },
+          { pos: "top-[8%] right-[5%]", size: "w-36 h-36 md:w-52 md:h-52", idx: 1, anim: "animate-3d-float-2", delay: "1.2s" },
+          { pos: "top-[32%] left-[2%]", size: "w-36 h-36 md:w-52 md:h-52", idx: 2, anim: "animate-3d-float-3", delay: "2.4s" },
+          { pos: "top-[35%] right-[3%]", size: "w-36 h-36 md:w-48 md:h-48", idx: 3, anim: "animate-3d-float-1", delay: "0.8s" },
+          { pos: "top-[64%] left-[5%]", size: "w-36 h-36 md:w-52 md:h-52", idx: 4, anim: "animate-3d-float-2", delay: "1.8s" },
+          { pos: "top-[67%] right-[5%]", size: "w-40 h-40 md:w-56 md:h-56", idx: 5, anim: "animate-3d-float-3", delay: "0.5s" },
+          { pos: "bottom-[5%] left-[12%]", size: "w-32 h-32 md:w-44 md:h-44", idx: 6, anim: "animate-3d-float-1", delay: "1.5s" },
+          { pos: "bottom-[6%] right-[12%]", size: "w-36 h-36 md:w-48 md:h-48", idx: 7, anim: "animate-3d-float-2", delay: "2.8s" },
         ].map((item, i) => {
           const character = JOB_VENGERS_LIST[item.idx % JOB_VENGERS_LIST.length];
           return (
             <div
               key={i}
-              className={`absolute ${item.pos} ${item.size} opacity-[0.22] sm:opacity-[0.28] filter drop-shadow-lg transition-all duration-700 animate-float`}
-              style={{ transform: item.transform, animationDelay: item.delay }}
+              className={`absolute ${item.pos} ${item.size} pointer-events-none`}
             >
-              <img
-                src={character.imageUrl}
-                alt={character.title}
-                className="w-full h-full object-contain pointer-events-auto cursor-pointer hover:scale-115 hover:opacity-95 transition-all duration-300"
-                onClick={handleStartExperience}
-                title={`${character.title}와 함께 바로 진로 탐험 퀘스트 시작하기!`}
-              />
+              <div 
+                className={`w-full h-full ${item.anim} opacity-[0.30] sm:opacity-[0.38] filter drop-shadow-[0_15px_35px_rgba(123,92,240,0.35)] transition-opacity duration-300`}
+                style={{ animationDelay: item.delay }}
+              >
+                <img
+                  src={character.imageUrl}
+                  alt={character.title}
+                  className="w-full h-full object-contain pointer-events-auto cursor-pointer hover:opacity-100 hover:scale-125 transition-all duration-300"
+                  onClick={handleStartExperience}
+                  title={`${character.title}와 함께 바로 진로 탐험 퀘스트 시작하기!`}
+                />
+              </div>
             </div>
           );
         })}
