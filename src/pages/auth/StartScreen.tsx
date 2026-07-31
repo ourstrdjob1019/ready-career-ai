@@ -48,25 +48,16 @@ export const StartScreen: React.FC = () => {
     <div className="min-h-screen bg-[#FAF6FF] text-[#1A1626] relative overflow-x-hidden selection:bg-[#9E83FF]/20 selection:text-[#7B5CF0] flex flex-col justify-between">
       {/* 3D Infinite Marquee Keyframe Styles */}
       <style>{`
-        @keyframes marqueeLeft {
+        @keyframes jobvengerMarquee {
           0% { transform: translateX(0%); }
           100% { transform: translateX(-50%); }
         }
-        @keyframes marqueeRight {
-          0% { transform: translateX(-50%); }
-          100% { transform: translateX(0%); }
-        }
-        .animate-marquee-left {
+        .animate-jobvenger-marquee {
           display: flex;
           width: max-content;
-          animation: marqueeLeft 42s linear infinite;
+          animation: jobvengerMarquee 38s linear infinite;
         }
-        .animate-marquee-right {
-          display: flex;
-          width: max-content;
-          animation: marqueeRight 46s linear infinite;
-        }
-        .animate-marquee-left:hover, .animate-marquee-right:hover {
+        .animate-jobvenger-marquee:hover {
           animation-play-state: paused;
         }
 
@@ -167,30 +158,31 @@ export const StartScreen: React.FC = () => {
           </p>
         </div>
 
-        {/* JOB-VENGERS 2-Row Staggered Dual-Marquee Showcase (캐릭터가 많아져도 두 줄로 세련되고 자유롭게 흐르는 구조) */}
-        <div className="w-full my-6 relative py-2 space-y-5">
+        {/* JOB-VENGERS Infinite Horizontal Marquee Section */}
+        <div className="w-full my-8 relative py-4">
           {/* Faded Gradient Mask for Left/Right Edges */}
           <div className="absolute top-0 left-0 w-16 sm:w-32 h-full bg-gradient-to-r from-[#FAF6FF] to-transparent z-10 pointer-events-none" />
           <div className="absolute top-0 right-0 w-16 sm:w-32 h-full bg-gradient-to-l from-[#FAF6FF] to-transparent z-10 pointer-events-none" />
 
-          {/* Top Row: Leftward Floating Rolling Track */}
-          <div className="overflow-hidden py-2">
-            <div className="animate-marquee-left gap-6 px-3">
+          {/* Infinite Rolling Track */}
+          <div className="overflow-hidden py-4">
+            <div className="animate-jobvenger-marquee gap-6 px-3">
               {[...JOB_VENGERS_LIST, ...JOB_VENGERS_LIST].map((item, index) => (
                 <div
-                  key={`top-${index}`}
-                  className={`w-52 sm:w-60 h-68 rounded-[32px] bg-gradient-to-b ${item.bgGradient} p-4 sm:p-5 border-2 border-white shadow-[0_15px_35px_rgba(123,92,240,0.12)] hover:shadow-[0_22px_45px_rgba(123,92,240,0.28)] transition-all duration-300 flex flex-col items-center justify-between group transform hover:-translate-y-2 cursor-pointer relative backdrop-blur-md`}
+                  key={index}
+                  className={`w-56 sm:w-64 h-72 rounded-[34px] bg-gradient-to-b ${item.bgGradient} p-5 border-2 border-white shadow-[0_16px_36px_rgba(123,92,240,0.12)] hover:shadow-[0_24px_48px_rgba(123,92,240,0.28)] transition-all duration-300 flex flex-col items-center justify-between group transform hover:-translate-y-2.5 cursor-pointer relative backdrop-blur-md`}
                   onClick={handleStartExperience}
                   title={`${item.title}와 함께 온보딩 바로 개설하기!`}
                 >
                   <div className="w-full flex items-center justify-between">
-                    <span className="text-[10px] font-black px-2.5 py-1 rounded-full bg-white/90 shadow-sm text-[#3E3852]">
+                    <span className="text-[11px] font-black px-3 py-1 rounded-full bg-white/90 shadow-sm text-[#3E3852]">
                       #{item.id} 직벤져스
                     </span>
-                    <span className="w-2.5 h-2.5 rounded-full bg-cyan-500 animate-pulse" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-green-500 animate-ping" />
                   </div>
 
-                  <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-full bg-white/85 p-2 shadow-inner border-2 border-white flex items-center justify-center my-1 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+                  {/* Character Avatar */}
+                  <div className="w-32 h-32 rounded-full bg-white/85 p-2.5 shadow-inner border-2 border-white flex items-center justify-center my-1 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
                     <img
                       src={item.imageUrl}
                       alt={item.title}
@@ -198,49 +190,12 @@ export const StartScreen: React.FC = () => {
                     />
                   </div>
 
-                  <div className="w-full text-center space-y-1 bg-white/95 backdrop-blur-md py-2 px-2.5 rounded-2xl border border-white shadow-sm">
-                    <span className={`text-[9px] sm:text-[10px] font-black px-2 py-0.5 rounded-full ${item.badgeColor} block w-fit mx-auto`}>
+                  {/* Role Title & Category */}
+                  <div className="w-full text-center space-y-1.5 bg-white/95 backdrop-blur-md py-2.5 px-3 rounded-2xl border border-white shadow-sm">
+                    <span className={`text-[10px] font-black px-2.5 py-0.5 rounded-full ${item.badgeColor} block w-fit mx-auto`}>
                       {item.category}
                     </span>
-                    <strong className="text-xs sm:text-sm font-extrabold text-[#1A1626] block tracking-tight group-hover:text-[#7B5CF0] transition-colors truncate">
-                      {item.title}
-                    </strong>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Bottom Row: Rightward Staggered Floating Rolling Track (양방향 교차로 풍부한 볼거리 제공) */}
-          <div className="overflow-hidden py-2">
-            <div className="animate-marquee-right gap-6 px-3">
-              {[...JOB_VENGERS_LIST.slice(2), ...JOB_VENGERS_LIST, ...JOB_VENGERS_LIST.slice(0, 2)].map((item, index) => (
-                <div
-                  key={`bot-${index}`}
-                  className={`w-52 sm:w-60 h-68 rounded-[32px] bg-gradient-to-b ${item.bgGradient} p-4 sm:p-5 border-2 border-white shadow-[0_15px_35px_rgba(123,92,240,0.12)] hover:shadow-[0_22px_45px_rgba(123,92,240,0.28)] transition-all duration-300 flex flex-col items-center justify-between group transform hover:-translate-y-2 cursor-pointer relative backdrop-blur-md`}
-                  onClick={handleStartExperience}
-                  title={`${item.title}와 함께 온보딩 바로 개설하기!`}
-                >
-                  <div className="w-full flex items-center justify-between">
-                    <span className="text-[10px] font-black px-2.5 py-1 rounded-full bg-white/90 shadow-sm text-[#3E3852]">
-                      #{item.id} 미래직업
-                    </span>
-                    <span className="w-2.5 h-2.5 rounded-full bg-purple-500 animate-ping" />
-                  </div>
-
-                  <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-full bg-white/85 p-2 shadow-inner border-2 border-white flex items-center justify-center my-1 group-hover:scale-110 group-hover:-rotate-6 transition-all duration-300">
-                    <img
-                      src={item.imageUrl}
-                      alt={item.title}
-                      className="w-full h-full object-contain filter drop-shadow-md"
-                    />
-                  </div>
-
-                  <div className="w-full text-center space-y-1 bg-white/95 backdrop-blur-md py-2 px-2.5 rounded-2xl border border-white shadow-sm">
-                    <span className={`text-[9px] sm:text-[10px] font-black px-2 py-0.5 rounded-full ${item.badgeColor} block w-fit mx-auto`}>
-                      {item.category}
-                    </span>
-                    <strong className="text-xs sm:text-sm font-extrabold text-[#1A1626] block tracking-tight group-hover:text-[#7B5CF0] transition-colors truncate">
+                    <strong className="text-sm font-extrabold text-[#1A1626] block tracking-tight group-hover:text-[#7B5CF0] transition-colors truncate">
                       {item.title}
                     </strong>
                   </div>
