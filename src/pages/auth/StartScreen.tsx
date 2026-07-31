@@ -48,53 +48,73 @@ export const StartScreen: React.FC = () => {
     <div className="min-h-screen bg-[#FAF6FF] text-[#1A1626] relative overflow-x-hidden selection:bg-[#9E83FF]/20 selection:text-[#7B5CF0] flex flex-col justify-between">
       {/* 3D Infinite Marquee Keyframe Styles */}
       <style>{`
-        @keyframes jobvengerMarquee {
+        @keyframes marqueeLeft {
           0% { transform: translateX(0%); }
           100% { transform: translateX(-50%); }
         }
-        .animate-jobvenger-marquee {
+        @keyframes marqueeRight {
+          0% { transform: translateX(-50%); }
+          100% { transform: translateX(0%); }
+        }
+        .animate-marquee-left {
           display: flex;
           width: max-content;
-          animation: jobvengerMarquee 38s linear infinite;
+          animation: marqueeLeft 42s linear infinite;
         }
-        .animate-jobvenger-marquee:hover {
+        .animate-marquee-right {
+          display: flex;
+          width: max-content;
+          animation: marqueeRight 46s linear infinite;
+        }
+        .animate-marquee-left:hover, .animate-marquee-right:hover {
           animation-play-state: paused;
         }
 
-        /* 리얼 3D 무중력 둥둥 부유 애니메이션 (3가지 다채로운 입체 궤도) */
+        /* 리얼 3D 무중력 둥둥 부유 애니메이션 (4가지 자유 궤도) */
         @keyframes float3D_1 {
           0%, 100% { transform: translate3d(0px, 0px, 0px) rotate(-8deg) scale(1); }
-          33% { transform: translate3d(18px, -28px, 0px) rotate(5deg) scale(1.07); }
-          66% { transform: translate3d(-12px, -15px, 0px) rotate(-14deg) scale(0.95); }
+          33% { transform: translate3d(20px, -25px, 0px) rotate(6deg) scale(1.08); }
+          66% { transform: translate3d(-15px, -18px, 0px) rotate(-14deg) scale(0.94); }
         }
         @keyframes float3D_2 {
           0%, 100% { transform: translate3d(0px, 0px, 0px) rotate(12deg) scale(1); }
-          50% { transform: translate3d(-22px, 32px, 0px) rotate(24deg) scale(1.08); }
+          50% { transform: translate3d(-25px, 32px, 0px) rotate(24deg) scale(1.09); }
         }
         @keyframes float3D_3 {
           0%, 100% { transform: translate3d(0px, 0px, 0px) rotate(-15deg) scale(0.95); }
-          50% { transform: translate3d(25px, -35px, 0px) rotate(-2deg) scale(1.1); }
+          50% { transform: translate3d(28px, -36px, 0px) rotate(-3deg) scale(1.1); }
+        }
+        @keyframes float3D_4 {
+          0%, 100% { transform: translate3d(0px, 0px, 0px) rotate(5deg) scale(1.03); }
+          50% { transform: translate3d(-18px, -28px, 0px) rotate(-12deg) scale(0.96); }
         }
         .animate-3d-float-1 { animation: float3D_1 6.5s ease-in-out infinite; }
         .animate-3d-float-2 { animation: float3D_2 8s ease-in-out infinite; }
         .animate-3d-float-3 { animation: float3D_3 9.5s ease-in-out infinite; }
+        .animate-3d-float-4 { animation: float3D_4 7.2s ease-in-out infinite; }
       `}</style>
 
       {/* Ambient Pastel Glassmorphism Halo Spheres */}
       <div className="absolute top-10 left-1/4 -translate-x-1/2 w-[550px] h-[550px] bg-gradient-to-tr from-[#E6DEFF]/70 via-[#FEE2FA]/60 to-[#CFFBFF]/60 rounded-full blur-[110px] pointer-events-none -z-0" />
       <div className="absolute top-1/3 right-10 w-[500px] h-[500px] bg-gradient-to-tl from-[#FFEBF2]/70 via-[#DCEBFF]/60 to-[#E8D4FF]/50 rounded-full blur-[100px] pointer-events-none -z-0" />
 
-      {/* 🔮 3D 직업 캐릭터 부유 배경 레이어 (리얼 무중력 3D 둥둥 유영 애니메이션) */}
+      {/* 🔮 3D 직업 캐릭터 자유 매트릭스 배경 레이어 (14개 좌표에서 크기와 높낮이를 달리하여 둥둥 떠다니는 입체 부유) */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
         {[
-          { pos: "top-[4%] left-[3%]", size: "w-32 h-32 md:w-48 md:h-48", idx: 0, anim: "animate-3d-float-1", delay: "0s" },
-          { pos: "top-[8%] right-[5%]", size: "w-36 h-36 md:w-52 md:h-52", idx: 1, anim: "animate-3d-float-2", delay: "1.2s" },
-          { pos: "top-[32%] left-[2%]", size: "w-36 h-36 md:w-52 md:h-52", idx: 2, anim: "animate-3d-float-3", delay: "2.4s" },
-          { pos: "top-[35%] right-[3%]", size: "w-36 h-36 md:w-48 md:h-48", idx: 3, anim: "animate-3d-float-1", delay: "0.8s" },
-          { pos: "top-[64%] left-[5%]", size: "w-36 h-36 md:w-52 md:h-52", idx: 4, anim: "animate-3d-float-2", delay: "1.8s" },
-          { pos: "top-[67%] right-[5%]", size: "w-40 h-40 md:w-56 md:h-56", idx: 5, anim: "animate-3d-float-3", delay: "0.5s" },
-          { pos: "bottom-[5%] left-[12%]", size: "w-32 h-32 md:w-44 md:h-44", idx: 6, anim: "animate-3d-float-1", delay: "1.5s" },
-          { pos: "bottom-[6%] right-[12%]", size: "w-36 h-36 md:w-48 md:h-48", idx: 7, anim: "animate-3d-float-2", delay: "2.8s" },
+          { pos: "top-[2%] left-[2%]", size: "w-32 h-32 sm:w-44 sm:h-44", idx: 0, anim: "animate-3d-float-1", delay: "0s" },
+          { pos: "top-[5%] left-[24%]", size: "w-24 h-24 sm:w-36 sm:h-36", idx: 1, anim: "animate-3d-float-4", delay: "1.5s" },
+          { pos: "top-[3%] right-[24%]", size: "w-28 h-28 sm:w-40 sm:h-40", idx: 2, anim: "animate-3d-float-2", delay: "0.7s" },
+          { pos: "top-[6%] right-[3%]", size: "w-36 h-36 sm:w-48 sm:h-48", idx: 3, anim: "animate-3d-float-3", delay: "2.1s" },
+          { pos: "top-[26%] left-[4%]", size: "w-36 h-36 sm:w-52 sm:h-52", idx: 4, anim: "animate-3d-float-2", delay: "1.2s" },
+          { pos: "top-[29%] right-[5%]", size: "w-36 h-36 sm:w-50 sm:h-50", idx: 5, anim: "animate-3d-float-1", delay: "2.8s" },
+          { pos: "top-[46%] left-[1%]", size: "w-32 h-32 sm:w-44 sm:h-44", idx: 6, anim: "animate-3d-float-4", delay: "0.4s" },
+          { pos: "top-[49%] right-[2%]", size: "w-32 h-32 sm:w-48 sm:h-48", idx: 7, anim: "animate-3d-float-3", delay: "1.9s" },
+          { pos: "top-[68%] left-[6%]", size: "w-36 h-36 sm:w-54 sm:h-54", idx: 8, anim: "animate-3d-float-1", delay: "2.3s" },
+          { pos: "top-[71%] right-[6%]", size: "w-36 h-36 sm:w-52 sm:h-52", idx: 9, anim: "animate-3d-float-2", delay: "0.9s" },
+          { pos: "bottom-[18%] left-[28%]", size: "w-28 h-28 sm:w-40 sm:h-40", idx: 0, anim: "animate-3d-float-3", delay: "1.6s" },
+          { pos: "bottom-[20%] right-[28%]", size: "w-28 h-28 sm:w-40 sm:h-40", idx: 1, anim: "animate-3d-float-4", delay: "2.5s" },
+          { pos: "bottom-[3%] left-[10%]", size: "w-32 h-32 sm:w-44 sm:h-44", idx: 2, anim: "animate-3d-float-2", delay: "0.3s" },
+          { pos: "bottom-[4%] right-[10%]", size: "w-32 h-32 sm:w-48 sm:h-48", idx: 3, anim: "animate-3d-float-1", delay: "1.8s" },
         ].map((item, i) => {
           const character = JOB_VENGERS_LIST[item.idx % JOB_VENGERS_LIST.length];
           return (
@@ -103,7 +123,7 @@ export const StartScreen: React.FC = () => {
               className={`absolute ${item.pos} ${item.size} pointer-events-none`}
             >
               <div 
-                className={`w-full h-full ${item.anim} opacity-[0.30] sm:opacity-[0.38] filter drop-shadow-[0_15px_35px_rgba(123,92,240,0.35)] transition-opacity duration-300`}
+                className={`w-full h-full ${item.anim} opacity-[0.26] sm:opacity-[0.34] filter drop-shadow-[0_15px_30px_rgba(123,92,240,0.3)] transition-opacity duration-300`}
                 style={{ animationDelay: item.delay }}
               >
                 <img
@@ -147,31 +167,30 @@ export const StartScreen: React.FC = () => {
           </p>
         </div>
 
-        {/* JOB-VENGERS Infinite Horizontal Marquee Section */}
-        <div className="w-full my-8 relative py-4">
+        {/* JOB-VENGERS 2-Row Staggered Dual-Marquee Showcase (캐릭터가 많아져도 두 줄로 세련되고 자유롭게 흐르는 구조) */}
+        <div className="w-full my-6 relative py-2 space-y-5">
           {/* Faded Gradient Mask for Left/Right Edges */}
           <div className="absolute top-0 left-0 w-16 sm:w-32 h-full bg-gradient-to-r from-[#FAF6FF] to-transparent z-10 pointer-events-none" />
           <div className="absolute top-0 right-0 w-16 sm:w-32 h-full bg-gradient-to-l from-[#FAF6FF] to-transparent z-10 pointer-events-none" />
 
-          {/* Infinite Rolling Track */}
-          <div className="overflow-hidden py-4">
-            <div className="animate-jobvenger-marquee gap-6 px-3">
+          {/* Top Row: Leftward Floating Rolling Track */}
+          <div className="overflow-hidden py-2">
+            <div className="animate-marquee-left gap-6 px-3">
               {[...JOB_VENGERS_LIST, ...JOB_VENGERS_LIST].map((item, index) => (
                 <div
-                  key={index}
-                  className={`w-56 sm:w-64 h-72 rounded-[34px] bg-gradient-to-b ${item.bgGradient} p-5 border-2 border-white shadow-[0_16px_36px_rgba(123,92,240,0.12)] hover:shadow-[0_24px_48px_rgba(123,92,240,0.28)] transition-all duration-300 flex flex-col items-center justify-between group transform hover:-translate-y-2.5 cursor-pointer relative backdrop-blur-md`}
+                  key={`top-${index}`}
+                  className={`w-52 sm:w-60 h-68 rounded-[32px] bg-gradient-to-b ${item.bgGradient} p-4 sm:p-5 border-2 border-white shadow-[0_15px_35px_rgba(123,92,240,0.12)] hover:shadow-[0_22px_45px_rgba(123,92,240,0.28)] transition-all duration-300 flex flex-col items-center justify-between group transform hover:-translate-y-2 cursor-pointer relative backdrop-blur-md`}
                   onClick={handleStartExperience}
                   title={`${item.title}와 함께 온보딩 바로 개설하기!`}
                 >
                   <div className="w-full flex items-center justify-between">
-                    <span className="text-[11px] font-black px-3 py-1 rounded-full bg-white/90 shadow-sm text-[#3E3852]">
+                    <span className="text-[10px] font-black px-2.5 py-1 rounded-full bg-white/90 shadow-sm text-[#3E3852]">
                       #{item.id} 직벤져스
                     </span>
-                    <span className="w-2.5 h-2.5 rounded-full bg-green-500 animate-ping" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-cyan-500 animate-pulse" />
                   </div>
 
-                  {/* Character Avatar */}
-                  <div className="w-32 h-32 rounded-full bg-white/85 p-2.5 shadow-inner border-2 border-white flex items-center justify-center my-1 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+                  <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-full bg-white/85 p-2 shadow-inner border-2 border-white flex items-center justify-center my-1 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
                     <img
                       src={item.imageUrl}
                       alt={item.title}
@@ -179,12 +198,49 @@ export const StartScreen: React.FC = () => {
                     />
                   </div>
 
-                  {/* Role Title & Category */}
-                  <div className="w-full text-center space-y-1.5 bg-white/95 backdrop-blur-md py-2.5 px-3 rounded-2xl border border-white shadow-sm">
-                    <span className={`text-[10px] font-black px-2.5 py-0.5 rounded-full ${item.badgeColor} block w-fit mx-auto`}>
+                  <div className="w-full text-center space-y-1 bg-white/95 backdrop-blur-md py-2 px-2.5 rounded-2xl border border-white shadow-sm">
+                    <span className={`text-[9px] sm:text-[10px] font-black px-2 py-0.5 rounded-full ${item.badgeColor} block w-fit mx-auto`}>
                       {item.category}
                     </span>
-                    <strong className="text-sm font-extrabold text-[#1A1626] block tracking-tight group-hover:text-[#7B5CF0] transition-colors truncate">
+                    <strong className="text-xs sm:text-sm font-extrabold text-[#1A1626] block tracking-tight group-hover:text-[#7B5CF0] transition-colors truncate">
+                      {item.title}
+                    </strong>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Bottom Row: Rightward Staggered Floating Rolling Track (양방향 교차로 풍부한 볼거리 제공) */}
+          <div className="overflow-hidden py-2">
+            <div className="animate-marquee-right gap-6 px-3">
+              {[...JOB_VENGERS_LIST.slice(2), ...JOB_VENGERS_LIST, ...JOB_VENGERS_LIST.slice(0, 2)].map((item, index) => (
+                <div
+                  key={`bot-${index}`}
+                  className={`w-52 sm:w-60 h-68 rounded-[32px] bg-gradient-to-b ${item.bgGradient} p-4 sm:p-5 border-2 border-white shadow-[0_15px_35px_rgba(123,92,240,0.12)] hover:shadow-[0_22px_45px_rgba(123,92,240,0.28)] transition-all duration-300 flex flex-col items-center justify-between group transform hover:-translate-y-2 cursor-pointer relative backdrop-blur-md`}
+                  onClick={handleStartExperience}
+                  title={`${item.title}와 함께 온보딩 바로 개설하기!`}
+                >
+                  <div className="w-full flex items-center justify-between">
+                    <span className="text-[10px] font-black px-2.5 py-1 rounded-full bg-white/90 shadow-sm text-[#3E3852]">
+                      #{item.id} 미래직업
+                    </span>
+                    <span className="w-2.5 h-2.5 rounded-full bg-purple-500 animate-ping" />
+                  </div>
+
+                  <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-full bg-white/85 p-2 shadow-inner border-2 border-white flex items-center justify-center my-1 group-hover:scale-110 group-hover:-rotate-6 transition-all duration-300">
+                    <img
+                      src={item.imageUrl}
+                      alt={item.title}
+                      className="w-full h-full object-contain filter drop-shadow-md"
+                    />
+                  </div>
+
+                  <div className="w-full text-center space-y-1 bg-white/95 backdrop-blur-md py-2 px-2.5 rounded-2xl border border-white shadow-sm">
+                    <span className={`text-[9px] sm:text-[10px] font-black px-2 py-0.5 rounded-full ${item.badgeColor} block w-fit mx-auto`}>
+                      {item.category}
+                    </span>
+                    <strong className="text-xs sm:text-sm font-extrabold text-[#1A1626] block tracking-tight group-hover:text-[#7B5CF0] transition-colors truncate">
                       {item.title}
                     </strong>
                   </div>
