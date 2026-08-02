@@ -35,8 +35,19 @@ export const HomeDashboard: React.FC = () => {
   const [newJobInput, setNewJobInput] = useState("");
   const [isAiLoading, setIsAiLoading] = useState(false);
 
-  // 로드맵 생성 및 4개 활동 모듈 오픈 상태 관리
+  // 로드맵 생성 및 4개 활동 모듈 오픈 상태 관리 (기본적으로 16개 진단 후 버튼 클릭 전까지 숨겨져 있어야 함)
   const [isRoadmapGenerated, setIsRoadmapGenerated] = useState<boolean>(() => {
+    // 4대 모듈은 기본적으로 없던 상태에서 16개 진단 결과를 가지고 AI가 커스텀 세팅하는 것이므로, 초기 접근 시 확실히 숨김 처리
+    if (!localStorage.getItem("readycareer_ai_custom_habit_v1_cleared")) {
+      localStorage.setItem("readycareer_ai_custom_habit_v1_cleared", "true");
+      localStorage.removeItem("readycareer_roadmap_generated");
+      localStorage.removeItem("my_habits_v2");
+      return false;
+    }
+    if (!localStorage.getItem("my_habits_v2")) {
+      localStorage.removeItem("readycareer_roadmap_generated");
+      return false;
+    }
     return localStorage.getItem("readycareer_roadmap_generated") === "true";
   });
   const [isGeneratingAnim, setIsGeneratingAnim] = useState(false);
@@ -112,25 +123,57 @@ export const HomeDashboard: React.FC = () => {
     setNewJobInput("");
   };
 
-  // 🚀 + ReadyCareer AI 실전 맞춤 진로 활동 찾아보기 & 포트폴리오 개설 핸들러 (AI 맞춤 습관 세팅 + 3D 로딩 애니메이션)
-  const handleGenerateRoadmap = () => {
+  // 🚀 ReadyCareer AI 실전 맞춤 진로 활동 찾아보기 핸들러 (실제 AI API 호출 + 맞춤 습관 & 목표 커스텀 세팅)
+  const handleGenerateRoadmap = async () => {
     setIsGeneratingAnim(true);
-    // 선택한 직업과 진단 결과에 맞춘 AI 맞춤형 습관 & 목표 자동 구축
-    const currentJob = localStorage.getItem("readycareer_target_job_name") || "AI 융합 미래 전문가";
+    
+    // 16개 진단 결과(흥미유형) 및 현재 선택 직무 값 추출
+    const currentJob = localStorage.getItem("readycareer_target_job_name") || session?.targetJob || "AI 융합 미래 전문가";
     const studentCluster = localStorage.getItem("readycareer_student_cluster") || "공간·첨단테크 계열";
-    const tailoredHabits = [
-      { id: Date.now() + 1, text: `[${currentJob}] 전공 핵심 역량 도서 하루 15분 독해`, completed: false, streak: 1, category: "전공 탐색" },
-      { id: Date.now() + 2, text: `[${currentJob}] 코넬노트 요약 1회 작성 및 AI 퀴즈 풀기`, completed: false, streak: 3, category: "학습 심화" },
-      { id: Date.now() + 3, text: `[${studentCluster}] 최신 산업 테크 트렌드 아티클 1편 요약`, completed: true, streak: 5, category: "트렌드 분석" },
-      { id: Date.now() + 4, text: `50일 AI 진로 챌린지 루틴 수행 & 세특 활동기록 1줄 업로드`, completed: false, streak: 7, category: "생기부 빌드" }
-    ];
-    localStorage.setItem("my_habits_v2", JSON.stringify(tailoredHabits));
+    const riasecCode = localStorage.getItem("riasec_result_code") || session?.riasecCode || "AI-PRO";
 
+    try {
+      // 16개 진단 결과와 직무를 매개변수로 AI API 호출하여 맞춤형 습관 & 목표를 실시간 설계
+      const res = await executeAiPrompt({
+        promptType: "habit_design",
+        studentName: session?.name || "학생",
+        targetJob: currentJob,
+        riasecCode: riasecCode,
+        userPrompt: `진로 흥미유형: ${riasecCode}, 진로 계열: ${studentCluster}. 해당 학생의 16개 문항 온보딩 진단 성향과 타겟 직무 역량에 완벽히 호흡을 맞춘 실전 맞춤 진로 루틴 4가지를 도출해 줘.`
+      });
+
+      let tailoredHabits: any[] = [];
+      if (res && res.json && Array.isArray(res.json)) {
+        tailoredHabits = res.json.map((item: any, idx: number) => ({
+          id: Date.now() + idx,
+          text: `[${currentJob}] ${item.title || item.text || item.habit || item}`,
+          completed: idx === 2,
+          streak: (idx + 1) * 2,
+          category: idx === 0 ? "전공 탐색" : idx === 1 ? "학습 심화" : idx === 2 ? "트렌드 분석" : "생기부 빌드"
+        }));
+      }
+
+      // API 통신 지연이나 응답 구조 불일치 시 100% 보증되는 개인화 커스텀 세팅 주입
+      if (tailoredHabits.length === 0) {
+        tailoredHabits = [
+          { id: Date.now() + 1, text: `[${currentJob}] 전공 핵심 역량 도서 하루 15분 정독 및 코넬노트 키워드 수집`, completed: false, streak: 1, category: "전공 탐색" },
+          { id: Date.now() + 2, text: `[${riasecCode} 성향] 파이썬 및 알고리즘 하루 1문제 코드 실습 또는 AI 퀴즈 풀기`, completed: false, streak: 3, category: "학습 심화" },
+          { id: Date.now() + 3, text: `[${studentCluster}] 최신 산업 테크 트렌드 아티클 1편 요약 및 진로 탐구 고찰 기록`, completed: true, streak: 5, category: "트렌드 분석" },
+          { id: Date.now() + 4, text: `50일 AI 진로 챌린지 루틴 수행 & 아리 가이던스로 세특 활동기록 1줄 업로드`, completed: false, streak: 7, category: "생기부 빌드" }
+        ];
+      }
+
+      localStorage.setItem("my_habits_v2", JSON.stringify(tailoredHabits));
+    } catch (error) {
+      console.error("[AI Habit Design Customization Error]", error);
+    }
+
+    // 캐릭터 아리의 로딩 연출 화면이 충분히 보여진 후 4대 실전 맞춤 진로 활동 모듈 개방
     setTimeout(() => {
       setIsRoadmapGenerated(true);
       localStorage.setItem("readycareer_roadmap_generated", "true");
       setIsGeneratingAnim(false);
-    }, 2600);
+    }, 2800);
   };
 
   // 🎯 관심 직업 카드에서 '직업 변경하기' 클릭 시 진화 스토리 모달 띄우기
@@ -177,6 +220,10 @@ export const HomeDashboard: React.FC = () => {
           targetJob: selected.name,
         });
       }
+      // 직업 변경 시 신규 직무에 맞춰 4대 모듈 및 AI 커스텀 습관을 0부터 다시 세팅할 수 있도록 숨김 리셋!
+      localStorage.removeItem("readycareer_roadmap_generated");
+      localStorage.removeItem("my_habits_v2");
+      setIsRoadmapGenerated(false);
     }
     setJobIntroModalIdx(null);
     window.scrollTo({ top: 0, behavior: "smooth" }); // 변경 후 위로 스크롤

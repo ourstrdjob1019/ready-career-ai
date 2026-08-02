@@ -69,6 +69,8 @@ export const MyPage: React.FC = () => {
     // 3. 상태 리렌더링 및 새로고침하여 전 페이지 테마 동기화 적용
     setJobHistoryList(newHistory);
     localStorage.setItem("readycareer_my_job_history_v1", JSON.stringify(newHistory));
+    localStorage.removeItem("readycareer_roadmap_generated");
+    localStorage.removeItem("my_habits_v2");
     window.location.reload();
   };
 

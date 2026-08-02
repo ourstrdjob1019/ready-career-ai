@@ -29,6 +29,8 @@ export const StartScreen: React.FC = () => {
     localStorage.removeItem("readycareer_student_cluster");
     localStorage.removeItem("riasec_result_code");
     localStorage.removeItem("riasec_primary");
+    localStorage.removeItem("readycareer_roadmap_generated");
+    localStorage.removeItem("my_habits_v2");
     resetAssessments();
 
     // 초기 0단계 상태로 AI 진단 세션 개설

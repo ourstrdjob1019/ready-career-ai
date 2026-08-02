@@ -74,6 +74,9 @@ export const OnboardingTestFlow: React.FC = () => {
         });
       }
     }
+    // 16개 진단을 마친 직후, 홈화면 입장 시 4대 모듈은 비어있어야 하고 AI 맞춤 활동 버튼을 가동하도록 숨김 초기화!
+    localStorage.removeItem("readycareer_roadmap_generated");
+    localStorage.removeItem("my_habits_v2");
     navigate("/");
   };
 
