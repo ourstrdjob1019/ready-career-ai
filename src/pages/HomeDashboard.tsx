@@ -419,34 +419,19 @@ export const HomeDashboard: React.FC = () => {
             </div>
           </div>
 
-          {/* + 맞춤 포트폴리오 및 아리와 함께 실전 맞춤 진로 활동 찾아보기 버튼 (클릭 시 AI 분석 후 4대 모듈 개장!) */}
-          <div className="flex-shrink-0 w-full sm:w-auto text-center flex flex-col gap-3">
+          {/* 🤖 아리와 함께 실전 맞춤 진로 활동 찾아보기 버튼 (클릭 시 AI 분석 후 4대 모듈 개장!) */}
+          <div className="flex-shrink-0 w-full xl:w-auto text-center flex flex-col items-center justify-center gap-3">
             {!isRoadmapGenerated ? (
-              <>
-                {/* 메인 개설 버튼 */}
-                <div className="p-1.5 rounded-[32px] bg-gradient-to-r from-[#7B5CF0] via-[#FF4081] to-[#008A90] shadow-[0_10px_35px_rgba(123,92,240,0.35)] hover:shadow-[0_15px_45px_rgba(255,64,129,0.5)] transition-all duration-300">
-                  <button
-                    onClick={handleGenerateRoadmap}
-                    disabled={isGeneratingAnim}
-                    className="w-full sm:w-auto py-4 px-7 rounded-[26px] bg-[#7B5CF0] hover:bg-[#6843E5] text-white font-black text-base sm:text-lg border-2 border-white/85 border-b-[6px] border-b-[#3F1BA6] active:translate-y-1 active:border-b-2 transition-all flex items-center justify-center gap-2.5 whitespace-nowrap cursor-pointer shadow-xl break-keep"
-                  >
-                    <Sparkles className="w-6 h-6 text-amber-300 animate-spin-slow flex-shrink-0" />
-                    <span>🚀 나만의 맞춤 진로 보고서 & AI 포트폴리오 개설하기</span>
-                  </button>
-                </div>
-
-                {/* 실전 맞춤 진로 활동 찾아보기 버튼 (AI 발동 & 습관 자동세팅) */}
-                <div className="p-1.5 rounded-[32px] bg-gradient-to-r from-[#00A3A8] via-[#5270FF] to-[#8E5BF2] shadow-[0_10px_35px_rgba(0,163,168,0.35)] hover:shadow-[0_15px_45px_rgba(82,112,255,0.5)] transition-all duration-300 animate-pulse">
-                  <button
-                    onClick={handleGenerateRoadmap}
-                    disabled={isGeneratingAnim}
-                    className="w-full sm:w-auto py-4 px-7 rounded-[26px] bg-gradient-to-r from-[#008A90] via-[#2563EB] to-[#7B5CF0] text-white font-black text-base sm:text-lg border-2 border-white/85 border-b-[6px] border-b-[#0D3B66] active:translate-y-1 active:border-b-2 transition-all flex items-center justify-center gap-2.5 whitespace-nowrap cursor-pointer shadow-xl break-keep"
-                  >
-                    <span className="text-xl sm:text-2xl animate-bounce-short flex-shrink-0">🤖</span>
-                    <span>아리와 함께 실전 맞춤 진로 활동 찾아보기 ✨</span>
-                  </button>
-                </div>
-              </>
+              <div className="w-full sm:w-[380px] md:w-[420px] p-2 rounded-[36px] bg-gradient-to-r from-[#00A3A8] via-[#5270FF] to-[#FF3B7C] shadow-[0_12px_40px_rgba(0,163,168,0.4)] hover:shadow-[0_18px_55px_rgba(255,59,124,0.6)] transition-all duration-300">
+                <button
+                  onClick={handleGenerateRoadmap}
+                  disabled={isGeneratingAnim}
+                  className="w-full py-5 px-8 rounded-[30px] bg-gradient-to-r from-[#008A90] via-[#2563EB] to-[#7B5CF0] hover:brightness-110 text-white font-black text-lg sm:text-xl border-2 border-white/90 border-b-[8px] border-b-[#0D3B66] active:translate-y-1.5 active:border-b-2 transition-all flex items-center justify-center gap-3.5 whitespace-nowrap cursor-pointer shadow-2xl tracking-tight break-keep"
+                >
+                  <span className="text-2xl sm:text-3xl animate-bounce-short flex-shrink-0">🤖</span>
+                  <span>아리와 함께 실전 맞춤 진로 활동 찾아보기 ✨</span>
+                </button>
+              </div>
             ) : (
               <div className="flex flex-col items-center gap-3">
                 <span className="inline-flex items-center gap-2 px-5 py-2.5 bg-green-500/15 text-[#059669] rounded-2xl font-black text-xs sm:text-sm border border-green-300 shadow-sm">
