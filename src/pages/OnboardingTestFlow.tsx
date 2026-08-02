@@ -159,11 +159,27 @@ export const OnboardingTestFlow: React.FC = () => {
 
             {/* 하단(Below): 2개 선택 박스 (글은 대폭 줄이고 직관적인 3D 애니메이션 이미지 극대화) */}
             <div className="w-full space-y-3 pt-2">
-              {/* 문항과 선택지 사이: 아리 대화형 말풍선 단일 멘트 */}
-              <div className="flex items-center justify-center gap-2.5 my-2 animate-fadeIn">
-                <img src={ARI_BLOB_URL} alt="Ari" className="w-9 h-9 sm:w-11 sm:h-11 object-contain drop-shadow-md flex-shrink-0 animate-bounce-short" />
-                <div className="bg-white/95 px-5 py-2 sm:py-2.5 rounded-[22px] rounded-tl-none shadow-md border-[2px] border-purple-200 text-[#3D3554] text-xs sm:text-sm font-black tracking-tight break-keep">
-                  💬 <strong className="text-[#7B5CF0]">아리의 귀띔:</strong> "👇 내 마음에 쏙 드는 선택지 버튼을 가벼운 터치로 골라줘!"
+              {/* 문항과 선택지 사이: 눈에 잘 띄는 대형 아리 가이던스 말풍선 멘트 */}
+              <div className="flex items-center justify-center gap-3 sm:gap-5 my-5 sm:my-7 animate-fadeIn w-full max-w-4xl mx-auto px-2">
+                <div className="relative flex-shrink-0">
+                  <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-pink-500 animate-ping" />
+                  <img 
+                    src={ARI_BLOB_URL} 
+                    alt="Ari" 
+                    className="w-16 h-16 sm:w-20 sm:h-20 object-contain drop-shadow-lg animate-bounce-short flex-shrink-0" 
+                  />
+                </div>
+                <div className="flex-grow bg-gradient-to-r from-white via-[#F8F4FF] to-white px-6 sm:px-8 py-4 sm:py-5 rounded-[28px] sm:rounded-[32px] rounded-tl-none shadow-[0_15px_38px_rgba(123,92,240,0.18)] border-[3px] border-[#7B5CF0]/50 text-[#1A1626] text-base sm:text-lg md:text-xl font-black tracking-tight break-keep flex items-center justify-between gap-3 group hover:border-[#7B5CF0] transition-all">
+                  <span className="flex items-center gap-2 sm:gap-3 leading-relaxed">
+                    <span className="text-xl sm:text-2xl animate-pulse">✨</span>
+                    <span>
+                      <strong className="text-[#7B5CF0] text-lg sm:text-xl md:text-2xl mr-1.5 underline decoration-wavy decoration-pink-400 decoration-2">아리의 귀띔:</strong> 
+                      "👇 내 마음에 쏙 드는 선택지 버튼을 가벼운 터치로 골라줘!"
+                    </span>
+                  </span>
+                  <span className="hidden md:inline-flex bg-[#7B5CF0]/15 text-[#7B5CF0] text-xs font-black px-4 py-1.5 rounded-full border border-[#7B5CF0]/30 whitespace-nowrap animate-pulse flex-shrink-0 shadow-sm">
+                    선택 즉시 반영!
+                  </span>
                 </div>
               </div>
 
