@@ -47,7 +47,8 @@ export const StarRoadmap: React.FC = () => {
   const [summaryInput, setSummaryInput] = useState("");
   const [isAiGenerating, setIsAiGenerating] = useState(false);
 
-  // 퀴즈 모달 상태
+  // 퀴즈 및 과목 선택 모달 상태
+  const [showSubjectSelectModal, setShowSubjectSelectModal] = useState(false);
   const [activeQuizNote, setActiveQuizNote] = useState<CornellNote | null>(null);
   const [quizzes, setQuizzes] = useState<QuizItem[]>([]);
   const [quizLoading, setQuizLoading] = useState(false);
@@ -213,17 +214,31 @@ export const StarRoadmap: React.FC = () => {
           SECTION 2: 신규 코넬 노트 작성 및 AI 정리본 도출 모듈
          ========================================================================= */}
       <div className="bg-white rounded-[36px] p-7 sm:p-12 shadow-[0_15px_45px_rgba(123,92,240,0.1)] border-2 border-[#EADFFF] space-y-8">
-        <div className="border-b-2 border-purple-100 pb-5">
-          <div className="inline-flex items-center gap-1.5 bg-[#7B5CF0]/10 text-[#7B5CF0] px-3.5 py-1 rounded-full text-xs font-black mb-2">
-            <BookOpen className="w-4 h-4" />
-            <span>Cornell Note-Taking System</span>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-2 border-purple-100 pb-5">
+          <div>
+            <div className="inline-flex items-center gap-1.5 bg-[#7B5CF0]/10 text-[#7B5CF0] px-3.5 py-1 rounded-full text-xs font-black mb-2">
+              <BookOpen className="w-4 h-4" />
+              <span>Cornell Note-Taking System</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-headline font-black text-[#1A1626]">
+              ✍️ 새 코넬 학습 노트 및 AI 요약 정리 작성
+            </h2>
+            <p className="text-xs sm:text-sm font-semibold text-[#5C5672] mt-1 break-keep">
+              과목명, 학습주제, 요약을 기입하시면 AI가 하단에 <strong>전문적인 학업-진로 융합 정리본</strong>을 즉시 생성하여 누적 보관합니다.
+            </p>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-headline font-black text-[#1A1626]">
-            ✍️ 새 코넬 학습 노트 및 AI 요약 정리 작성
-          </h2>
-          <p className="text-xs sm:text-sm font-semibold text-[#5C5672] mt-1">
-            과목명, 학습주제, 요약을 기입하시면 AI가 하단에 <strong>전문적인 학업-진로 융합 정리본</strong>을 즉시 생성하여 누적 보관합니다.
-          </p>
+
+          {/* 우측 상단 🤖 아리와 함께 문제 만들기 버튼 */}
+          <div className="flex-shrink-0">
+            <button
+              type="button"
+              onClick={() => setShowSubjectSelectModal(true)}
+              className="px-5 py-3.5 rounded-2xl bg-gradient-to-r from-[#FF3B7C] via-[#FF6247] to-[#7B5CF0] hover:brightness-110 text-white font-black text-xs sm:text-sm shadow-[0_8px_25px_rgba(255,59,124,0.35)] hover:shadow-[0_12px_35px_rgba(255,59,124,0.55)] transition-all flex items-center gap-2 transform hover:-translate-y-1 active:scale-95 cursor-pointer border-2 border-white/80 whitespace-nowrap"
+            >
+              <Brain className="w-5 h-5 text-amber-300 animate-bounce-short" />
+              <span>🤖 아리와 함께 문제 만들기</span>
+            </button>
+          </div>
         </div>
 
         <form onSubmit={handleCreateCornellNote} className="space-y-6">
@@ -357,13 +372,21 @@ export const StarRoadmap: React.FC = () => {
             <span className="text-xs font-bold text-[#8A859C]">위 작성폼에서 노트를 추가하여 보관함을 채워 보세요!</span>
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-8">
+          <div className="grid grid-cols-1 gap-10">
             {filteredNotes.map((note) => (
               <div
                 key={note.id}
-                className="bg-white rounded-[36px] p-8 sm:p-10 shadow-[0_12px_35px_rgba(0,0,0,0.06)] hover:shadow-[0_20px_50px_rgba(123,92,240,0.15)] border-2 border-[#EAE4FE] transition-all duration-300 space-y-6 relative overflow-hidden"
+                className="bg-[#FFFDF9] rounded-[32px] shadow-[0_15px_45px_rgba(0,0,0,0.08)] hover:shadow-[0_22px_60px_rgba(123,92,240,0.18)] border-2 border-[#E8DFC8] transition-all duration-300 relative overflow-hidden flex flex-col"
               >
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-purple-100 pb-4">
+                {/* 상단 바인더 타공 구멍 및 노트 질감 바 (실제 스프링/3공 바인더 느낌) */}
+                <div className="w-full py-2.5 bg-[#F5EEDC] flex items-center justify-center gap-4 sm:gap-8 border-b border-[#DFD3B6] shadow-inner">
+                  {[...Array(8)].map((_, i) => (
+                    <div key={i} className="w-3.5 h-3.5 rounded-full bg-[#3D3522]/30 shadow-inner border border-white/60" />
+                  ))}
+                </div>
+
+                {/* 코넬 노트 상단 영역 (과목명 & 날짜 Header) */}
+                <div className="p-6 sm:p-8 border-b-2 border-[#E6DDD0] flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white/70">
                   <div className="flex items-center gap-3">
                     <span className="text-xs sm:text-sm font-black px-4 py-1.5 rounded-full bg-[#008A90] text-white shadow-sm">
                       {note.category}
@@ -373,7 +396,7 @@ export const StarRoadmap: React.FC = () => {
                     </h4>
                   </div>
                   <div className="flex items-center gap-3">
-                    <span className="text-xs font-black text-[#8A859C] bg-[#F2EEFF] px-3 py-1 rounded-lg">
+                    <span className="text-xs font-black text-[#6E6A80] bg-[#F3ECE0] px-3.5 py-1.5 rounded-xl border border-[#DFD3B6]">
                       📅 {note.date}
                     </span>
                     {/* 과목별 AI 퀴즈 셀프 테스트 버튼 */}
@@ -387,40 +410,43 @@ export const StarRoadmap: React.FC = () => {
                   </div>
                 </div>
 
-                {/* 코넬 본문 2단 표시 (키워드 & 내 요약) */}
-                <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-                  {/* 좌측 란: Cues / 핵심 키워드 */}
-                  <div className="bg-[#FAF6FF] p-5 rounded-2xl border border-purple-100 space-y-2 lg:col-span-1">
-                    <span className="text-xs font-black text-[#6240D5] flex items-center gap-1">
-                      🔑 핵심 키워드 (Cues)
-                    </span>
-                    <p className="text-xs sm:text-sm font-extrabold text-[#3F3952] leading-relaxed">
+                {/* 리얼 코넬 본문 레이아웃 (좌측 Cue 칼럼 + 붉은색 수직 구분선 + 우측 Notes 칼럼) */}
+                <div className="flex flex-col md:flex-row flex-grow">
+                  {/* 좌측 란: Cues / 핵심 키워드 (코넬 오프라인 노트 구조) */}
+                  <div className="w-full md:w-1/3 lg:w-1/4 bg-[#FFFBF0] p-6 sm:p-7 md:border-r-[3px] border-b md:border-b-0 border-[#FCA5A5] space-y-3">
+                    <div className="inline-flex items-center gap-1.5 bg-[#FEF2F2] text-[#DC2626] px-3 py-1 rounded-lg text-xs font-black border border-red-200">
+                      <span>📌 Cues (핵심 키워드)</span>
+                    </div>
+                    <p className="text-xs sm:text-sm font-extrabold text-[#3F3952] leading-relaxed break-keep">
                       {note.keywords}
                     </p>
                   </div>
 
-                  {/* 메인 란: Notes / 학생 요약 내용 */}
-                  <div className="bg-[#F9F9FC] p-6 rounded-2xl border border-slate-200 space-y-2 lg:col-span-3">
-                    <span className="text-xs font-black text-[#4A4460] flex items-center gap-1">
-                      📝 나의 학습 및 탐구 고찰 (My Summary &amp; Notes)
-                    </span>
-                    <p className="text-sm sm:text-base font-semibold text-[#1A1626] leading-relaxed whitespace-pre-wrap">
+                  {/* 메인 란: Notes / 학습 요약 내용 */}
+                  <div className="w-full md:w-2/3 lg:w-3/4 bg-[#FFFDFC] p-6 sm:p-8 space-y-3 relative">
+                    {/* 은은한 줄 노트 배경 텍스처 효과 */}
+                    <div className="inline-flex items-center gap-1.5 bg-[#F0FDF4] text-[#15803D] px-3 py-1 rounded-lg text-xs font-black border border-green-200">
+                      <span>📝 Notes (탐구 요약 & 심화 고찰)</span>
+                    </div>
+                    <p className="text-sm sm:text-base font-bold text-[#1A1626] leading-relaxed whitespace-pre-wrap break-keep">
                       {note.mySummary}
                     </p>
                   </div>
                 </div>
 
-                {/* AI 스마트 정리본 및 세특 확장 안내 */}
+                {/* 하단 란: Summary / AI 아리의 핵심 심화 정리 박스 (코넬노트 맨 아랫면 Summary 영역) */}
                 {note.aiSummary && (
-                  <div className="w-full rounded-[28px] bg-gradient-to-r from-[#E5FCFF] via-[#F2EEFF] to-[#FAE8FF] p-6 sm:p-8 border-2 border-[#BFF6FE] shadow-inner space-y-3 relative">
-                    <div className="flex items-center justify-between">
-                      <div className="inline-flex items-center gap-1.5 bg-[#008A90] text-white px-3.5 py-1 rounded-full text-xs font-black shadow">
-                        <Sparkles className="w-3.5 h-3.5 text-amber-200" />
-                        <span>AI 스마트 심화 정리 및 세특 연계 보고서</span>
+                  <div className="w-full border-t-[3px] border-t-[#A5B4FC] bg-gradient-to-r from-[#EEF2FF] via-[#F5F3FF] to-[#FAF5FF] p-6 sm:p-8 space-y-3 relative">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <div className="inline-flex items-center gap-2 bg-[#4338CA] text-white px-4 py-1.5 rounded-full text-xs font-black shadow-md">
+                        <Sparkles className="w-4 h-4 text-amber-300" />
+                        <span>💡 Summary (AI 스마트 심화 정리 및 세특 매칭)</span>
                       </div>
-                      <span className="text-[11px] font-black text-[#006970]">⚡ "{targetJobName}" 지망 역량 매칭</span>
+                      <span className="text-xs font-black text-[#4338CA] bg-white px-3 py-1 rounded-full border border-indigo-200 shadow-sm">
+                        ⚡ "{targetJobName}" 지망 역량 자동 연계
+                      </span>
                     </div>
-                    <p className="text-sm sm:text-base font-black text-[#1A1626] leading-relaxed">
+                    <p className="text-sm sm:text-base font-extrabold text-[#1E1B4B] leading-relaxed break-keep pt-1">
                       {note.aiSummary}
                     </p>
                   </div>
@@ -539,6 +565,73 @@ export const StarRoadmap: React.FC = () => {
               </div>
             )}
 
+          </div>
+        </div>
+      )}
+
+      {/* =========================================================================
+          MODAL: 아리와 함께 문제 만들기 (누적 과목 선택 팝업)
+         ========================================================================= */}
+      {showSubjectSelectModal && (
+        <div className="fixed inset-0 z-50 bg-black/65 backdrop-blur-md flex items-center justify-center p-4 animate-fadeIn">
+          <div className="bg-gradient-to-b from-white via-[#FAF7FF] to-[#F2EEFF] w-full max-w-2xl rounded-[40px] p-8 sm:p-10 shadow-[0_25px_80px_rgba(0,0,0,0.5)] border-4 border-white relative max-h-[85vh] overflow-hidden flex flex-col space-y-6">
+            <button
+              onClick={() => setShowSubjectSelectModal(false)}
+              className="absolute top-6 right-6 p-2 rounded-full bg-slate-200/80 hover:bg-slate-300 text-slate-700 transition-colors shadow-sm"
+            >
+              <X className="w-6 h-6" />
+            </button>
+
+            <div className="text-center space-y-2 border-b-2 border-purple-100 pb-5 flex-shrink-0">
+              <div className="w-20 h-20 rounded-3xl bg-white p-2 mx-auto shadow-xl border-2 border-purple-200 flex items-center justify-center animate-float">
+                <img src={ARI_BLOB_URL} alt="Ari Mascot" className="w-full h-full object-contain filter drop-shadow-md" />
+              </div>
+              <h3 className="text-2xl sm:text-3xl font-black text-[#1A1626] tracking-tight">
+                🤖 아리와 함께 문제 만들기 <span className="text-[#7B5CF0]">(과목 선택)</span>
+              </h3>
+              <p className="text-xs sm:text-sm font-extrabold text-[#5C5672] break-keep leading-relaxed">
+                지금까지 보관함에 작성해 둔 코넬 학습 노트 중 <strong>도전을 원하는 과목</strong>을 선택해 줘! <br/>
+                AI 아리가 해당 과목의 핵심 이론으로 <strong>맞춤 셀프 퀴즈</strong>를 뚝딱 출제해 줄게! ✨
+              </p>
+            </div>
+
+            {notes.length === 0 ? (
+              <div className="py-12 text-center text-slate-500 font-bold space-y-2">
+                <span className="text-3xl block">📭</span>
+                <p>아직 작성된 코넬 노트가 없어! 위 작성폼에서 요약 노트를 먼저 등록해줘!</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 overflow-y-auto pr-2 pb-2 flex-grow">
+                {notes.map((note) => (
+                  <div
+                    key={note.id}
+                    onClick={() => {
+                      setShowSubjectSelectModal(false);
+                      handleStartQuiz(note);
+                    }}
+                    className="p-5 rounded-[28px] bg-white hover:bg-[#FAF6FF] border-2 border-[#E1DAFA] hover:border-[#7B5CF0] shadow-[0_8px_20px_rgba(123,92,240,0.08)] hover:shadow-xl cursor-pointer transition-all duration-300 flex flex-col justify-between gap-3 group transform hover:-translate-y-1.5"
+                  >
+                    <div className="space-y-1.5">
+                      <span className="text-[11px] font-black bg-[#008A90] text-white px-2.5 py-0.5 rounded-full inline-block">
+                        {note.category}
+                      </span>
+                      <h4 className="text-base font-black text-[#1A1626] group-hover:text-[#7B5CF0] transition-colors line-clamp-1 tracking-tight">
+                        {note.subject}
+                      </h4>
+                      <p className="text-xs font-bold text-[#6E6A80] line-clamp-2 leading-relaxed bg-[#F8F6FF] p-2.5 rounded-xl border border-purple-50">
+                        📌 {note.topic}
+                      </p>
+                    </div>
+                    <div className="flex items-center justify-between text-xs font-black text-[#7B5CF0] pt-2 border-t border-purple-100">
+                      <span className="text-[11px] text-slate-400">📅 {note.date}</span>
+                      <span className="bg-purple-50 px-3 py-1 rounded-full group-hover:bg-[#7B5CF0] group-hover:text-white transition-colors flex items-center gap-1">
+                        🧠 퀴즈 출제 &rarr;
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       )}

@@ -115,91 +115,88 @@ export const OnboardingTestFlow: React.FC = () => {
               </div>
             </div>
 
-            {/* 상단(Above): 문항과 마스코트 캐릭터 배치 (프리미엄 3D 유리 카드) */}
-            <div className={`w-full rounded-[44px] bg-gradient-to-tr ${currentQ.bgGlow} p-8 sm:p-14 border-4 border-white shadow-[0_25px_65px_rgba(123,92,240,0.18)] flex flex-col sm:flex-row items-center justify-between gap-8 backdrop-blur-2xl relative overflow-hidden`}>
+            {/* 상단(Above): 문항과 마스코트 캐릭터 배치 (글보다 이미지/액티비티 위주의 3D 비주얼 인터렉션) */}
+            <div className={`w-full rounded-[44px] bg-gradient-to-tr ${currentQ.bgGlow} p-6 sm:p-12 border-4 border-white shadow-[0_25px_65px_rgba(123,92,240,0.22)] flex flex-col sm:flex-row items-center justify-between gap-6 sm:gap-8 backdrop-blur-2xl relative overflow-hidden group`}>
               
-              {/* 캐릭터 & 아이콘 영역 */}
-              <div className="flex-shrink-0 flex flex-col items-center text-center space-y-3">
-                <div className="w-44 h-44 sm:w-52 sm:h-52 rounded-[38px] bg-white/95 p-3.5 shadow-[0_15px_35px_rgba(0,0,0,0.1)] border-2 border-white flex items-center justify-center relative group transform hover:scale-105 transition-transform duration-300">
-                  <span className="text-4xl sm:text-5xl absolute -top-4 -right-3 bg-white p-2.5 rounded-2xl shadow-lg border border-purple-100 animate-bounce">
+              {/* 배경 인터렉티브 파스텔 액티비티 그래픽 */}
+              <div className="absolute top-0 right-0 w-64 h-64 bg-white/30 rounded-full blur-3xl -z-0 pointer-events-none group-hover:scale-125 transition-transform duration-700" />
+              
+              {/* 캐릭터 & 3D 아이콘 애니메이션 영역 */}
+              <div className="flex-shrink-0 flex flex-col items-center text-center space-y-3 z-10">
+                <div className="w-44 h-44 sm:w-52 sm:h-52 rounded-[40px] bg-white/95 p-4 shadow-[0_18px_40px_rgba(0,0,0,0.12)] border-[3px] border-white flex items-center justify-center relative transform group-hover:scale-105 transition-all duration-300">
+                  {/* 거대 3D 애니메이션 이모지 뱃지 */}
+                  <span className="text-5xl sm:text-6xl absolute -top-5 -right-4 bg-gradient-to-br from-white to-purple-50 p-3 rounded-3xl shadow-xl border-2 border-purple-200 animate-bounce">
                     {currentQ.icon}
                   </span>
-                  <img 
-                    src={qIndex % 2 === 0 ? ARI_BLOB_URL : ARI_BLOB_NEW_URL} 
-                    alt="Ari Mascot" 
-                    className="w-36 h-36 sm:w-44 sm:h-44 object-contain filter drop-shadow-md group-hover:rotate-6 transition-transform" 
-                  />
+                  <div className="w-full h-full animate-float flex items-center justify-center">
+                    <img 
+                      src={qIndex % 2 === 0 ? ARI_BLOB_URL : ARI_BLOB_NEW_URL} 
+                      alt="Ari Mascot" 
+                      className="w-36 h-36 sm:w-44 sm:h-44 object-contain filter drop-shadow-lg" 
+                    />
+                  </div>
                 </div>
-                <span className="text-xs font-black text-[#6240D5] bg-white/95 px-4 py-1.5 rounded-full shadow-sm border border-purple-100">
-                  ⚡ 멘토 아리의 {currentQ.category}
+                <span className="text-xs sm:text-sm font-black text-[#6240D5] bg-white/95 px-4.5 py-1.5 rounded-full shadow-sm border border-purple-200 tracking-tight whitespace-nowrap">
+                  ⚡ 아리의 {currentQ.category} 미션
                 </span>
               </div>
 
-              {/* 질문 문항 말풍선 */}
-              <div className="flex-grow text-center sm:text-left space-y-4 max-w-2xl bg-white/80 p-8 sm:p-10 rounded-[36px] border-2 border-white shadow-lg relative">
-                <span className="text-xs font-black text-[#7B5CF0] uppercase tracking-widest bg-purple-100/60 px-3 py-1 rounded-full inline-block">
-                  QUESTION 0{currentQ.id}
+              {/* 질문 문항 말풍선 (단어 기준 깔끔한 줄바꿈 보장) */}
+              <div className="flex-grow text-center sm:text-left space-y-4 w-full bg-white/90 p-8 sm:p-10 rounded-[38px] border-[3px] border-white shadow-xl relative z-10 transition-all">
+                <span className="text-xs font-black text-[#7B5CF0] uppercase tracking-widest bg-purple-100/80 px-3.5 py-1 rounded-full inline-flex items-center gap-1.5 shadow-sm">
+                  <span className="w-2 h-2 rounded-full bg-[#7B5CF0] animate-ping" />
+                  <span>QUESTION 0{currentQ.id}</span>
                 </span>
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-[#1A1626] leading-snug tracking-tight">
+                <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-black text-[#1A1626] leading-snug tracking-tight break-keep">
                   "{currentQ.prompt}"
                 </h2>
+                <div className="w-full h-1 bg-gradient-to-r from-purple-200 via-pink-200 to-transparent rounded-full opacity-60" />
               </div>
             </div>
 
-            {/* 하단(Below): 2개 선택 박스형 클릭 (큼직한 3D 입체 게임 컨트롤러 버튼) */}
-            <div className="w-full space-y-4 pt-4">
-              <div className="text-center mb-4 space-y-2 flex flex-col items-center">
-                <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-gradient-to-r from-[#7B5CF0] via-[#FF3B7C] to-[#008A90] text-white shadow-md animate-pulse">
-                  <span className="text-sm sm:text-base font-black tracking-wide">✨ 여러분의 마음을 끌어당기는 방향을 지금 선택하세요!</span>
+            {/* 하단(Below): 2개 선택 박스 (글은 대폭 줄이고 직관적인 3D 애니메이션 이미지 극대화) */}
+            <div className="w-full space-y-3 pt-2">
+              {/* 문항과 선택지 사이: 아리 대화형 말풍선 단일 멘트 */}
+              <div className="flex items-center justify-center gap-2.5 my-2 animate-fadeIn">
+                <img src={ARI_BLOB_URL} alt="Ari" className="w-9 h-9 sm:w-11 sm:h-11 object-contain drop-shadow-md flex-shrink-0 animate-bounce-short" />
+                <div className="bg-white/95 px-5 py-2 sm:py-2.5 rounded-[22px] rounded-tl-none shadow-md border-[2px] border-purple-200 text-[#3D3554] text-xs sm:text-sm font-black tracking-tight break-keep">
+                  💬 <strong className="text-[#7B5CF0]">아리의 귀띔:</strong> "👇 내 마음에 쏙 드는 선택지 버튼을 가벼운 터치로 골라줘!"
                 </div>
-                <span className="text-xs sm:text-sm font-extrabold text-[#5B556D] bg-white/90 px-4 py-1.5 rounded-full border border-purple-200 shadow-sm inline-block">
-                   👇 두 가지 선택지 중 마음에 드는 박스를 터치(클릭)하여 선택하세요!
-                </span>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                {/* 선택지 A (Positive / 에메랄드 시안 그림자 글래스 박스) */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
+                {/* 선택지 A (Positive / 긍정 반응 비주얼 버튼) */}
                 <div
                   onClick={handleAnswerQuestion}
-                  className="rounded-[38px] bg-white/75 backdrop-blur-2xl p-1.5 border-2 border-[#008A90]/40 shadow-[0_15px_45px_rgba(0,186,180,0.22)] hover:shadow-[0_22px_65px_rgba(0,186,180,0.42)] hover:border-[#008A90] transition-all duration-300 cursor-pointer group transform hover:-translate-y-1.5"
+                  className="rounded-[38px] bg-gradient-to-br from-white/90 to-[#E8FAFB] backdrop-blur-2xl p-2 border-[3px] border-[#008A90]/30 shadow-[0_15px_45px_rgba(0,186,180,0.22)] hover:shadow-[0_22px_65px_rgba(0,186,180,0.45)] hover:border-[#008A90] transition-all duration-300 cursor-pointer group transform hover:-translate-y-2"
                 >
-                  <button className="w-full h-full py-8 px-6 sm:px-8 rounded-[34px] bg-transparent group-hover:bg-white/60 text-[#1A1626] text-left font-black border border-white/80 border-b-[6px] border-b-[#86EBEF] group-hover:border-b-[#008A90] active:border-b-2 active:translate-y-2 transition-all flex flex-col justify-between space-y-4">
-                    <div className="flex items-center justify-between w-full">
-                      <span className="text-3xl sm:text-4xl group-hover:scale-125 transition-transform duration-200">
-                        💖
-                      </span>
-                      <span className="text-xs font-black bg-[#E5FCFD] text-[#008A90] px-3.5 py-1.5 rounded-full border border-[#B3F4F8] shadow-sm">
-                        가슴 이끄는 선택
-                      </span>
-                    </div>
-                    <span className="text-xl sm:text-2xl font-extrabold tracking-tight leading-snug block text-[#1A1626]">
-                      "네! 가슴이 막 뛰어! 엄청 설레고 꼭 도전해보고 싶어!"
+                  <button className="w-full py-7 px-6 sm:px-8 rounded-[32px] bg-white/70 group-hover:bg-white text-[#1A1626] font-black border border-white border-b-[8px] border-b-[#86EBEF] group-hover:border-b-[#008A90] active:border-b-2 active:translate-y-2 transition-all flex flex-col items-center justify-center space-y-4 text-center">
+                    <span className="text-5xl sm:text-6xl group-hover:scale-125 transition-transform duration-200 filter drop-shadow-md animate-bounce-short">
+                      💖
                     </span>
-                    <div className="w-full flex items-center justify-end text-sm font-black text-[#008A90] group-hover:translate-x-1 transition-transform gap-1.5 pt-2">
-                      <span>이 직무 흥미 선택 &rarr;</span>
+                    <span className="text-xl sm:text-2xl md:text-3xl font-black tracking-tight text-[#006970] break-keep">
+                      😍 완전 설레고 꼭 해볼래요!
+                    </span>
+                    <div className="inline-flex items-center text-xs font-black bg-[#E5FCFD] text-[#008A90] px-4 py-1.5 rounded-full border border-[#B3F4F8] shadow-sm group-hover:bg-[#008A90] group-hover:text-white transition-colors">
+                      <span>이 직무 성향 선택 &rarr;</span>
                     </div>
                   </button>
                 </div>
 
-                {/* 선택지 B (Alternative / 바이올렛 퍼플 그림자 글래스 박스) */}
+                {/* 선택지 B (Alternative / 탐색 반응 비주얼 버튼) */}
                 <div
                   onClick={handleAnswerQuestion}
-                  className="rounded-[38px] bg-white/75 backdrop-blur-2xl p-1.5 border-2 border-[#7B5CF0]/40 shadow-[0_15px_45px_rgba(123,92,240,0.18)] hover:shadow-[0_22px_65px_rgba(123,92,240,0.38)] hover:border-[#7B5CF0] transition-all duration-300 cursor-pointer group transform hover:-translate-y-1.5"
+                  className="rounded-[38px] bg-gradient-to-br from-white/90 to-[#F2EEFF] backdrop-blur-2xl p-2 border-[3px] border-[#7B5CF0]/30 shadow-[0_15px_45px_rgba(123,92,240,0.18)] hover:shadow-[0_22px_65px_rgba(123,92,240,0.42)] hover:border-[#7B5CF0] transition-all duration-300 cursor-pointer group transform hover:-translate-y-2"
                 >
-                  <button className="w-full h-full py-8 px-6 sm:px-8 rounded-[34px] bg-transparent group-hover:bg-white/60 text-[#1A1626] text-left font-black border border-white/80 border-b-[6px] border-b-[#D7CFFF] group-hover:border-b-[#7B5CF0] active:border-b-2 active:translate-y-2 transition-all flex flex-col justify-between space-y-4">
-                    <div className="flex items-center justify-between w-full">
-                      <span className="text-3xl sm:text-4xl group-hover:scale-125 transition-transform duration-200">
-                        🤔
-                      </span>
-                      <span className="text-xs font-black bg-[#F0ECFF] text-[#6240D5] px-3.5 py-1.5 rounded-full border border-[#D5CAFF] shadow-sm">
-                        다른 분야 탐색
-                      </span>
-                    </div>
-                    <span className="text-xl sm:text-2xl font-extrabold tracking-tight leading-snug block text-[#1A1626]">
-                      "글쎄? 괜찮긴 하지만, 난 다른 미래 분야에 더 관심이 있어."
+                  <button className="w-full py-7 px-6 sm:px-8 rounded-[32px] bg-white/70 group-hover:bg-white text-[#1A1626] font-black border border-white border-b-[8px] border-b-[#D7CFFF] group-hover:border-b-[#7B5CF0] active:border-b-2 active:translate-y-2 transition-all flex flex-col items-center justify-center space-y-4 text-center">
+                    <span className="text-5xl sm:text-6xl group-hover:scale-125 transition-transform duration-200 filter drop-shadow-md">
+                      🔍
                     </span>
-                    <div className="w-full flex items-center justify-end text-sm font-black text-[#7B5CF0] group-hover:translate-x-1 transition-transform gap-1.5 pt-2">
-                      <span>다음 질문으로 넘어가기 &rarr;</span>
+                    <span className="text-xl sm:text-2xl md:text-3xl font-black tracking-tight text-[#5B3BC4] break-keep">
+                      🤔 다른 멋진 분야도 궁금해요!
+                    </span>
+                    <div className="inline-flex items-center text-xs font-black bg-[#F0ECFF] text-[#6240D5] px-4 py-1.5 rounded-full border border-[#D5CAFF] shadow-sm group-hover:bg-[#6240D5] group-hover:text-white transition-colors">
+                      <span>다른 가능성 탐험 &rarr;</span>
                     </div>
                   </button>
                 </div>
@@ -325,14 +322,8 @@ export const OnboardingTestFlow: React.FC = () => {
               </div>
             </div>
 
-            {/* Lv.0 ~ Lv.5 순차적 레벨업 진화 화면 (글 삭제! 레벨이름 + 뱃지 + 캐릭터 마스코트만 3D로!) */}
-            <div className="space-y-8">
-              <div className="text-center space-y-2">
-                <span className="text-xs sm:text-sm font-black text-[#7B5CF0] bg-[#7B5CF0]/10 px-5 py-1.5 rounded-full uppercase border border-[#7B5CF0]/20 inline-flex items-center gap-1.5">
-                  <Sparkles className="w-4 h-4 text-[#7B5CF0] animate-spin-slow" />
-                  <span>레벨 0부터 레벨 5까지 순서대로 성장하는 3D 진화 트리</span>
-                </span>
-              </div>
+            {/* Lv.0 ~ Lv.5 순차적 레벨업 진화 화면 (불필요한 네모 설명칸 완전 삭제!) */}
+            <div className="space-y-4 pt-2">
 
               {/* 순차 레벨업 카드 그리드 (6개 단계) */}
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-5 relative items-stretch">

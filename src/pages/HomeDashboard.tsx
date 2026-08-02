@@ -112,14 +112,25 @@ export const HomeDashboard: React.FC = () => {
     setNewJobInput("");
   };
 
-  // 🚀 + ReadyCareer AI 로드맵 생성하기 버튼 핸들러 (눌렀을 때 4개 모듈 등장!)
+  // 🚀 + ReadyCareer AI 실전 맞춤 진로 활동 찾아보기 & 포트폴리오 개설 핸들러 (AI 맞춤 습관 세팅 + 3D 로딩 애니메이션)
   const handleGenerateRoadmap = () => {
     setIsGeneratingAnim(true);
+    // 선택한 직업과 진단 결과에 맞춘 AI 맞춤형 습관 & 목표 자동 구축
+    const currentJob = localStorage.getItem("readycareer_target_job_name") || "AI 융합 미래 전문가";
+    const studentCluster = localStorage.getItem("readycareer_student_cluster") || "공간·첨단테크 계열";
+    const tailoredHabits = [
+      { id: Date.now() + 1, text: `[${currentJob}] 전공 핵심 역량 도서 하루 15분 독해`, completed: false, streak: 1, category: "전공 탐색" },
+      { id: Date.now() + 2, text: `[${currentJob}] 코넬노트 요약 1회 작성 및 AI 퀴즈 풀기`, completed: false, streak: 3, category: "학습 심화" },
+      { id: Date.now() + 3, text: `[${studentCluster}] 최신 산업 테크 트렌드 아티클 1편 요약`, completed: true, streak: 5, category: "트렌드 분석" },
+      { id: Date.now() + 4, text: `50일 AI 진로 챌린지 루틴 수행 & 세특 활동기록 1줄 업로드`, completed: false, streak: 7, category: "생기부 빌드" }
+    ];
+    localStorage.setItem("my_habits_v2", JSON.stringify(tailoredHabits));
+
     setTimeout(() => {
       setIsRoadmapGenerated(true);
       localStorage.setItem("readycareer_roadmap_generated", "true");
       setIsGeneratingAnim(false);
-    }, 600);
+    }, 2600);
   };
 
   // 🎯 관심 직업 카드에서 '직업 변경하기' 클릭 시 진화 스토리 모달 띄우기
@@ -361,19 +372,34 @@ export const HomeDashboard: React.FC = () => {
             </div>
           </div>
 
-          {/* + 맞춤 포트폴리오 제작 버튼 (클릭 시 아래 4대 실전 활동 모듈 등장!) */}
-          <div className="flex-shrink-0 w-full sm:w-auto text-center">
+          {/* + 맞춤 포트폴리오 및 아리와 함께 실전 맞춤 진로 활동 찾아보기 버튼 (클릭 시 AI 분석 후 4대 모듈 개장!) */}
+          <div className="flex-shrink-0 w-full sm:w-auto text-center flex flex-col gap-3">
             {!isRoadmapGenerated ? (
-              <div className="p-2 rounded-[34px] bg-gradient-to-r from-[#7B5CF0] via-[#FF4081] to-[#008A90] shadow-[0_10px_35px_rgba(123,92,240,0.4)] hover:shadow-[0_15px_50px_rgba(255,64,129,0.6)] transition-all duration-300 animate-bounce-once">
-                <button
-                  onClick={handleGenerateRoadmap}
-                  disabled={isGeneratingAnim}
-                  className="w-full sm:w-auto py-5 px-9 rounded-[28px] bg-gradient-to-r from-[#7B5CF0] via-[#6340D5] to-[#008A90] hover:brightness-110 text-white font-black text-lg sm:text-xl border-2 border-white/85 border-b-[8px] border-b-[#3F1BA6] active:translate-y-1 active:border-b-2 transition-all flex items-center justify-center gap-3 whitespace-nowrap cursor-pointer shadow-2xl"
-                >
-                  <Sparkles className="w-7 h-7 text-amber-300 animate-spin-slow" />
-                  <span>{isGeneratingAnim ? "AI 맞춤 포트폴리오 모듈 생성 중..." : "✨ 나만의 맞춤 포트폴리오 제작하기"}</span>
-                </button>
-              </div>
+              <>
+                {/* 메인 개설 버튼 */}
+                <div className="p-1.5 rounded-[32px] bg-gradient-to-r from-[#7B5CF0] via-[#FF4081] to-[#008A90] shadow-[0_10px_35px_rgba(123,92,240,0.35)] hover:shadow-[0_15px_45px_rgba(255,64,129,0.5)] transition-all duration-300">
+                  <button
+                    onClick={handleGenerateRoadmap}
+                    disabled={isGeneratingAnim}
+                    className="w-full sm:w-auto py-4 px-7 rounded-[26px] bg-[#7B5CF0] hover:bg-[#6843E5] text-white font-black text-base sm:text-lg border-2 border-white/85 border-b-[6px] border-b-[#3F1BA6] active:translate-y-1 active:border-b-2 transition-all flex items-center justify-center gap-2.5 whitespace-nowrap cursor-pointer shadow-xl break-keep"
+                  >
+                    <Sparkles className="w-6 h-6 text-amber-300 animate-spin-slow flex-shrink-0" />
+                    <span>🚀 나만의 맞춤 진로 보고서 & AI 포트폴리오 개설하기</span>
+                  </button>
+                </div>
+
+                {/* 실전 맞춤 진로 활동 찾아보기 버튼 (AI 발동 & 습관 자동세팅) */}
+                <div className="p-1.5 rounded-[32px] bg-gradient-to-r from-[#00A3A8] via-[#5270FF] to-[#8E5BF2] shadow-[0_10px_35px_rgba(0,163,168,0.35)] hover:shadow-[0_15px_45px_rgba(82,112,255,0.5)] transition-all duration-300 animate-pulse">
+                  <button
+                    onClick={handleGenerateRoadmap}
+                    disabled={isGeneratingAnim}
+                    className="w-full sm:w-auto py-4 px-7 rounded-[26px] bg-gradient-to-r from-[#008A90] via-[#2563EB] to-[#7B5CF0] text-white font-black text-base sm:text-lg border-2 border-white/85 border-b-[6px] border-b-[#0D3B66] active:translate-y-1 active:border-b-2 transition-all flex items-center justify-center gap-2.5 whitespace-nowrap cursor-pointer shadow-xl break-keep"
+                  >
+                    <span className="text-xl sm:text-2xl animate-bounce-short flex-shrink-0">🤖</span>
+                    <span>아리와 함께 실전 맞춤 진로 활동 찾아보기 ✨</span>
+                  </button>
+                </div>
+              </>
             ) : (
               <div className="flex flex-col items-center gap-3">
                 <span className="inline-flex items-center gap-2 px-5 py-2.5 bg-green-500/15 text-[#059669] rounded-2xl font-black text-xs sm:text-sm border border-green-300 shadow-sm">
@@ -391,15 +417,39 @@ export const HomeDashboard: React.FC = () => {
           </div>
         </div>
 
-        {/* 생성기 애니메이션 또는 4대 활동 모듈 오버뷰 */}
+        {/* 🤖 아리 AI 실전 맞춤 진로 활동 발동 및 습관 자동세팅 로딩 연출 화면 */}
         {isGeneratingAnim && (
-          <div className="w-full py-12 text-center space-y-4 animate-pulse">
-            <div className="w-16 h-16 rounded-full bg-[#7B5CF0] text-white text-3xl flex items-center justify-center mx-auto shadow-xl animate-spin-slow">
-              ✨
+          <div className="w-full my-8 p-8 sm:p-12 rounded-[44px] bg-gradient-to-br from-[#FAF5FF] via-[#EBF9FF] to-[#F3E8FF] border-4 border-white shadow-[0_25px_65px_rgba(123,92,240,0.25)] text-center space-y-6 relative overflow-hidden backdrop-blur-2xl animate-fadeIn">
+            <div className="absolute top-0 left-1/4 w-64 h-64 bg-[#7B5CF0]/20 rounded-full blur-3xl -z-0 pointer-events-none animate-pulse" />
+            <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-[#008A90]/20 rounded-full blur-3xl -z-0 pointer-events-none" />
+
+            {/* 아리 마스코트 부유 및 회전 아우라 */}
+            <div className="relative w-36 h-36 sm:w-44 sm:h-44 mx-auto z-10">
+              <div className="absolute inset-0 rounded-full border-4 border-dashed border-[#7B5CF0] animate-spin-slow opacity-60" />
+              <div className="w-full h-full rounded-full bg-white/95 p-4 shadow-2xl border-4 border-white flex items-center justify-center animate-float">
+                <img src={ARI_BLOB_URL} alt="AI Ari Mascot" className="w-full h-full object-contain filter drop-shadow-xl" />
+              </div>
+              <span className="absolute -bottom-2 -right-2 text-3xl sm:text-4xl bg-white p-2 rounded-2xl shadow-lg border border-purple-200 animate-bounce">
+                🎯
+              </span>
             </div>
-            <h4 className="text-xl font-black text-[#6240D5]">
-              AI 멘토 아리가 회원님의 맞춤 포트폴리오 및 실전 진로 활동 모듈을 구축하고 있습니다...
-            </h4>
+
+            <div className="space-y-3 z-10 max-w-2xl mx-auto">
+              <div className="inline-flex items-center gap-2 px-5 py-1.5 rounded-full bg-gradient-to-r from-[#7B5CF0] via-[#FF3B7C] to-[#008A90] text-white font-black text-xs sm:text-sm shadow-md animate-pulse">
+                <Sparkles className="w-4 h-4 text-amber-300" />
+                <span>AI 아리의 맞춤 진로 설계 알고리즘 발동 중!</span>
+              </div>
+              <h4 className="text-xl sm:text-2xl md:text-3xl font-black text-[#1A1626] leading-snug break-keep tracking-tight">
+                "잠시만 기다려 줘! 회원님의 진도 성향과 직업군에 딱 맞춘 <br className="hidden sm:block"/> 
+                <span className="text-[#7B5CF0]">습관 & 목표 루틴</span> 및 <span className="text-[#008A90]">4대 실전 활동 모듈</span>을 세팅 중이야!"
+              </h4>
+              <div className="w-full max-w-md mx-auto h-3 bg-purple-100 rounded-full overflow-hidden p-0.5 border border-white shadow-inner">
+                <div className="h-full bg-gradient-to-r from-[#7B5CF0] via-[#FF3B7C] to-[#008A90] rounded-full animate-pulse w-3/4 shadow-sm" />
+              </div>
+              <p className="text-xs sm:text-sm font-extrabold text-[#5C5672] animate-bounce-short">
+                ⚙️ 전공 핵심 키워드 매핑 및 AI 학습 퀴즈 뱅크 초기화 중... (85%)
+              </p>
+            </div>
           </div>
         )}
 
