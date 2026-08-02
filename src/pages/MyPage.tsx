@@ -13,12 +13,15 @@ import {
   RefreshCw,
   History,
   Briefcase,
-  SwitchCamera
+  SwitchCamera,
+  Trash2,
+  AlertTriangle
 } from "lucide-react";
 
 export const MyPage: React.FC = () => {
   const { session } = useAuth();
   const [activeCategory, setActiveCategory] = useState<"all" | "badges" | "quests">("all");
+  const [jobToDelete, setJobToDelete] = useState<any | null>(null);
 
   // --- 멀티 커리어 직업 덱 (다중 직업 히스토리 및 스위칭) 상태 ---
   const currentJobName = localStorage.getItem("readycareer_target_job_name") || (session?.targetJob || "AI 융합 미래 크리에이터");
@@ -72,6 +75,14 @@ export const MyPage: React.FC = () => {
     localStorage.removeItem("readycareer_roadmap_generated");
     localStorage.removeItem("my_habits_v2");
     window.location.reload();
+  };
+
+  const handleConfirmDeleteJob = () => {
+    if (!jobToDelete) return;
+    const updated = jobHistoryList.filter((item: any) => item.name !== jobToDelete.name);
+    setJobHistoryList(updated);
+    localStorage.setItem("readycareer_my_job_history_v1", JSON.stringify(updated));
+    setJobToDelete(null);
   };
 
   const level = 5;
@@ -349,6 +360,13 @@ export const MyPage: React.FC = () => {
                 <span className="text-[11px] font-black px-3 py-1.5 rounded-full shadow-sm bg-purple-100 text-[#6240D5] flex items-center gap-1.5">
                   <History className="w-3.5 h-3.5" /> 과거 누적 히스토리 보존중
                 </span>
+                <button
+                  onClick={() => setJobToDelete(job)}
+                  title="이 직업 보관 기록 삭제하기"
+                  className="p-2.5 rounded-full text-red-500 hover:text-white hover:bg-red-500 bg-red-50/90 transition-all shadow-sm border border-red-200 hover:border-red-500 active:scale-95 flex-shrink-0"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
               </div>
               
               <div className="flex items-center gap-5">
@@ -581,6 +599,49 @@ export const MyPage: React.FC = () => {
         )}
 
       </div>
+
+      {/* 🗑️ 직업 히스토리 삭제 확인 팝업 (모달) */}
+      {jobToDelete && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn">
+          <div className="bg-white rounded-[32px] p-7 sm:p-8 max-w-md w-full border-4 border-white shadow-[0_25px_65px_rgba(0,0,0,0.35)] text-center space-y-6 relative animate-scaleUp">
+            <div className="w-20 h-20 mx-auto rounded-full bg-red-50 border-2 border-red-200 flex items-center justify-center text-red-500 shadow-inner">
+              <AlertTriangle className="w-10 h-10 animate-bounce" />
+            </div>
+            
+            <div className="space-y-2">
+              <h3 className="text-xl sm:text-2xl font-black text-[#1A1626] tracking-tight">
+                정말 이 직업 기록을 <br />
+                <span className="text-red-600">인벤토리에서 삭제</span>하시겠어요?
+              </h3>
+              <div className="p-3 bg-slate-50 rounded-2xl border border-slate-200 flex items-center justify-center gap-3 my-3">
+                {jobToDelete.imageUrl && (
+                  <img src={jobToDelete.imageUrl} alt="job" className="w-10 h-10 object-contain drop-shadow" />
+                )}
+                <strong className="text-base font-black text-[#6240D5]">{jobToDelete.name}</strong>
+              </div>
+              <p className="text-xs sm:text-sm text-[#5C5672] font-bold leading-relaxed break-keep">
+                삭제 시 해당 직업으로 누적되었던 <strong>포트폴리오 및 도달 랭크 히스토리</strong>가 보관함 목록에서 완전히 지워지며 되돌릴 수 없습니다.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-3 pt-2">
+              <button
+                onClick={() => setJobToDelete(null)}
+                className="flex-1 py-3.5 px-5 rounded-[20px] bg-slate-100 hover:bg-slate-200 text-[#484554] font-black text-sm transition-all shadow-sm cursor-pointer"
+              >
+                취소 (유지하기)
+              </button>
+              <button
+                onClick={handleConfirmDeleteJob}
+                className="flex-1 py-3.5 px-5 rounded-[20px] bg-red-600 hover:bg-red-700 text-white font-black text-sm shadow-lg shadow-red-500/30 transition-all flex items-center justify-center gap-1.5 cursor-pointer active:scale-95"
+              >
+                <Trash2 className="w-4 h-4 flex-shrink-0" />
+                <span>네, 삭제합니다</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
     </div>
   );
