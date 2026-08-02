@@ -17,7 +17,20 @@ export const HabitManagement: React.FC = () => {
   const [habits, setHabits] = useState<Habit[]>(() => {
     const saved = localStorage.getItem("my_habits_v2");
     if (saved) {
-      try { return JSON.parse(saved); } catch (e) {}
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed.map((item: any, idx: number) => ({
+            id: String(item.id || `h-${idx}-${Date.now()}`),
+            title: String(item.title || item.text || "AI 커스텀 진로 챌린지 루틴"),
+            targetDays: typeof item.targetDays === "number" && item.targetDays > 0 ? item.targetDays : 50,
+            completedDays: Array.isArray(item.completedDays) ? item.completedDays : (item.completed ? [1, 2, 3] : [1]),
+            category: String(item.category || "AI 추천")
+          }));
+        }
+      } catch (e) {
+        console.error("[Habit Parse Error]", e);
+      }
     }
     return [
       { id: "h-1", title: "매일 AI 알고리즘 문제 1개 실습 · 50일 챌린지", targetDays: 50, completedDays: isNewClean ? [] : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], category: "코딩·AI" },
@@ -25,7 +38,18 @@ export const HabitManagement: React.FC = () => {
     ];
   });
 
-  const [selectedHabitId, setSelectedHabitId] = useState<string>("h-1");
+  const [selectedHabitId, setSelectedHabitId] = useState<string>(() => {
+    const saved = localStorage.getItem("my_habits_v2");
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return String(parsed[0].id || "h-0");
+        }
+      } catch (e) {}
+    }
+    return "h-1";
+  });
   const [newTitle, setNewTitle] = useState("");
   const [todayQuests, setTodayQuests] = useState([
     { id: "q1", title: "전공 서적 30분 읽기", desc: "매일 꾸준한 지식 쌓기 및 진로 역량 강화", icon: "📚", exp: "+50 EXP", completed: !isNewClean && true },
@@ -40,21 +64,25 @@ export const HabitManagement: React.FC = () => {
     );
   };
 
-  const activeHabit = habits.find((h) => h.id === selectedHabitId) || habits[0];
+  const fallbackHabit: Habit = { id: "default", title: "AI 맞춤 50일 진로 챌린지", targetDays: 50, completedDays: [1, 2, 3], category: "진로 탐색" };
+  const activeHabit = habits.find((h) => h.id === selectedHabitId) || habits[0] || fallbackHabit;
+  const activeCompleted = Array.isArray(activeHabit.completedDays) ? activeHabit.completedDays : [];
+  const activeTarget = activeHabit.targetDays > 0 ? activeHabit.targetDays : 50;
 
   const handleToggleDay = (dayNo: number) => {
-    setHabits((prev) =>
-      prev.map((h) => {
+    setHabits((prev) => {
+      const next = prev.map((h) => {
         if (h.id !== activeHabit.id) return h;
-        const exists = h.completedDays.includes(dayNo);
+        const curDays = Array.isArray(h.completedDays) ? h.completedDays : [];
+        const exists = curDays.includes(dayNo);
         const nextDays = exists
-          ? h.completedDays.filter((d) => d !== dayNo)
-          : [...h.completedDays, dayNo].sort((a, b) => a - b);
-        const updated = { ...h, completedDays: nextDays };
-        localStorage.setItem("my_habits_v2", JSON.stringify(habits));
-        return updated;
-      })
-    );
+          ? curDays.filter((d) => d !== dayNo)
+          : [...curDays, dayNo].sort((a, b) => a - b);
+        return { ...h, completedDays: nextDays };
+      });
+      localStorage.setItem("my_habits_v2", JSON.stringify(next));
+      return next;
+    });
   };
 
   const handleAiRecommendHabits = () => {
@@ -86,8 +114,8 @@ export const HabitManagement: React.FC = () => {
     localStorage.setItem("my_habits_v2", JSON.stringify([item, ...habits]));
   };
 
-  const successRate = Math.round((activeHabit.completedDays.length / activeHabit.targetDays) * 100);
-  const currentStreak = activeHabit.completedDays.length;
+  const successRate = Math.round((activeCompleted.length / activeTarget) * 100);
+  const currentStreak = activeCompleted.length;
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 space-y-10">
@@ -201,12 +229,14 @@ export const HabitManagement: React.FC = () => {
           </h3>
 
           <div className="space-y-3">
-            {habits.map((h) => {
+            {habits.map((h, index) => {
               const isSelected = h.id === activeHabit.id;
-              const percent = Math.round((h.completedDays.length / h.targetDays) * 100);
+              const compDays = Array.isArray(h.completedDays) ? h.completedDays : [];
+              const tgtDays = h.targetDays > 0 ? h.targetDays : 50;
+              const percent = Math.round((compDays.length / tgtDays) * 100);
               return (
                 <div
-                  key={h.id}
+                  key={h.id || index}
                   onClick={() => setSelectedHabitId(h.id)}
                   className={`p-4 rounded-3xl border-2 cursor-pointer transition-all duration-200 shadow-sm space-y-2.5 ${
                     isSelected
@@ -216,12 +246,12 @@ export const HabitManagement: React.FC = () => {
                 >
                   <div className="flex items-center justify-between">
                     <span className="text-[10px] font-headline font-black bg-surface-container-high text-text-muted px-2 py-0.5 rounded-full">
-                      #{h.category}
+                      #{h.category || "AI 챌린지"}
                     </span>
-                    <span className="text-xs font-black text-primary">{h.completedDays.length} / {h.targetDays}일</span>
+                    <span className="text-xs font-black text-primary">{compDays.length} / {tgtDays}일</span>
                   </div>
                   <strong className="text-sm md:text-base font-headline font-black text-text-primary block leading-snug">
-                    {h.title}
+                    {h.title || (h as any).text || "50일 실천 목표"}
                   </strong>
                   <div className="w-full bg-surface-container-highest h-1.5 rounded-full overflow-hidden">
                     <div className="bg-gradient-to-r from-primary to-secondary h-1.5 rounded-full" style={{ width: `${percent}%` }} />
@@ -272,8 +302,8 @@ export const HabitManagement: React.FC = () => {
 
           {/* Grid interactive cells (1 to 50) */}
           <div className="grid grid-cols-5 sm:grid-cols-10 gap-2.5 pt-2">
-            {Array.from({ length: activeHabit.targetDays }, (_, i) => i + 1).map((dayNo) => {
-              const isCompleted = activeHabit.completedDays.includes(dayNo);
+            {Array.from({ length: activeTarget }, (_, i) => i + 1).map((dayNo) => {
+              const isCompleted = activeCompleted.includes(dayNo);
 
               return (
                 <button

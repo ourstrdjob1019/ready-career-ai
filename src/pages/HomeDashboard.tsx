@@ -145,8 +145,11 @@ export const HomeDashboard: React.FC = () => {
       let tailoredHabits: any[] = [];
       if (res && res.json && Array.isArray(res.json)) {
         tailoredHabits = res.json.map((item: any, idx: number) => ({
-          id: Date.now() + idx,
+          id: `h-${Date.now()}-${idx}`,
+          title: `[${currentJob}] ${item.title || item.text || item.habit || item}`,
           text: `[${currentJob}] ${item.title || item.text || item.habit || item}`,
+          targetDays: typeof item.targetDays === "number" ? item.targetDays : 50,
+          completedDays: idx === 0 ? [1, 2, 3, 4, 5] : idx === 1 ? [1, 2, 3] : [1],
           completed: idx === 2,
           streak: (idx + 1) * 2,
           category: idx === 0 ? "전공 탐색" : idx === 1 ? "학습 심화" : idx === 2 ? "트렌드 분석" : "생기부 빌드"
@@ -156,10 +159,10 @@ export const HomeDashboard: React.FC = () => {
       // API 통신 지연이나 응답 구조 불일치 시 100% 보증되는 개인화 커스텀 세팅 주입
       if (tailoredHabits.length === 0) {
         tailoredHabits = [
-          { id: Date.now() + 1, text: `[${currentJob}] 전공 핵심 역량 도서 하루 15분 정독 및 코넬노트 키워드 수집`, completed: false, streak: 1, category: "전공 탐색" },
-          { id: Date.now() + 2, text: `[${riasecCode} 성향] 파이썬 및 알고리즘 하루 1문제 코드 실습 또는 AI 퀴즈 풀기`, completed: false, streak: 3, category: "학습 심화" },
-          { id: Date.now() + 3, text: `[${studentCluster}] 최신 산업 테크 트렌드 아티클 1편 요약 및 진로 탐구 고찰 기록`, completed: true, streak: 5, category: "트렌드 분석" },
-          { id: Date.now() + 4, text: `50일 AI 진로 챌린지 루틴 수행 & 아리 가이던스로 세특 활동기록 1줄 업로드`, completed: false, streak: 7, category: "생기부 빌드" }
+          { id: `h-${Date.now()}-1`, title: `[${currentJob}] 전공 핵심 역량 도서 하루 15분 정독 및 코넬노트 키워드 수집`, text: `[${currentJob}] 전공 핵심 역량 도서 하루 15분 정독 및 코넬노트 키워드 수집`, targetDays: 50, completedDays: [1, 2, 3, 4, 5], completed: false, streak: 5, category: "전공 탐색" },
+          { id: `h-${Date.now()}-2`, title: `[${riasecCode} 성향] 파이썬 및 알고리즘 하루 1문제 코드 실습 또는 AI 퀴즈 풀기`, text: `[${riasecCode} 성향] 파이썬 및 알고리즘 하루 1문제 코드 실습 또는 AI 퀴즈 풀기`, targetDays: 50, completedDays: [1, 2, 3], completed: false, streak: 3, category: "학습 심화" },
+          { id: `h-${Date.now()}-3`, title: `[${studentCluster}] 최신 산업 테크 트렌드 아티클 1편 요약 및 진로 탐구 고찰 기록`, text: `[${studentCluster}] 최신 산업 테크 트렌드 아티클 1편 요약 및 진로 탐구 고찰 기록`, targetDays: 30, completedDays: [1, 2, 3, 4, 5, 6, 7], completed: true, streak: 7, category: "트렌드 분석" },
+          { id: `h-${Date.now()}-4`, title: `50일 AI 진로 챌린지 루틴 수행 & 아리 가이던스로 세특 활동기록 1줄 업로드`, text: `50일 AI 진로 챌린지 루틴 수행 & 아리 가이던스로 세특 활동기록 1줄 업로드`, targetDays: 50, completedDays: [1, 2], completed: false, streak: 2, category: "생기부 빌드" }
         ];
       }
 
