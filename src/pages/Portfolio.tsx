@@ -3,7 +3,6 @@ import { useAuth } from "../context";
 import { executeAiPrompt } from "../services/aiService";
 import { ARI_BLOB_URL } from "../assets/mascotData";
 import {
-  Award,
   Sparkles,
   RefreshCw,
   Plus,
@@ -13,18 +12,22 @@ import {
   Calendar,
   Image as ImageIcon,
   X,
-  Save
+  Save,
+  Trophy,
+  Briefcase,
+  Filter,
+  Eye
 } from "lucide-react";
 
 interface PortfolioItem {
   id: string;
   title: string;
   category: string;
-  dateRange: string; // 시작일 ~ 종료일 기간
+  dateRange: string;
   content: string;
   tags: string[];
   aiFeedback?: string;
-  photoUrl?: string; // 자동 용량 축소 업로드 사진
+  photoUrl?: string;
   isSelfReport?: boolean;
 }
 
@@ -32,8 +35,8 @@ interface PortfolioItem {
 const RECOMMENDED_POOLS = [
   [
     {
-      title: "KAIST AI 소프트웨어 산학 융합 메카톤 도전",
-      category: "동아리·자율",
+      title: "KAIST AI 소프트웨어 산학 융합 메가톤 도전",
+      category: "동아리·자율 (창작)",
       dateRange: "2026.05.01 ~ 2026.06.15",
       content: "대학 인공지능 연구소 멘토링을 통해 오픈소스 신경망 기반 사회문제 해결 프로젝트 아키텍처를 구축하고 시제품을 출품함.",
       tags: ["산학협력", "AI해커톤", "프로젝트아키텍처"],
@@ -46,9 +49,7 @@ const RECOMMENDED_POOLS = [
       content: "빅데이터 가공 통계 이론과 R/Python 데이터 모델링 학습을 50일간 매진하여 데이터 분석 공인 자격증을 고득점으로 취득함.",
       tags: ["국가공인자격증", "ADsP", "빅데이터공유"],
       aiFeedback: "고교생으로서 실증적 통계 데이터 검증 전문성을 획득했다는 확고한 진로 전문성 지표입니다!"
-    }
-  ],
-  [
+    },
     {
       title: "ESG 친환경 탄소 자원순환 신소재 아이디어 공모전",
       category: "진학·탐구 (교과)",
@@ -56,19 +57,19 @@ const RECOMMENDED_POOLS = [
       content: "기후위기를 극복하기 위한 미생물 플라이 융합 신재생 화합물 시각화 기획서를 작성하여 학술 소년 과제전에 출품함.",
       tags: ["ESG탄소중립", "신소재공학", "융합사고력"],
       aiFeedback: "사회적 현안(ESG)을 과학공학적 지식으로 구체화한 탐구로, 교과 세부능력 및 특기사항에 인용하기 훌륭합니다."
-    },
+    }
+  ],
+  [
     {
       title: "구글 텐서플로우(TensorFlow) 딥러닝 전문가 과정 수료",
       category: "🏅 자격증",
       dateRange: "2026.03.10 ~ 2026.06.25",
       content: "글로벌 IT 권위 인증인 TensorFlow Developer 과정을 온라인 캠퍼스를 통해 전담 100% 실무 코딩 프로젝트로 완수함.",
-      tags: ["TensorFlow", "글로벌자격증", "AI엔지니어로고"],
+      tags: ["TensorFlow", "글로벌자격증", "AI엔지니어"],
       aiFeedback: "세계가 인정하는 AI 프레임워크 제어 능력을 이수하여 인공지능/SW 학과 학종 서류 통과 1순위 역량을 갖췄습니다."
-    }
-  ],
-  [
+    },
     {
-      title: "교내 뇌과학·로보틱스 융합 소설 학술 발제회 대상",
+      title: "교내 뇌과학·로보틱스 융합 학술 발제회 대상",
       category: "독서·예술",
       dateRange: "2026.04.10 ~ 2026.06.05",
       content: "SF 고전과 뇌과학 저서 10권을 연계 분석하여 뇌-기계 통신(BMI)이 초래할 미래 윤리 강령 입건안을 학술지에 실음.",
@@ -77,7 +78,7 @@ const RECOMMENDED_POOLS = [
     },
     {
       title: "청소년 과학창의대회 대한민국 총장상 및 파이썬 교육 기부",
-      category: "동아리·자율",
+      category: "동아리·자율 (창작)",
       dateRange: "2026.05.01 ~ 2026.07.28",
       content: "지역 아동센터 초등학생들에게 AI 코딩과 블록 코딩 기초를 8주간 재능 기부하고, 공모전 장려 보상을 함께 성취함.",
       tags: ["교육기부봉사", "SW멘토링", "인성평가만점"],
@@ -95,8 +96,9 @@ export const Portfolio: React.FC = () => {
   const [items, setItems] = useState<PortfolioItem[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("전체 보기");
   
-  // 추천 활동 팩 상태
+  // 추천 활동 팩 상태 및 숨김 처리(Progressive Disclosure) 토글
   const [recPoolIdx, setRecPoolIdx] = useState(0);
+  const [showRecPool, setShowRecPool] = useState(false);
   const [toastMsg, setToastMsg] = useState("");
 
   // 스스로 직접 입력 (활동 기록 폼 & AI 교정) 상태
@@ -112,7 +114,8 @@ export const Portfolio: React.FC = () => {
   const [isPhotoCompressing, setIsPhotoCompressing] = useState(false);
   const [isAiRefining, setIsAiRefining] = useState(false);
 
-  // 수정 모달 상태
+  // 모달 상태 (상세보기 뷰 모달 & 수정 모달)
+  const [viewingItem, setViewingItem] = useState<PortfolioItem | null>(null);
   const [editingItem, setEditingItem] = useState<PortfolioItem | null>(null);
 
   // 초기 포트폴리오 불러오기
@@ -129,7 +132,7 @@ export const Portfolio: React.FC = () => {
           dateRange: "2026.04.15 ~ 2026.06.28",
           content: "다양한 공공 학습 데이터셋을 파이썬으로 가공하여 저소득층 학생들의 교과 성취를 높이는 자동 맞춤형 멘토링 챗봇 알고리즘 기획서를 교내 학술제에 제출함.",
           tags: ["AI교육알고리즘", "데이터분석", "사회적약자보호"],
-          aiFeedback: "‘공공 데이터셋 융합 활용’이라는 객관적 실증 근거 제시가 우수하며 세특 역량 중 가장 높은 ‘창조적 통찰력’ 기준에 충족합니다.",
+          aiFeedback: "‘공공 데이터셋 융합 활용’이라는 객관적 실증 근거 제시가 우수하며 세특 역량 중 가장 높은 ‘창작 통찰력’ 기준에 충족합니다.",
         },
         {
           id: "pf-102",
@@ -139,6 +142,15 @@ export const Portfolio: React.FC = () => {
           content: "R/Python 및 통계 가공 분석 기법을 매일 2시간씩 탐구하여 데이터 전처리 및 분류 예측 기계학습 이론 공인 국가기관 인증 자격을 당당히 성취함.",
           tags: ["ADsP", "국가공인", "데이터분석준전문가"],
           aiFeedback: "고등학교 학업 중 실무권위의 국가공인 데이터 자격을 성취하여 입사관 및 면접관에게 확실한 실전 SW 검증을 보일 수 있습니다!",
+        },
+        {
+          id: "pf-103",
+          title: "청소년 자율 동아리 '미래 모빌리티 연구소' 프로젝트 학술상",
+          category: "동아리·자율 (창작)",
+          dateRange: "2026.05.01 ~ 2026.07.20",
+          content: "자율주행 RC카에 라즈베리 파이와 카메라 센서를 부착하여 차선 위반 감지 신경망을 트레이닝하고, 지역 연계 동아리 박람회에서 우수 시연상을 수상함.",
+          tags: ["자율주행RC카", "라즈베리파이", "협업리더십"],
+          aiFeedback: "주도적으로 HW와 SW를 통합 제어해 낸 생생한 프로젝트 로그로, 공대 및 인공지능 학과 합격을 보증하는 만점 활동입니다.",
         }
       ];
       setItems(initial);
@@ -151,7 +163,7 @@ export const Portfolio: React.FC = () => {
     setTimeout(() => setToastMsg(""), 3200);
   };
 
-  // Canvas를 이용한 사진 업로드 및 자동 용량 줄이기 최적화 (10분의 1 축소)
+  // Canvas를 이용한 사진 업로드 및 자동 용량 줄이기 최적화
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>, isEdit = false) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -170,7 +182,6 @@ export const Portfolio: React.FC = () => {
         const ctx = canvas.getContext("2d");
         ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-        // 품질 0.75 JPEG로 압축하여 수 MB 사진을 40~60KB 내외로 자동 축소!
         const compressedDataUrl = canvas.toDataURL("image/jpeg", 0.75);
         if (isEdit && editingItem) {
           setEditingItem({ ...editingItem, photoUrl: compressedDataUrl });
@@ -178,14 +189,14 @@ export const Portfolio: React.FC = () => {
           setUploadedPhoto(compressedDataUrl);
         }
         setIsPhotoCompressing(false);
-        showToast("⚡ 사진이 용량이 약 88% 자동 최적화 축소되어 보관에 완벽히 장착되었습니다!");
+        showToast("⚡ 사진 용량이 약 88% 자동 최적화 축소되어 완벽히 장착되었습니다!");
       };
       img.src = event.target?.result as string;
     };
     reader.readAsDataURL(file);
   };
 
-  // AI 문구 자동 교정 및 세특 최적화 (활동 기록 폼 AI 기능 내장)
+  // AI 문구 자동 교정 및 세특 최적화
   const handleAiRefineForm = async () => {
     if (!formContent.trim()) {
       alert("교정받을 활동 내용을 먼저 조금이라도 작성해주세요!");
@@ -212,7 +223,7 @@ export const Portfolio: React.FC = () => {
     }, 800);
   };
 
-  // 신규 진로 경험 직접 추가 저장
+  // 신규 진로 경험 저장
   const handleSaveNewItem = (e: React.FormEvent) => {
     e.preventDefault();
     if (!formTitle.trim() || !formContent.trim()) {
@@ -238,16 +249,15 @@ export const Portfolio: React.FC = () => {
     setItems(updated);
     localStorage.setItem("readycareer_portfolio_items_v2", JSON.stringify(updated));
 
-    // 폼 초기화 및 닫기
     setFormTitle("");
     setFormContent("");
     setFormTags("");
     setUploadedPhoto(undefined);
     setShowInputForm(false);
-    showToast("🎉 내 진로 포트폴리오에 성공적으로 저장되었습니다!");
+    showToast("🎉 내 진로 포트폴리오 스펙 쇼룸에 성공적으로 저장되었습니다!");
   };
 
-  // 추천 활동을 선택해서 내 포트폴리오로 가져오기
+  // 추천 활동 내 포트폴리오로 가져오기
   const handleImportRecommendation = (rec: any) => {
     const imported: PortfolioItem = {
       id: "pf-rec-" + Date.now() + Math.random().toString(36).substring(2, 5),
@@ -261,10 +271,9 @@ export const Portfolio: React.FC = () => {
     const updated = [imported, ...items];
     setItems(updated);
     localStorage.setItem("readycareer_portfolio_items_v2", JSON.stringify(updated));
-    showToast(`✅ [${rec.title}] 항목이 내 진로 포트폴리오 보관함으로 즉시 이동되었습니다!`);
+    showToast(`✅ [${rec.title}] 항목이 내 진로 포트폴리오 스펙 쇼룸으로 즉시 이동되었습니다!`);
   };
 
-  // 기존 포트폴리오 수정 (Edit) 반영
   const handleUpdateItem = (e: React.FormEvent) => {
     e.preventDefault();
     if (!editingItem) return;
@@ -272,33 +281,44 @@ export const Portfolio: React.FC = () => {
     const updated = items.map(it => it.id === editingItem.id ? editingItem : it);
     setItems(updated);
     localStorage.setItem("readycareer_portfolio_items_v2", JSON.stringify(updated));
+    
+    if (viewingItem && viewingItem.id === editingItem.id) {
+      setViewingItem(editingItem);
+    }
+    
     setEditingItem(null);
     showToast("✏️ 포트폴리오 항목이 수정 완료되었습니다!");
   };
 
-  // 항목 삭제
   const handleDeleteItem = (id: string) => {
-    if (!window.confirm("정말 이 포트폴리오 기록을 삭제하시겠습니까?")) return;
+    if (!window.confirm("정말 이 포트폴리오 스펙 기록을 삭제하시겠습니까?")) return;
     const updated = items.filter(it => it.id !== id);
     setItems(updated);
     localStorage.setItem("readycareer_portfolio_items_v2", JSON.stringify(updated));
+    if (viewingItem && viewingItem.id === id) setViewingItem(null);
     showToast("🗑️ 항목이 깔끔하게 삭제되었습니다.");
   };
 
   const categoriesList = ["전체 보기", "진학·탐구 (교과)", "동아리·자율 (창작)", "독서·예술", "🏅 자격증", "🛠️ 기타(직접입력)"];
+  
   const filteredItems = selectedCategory === "전체 보기" ? items : items.filter(it => {
     if (selectedCategory === "🛠️ 기타(직접입력)") {
       return !["진학·탐구 (교과)", "동아리·자율 (창작)", "독서·예술", "🏅 자격증"].includes(it.category);
     }
-    return it.category.includes(selectedCategory.split(" ")[0]);
+    return it.category.includes(selectedCategory.split(" ")[0]) || it.category.includes(selectedCategory);
   });
 
   const currentRecPool = RECOMMENDED_POOLS[recPoolIdx % RECOMMENDED_POOLS.length];
 
+  // 스펙 통계 계산
+  const certCount = items.filter(it => it.category.includes("자격증")).length;
+  const studyCount = items.filter(it => it.category.includes("진학") || it.category.includes("탐구")).length;
+  const clubCount = items.filter(it => it.category.includes("동아리") || it.category.includes("자율") || it.category.includes("창작")).length;
+  const photoCount = items.filter(it => !!it.photoUrl).length;
+
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 py-8 space-y-12 selection:bg-[#7B5CF0]/20 selection:text-[#7B5CF0] relative">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 py-8 space-y-10 selection:bg-[#D946EF]/20 selection:text-[#D946EF] relative">
       
-      {/* Toast Popup */}
       {toastMsg && (
         <div className="fixed bottom-10 right-10 z-50 bg-[#008A90] text-white px-6 py-4 rounded-3xl font-black text-sm sm:text-base shadow-[0_15px_35px_rgba(0,138,144,0.4)] flex items-center gap-3 animate-bounce-short border-2 border-white">
           <Sparkles className="w-5 h-5 text-amber-300 animate-spin-slow" />
@@ -307,45 +327,115 @@ export const Portfolio: React.FC = () => {
       )}
 
       {/* =========================================================================
-          SECTION 1: HERO & BUTTON (직접 입력 창 열기)
+          SECTION 1: HERO (진로 스펙 쇼룸 & 딥퍼플/마젠타 팝업 열정 테마)
          ========================================================================= */}
-      <div className="rounded-[36px] bg-gradient-to-r from-[#1E114D] via-[#4A20D2] to-[#7B5CF0] text-white p-8 sm:p-12 shadow-[0_20px_60px_rgba(123,92,240,0.28)] border-4 border-white/30 flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden">
+      <div className="rounded-[36px] bg-gradient-to-r from-[#1E114D] via-[#4A20D2] to-[#D946EF] text-white p-8 sm:p-12 shadow-[0_20px_60px_rgba(217,70,239,0.25)] border-4 border-white/25 flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden">
         <div className="space-y-4 max-w-2xl z-10 text-center sm:text-left">
-          <span className="text-xs font-black bg-[#7AF1FC] text-[#006970] px-4 py-1.5 rounded-full inline-flex items-center gap-1.5 shadow-md">
-            <Award className="w-4 h-4 text-[#006970]" />
-            <span>나만의 맞춤 진로 포트폴리오 보관함 &amp; 자격증 센터</span>
-          </span>
+          <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+            <span className="text-xs font-black bg-[#FF3B7C] text-white px-4 py-1.5 rounded-full inline-flex items-center gap-1.5 shadow-md animate-pulse">
+              <Trophy className="w-4 h-4 text-amber-300" />
+              <span>대학·기업 제출 스펙 장식장 (Showroom)</span>
+            </span>
+            <span className="text-xs font-black bg-[#7AF1FC] text-[#006970] px-3.5 py-1.5 rounded-full shadow-md">
+              🎯 목표 직업: {targetJobName}
+            </span>
+          </div>
+          
           <h1 className="text-3xl sm:text-5xl font-headline font-black tracking-tight leading-tight">
-            💼 3D 진로 포트폴리오 &amp; <br className="hidden sm:block"/> 누적 성과 아키이빙
+            💼 진로 커리어 성과 장식장 &amp; <br className="hidden sm:block"/> 3D 스펙 아카이빙
           </h1>
-          <p className="text-sm sm:text-base font-semibold text-[#E1DAFF] leading-relaxed">
-            나의 진로 경험과 사진(용량 88% 자동 최적화)을 직접 등록하세요! AI 자동 세특 문구 교정 및 <strong>'자격증', '기간 선택'</strong> 기능으로 대학·기업이 감탄할 포트폴리오를 완성할 수 있습니다.
+          <p className="text-sm sm:text-base font-semibold text-[#F0E6FF] leading-relaxed">
+            나의 진로 활동과 자격증, 인증 사진(88% 압축 최적화)을 세미 갤러리 형태로 전시하세요! AI 세특 교정과 함께 <strong>입학사정관 및 채용관을 매료시킬 포트폴리오</strong>가 완성됩니다.
           </p>
         </div>
 
-        <div className="flex-shrink-0 z-10 flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
-          <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-3xl bg-white/20 backdrop-blur-md p-2 border-2 border-white/50 shadow-xl hidden sm:flex items-center justify-center">
+        <div className="flex-shrink-0 z-10 flex flex-col sm:flex-row items-center gap-4">
+          <div className="w-32 h-32 rounded-3xl bg-white/20 backdrop-blur-md p-2.5 border-2 border-white/50 shadow-xl hidden sm:flex items-center justify-center transform hover:rotate-6 transition-all">
             <img src={customAvatarUrl} alt="Target Avatar" className="w-full h-full object-contain filter drop-shadow-lg" />
           </div>
-          <button
-            onClick={() => setShowInputForm(!showInputForm)}
-            className="w-full sm:w-auto py-5 px-9 rounded-[28px] bg-gradient-to-r from-[#FF3B7C] to-[#FF7043] hover:brightness-110 text-white font-black text-lg shadow-[0_12px_35px_rgba(255,59,124,0.4)] transition-all flex items-center justify-center gap-2.5 cursor-pointer transform hover:scale-105 border-2 border-white"
-          >
-            <Plus className="w-6 h-6 stroke-[3]" />
-            <span>{showInputForm ? "입력창 닫기 ▲" : "✍️ 내 진로 경험 직접 입력 & AI 교정 시작"}</span>
-          </button>
         </div>
       </div>
 
       {/* =========================================================================
-          SECTION 2: 내 진로 경험 직접 입력 폼 (AI 자동 교정, 사진 압축, 기간, 자격증/기타)
+          [신규 탑재] SECTION 0: 🏆 진로 성과 장식장 & 스펙 현황 메트릭 (Stats Bar)
+         ========================================================================= */}
+      <div className="bg-gradient-to-br from-[#F8F5FF] via-white to-[#FAF0FF] rounded-[36px] p-7 sm:p-10 border-2 border-[#E9D5FF] shadow-sm space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-purple-150 pb-4">
+          <div>
+            <div className="inline-flex items-center gap-1.5 bg-[#7B5CF0]/15 text-[#7B5CF0] px-3 py-1 rounded-full text-xs font-black mb-1">
+              <Trophy className="w-3.5 h-3.5 text-[#7B5CF0]" />
+              <span>Career Spec Scoreboard & Trophy Case</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-headline font-black text-[#1A1626]">
+              🏆 나의 누적 커리어 성과 훈장 장식장
+            </h2>
+            <p className="text-xs sm:text-sm font-semibold text-[#6E6A80]">
+              현재까지 누적된 역량 지표가 실시간 집계됩니다. 다양한 스펙을 채워 황금 훈장을 늘려가세요!
+            </p>
+          </div>
+
+          <button
+            onClick={() => setShowInputForm(!showInputForm)}
+            className="w-full sm:w-auto py-4 px-8 rounded-2xl bg-gradient-to-r from-[#FF3B7C] via-[#FF5C8A] to-[#7B5CF0] hover:brightness-110 text-white font-black text-sm sm:text-base shadow-[0_10px_25px_rgba(255,59,124,0.35)] transition-transform transform hover:-translate-y-1 active:scale-95 cursor-pointer border-2 border-white flex items-center justify-center gap-2"
+          >
+            <Plus className="w-5 h-5 stroke-[3]" />
+            <span>{showInputForm ? "입력창 닫기 ▲" : "✍️ 내 진로 스펙 직접 추가하기"}</span>
+          </button>
+        </div>
+
+        {/* 4대 스펙 훈장 메트릭 그리드 */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          <div className="bg-white p-5 sm:p-6 rounded-3xl border-2 border-purple-100 shadow-sm flex items-center gap-4 transform hover:scale-[1.02] transition-all">
+            <div className="w-12 h-12 rounded-2xl bg-purple-50 flex items-center justify-center text-2xl shrink-0 border border-purple-200">
+              🔬
+            </div>
+            <div>
+              <span className="text-xs font-black text-[#8D88A0] block">교과·세특 탐구</span>
+              <span className="text-2xl sm:text-3xl font-black text-[#7B5CF0]">{studyCount} <span className="text-sm font-bold text-slate-500">건</span></span>
+            </div>
+          </div>
+
+          <div className="bg-white p-5 sm:p-6 rounded-3xl border-2 border-pink-100 shadow-sm flex items-center gap-4 transform hover:scale-[1.02] transition-all">
+            <div className="w-12 h-12 rounded-2xl bg-pink-50 flex items-center justify-center text-2xl shrink-0 border border-pink-200">
+              🤝
+            </div>
+            <div>
+              <span className="text-xs font-black text-[#8D88A0] block">동아리·창작</span>
+              <span className="text-2xl sm:text-3xl font-black text-[#FF3B7C]">{clubCount} <span className="text-sm font-bold text-slate-500">건</span></span>
+            </div>
+          </div>
+
+          <div className="bg-white p-5 sm:p-6 rounded-3xl border-2 border-amber-100 shadow-sm flex items-center gap-4 transform hover:scale-[1.02] transition-all">
+            <div className="w-12 h-12 rounded-2xl bg-amber-50 flex items-center justify-center text-2xl shrink-0 border border-amber-200 animate-bounce-short">
+              🏅
+            </div>
+            <div>
+              <span className="text-xs font-black text-[#8D88A0] block">취득 자격증</span>
+              <span className="text-2xl sm:text-3xl font-black text-amber-600">{certCount} <span className="text-sm font-bold text-slate-500">개</span></span>
+            </div>
+          </div>
+
+          <div className="bg-white p-5 sm:p-6 rounded-3xl border-2 border-cyan-100 shadow-sm flex items-center gap-4 transform hover:scale-[1.02] transition-all">
+            <div className="w-12 h-12 rounded-2xl bg-cyan-50 flex items-center justify-center text-2xl shrink-0 border border-cyan-200">
+              📷
+            </div>
+            <div>
+              <span className="text-xs font-black text-[#8D88A0] block">인증 사진 첨부</span>
+              <span className="text-2xl sm:text-3xl font-black text-[#008A90]">{photoCount} <span className="text-sm font-bold text-slate-500">건</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* =========================================================================
+          SECTION 2 (MODAL / PANEL): 내 진로 경험 직접 입력 폼 (AI 세특 교정, 사진 압축)
          ========================================================================= */}
       {showInputForm && (
         <div className="bg-white/95 backdrop-blur-2xl rounded-[40px] p-8 sm:p-12 shadow-[0_25px_65px_rgba(123,92,240,0.18)] border-4 border-[#DED4FF] space-y-8 animate-fadeIn">
           <div className="flex items-center justify-between border-b-2 border-purple-100 pb-5">
             <div className="space-y-1">
               <span className="text-xs font-black bg-purple-100 text-[#7B5CF0] px-3 py-1 rounded-full inline-block">
-                ✨ NEIS 100% 맞춤 및 이미지 최적화 엔진 탑재
+                ✨ NEIS 100% 맞춤 및 이미지 88% 압축 엔진 탑재
               </span>
               <h2 className="text-2xl sm:text-3xl font-headline font-black text-[#1A1626]">
                 📝 내 진로 경험 및 세특/자격증 직접 등록
@@ -361,7 +451,6 @@ export const Portfolio: React.FC = () => {
 
           <form onSubmit={handleSaveNewItem} className="space-y-6">
             
-            {/* 1. 카테고리 선택 (자격증, 기타 직접입력 탑재) & 제목 */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="space-y-2">
                 <label className="text-xs sm:text-sm font-black text-[#3B364C] block">
@@ -379,7 +468,6 @@ export const Portfolio: React.FC = () => {
                   <option value="🛠️ 기타(직접입력)">🛠️ 기타(직접입력)</option>
                 </select>
 
-                {/* 기타(직접입력) 선택 시 나타나는 전용 텍스트 필드 */}
                 {formCategory === "🛠️ 기타(직접입력)" && (
                   <input
                     type="text"
@@ -407,7 +495,6 @@ export const Portfolio: React.FC = () => {
               </div>
             </div>
 
-            {/* 2. 수행 날짜 (단일 날짜 대신 시작일 ~ 종료일 기간 설정!) */}
             <div className="space-y-2 bg-[#FAF6FF] p-5 rounded-3xl border border-purple-100">
               <label className="text-xs sm:text-sm font-black text-[#3B364C] flex items-center gap-1.5">
                 <Calendar className="w-4 h-4 text-[#7B5CF0]" />
@@ -436,7 +523,6 @@ export const Portfolio: React.FC = () => {
               </div>
             </div>
 
-            {/* 3. 활동 내용 및 AI 세특 자동 교정 내장 로직 */}
             <div className="space-y-3">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                 <label className="text-xs sm:text-sm font-black text-[#3B364C] block">
@@ -462,7 +548,6 @@ export const Portfolio: React.FC = () => {
               />
             </div>
 
-            {/* 4. 사진 업로드 (용량 88% 자동 최적화) & 태그 입력 */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <label className="text-xs sm:text-sm font-black text-[#3B364C] flex items-center gap-2">
@@ -534,203 +619,347 @@ export const Portfolio: React.FC = () => {
       )}
 
       {/* =========================================================================
-          SECTION 3: 진로포트폴리오 다양한 활동 추천 & 새로고침 기능 (가져오기 버튼 탑재)
+          SECTION 3: AI 맞춤 진로 활동 추천 보관함 (Progressive Disclosure - 접기/펼치기)
          ========================================================================= */}
-      <div className="bg-gradient-to-r from-[#FAF6FF] via-[#E5FAFF]/50 to-[#FAF6FF] rounded-[36px] p-7 sm:p-10 border-2 border-[#C6EEF4] shadow-lg space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-cyan-200/60 pb-4">
-          <div>
-            <div className="inline-flex items-center gap-1.5 bg-[#008A90] text-white px-3 py-1 rounded-full text-xs font-black mb-1.5 shadow-sm">
-              <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-              <span>AI 맞춤 진로 역량 활동 추천 풀</span>
+      <div className="bg-gradient-to-r from-[#FAF6FF] via-[#E5FAFF]/50 to-[#FAF6FF] rounded-[32px] p-6 sm:p-8 border-2 border-[#C6EEF4] shadow-md transition-all">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-[#008A90] text-white flex items-center justify-center shrink-0 shadow-md">
+              <Sparkles className="w-6 h-6 text-amber-300" />
             </div>
-            <h3 className="text-xl sm:text-2xl font-headline font-black text-[#1A1626]">
-              🚀 내 꿈("{targetJobName}")을 빛낼 활동 추천 풀
-            </h3>
-            <p className="text-xs sm:text-sm text-[#5C5672] font-extrabold mt-0.5">
-              마음에 드는 활동을 발견하면 <strong>[➕ 선택해서 내 포트폴리오로 가져오기]</strong> 버튼을 터치하여 바로 담아보세요!
-            </p>
+            <div>
+              <span className="text-xs font-black text-[#008A90] block uppercase tracking-wide">AI Career Activity Explorer</span>
+              <h3 className="text-lg sm:text-xl font-headline font-black text-[#1A1626]">
+                🚀 내 꿈("{targetJobName}")을 빛낼 활동 추천 풀
+              </h3>
+              <p className="text-xs sm:text-sm text-[#5C5672] font-semibold">
+                어떤 활동을 할지 막막할 때 클릭해 보세요! 마음에 드는 활동을 터치 한 번에 내 포트폴리오로 가져올 수 있습니다.
+              </p>
+            </div>
           </div>
-          <button
-            onClick={() => setRecPoolIdx(recPoolIdx + 1)}
-            className="px-5 py-3 rounded-2xl bg-[#7B5CF0] hover:bg-[#6240D5] text-white font-black text-xs sm:text-sm shadow-md transition-all flex items-center gap-2 whitespace-nowrap cursor-pointer transform hover:scale-105 active:scale-95"
-          >
-            <RefreshCw className="w-4 h-4 animate-spin-slow" />
-            <span>🔄 다양한 활동 추천 새로고침 ({recPoolIdx % RECOMMENDED_POOLS.length + 1}/{RECOMMENDED_POOLS.length})</span>
-          </button>
+
+          <div className="flex items-center gap-3 shrink-0">
+            {showRecPool && (
+              <button
+                onClick={() => setRecPoolIdx(recPoolIdx + 1)}
+                className="px-4 py-3 rounded-2xl bg-[#008A90] hover:bg-[#007378] text-white font-black text-xs shadow-sm transition-all flex items-center gap-1.5 whitespace-nowrap cursor-pointer"
+              >
+                <RefreshCw className="w-3.5 h-3.5 animate-spin-slow" />
+                <span>새로고침 ({recPoolIdx % RECOMMENDED_POOLS.length + 1}/{RECOMMENDED_POOLS.length})</span>
+              </button>
+            )}
+            <button
+              onClick={() => setShowRecPool(!showRecPool)}
+              className="px-6 py-3.5 rounded-2xl bg-[#7B5CF0] hover:bg-[#6240D5] text-white font-black text-xs sm:text-sm shadow-md transition-all flex items-center gap-2 cursor-pointer"
+            >
+              <span>{showRecPool ? "▲ 추천 보관함 접기" : "▼ AI 추천 활동 풀 열어보기"}</span>
+            </button>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
-          {currentRecPool.map((rec, idx) => (
-            <div key={idx} className="bg-white/95 rounded-[28px] p-6 border-2 border-cyan-100 shadow-[0_8px_25px_rgba(0,0,0,0.06)] hover:shadow-xl transition-all duration-300 flex flex-col justify-between space-y-4 group">
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-black bg-[#008A90]/15 text-[#008A90] px-3 py-1 rounded-full border border-[#008A90]/20">
-                    {rec.category}
-                  </span>
-                  <span className="text-[11px] font-bold text-[#8D88A0] bg-slate-100 px-2.5 py-0.5 rounded-md">
-                    📅 {rec.dateRange}
-                  </span>
-                </div>
-                <h4 className="text-lg font-black text-[#1A1626] leading-tight group-hover:text-[#008A90] transition-colors">
-                  {rec.title}
-                </h4>
-                <p className="text-xs sm:text-sm font-bold text-[#4A4460] leading-relaxed bg-[#F8FDFF] p-3.5 rounded-2xl border border-cyan-50">
-                  {rec.content}
-                </p>
-                <div className="flex flex-wrap gap-1.5 pt-1">
-                  {rec.tags.map((t, tIdx) => (
-                    <span key={tIdx} className="text-[10px] font-extrabold bg-purple-50 text-[#6240D5] px-2.5 py-0.5 rounded-md">
-                      #{t}
+        {/* 펼쳤을 때만 보이는 추천 활동 풀 */}
+        {showRecPool && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6 mt-6 border-t border-cyan-200/60 animate-fadeIn">
+            {currentRecPool.map((rec, idx) => (
+              <div key={idx} className="bg-white/95 rounded-[26px] p-6 border-2 border-cyan-100 shadow-[0_8px_25px_rgba(0,0,0,0.05)] hover:shadow-xl transition-all duration-300 flex flex-col justify-between space-y-4 group">
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[11px] font-black bg-[#008A90]/15 text-[#008A90] px-3 py-1 rounded-full">
+                      {rec.category}
                     </span>
-                  ))}
+                    <span className="text-[11px] font-bold text-[#8D88A0] bg-slate-100 px-2 py-0.5 rounded-md">
+                      📅 {rec.dateRange}
+                    </span>
+                  </div>
+                  <h4 className="text-base sm:text-lg font-black text-[#1A1626] leading-snug group-hover:text-[#008A90] transition-colors">
+                    {rec.title}
+                  </h4>
+                  <p className="text-xs font-bold text-[#4A4460] leading-relaxed bg-[#F8FDFF] p-3.5 rounded-2xl border border-cyan-50 line-clamp-3">
+                    {rec.content}
+                  </p>
+                  <div className="flex flex-wrap gap-1 pt-1">
+                    {rec.tags.map((t, tIdx) => (
+                      <span key={tIdx} className="text-[10px] font-extrabold bg-purple-50 text-[#6240D5] px-2 py-0.5 rounded-md">
+                        #{t}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="pt-3 border-t border-slate-100">
+                  <button
+                    onClick={() => handleImportRecommendation(rec)}
+                    className="w-full py-3 px-4 bg-gradient-to-r from-[#008A90] to-[#00A0A5] hover:brightness-110 text-white font-black text-xs rounded-2xl shadow-md flex items-center justify-center gap-1.5 cursor-pointer transition-transform active:scale-95"
+                  >
+                    <Plus className="w-4 h-4 stroke-[3]" />
+                    <span>내 포트폴리오로 가져오기!</span>
+                  </button>
                 </div>
               </div>
-
-              <div className="pt-3 border-t border-slate-100 text-right">
-                <button
-                  onClick={() => handleImportRecommendation(rec)}
-                  className="w-full py-3 px-5 bg-gradient-to-r from-[#008A90] to-[#00A0A5] hover:brightness-110 text-white font-black text-xs sm:text-sm rounded-2xl shadow-md flex items-center justify-center gap-2 cursor-pointer transition-transform transform active:scale-95"
-                >
-                  <Plus className="w-4 h-4 stroke-[3]" />
-                  <span>선택해서 내 진로 포트폴리오로 가져오기!</span>
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* =========================================================================
-          SECTION 4: 만들어진 진로포트폴리오 리스트 (수정기능 및 극대화된 가독성)
+          SECTION 4: 진로포트폴리오 갤러리/명함 쇼룸 (가독성 최적화 Grid View)
          ========================================================================= */}
-      <div className="space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-2 border-purple-150 pb-4 pl-2">
-          <h3 className="text-2xl font-headline font-black text-[#1A1626] flex items-center gap-2">
-            <span>🗃️ 내 누적 진로 포트폴리오 (총 {filteredItems.length}건)</span>
-          </h3>
+      <div className="space-y-7">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-2 border-purple-150 pb-5 pl-2">
+          <div>
+            <h3 className="text-2xl font-headline font-black text-[#1A1626] flex items-center gap-2">
+              <span>🗃️ 내 진로 스펙 갤러리 쇼룸 (총 {filteredItems.length}건)</span>
+            </h3>
+            <p className="text-xs text-slate-500 font-semibold mt-0.5">
+              카드를 터치하거나 [상세보기]를 눌러 고해상도 인증 사진과 AI 세특 평가를 확인하세요!
+            </p>
+          </div>
 
-          {/* 카테고리 필터 */}
-          <div className="flex flex-wrap gap-2">
-            {categoriesList.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setSelectedCategory(cat)}
-                className={`px-4 py-2 rounded-2xl font-black text-xs sm:text-sm transition-all shadow-sm ${
-                  selectedCategory === cat
-                    ? "bg-[#7B5CF0] text-white scale-105 shadow-md"
-                    : "bg-white text-[#6E6A80] border border-purple-200 hover:bg-[#FAF6FF]"
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
+          {/* 카테고리 필터 바 */}
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-xs font-black text-slate-400 mr-1 flex items-center gap-1">
+              <Filter className="w-3.5 h-3.5" /> 분류:
+            </span>
+            {categoriesList.map((cat) => {
+              const isSelected = selectedCategory === cat;
+              return (
+                <button
+                  key={cat}
+                  onClick={() => setSelectedCategory(cat)}
+                  className={`px-4 py-2 rounded-2xl font-black text-xs transition-all shadow-2xs ${
+                    isSelected
+                      ? "bg-[#7B5CF0] text-white scale-105 shadow-md"
+                      : "bg-white text-[#6E6A80] border border-purple-200 hover:bg-[#FAF6FF]"
+                  }`}
+                >
+                  {cat}
+                </button>
+              );
+            })}
           </div>
         </div>
 
-        {/* 리스트 뷰 */}
+        {/* 갤러리 그리드 리스트 뷰 */}
         {filteredItems.length === 0 ? (
-          <div className="w-full py-16 text-center bg-white rounded-[36px] border-2 border-dashed border-purple-200 space-y-3">
-            <span className="text-4xl block">empty_portfolio</span>
+          <div className="w-full py-20 text-center bg-white rounded-[36px] border-2 border-dashed border-purple-200 space-y-3">
+            <span className="text-5xl block">💼</span>
             <p className="text-base font-black text-[#7B5CF0]">선택한 분류에 해당하는 포트폴리오 항목이 없습니다.</p>
-            <span className="text-xs font-bold text-[#8A859C]">위의 직접 입력 버튼을 누르거나 활동 추천 팩에서 가져와 보세요!</span>
+            <span className="text-xs font-bold text-[#8A859C]">위의 직접 추가 버튼을 누르거나 AI 추천 풀에서 스펙을 장착해 보세요!</span>
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-8">
-            {filteredItems.map((it) => (
-              <div
-                key={it.id}
-                className="bg-white rounded-[36px] p-8 sm:p-10 shadow-[0_12px_35px_rgba(0,0,0,0.06)] hover:shadow-[0_20px_50px_rgba(123,92,240,0.15)] border-2 border-[#E7E0FF] transition-all duration-300 space-y-6 relative overflow-hidden"
-              >
-                {/* 상단 뱃지 및 수정/삭제 제어 바 */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-purple-100 pb-4">
-                  <div className="flex items-center gap-3">
-                    <span className={`text-xs sm:text-sm font-black px-4 py-1.5 rounded-full shadow-sm ${
-                      it.category.includes("자격증")
-                        ? "bg-[#FF3B7C] text-white animate-pulse"
-                        : "bg-[#7B5CF0] text-white"
-                    }`}>
-                      {it.category}
-                    </span>
-                    <span className="text-xs font-black text-[#6E6A80] bg-[#F2EEFF] px-3 py-1 rounded-lg">
-                      ⏳ 수행 기간: {it.dateRange || "2026.04 ~ 2026.07"}
-                    </span>
-                  </div>
-
-                  {/* ✏️ 수정하기 및 삭제 컨트롤러 */}
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => setEditingItem(it)}
-                      className="px-4 py-2 rounded-xl bg-purple-50 hover:bg-purple-100 text-[#7B5CF0] font-black text-xs flex items-center gap-1.5 transition-colors shadow-sm"
-                    >
-                      <Edit2 className="w-3.5 h-3.5" />
-                      <span>✏️ 수정하기 (Edit)</span>
-                    </button>
-                    <button
-                      onClick={() => handleDeleteItem(it.id)}
-                      className="p-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 transition-colors shadow-sm"
-                      title="항목 삭제"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
-
-                {/* 본문 & 사진 가이드 (고대비 가독성) */}
-                <div className="space-y-4">
-                  <h4 className="text-xl sm:text-3xl font-black text-[#1A1626] tracking-tight leading-tight">
-                    {it.title}
-                  </h4>
-                  
-                  <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start pt-1">
-                    <div className={`bg-[#F9F8FD] p-6 rounded-3xl border border-purple-150 shadow-inner text-sm sm:text-base font-semibold text-[#2E2840] leading-relaxed whitespace-pre-wrap ${it.photoUrl ? "lg:col-span-3" : "lg:col-span-4"}`}>
-                      {it.content}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredItems.map((it) => {
+              const isCert = it.category.includes("자격증");
+              return (
+                <div
+                  key={it.id}
+                  onClick={() => setViewingItem(it)}
+                  className="bg-white rounded-[32px] p-6 sm:p-7 shadow-[0_10px_30px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_45px_rgba(123,92,240,0.18)] border-2 border-[#E7E0FF] hover:border-[#7B5CF0] transition-all duration-300 flex flex-col justify-between group cursor-pointer transform hover:-translate-y-1 relative overflow-hidden"
+                >
+                  <div className="space-y-4">
+                    {/* 상단 뱃지 & 기간 */}
+                    <div className="flex items-center justify-between gap-2">
+                      <span className={`text-xs font-black px-3.5 py-1 rounded-full shadow-2xs ${
+                        isCert
+                          ? "bg-[#FF3B7C] text-white animate-pulse"
+                          : "bg-[#7B5CF0] text-white"
+                      }`}>
+                        {it.category}
+                      </span>
+                      <span className="text-[11px] font-extrabold text-[#6E6A80] bg-[#F2EEFF] px-2.5 py-1 rounded-lg">
+                        ⏳ {it.dateRange || "2026.05 ~ 07"}
+                      </span>
                     </div>
 
-                    {/* 첨부 사진 존재 시 썸네일 표시 */}
-                    {it.photoUrl && (
-                      <div className="lg:col-span-1 bg-white p-2.5 rounded-3xl border-2 border-purple-200 shadow-md transform hover:scale-105 transition-all text-center">
-                        <img src={it.photoUrl} alt="Portfolio Verification" className="w-full h-44 object-cover rounded-2xl shadow-sm" />
-                        <span className="text-[11px] font-black text-[#7B5CF0] block mt-2">✨ 인증 사진 장착됨</span>
+                    {/* 사진 썸네일 또는 아키텍처 박스 */}
+                    {it.photoUrl ? (
+                      <div className="w-full h-40 rounded-2xl overflow-hidden border border-purple-100 relative bg-slate-50">
+                        <img src={it.photoUrl} alt="Portfolio Verification" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end p-3">
+                          <span className="text-white text-xs font-black flex items-center gap-1">
+                            ✨ 인증 사진 포함됨
+                          </span>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="w-full h-24 rounded-2xl bg-gradient-to-r from-purple-50 via-slate-50 to-purple-50 border border-purple-100/60 flex items-center justify-center gap-2 text-purple-700/60 font-black text-xs">
+                        <Briefcase className="w-5 h-5 text-purple-400" />
+                        <span>누적 진로 스펙 #Verified</span>
                       </div>
                     )}
-                  </div>
-                </div>
 
-                {/* 역량 태그 */}
-                <div className="flex flex-wrap gap-2 pt-1">
-                  {it.tags?.map((tag, tIdx) => (
-                    <span key={tIdx} className="text-xs font-black bg-[#EFEAFE] text-[#6240D5] px-3.5 py-1 rounded-xl shadow-sm border border-purple-200">
-                      #{tag}
-                    </span>
-                  ))}
-                </div>
-
-                {/* AI 역량 피드백 가이드 */}
-                {it.aiFeedback && (
-                  <div className="w-full rounded-[28px] bg-gradient-to-r from-[#E6FAFE] via-[#F2EEFF] to-[#FAEAFE] p-6 sm:p-7 border-2 border-[#BFF6FE] shadow-inner flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                    <div className="space-y-1">
-                      <div className="inline-flex items-center gap-1.5 bg-[#008A90] text-white px-3 py-0.5 rounded-full text-[11px] font-black shadow">
-                        <Sparkles className="w-3 h-3 text-amber-200" />
-                        <span>AI 입학사정관 세특 평가 피드백</span>
-                      </div>
-                      <p className="text-sm sm:text-base font-black text-[#1A1626] leading-relaxed pt-1">
-                        {it.aiFeedback}
+                    {/* 제목 및 내용 미리보기 */}
+                    <div className="space-y-2">
+                      <h4 className="text-lg font-black text-[#1A1626] leading-snug group-hover:text-[#7B5CF0] transition-colors line-clamp-2">
+                        {it.title}
+                      </h4>
+                      <p className="text-xs font-semibold text-[#5C5672] leading-relaxed line-clamp-2 bg-[#FAF8FF] p-3 rounded-2xl border border-purple-50">
+                        {it.content}
                       </p>
                     </div>
-                    <span className="text-xs font-black text-[#008A90] whitespace-nowrap bg-white/80 px-3 py-1.5 rounded-full border border-cyan-200">
-                      ⚡ 대학 제출용 승인됨
-                    </span>
+
+                    {/* 역량 태그 */}
+                    <div className="flex flex-wrap gap-1.5 pt-0.5">
+                      {it.tags?.map((tag, tIdx) => (
+                        <span key={tIdx} className="text-[11px] font-black bg-[#EFEAFE] text-[#6240D5] px-2.5 py-0.5 rounded-lg border border-purple-200">
+                          #{tag}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                )}
-              </div>
-            ))}
+
+                  {/* 하단 액션 버튼 */}
+                  <div className="pt-5 mt-5 border-t border-purple-100 flex items-center justify-between">
+                    <span className="text-xs font-black text-[#008A90] flex items-center gap-1">
+                      <Sparkles className="w-3.5 h-3.5 text-amber-400" /> AI 평가 승인됨
+                    </span>
+                    <div className="flex items-center gap-1.5">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setEditingItem(it);
+                        }}
+                        className="p-2 rounded-xl bg-purple-50 hover:bg-purple-100 text-[#7B5CF0] transition-colors"
+                        title="수정하기"
+                      >
+                        <Edit2 className="w-3.5 h-3.5" />
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeleteItem(it.id);
+                        }}
+                        className="p-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 transition-colors"
+                        title="삭제하기"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                      <div className="px-3 py-1.5 rounded-xl bg-[#7B5CF0] text-white font-black text-xs flex items-center gap-1">
+                        <Eye className="w-3.5 h-3.5" />
+                        <span>상세보기</span>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              );
+            })}
           </div>
         )}
 
       </div>
 
       {/* =========================================================================
-          MODAL: 포트폴리오 수정 모달 (Edit Modal)
+          MODAL 1: 포트폴리오 스펙 상세 보기 뷰어 (Detail Viewer Modal)
+         ========================================================================= */}
+      {viewingItem && (
+        <div className="fixed inset-0 z-50 bg-black/65 backdrop-blur-md flex items-center justify-center p-4 animate-fadeIn" onClick={() => setViewingItem(null)}>
+          <div 
+            className="bg-white w-full max-w-3xl rounded-[40px] p-8 sm:p-12 shadow-[0_25px_80px_rgba(0,0,0,0.6)] border-4 border-purple-200 relative max-h-[90vh] overflow-y-auto space-y-7"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setViewingItem(null)}
+              className="absolute top-7 right-7 p-2.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold"
+            >
+              <X className="w-6 h-6" />
+            </button>
+
+            {/* 상단 분류 */}
+            <div className="space-y-3 border-b-2 border-purple-100 pb-5 pr-8">
+              <div className="flex items-center gap-2">
+                <span className={`text-sm font-black px-4 py-1.5 rounded-full ${viewingItem.category.includes('자격증') ? 'bg-[#FF3B7C] text-white' : 'bg-[#7B5CF0] text-white'}`}>
+                  {viewingItem.category}
+                </span>
+                <span className="text-xs font-black text-[#6E6A80] bg-[#F2EEFF] px-3 py-1 rounded-lg">
+                  ⏳ 수행 기간: {viewingItem.dateRange || "2026.05 ~ 07"}
+                </span>
+              </div>
+              <h3 className="text-2xl sm:text-3xl font-headline font-black text-[#1A1626] leading-snug">
+                {viewingItem.title}
+              </h3>
+            </div>
+
+            {/* 첨부 사진 확대 */}
+            {viewingItem.photoUrl && (
+              <div className="rounded-3xl overflow-hidden border-2 border-purple-200 shadow-md max-h-[380px] bg-slate-50 text-center">
+                <img src={viewingItem.photoUrl} alt="High Res Verification" className="w-full h-full max-h-[360px] object-contain mx-auto" />
+              </div>
+            )}
+
+            {/* 본문 내용 */}
+            <div className="space-y-2">
+              <span className="text-xs font-black text-slate-400 uppercase tracking-wide">📝 활동 상세 고찰 및 수행 과정</span>
+              <div className="bg-[#F9F8FD] p-7 rounded-[32px] border border-purple-200 shadow-inner text-base font-bold text-[#2E2840] leading-relaxed whitespace-pre-wrap">
+                {viewingItem.content}
+              </div>
+            </div>
+
+            {/* 역량 태그 */}
+            <div className="space-y-2">
+              <span className="text-xs font-black text-slate-400">🏷️ 핵심 직무 역량 태그</span>
+              <div className="flex flex-wrap gap-2">
+                {viewingItem.tags?.map((tag, idx) => (
+                  <span key={idx} className="text-sm font-black bg-[#EFEAFE] text-[#6240D5] px-4 py-1.5 rounded-xl border border-purple-200">
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* AI 역량 피드백 */}
+            {viewingItem.aiFeedback && (
+              <div className="w-full rounded-[32px] bg-gradient-to-r from-[#E6FAFE] via-[#F2EEFF] to-[#FAEAFE] p-7 border-2 border-[#BFF6FE] shadow-inner space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="inline-flex items-center gap-2 bg-[#008A90] text-white px-3.5 py-1 rounded-full text-xs font-black shadow">
+                    <Sparkles className="w-4 h-4 text-amber-200 animate-spin-slow" />
+                    <span>AI 입학사정관 & 채용관 평가 피드백</span>
+                  </div>
+                  <span className="text-xs font-black text-[#008A90] bg-white px-3 py-1 rounded-full border border-cyan-200">
+                    ⚡ 대학·기업 제출 승인됨
+                  </span>
+                </div>
+                <p className="text-sm sm:text-base font-black text-[#1A1626] leading-relaxed">
+                  {viewingItem.aiFeedback}
+                </p>
+              </div>
+            )}
+
+            <div className="pt-4 flex items-center justify-between border-t-2 border-purple-100">
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => {
+                    setEditingItem(viewingItem);
+                    setViewingItem(null);
+                  }}
+                  className="px-5 py-3 rounded-xl bg-purple-50 hover:bg-purple-100 text-[#7B5CF0] font-black text-sm flex items-center gap-1.5 transition-colors"
+                >
+                  <Edit2 className="w-4 h-4" />
+                  <span>수정하기</span>
+                </button>
+                <button
+                  onClick={() => handleDeleteItem(viewingItem.id)}
+                  className="px-5 py-3 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 font-black text-sm flex items-center gap-1.5 transition-colors"
+                >
+                  <Trash2 className="w-4 h-4" />
+                  <span>삭제하기</span>
+                </button>
+              </div>
+              
+              <button
+                onClick={() => setViewingItem(null)}
+                className="px-8 py-3.5 rounded-2xl bg-[#7B5CF0] hover:bg-[#6240D5] text-white font-black text-sm shadow-md transition-all cursor-pointer"
+              >
+                닫기 &rarr;
+              </button>
+            </div>
+
+          </div>
+        </div>
+      )}
+
+      {/* =========================================================================
+          MODAL 2: 포트폴리오 수정 모달 (Edit Modal)
          ========================================================================= */}
       {editingItem && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-md flex items-center justify-center p-4 animate-fadeIn">
@@ -748,82 +977,120 @@ export const Portfolio: React.FC = () => {
             <form onSubmit={handleUpdateItem} className="space-y-5">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs font-black text-[#3B364C] block mb-1">🏷️ 카테고리 분류</label>
-                  <input
-                    type="text"
-                    value={editingItem.category}
-                    onChange={(e) => setEditingItem({ ...editingItem, category: e.target.value })}
-                    className="w-full h-12 px-4 rounded-xl bg-[#F9F8FD] border border-purple-300 font-bold text-sm text-[#1A1626]"
-                    required
-                  />
+                  <label className="text-xs font-black text-[#3B364C] block mb-1">🏷️ 활동 분류</label>
+                  <select
+                    value={["진학·탐구 (교과)", "동아리·자율 (창작)", "독서·예술", "🏅 자격증"].includes(editingItem.category) ? editingItem.category : "🛠️ 기타(직접입력)"}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      if (val === "🛠️ 기타(직접입력)") {
+                        setEditingItem({ ...editingItem, category: "자율 탐색" });
+                      } else {
+                        setEditingItem({ ...editingItem, category: val });
+                      }
+                    }}
+                    className="w-full h-12 px-4 rounded-xl bg-purple-50 border border-[#B8AAFA] font-black text-sm text-[#1A1626]"
+                  >
+                    <option value="진학·탐구 (교과)">진학·탐구 (교과)</option>
+                    <option value="동아리·자율 (창작)">동아리·자율 (창작)</option>
+                    <option value="독서·예술">독서·예술</option>
+                    <option value="🏅 자격증">🏅 자격증</option>
+                    <option value="🛠️ 기타(직접입력)">🛠️ 기타(직접입력)</option>
+                  </select>
+                  {!["진학·탐구 (교과)", "동아리·자율 (창작)", "독서·예술", "🏅 자격증"].includes(editingItem.category) && (
+                    <input
+                      type="text"
+                      placeholder="분류 직접 입력 (예: 봉사활동, 학교제안)"
+                      value={editingItem.category}
+                      onChange={(e) => setEditingItem({ ...editingItem, category: e.target.value })}
+                      className="w-full h-10 px-3 mt-2 rounded-lg bg-white border border-[#7B5CF0] text-xs font-black text-[#7B5CF0] focus:outline-none shadow-inner"
+                    />
+                  )}
                 </div>
+
                 <div>
-                  <label className="text-xs font-black text-[#3B364C] block mb-1">⏳ 수행 기간 (시작일 ~ 종료일)</label>
+                  <label className="text-xs font-black text-[#3B364C] block mb-1">⏳ 수행 기간</label>
                   <input
                     type="text"
-                    value={editingItem.dateRange || "2026.05.01 ~ 2026.07.25"}
+                    value={editingItem.dateRange || ""}
                     onChange={(e) => setEditingItem({ ...editingItem, dateRange: e.target.value })}
-                    className="w-full h-12 px-4 rounded-xl bg-[#F9F8FD] border border-purple-300 font-bold text-sm text-[#1A1626]"
-                    required
-                  />
+                    placeholder="예: 2026.05.01 ~ 2026.07.15"
+                    className="w-full h-12 px-4 rounded-xl bg-purple-50 border border-[#B8AAFA] font-black text-sm text-[#1A1626]"
+                  >
+                  </input>
                 </div>
               </div>
 
               <div>
-                <label className="text-xs font-black text-[#3B364C] block mb-1">📌 활동 제목</label>
+                <label className="text-xs font-black text-[#3B364C] block mb-1">📌 활동 제목 (또는 자격증명)</label>
                 <input
                   type="text"
                   value={editingItem.title}
                   onChange={(e) => setEditingItem({ ...editingItem, title: e.target.value })}
-                  className="w-full h-12 px-4 rounded-xl bg-[#F9F8FD] border border-purple-300 font-black text-sm text-[#1A1626]"
+                  className="w-full h-12 px-4 rounded-xl bg-purple-50 border border-[#B8AAFA] font-bold text-sm text-[#1A1626]"
                   required
                 />
               </div>
 
               <div>
-                <label className="text-xs font-black text-[#3B364C] block mb-1">📝 상세 활동 및 탐구 내용</label>
+                <label className="text-xs font-black text-[#3B364C] block mb-1">📝 수행 내용 및 고찰</label>
                 <textarea
                   rows={6}
                   value={editingItem.content}
                   onChange={(e) => setEditingItem({ ...editingItem, content: e.target.value })}
-                  className="w-full p-4 rounded-xl bg-[#F9F8FD] border border-purple-300 font-semibold text-sm text-[#1A1626] leading-relaxed"
+                  className="w-full p-4 rounded-2xl bg-purple-50 border border-[#B8AAFA] font-semibold text-sm text-[#1A1626] leading-relaxed"
                   required
                 />
               </div>
 
-              <div>
-                <label className="text-xs font-black text-[#3B364C] block mb-1">📷 사진 변경 (용량 88% 자동 압축 탑재)</label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => handleImageUpload(e, true)}
-                  className="w-full p-2 bg-slate-50 border rounded-xl text-xs font-bold cursor-pointer"
-                />
-                {editingItem.photoUrl && (
-                  <div className="mt-2 text-xs font-black text-[#7B5CF0]">✅ 이미지 첨부됨 (변경 시 새로운 사진 선택)</div>
-                )}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-xs font-black text-[#3B364C] block mb-1">📷 인증 사진 수정 (용량 88% 압축)</label>
+                  <div className="border-2 border-dashed border-[#B8AAFA] rounded-xl p-3 text-center bg-purple-50 relative">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => handleImageUpload(e, true)}
+                      className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+                    />
+                    {editingItem.photoUrl ? (
+                      <div className="flex items-center justify-center gap-2">
+                        <img src={editingItem.photoUrl} alt="preview" className="w-10 h-10 object-cover rounded" />
+                        <span className="text-xs font-bold text-purple-800">새 사진으로 교체</span>
+                      </div>
+                    ) : (
+                      <span className="text-xs font-bold text-slate-500">클릭하여 새 인증 사진 업로드</span>
+                    )}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-xs font-black text-[#3B364C] block mb-1">🏷️ 역량 태그 (쉼표 구분)</label>
+                  <input
+                    type="text"
+                    value={editingItem.tags ? editingItem.tags.join(", ") : ""}
+                    onChange={(e) => setEditingItem({ ...editingItem, tags: e.target.value.split(",").map(t => t.trim()).filter(t => t) })}
+                    className="w-full h-12 px-4 rounded-xl bg-purple-50 border border-[#B8AAFA] font-bold text-sm text-[#1A1626]"
+                  />
+                </div>
               </div>
 
-              <div>
-                <label className="text-xs font-black text-[#3B364C] block mb-1">🏷️ 태그 (쉼표로 구분)</label>
-                <input
-                  type="text"
-                  value={editingItem.tags ? editingItem.tags.join(", ") : ""}
-                  onChange={(e) => setEditingItem({ ...editingItem, tags: e.target.value.split(",").map(t => t.trim()) })}
-                  className="w-full h-12 px-4 rounded-xl bg-[#F9F8FD] border border-purple-300 font-bold text-sm text-[#1A1626]"
-                />
-              </div>
-
-              <div className="pt-3 flex justify-end gap-3 border-t">
-                <button type="button" onClick={() => setEditingItem(null)} className="py-3 px-6 rounded-xl bg-slate-200 text-slate-700 font-bold text-sm">
+              <div className="pt-3 flex justify-end gap-3 border-t border-purple-100">
+                <button
+                  type="button"
+                  onClick={() => setEditingItem(null)}
+                  className="py-3 px-6 rounded-xl bg-slate-100 hover:bg-slate-200 font-bold text-sm text-[#5C5672]"
+                >
                   취소
                 </button>
-                <button type="submit" className="py-3 px-8 rounded-xl bg-[#7B5CF0] text-white font-black text-sm shadow-lg hover:brightness-110">
-                  수정 사항 저장 완료 ✨
+                <button
+                  type="submit"
+                  className="py-3 px-8 rounded-xl bg-[#7B5CF0] hover:bg-[#643DDD] text-white font-black text-sm shadow-lg"
+                >
+                  수정 사항 반영하기
                 </button>
               </div>
-            </form>
 
+            </form>
           </div>
         </div>
       )}
@@ -831,4 +1098,5 @@ export const Portfolio: React.FC = () => {
     </div>
   );
 };
+
 export default Portfolio;
