@@ -261,6 +261,12 @@ export const TeacherGuide: React.FC = () => {
   // 교사용 탭2: 학생 개별 상세 관제 뷰 전환용 ID (null이면 전체 4대축 요약 보드, string이면 해당 학생 개인 상세 프로필 뷰)
   const [detailStudentId, setDetailStudentId] = useState<string | null>(null);
 
+  // 학생 상세 진입 시 selectedStudentId를 동시 동기화하여 탭 이동 시 체크박스 커스텀 상태가 리셋되는 현상 완벽 방지
+  const handleOpenStudentDetail = (id: string) => {
+    setDetailStudentId(id);
+    setSelectedStudentId(id);
+  };
+
   // 생기부 맞춤 출력용 선택된 포트폴리오 항목 ID 배열 (학습/진로 항목 체크박스 연동)
   const [selectedActivityIds, setSelectedActivityIds] = useState<string[]>([]);
   // 생기부 섹션별 개별 복사 애니메이션 상태
@@ -568,6 +574,7 @@ export const TeacherGuide: React.FC = () => {
                       <th className="py-3 px-4 whitespace-nowrap">다중지능 역량</th>
                       <th className="py-3 px-4 whitespace-nowrap">학습스타일 진단</th>
                       <th className="py-3 px-4 whitespace-nowrap text-center">종합 성장지수</th>
+                      <th className="py-3 px-4 whitespace-nowrap text-right">퀵 액션 연계</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-[#cac4d7]/40 text-sm font-semibold">
@@ -600,6 +607,28 @@ export const TeacherGuide: React.FC = () => {
                             <span>Lv.{std.level}</span>
                             <span>(달성도 {std.habitSuccessRate}%)</span>
                           </span>
+                        </td>
+                        <td className="py-4 px-4 whitespace-nowrap text-right">
+                          <div className="flex items-center justify-end gap-1.5">
+                            <button
+                              onClick={() => {
+                                handleOpenStudentDetail(std.id);
+                                setActiveTab("portfolio");
+                              }}
+                              className="px-3 py-1.5 rounded-xl bg-purple-50 hover:bg-purple-100 text-[#6240d5] text-xs font-black border border-purple-200 transition-colors shadow-xs"
+                            >
+                              🧑‍🎓 포트폴리오 &rarr;
+                            </button>
+                            <button
+                              onClick={() => {
+                                setSelectedStudentId(std.id);
+                                setActiveTab("recordDraft");
+                              }}
+                              className="px-3 py-1.5 rounded-xl bg-teal-50 hover:bg-teal-100 text-[#006970] text-xs font-black border border-teal-200 transition-colors shadow-xs"
+                            >
+                              ✨ 생기부 산출 &rarr;
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     ))}
@@ -653,7 +682,7 @@ export const TeacherGuide: React.FC = () => {
                         {/* 축 1: 학생명 & 지망 꿈 (클릭 시 개인 상세 페이지 이동) */}
                         <div className="flex items-center gap-3 xl:w-1/5 min-w-[220px]">
                           <button
-                            onClick={() => setDetailStudentId(std.id)}
+                            onClick={() => handleOpenStudentDetail(std.id)}
                             className="text-left group cursor-pointer"
                           >
                             <div className="flex items-center gap-2">
@@ -749,7 +778,7 @@ export const TeacherGuide: React.FC = () => {
                         {/* 관리 액션 및 상세 진입 */}
                         <div className="flex items-center gap-2 pt-2 xl:pt-0 border-t xl:border-0 border-slate-200 justify-end">
                           <button
-                            onClick={() => setDetailStudentId(std.id)}
+                            onClick={() => handleOpenStudentDetail(std.id)}
                             className="px-3.5 py-2 rounded-xl bg-purple-50 hover:bg-purple-100 text-[#6240D5] text-xs font-black transition-colors whitespace-nowrap border border-purple-200 shadow-sm"
                           >
                             🧑‍🎓 개인 상세페이지 &rarr;
@@ -1112,8 +1141,13 @@ export const TeacherGuide: React.FC = () => {
                         ★ {s.targetJob}
                       </span>
                       <div className="pt-2 border-t border-[#cac4d7]/40 flex items-center justify-between text-xs text-[#484554] font-bold">
-                        <span className="whitespace-nowrap">누적 퀘스트: {s.questCount}건</span>
-                        <span className="text-[#6240d5] whitespace-nowrap font-black">습관 진척률: {s.habitSuccessRate}%</span>
+                        <span className="whitespace-nowrap flex items-center gap-1">
+                          <span>📁 생기부 소재:</span>
+                          <strong className="text-[#006970]">
+                            {(s.cornellNotes?.length || 0) + (s.recentPortfolios?.length || 0)}건
+                          </strong>
+                        </span>
+                        <span className="text-[#6240d5] whitespace-nowrap font-black">습관 달성: {s.habitSuccessRate}%</span>
                       </div>
                     </div>
                   );
