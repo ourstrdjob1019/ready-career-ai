@@ -351,8 +351,8 @@ export const OnboardingTestFlow: React.FC = () => {
                 </div>
               </div>
 
-              {/* Lv.1 ~ Lv.5 순차적 레벨업 진화 화면 (5단계 구조 정제 및 시선의 쏠림 극대화) */}
-              <div className="space-y-4">
+              {/* Lv.1 ~ Lv.5 순차적 레벨업 진화 화면 (5단계 구조 정제 및 박스 간 여유로운 간격 확보) */}
+              <div className="space-y-6 pt-2">
                 <div className="flex items-center justify-between px-2">
                   <span className="text-xs sm:text-sm font-extrabold text-[#7B5CF0] uppercase tracking-wider block">
                     🏅 5-STAGE CAREER EVOLUTION TREE
@@ -362,35 +362,35 @@ export const OnboardingTestFlow: React.FC = () => {
                   </span>
                 </div>
 
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4.5 relative items-stretch pt-1">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 sm:gap-7 relative items-stretch pt-2">
                   {[
                     { lv: "Lv.1", badge: "📖 지식 융합", name: "호기심 장착 아리", bg: "from-[#E3FAFF] to-[#C0F3FC]", border: "border-[#ACE7F2]", scale: "w-24 h-24", tagBg: "bg-[#008C9E] text-white" },
-                    { lv: "Lv.2", badge: "⚡ 실전 챌린지", name: "프로젝트 리더", bg: "from-[#FFEBF2] to-[#FFCFE2]", border: "border-[#FABDE4]", scale: "w-26 h-26", tagBg: "bg-[#FF3B7C] text-white" },
-                    { lv: "Lv.3", badge: "🏆 생기부 마스터", name: "포트폴리오 왕", bg: "from-[#FFF8E4] to-[#FFECD2]", border: "border-[#F8DCB5]", scale: "w-28 h-28", tagBg: "bg-[#D97706] text-white" },
-                    { lv: "Lv.4", badge: "🚀 차세대 엑스퍼트", name: "미래 엑스퍼트", bg: "from-[#E6F0FF] to-[#C8E0FF]", border: "border-[#B5CEFB]", scale: "w-30 h-30", tagBg: "bg-[#2563EB] text-white" },
-                    { lv: "Lv.5", badge: "👑 마스터 아키텍트", name: "최상위 비전 아리", bg: "from-[#EBFFF8] to-[#9EFAEA]", border: "border-[#77EDD9]", scale: "w-32 h-32 animate-bounce-short", tagBg: "bg-[#059669] text-white font-black" },
+                    { lv: "Lv.2", badge: "⚡ 실전 챌린지", name: "프로젝트 리더", bg: "from-[#FFEBF2] to-[#FFCFE2]", border: "border-[#FABDE4]", scale: "w-28 h-28", tagBg: "bg-[#FF3B7C] text-white" },
+                    { lv: "Lv.3", badge: "🏆 생기부 마스터", name: "포트폴리오 왕", bg: "from-[#FFF8E4] to-[#FFECD2]", border: "border-[#F8DCB5]", scale: "w-32 h-32", tagBg: "bg-[#D97706] text-white" },
+                    { lv: "Lv.4", badge: "🚀 차세대 엑스퍼트", name: "미래 엑스퍼트", bg: "from-[#E6F0FF] to-[#C8E0FF]", border: "border-[#B5CEFB]", scale: "w-36 h-36", tagBg: "bg-[#2563EB] text-white" },
+                    { lv: "Lv.5", badge: "👑 마스터 아키텍트", name: "최상위 비전 아리", bg: "from-[#EBFFF8] to-[#9EFAEA]", border: "border-[#77EDD9]", scale: "w-40 h-40 animate-bounce-short", tagBg: "bg-[#059669] text-white font-black" },
                   ].map((item, idx) => (
                     <div 
                       key={idx} 
-                      className={`rounded-[34px] bg-gradient-to-b ${item.bg} p-4 sm:p-5 border-2 ${item.border} shadow-[0_12px_32px_rgba(123,92,240,0.12)] hover:shadow-2xl transition-all duration-300 flex flex-col items-center justify-between space-y-3.5 group transform hover:-translate-y-2 relative backdrop-blur-md`}
+                      className={`rounded-[36px] bg-gradient-to-b ${item.bg} p-6 border-4 ${item.border} shadow-[0_15px_35px_rgba(123,92,240,0.15)] hover:shadow-2xl transition-all duration-300 flex flex-col items-center justify-between space-y-4 group transform hover:-translate-y-2 relative backdrop-blur-md`}
                     >
                       {/* Arrow Indicator between level boxes (On desktop) */}
                       {idx < 4 && (
-                        <div className="hidden lg:flex absolute -right-3.5 top-1/2 -translate-y-1/2 z-20 w-7 h-7 rounded-full bg-white border border-purple-200 shadow-md items-center justify-center text-[#7B5CF0] font-black text-sm">
-                          <ChevronRight className="w-4 h-4" />
+                        <div className="hidden lg:flex absolute -right-5 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white border-2 border-purple-200 shadow-md items-center justify-center text-[#7B5CF0] font-black text-sm">
+                          <ChevronRight className="w-5 h-5 stroke-[3]" />
                         </div>
                       )}
 
-                      <div className="w-full flex flex-col items-center space-y-1.5 pt-1">
-                        <span className="text-xs sm:text-sm font-black px-3 py-0.5 rounded-full bg-white text-[#3F3952] shadow-sm border border-white">
+                      <div className="w-full flex flex-col items-center space-y-2 pt-1">
+                        <span className="text-xs sm:text-sm font-black px-3.5 py-1 rounded-full bg-white text-[#3F3952] shadow-sm border border-white">
                           {item.lv}
                         </span>
-                        <span className={`text-[11px] sm:text-xs font-black px-3 py-0.5 rounded-xl shadow-sm ${item.tagBg}`}>
+                        <span className={`text-xs font-black px-3.5 py-1 rounded-xl shadow-sm ${item.tagBg}`}>
                           {item.badge}
                         </span>
                       </div>
 
-                      <div className={`rounded-full bg-white/90 p-3 shadow-inner border-2 border-white flex items-center justify-center my-2 transition-transform duration-300 group-hover:scale-110 ${item.scale}`}>
+                      <div className={`rounded-full bg-white/90 p-4 shadow-inner border-4 border-white flex items-center justify-center my-3 transition-transform duration-300 group-hover:scale-110 ${item.scale}`}>
                         <img 
                           src={selectedJob.imageUrl} 
                           alt={item.name} 
@@ -398,8 +398,8 @@ export const OnboardingTestFlow: React.FC = () => {
                         />
                       </div>
 
-                      <div className="w-full text-center bg-white/95 backdrop-blur-md py-2 px-2 rounded-2xl border border-white shadow-sm">
-                        <strong className="text-xs font-black text-[#1A1626] block tracking-tight group-hover:text-[#7B5CF0] transition-colors truncate">
+                      <div className="w-full text-center bg-white/95 backdrop-blur-md py-2.5 px-3 rounded-2xl border border-white shadow-sm">
+                        <strong className="text-xs sm:text-sm font-black text-[#1A1626] block tracking-tight group-hover:text-[#7B5CF0] transition-colors truncate">
                           {item.name}
                         </strong>
                       </div>

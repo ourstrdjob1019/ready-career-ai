@@ -28,6 +28,9 @@ interface StudentData {
   questCount: number;
   portfolioCount: number;
   habitSuccessRate: number;
+  targetAvgScore?: string;
+  studyGoals?: { subject: string; target: string; currentStatus: string; score: number }[];
+  cornellNotes?: { subject: string; topic: string; aiSummary: string; date: string }[];
   diagnosticStatus: {
     interest: string;
     intelligence: string;
@@ -62,6 +65,16 @@ const MOCK_STUDENTS: StudentData[] = [
     questCount: 14,
     portfolioCount: 6,
     habitSuccessRate: 94,
+    targetAvgScore: "이번 학기 목표: 평균 92.0점 (현재 88.5점 / 🚀 상한가 주행 중!)",
+    studyGoals: [
+      { subject: "🗣️ 영어 I", target: "지필평가 1등급 쟁취", currentStatus: "현재 2등급 최상위 (목표 도달 직전)", score: 89 },
+      { subject: "💬 화법과 작문", target: "수행평가 & 심층 발표 만점", currentStatus: "✓ 100% 목표 달성 완료", score: 98 },
+      { subject: "🌿 통합사회", target: "95점 이상 고지 정복", currentStatus: "안정권 유지 중", score: 94 },
+    ],
+    cornellNotes: [
+      { subject: "🌿 통합사회 × AI", topic: "공공 데이터를 활용한 지역별 교육 격차 원인 및 정책 제안", aiSummary: "통합사회 교과의 사회 구조적 인식을 교육 공공 데이터 시계열 분석과 연계하여 남다른 실증적 탐구심과 이타적 리더십을 증명함.", date: "2026.07.28" },
+      { subject: "🗣️ 영어 I", topic: "TED 교육 심리학(Mindset) 강연 원문 구조 해석 및 스터디", aiSummary: "자기주도적 심층 원문 파해력을 보였으며, 동아리 스터디에서 경청과 중재의 뛰어난 소통 역량을 드러냄.", date: "2026.07.21" },
+    ],
     diagnosticStatus: {
       interest: "완료 (SI 이타적 탐구형)",
       intelligence: "완료 (대인·리더십 지능 상위 2%)",
@@ -74,7 +87,7 @@ const MOCK_STUDENTS: StudentData[] = [
       communication: 98,
     },
     recentPortfolios: [
-      { title: "공공 교육 데이터 활용 맞춤 멘토링 기획안", category: "진로 심색", date: "2026.07.24", status: "검토 완료" },
+      { title: "공공 교육 데이터 활용 맞춤 멘토링 기획안", category: "진로 심도", date: "2026.07.24", status: "검토 완료" },
       { title: "청소년 정서 상담 프로토타입 앱 화면 설계서", category: "창의·융합", date: "2026.07.20", status: "검토 완료" },
       { title: "교육 격차 극복을 위한 학교 공동체 토론 결과 보고서", category: "자율 탐구", date: "2026.07.15", status: "확인 대기" },
     ],
@@ -83,22 +96,27 @@ const MOCK_STUDENTS: StudentData[] = [
       "교내 인공지능 코딩 동아리 아키텍처 과제 및 스터디 활동 주도",
       "자기이해 다중진단 리포트 (사회형-탐구형 이타적 논리 추론력 발휘)",
     ],
-    guidelineSample: `### 📊 [김수진 학생] 활동 분석 리포트
-**1. 주요 활동 팩트 (Fact)**
-- 진로 탐색 및 자율 활동 시간 동안 '중등 교사 및 진로 상담 멘토' 직업군을 심층 탐구하며 학습 계획을 성실히 이행함.
-- SI(사회·탐구형) 흥미유형 역량을 바탕으로 공공 교육 데이터 세트를 활용한 학습 진단 방안을 서술하고 포트폴리오로 제출함.
-- 자기주도 진로 퀘스트를 꾸준히 완수하며 매주 학습한 교과 연계 탐구 일지를 구조화하여 기록함.
+    guidelineSample: `### 📊 [김수진 학생] 2026 AI 생기부 리포트 (교과 & 진로 통합)
 
-**2. 성장 및 행동 특성 (Growth)**
-- 문제 해결 과정에서 객관적인 사실 기반의 분석력을 보이며, 학업을 대하는 태도가 주도적이고 열정적인 모습으로 성장함.
-- 동아리 스터디 및 토론 활동 중 상대방의 의견을 배려하고 대안을 구체화하는 우수한 의사소통 역량을 드러냄.
-- 인공지능 및 교육공학 분야에 대한 관심을 구체적인 학업 호기심으로 연결하여 확장적인 독서 및 탐구로 확장함.
+**1. 📌 학생 정량 목표 및 활동 팩트 (Fact)**
+- 이번 학기 평균 92점 목표로 '영어 I', '화법과 작문', '통합사회' 등 교과 목표를 체계적으로 달성 중임.
+- 진로 탐색 및 자율 활동 시간 동안 '중등 교사 및 진로 상담 멘토' 직업군을 심층 탐구하며 학습 로드맵을 성실히 이행함.
+- 공공 교육 데이터 세트를 활용한 지역별 학습 진단 방안을 코넬 노트 탐구 일지로 작성 및 제출함.
 
-**3. 📝 생기부 참고용 초안 (Draft)**
-> 진로 탐색 및 창의적 체험 활동 과정에서 중등 교사 및 진로 상담 멘토에 대한 깊은 관심을 바탕으로 진로 역량 탐구 및 퀘스트 활동을 주도적으로 완수함. 교과 및 동아리 활동 중 제기된 호기심을 놓치지 않고 분석 데이터를 바탕으로 교육 격차 해소 방안에 관한 탐구 리포트를 도출함. 조별 스터디 과정에서 동료의 의견을 경청하고 조율하는 뛰어난 소통 태도와 협업 리더십을 보이며, 자신의 미래 역량을 성찰하고 전문적으로 구체화하는 우수한 발전 가능성을 보임.
+**2. 🌱 성장 및 행동 특성 분석 (Growth)**
+- 문제 해결 과정에서 객관적인 공공 데이터를 바탕으로 대안을 제시하는 분석력을 보이며, 학업 태도가 매우 주도적임.
+- 동아리 스터디 및 영어 원문 강독 과정에서 동료의 견해를 수용하고 갈등을 중재하는 우수한 의사소통 역량을 발휘함.
+- 교육 심리 및 미래 에듀테크 분야에 대한 관심을 확장적인 독서 및 자율주도 퀘스트 완수로 구체화함.
+
+**3. 📝 [나이스(NEIS) 입력 초안] 분야별 분할 제공**
+▶ **[교과 세부능력 및 특기사항 참고안]**
+> 영어 및 통합사회 교과 학습 과정에서 깊은 지적 호기심과 분석력을 바탕으로 자율적인 탐구를 실천함. 공공 교육 데이터를 시계열적으로 분석하여 '지역 간 교육 격차 및 맞춤 멘토링 기획안'을 심층 보고서로 완성하며 뛰어난 사회적 공감 능력과 정보 처리 역량을 증명함. TED 교육학 강연을 자율 강독하고 토론을 주도하는 등 비판적 사유와 자기주도 학습 태도가 돋보임.
+
+▶ **[진로 및 창의적 체험 활동 참고안]**
+> 중등 교사 및 진로 상담 멘토를 목표로 매주 교과 연계 코넬 노트 탐구 일지를 구조화하여 기록하고 실천함. 청소년 정서 상담을 위한 기획 아이디어를 프로토타입 설계서로 구현하는 등 타인을 배려하는 감수성과 창작 열정을 균형 있게 발휘함.
 
 ---
-⚠️ **[안내]** 본 리포트는 입력된 데이터를 바탕으로 2026학년도 기재요령에 맞춰 구조화된 참고용 자료입니다. 나이스(NEIS) 최종 입력 전, 선생님의 실제 관찰 사실과 일치하는지 반드시 확인 및 윤문해 주시기 바랍니다.`,
+⚠️ **[안내]** 본 리포트는 입력된 활동 데이터와 목표를 바탕으로 2026학년도 기재요령에 맞춰 블라인드 및 구조화된 참고용 자료입니다. 나이스(NEIS) 최종 입력 전, 선생님의 실제 관찰 사실과 일치하는지 확인 후 윤문해 주시기 바랍니다.`,
   },
   {
     id: "std-2",
@@ -112,6 +130,15 @@ const MOCK_STUDENTS: StudentData[] = [
     questCount: 11,
     portfolioCount: 4,
     habitSuccessRate: 86,
+    targetAvgScore: "이번 학기 목표: 평균 88.0점 (현재 85.2점 / 📈 끈기 있게 상승 중!)",
+    studyGoals: [
+      { subject: "🔬 물리학 I", target: "지필 90점 이상 & 역학 실험 만점", currentStatus: "역학 과제 완수 & 88점 달성 중", score: 88 },
+      { subject: "📐 수학 I (삼각함수)", target: "오답 노트 100% 해금", currentStatus: "✓ 100% 목표 달성 완료", score: 92 },
+    ],
+    cornellNotes: [
+      { subject: "🔬 물리학 I & 로보틱스", topic: "센서 기반 자율주행 모션 로봇 하드웨어 조합 및 역학 검증", aiSummary: "물리학 역학 단원 원리를 로봇 센서 제어 알고리즘과 실험으로 융합하여 남다른 실증적 해결력을 선보임.", date: "2026.07.23" },
+      { subject: "📚 문학 & 공학 윤리", topic: "과학 기술 고전 비판적 독서 및 기계 윤리 지정 토론 요약본", aiSummary: "로봇 기술의 윤리적 쟁점을 논리적 근거로 체계화하여 성실하고 책임감 있는 자세를 보임.", date: "2026.07.12" },
+    ],
     diagnosticStatus: {
       interest: "완료 (RC 공학 실증형)",
       intelligence: "완료 (논리·수학 지능 상위 3%)",
@@ -131,22 +158,26 @@ const MOCK_STUDENTS: StudentData[] = [
       "센서 기반 자율주행 모션 로봇 하드웨어 조합 및 알고리즘 검증 실습",
       "과학 기술 고전 비판적 독서 및 기계 윤리 지정 토론 메인 발언",
     ],
-    guidelineSample: `### 📊 [이재현 학생] 활동 분석 리포트
-**1. 주요 활동 팩트 (Fact)**
+    guidelineSample: `### 📊 [이재현 학생] 2026 AI 생기부 리포트 (교과 & 진로 통합)
+
+**1. 📌 학생 정량 목표 및 활동 팩트 (Fact)**
+- 물리학 I 역학 실험 만점 및 수학 I 오답 해금을 목표로 꾸준히 학업 성취를 높여 나가고 있음.
 - 진로 탐구 및 공학 기초 활동 시간 동안 센서 기반 자율주행 모션 로봇의 동작 과정을 실험하고 코드를 수정함.
 - RC(현실·관습형) 강점을 살려 기계장치의 오류 발생 로그를 수치화하고 대안 코드를 단계적으로 구성함.
-- 과학 기술 고전 독서 활동 후 기계 윤리와 기술 발전을 주제로 토론 활동에 참여하여 명확한 입론을 개진함.
 
-**2. 성장 및 행동 특성 (Growth)**
+**2. 🌱 성장 및 행동 특성 분석 (Growth)**
 - 복잡한 물리·공학적 오류 상황 앞에서 포기하지 않고 가설 검증을 통해 실증적인 해답을 유도하는 끈기 있는 탐구 자세를 보임.
 - 실험 기재 및 도구를 안전하고 체계적으로 다루며 정교하게 결과물을 수정해 나가는 집중력이 돋보임.
-- 미래 로봇 기술이 인간 공동체에 미치는 긍정적 영향에 대해 진중한 시각을 가지게 됨.
 
-**3. 📝 생기부 참고용 초안 (Draft)**
-> 자율 및 진로 탐구 과정에서 기계·로봇 공학 엔지니어라는 목표를 향해 센서 기반 모션 로봇 실습 및 탐구를 지속함. 실험 중 발생한 오작동의 원인을 논리적으로 수치화하고 정교한 코드 수정으로 해결하는 우수한 실증적 탐구 역량을 보임. 과학 고전 독서 및 윤리 토론 과정에서 근거 있는 논리로 발언하며 책임감 있는 자세로 협업을 진행하는 등 전문적인 공학 분야로의 꾸준한 성장 가능성을 드러냄.
+**3. 📝 [나이스(NEIS) 입력 초안] 분야별 분할 제공**
+▶ **[교과 세부능력 및 특기사항 참고안]**
+> 물리학 I 및 수학 I 학습 과정에서 교과 원리를 실제 사물인터넷 및 공학 기기에 적용하려는 실증적 열정이 탁월함. '센서 기반 모션 로봇 하드웨어 실습 및 알고리즘 검증'을 주도하며 주행 중 발생한 오작동의 역학적 원인을 수치화하고 정교한 코드 변경으로 해결해 냄. 과제 수행 시 끈기 있게 가설을 증명하는 과학적 탐구 태도가 두드러짐.
+
+▶ **[진로 및 창의적 체험 활동 참고안]**
+> 기계·로봇 공학 엔지니어로의 확고한 꿈을 지니고 과학 기술 고전 독서 및 윤리 토론에 적극 참여함. 기술 발전이 공동체에 미치는 영향을 논리적으로 개진하며 협업 시 실질적인 기여를 해내는 등 전도유망한 엔지니어로서의 성장 가능성을 드러냄.
 
 ---
-⚠️ **[안내]** 본 리포트는 입력된 데이터를 바탕으로 2026학년도 기재요령에 맞춰 구조화된 참고용 자료입니다. 나이스(NEIS) 최종 입력 전, 선생님의 실제 관찰 사실과 일치하는지 반드시 확인 및 윤문해 주시기 바랍니다.`,
+⚠️ **[안내]** 본 리포트는 입력된 활동 데이터와 목표를 바탕으로 2026학년도 기재요령에 맞춰 블라인드 및 구조화된 참고용 자료입니다. 나이스(NEIS) 최종 입력 전, 선생님의 실제 관찰 사실과 일치하는지 확인 후 윤문해 주시기 바랍니다.`,
   },
   {
     id: "std-3",
@@ -160,6 +191,14 @@ const MOCK_STUDENTS: StudentData[] = [
     questCount: 9,
     portfolioCount: 5,
     habitSuccessRate: 82,
+    targetAvgScore: "이번 학기 목표: 평균 85.0점 (현재 83.1점 / 🎯 집중력 발휘 중!)",
+    studyGoals: [
+      { subject: "💻 정보 & 코딩", target: "파이썬 알고리즘 실습 상위 1% 달성", currentStatus: "✓ 실습 만점 및 과제 완료", score: 96 },
+      { subject: "📐 확률과 통계", target: "85점 이상 쟁취", currentStatus: "기출 모의실전 완수 중", score: 84 },
+    ],
+    cornellNotes: [
+      { subject: "💻 정보 × 📐 통계", topic: "파이썬 데이터 분석 모듈 기반 기후 환경 통계 시각화 실습", aiSummary: "기후 변동 복합 데이터를 차트 및 구조화된 예측 모델로 가공하여 우수한 논리 추론력을 발휘함.", date: "2026.07.25" },
+    ],
     diagnosticStatus: {
       interest: "완료 (IA 데이터 분석형)",
       intelligence: "완료 (공간·디지털 직관력 상위 1.5%)",
@@ -179,21 +218,26 @@ const MOCK_STUDENTS: StudentData[] = [
       "파이썬 데이터 분석 모듈 기반 통계 시각화 실습 완성",
       "기후 환경 통계 머신러닝 데이터 집합체 구축 및 발표",
     ],
-    guidelineSample: `### 📊 [박도훈 학생] 활동 분석 리포트
-**1. 주요 활동 팩트 (Fact)**
+    guidelineSample: `### 📊 [박도훈 학생] 2026 AI 생기부 리포트 (교과 & 진로 통합)
+
+**1. 📌 학생 정량 목표 및 활동 팩트 (Fact)**
+- 정보 교과 파이썬 실습 및 확률과 통계 목표 고지를 실질적인 포트폴리오 성과로 직결시킴.
 - 교내 진로 시간 및 정보학 탐구 활동에서 데이터 구조와 분석 모델링을 주제로 보고서를 완성함.
 - IA(탐구·예술형) 흥미유형 바탕의 독창적 가설을 설정하여 데이터를 시각적인 차트로 재구성함.
-- 기후 환경 통계 데이터베이스를 자율적으로 수집하여 기초 머신러닝 예측 모델을 작성함.
 
-**2. 성장 및 행동 특성 (Growth)**
+**2. 🌱 성장 및 행동 특성 분석 (Growth)**
 - 논리적 데이터 가이드라인을 설계하면서 복잡한 수치를 누구나 직관적으로 이해할 수 있는 정보로 변조하는 능력이 신장됨.
 - 과제 수행 과정에서 스스로 심화 문헌과 자료를 검색하며 지적 완성도를 높이고자 노력함.
 
-**3. 📝 생기부 참고용 초안 (Draft)**
-> 진로 활동 시간을 활용하여 빅데이터 및 AI 전문가를 향한 학습 열정을 바탕으로 데이터 분석 및 시각화 탐구를 주도적으로 수행함. 복잡한 자료를 차트 및 구조화된 통계 모델로 재해석하는 과정에서 탁월한 논리 추론 및 문제 정의 능력을 드러냄. 자기주도적인 문헌 검색과 성실한 과제 이행을 통해 소프트웨어 설계 분야에 대한 뚜렷한 소임을 증명함.
+**3. 📝 [나이스(NEIS) 입력 초안] 분야별 분할 제공**
+▶ **[교과 세부능력 및 특기사항 참고안]**
+> 정보 교과 및 통계 학습 과정에서 빅데이터와 인공지능에 대한 열정으로 파이썬 데이터 분석 모듈 기반의 통계 시각화 실습을 훌륭히 마침. 복잡한 기후 환경 통계를 차트 및 구조화된 기초 머신러닝 모델로 변환하는 등 남다른 자료 가공 역량과 수학적 추론 능력을 증명함.
+
+▶ **[진로 및 창의적 체험 활동 참고안]**
+> 빅데이터 및 AI 전문가로의 진로를 정립하고 관련 프로그래밍 생태계를 주도적으로 탐색함. 스스로 심화 기술 문헌을 조사하며 프로젝트의 완성도를 높이려는 성실함과 지적 몰입도가 돋보임.
 
 ---
-⚠️ **[안내]** 본 리포트는 입력된 데이터를 바탕으로 2026학년도 기재요령에 맞춰 구조화된 참고용 자료입니다. 나이스(NEIS) 최종 입력 전, 선생님의 실제 관찰 사실과 일치하는지 반드시 확인 및 윤문해 주시기 바랍니다.`,
+⚠️ **[안내]** 본 리포트는 입력된 활동 데이터와 목표를 바탕으로 2026학년도 기재요령에 맞춰 블라인드 및 구조화된 참고용 자료입니다. 나이스(NEIS) 최종 입력 전, 선생님의 실제 관찰 사실과 일치하는지 확인 후 윤문해 주시기 바랍니다.`,
   },
 ];
 
@@ -452,36 +496,40 @@ export const TeacherGuide: React.FC = () => {
         {/* TAB 2: ACTIVITY LOGS & PORTFOLIO CONTROL */}
         {activeTab === "portfolio" && (
           <div className="space-y-6 animate-fadeIn">
-            <div className="bg-white rounded-[32px] p-8 border border-[#cac4d7]/60 shadow-sm space-y-6">
+            <div className="bg-white rounded-[32px] p-8 border border-[#cac4d7]/60 shadow-sm space-y-8">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#cac4d7]/40 pb-5">
                 <div>
                   <h3 className="text-xl font-extrabold text-[#1A1626] flex items-center gap-2">
                     <Award className="w-6 h-6 text-[#006970]" />
-                    <span>학생 활동 누적 내역 & 진로 포트폴리오 검토 보드</span>
+                    <span>학생별 학습 목표 설정 & 활동·포트폴리오 검토 보드</span>
                   </h3>
-                  <p className="text-xs text-[#484554] mt-0.5">학생들이 작성해 제출한 진로 동아리, 세특 탐구 포트폴리오를 검증하고 생활기록부 근거 자료로 편입하세요.</p>
+                  <p className="text-xs text-[#484554] mt-1">
+                    학생들의 이번 학기 정량적 KPI 목표, 교과 연계 코넬 노트, 진로 동아리 스펙을 검증하고 생기부 근거 자료로 파악하세요.
+                  </p>
                 </div>
 
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-black bg-[#e6deff] text-[#6240d5] px-4 py-2 rounded-2xl border border-[#cbbeff] whitespace-nowrap shadow-sm">
-                    ✨ 전체 제출 포트폴리오 15건 (검토 완료 13건 / 대기 2건)
+                    ✨ 전수 활동 데이터 AI 정상 동기화 중
                   </span>
                 </div>
               </div>
 
-              {/* Student Cards with Accordion-style activities */}
-              <div className="space-y-6">
+              {/* Student Comprehensive Cards */}
+              <div className="space-y-8">
                 {filteredStudents.map((std) => (
-                  <div key={std.id} className="p-6 rounded-[28px] bg-[#f4f2fa]/70 border-2 border-[#cac4d7]/60 hover:border-[#6240d5]/60 transition-all space-y-4 shadow-sm">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#cac4d7]/50 pb-3">
+                  <div key={std.id} className="p-7 rounded-[32px] bg-[#f4f2fa]/80 border-2 border-[#cac4d7]/70 hover:border-[#6240d5]/80 transition-all space-y-6 shadow-sm">
+                    {/* Header */}
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b-2 border-[#cac4d7]/50 pb-4">
                       <div className="flex items-center gap-3 flex-wrap">
-                        <span className="text-base font-black text-[#1A1626]">
+                        <span className="text-lg font-black text-[#1A1626] flex items-center gap-2">
+                          <span className="w-3 h-3 rounded-full bg-[#6240D5] animate-ping inline-block" />
                           {std.name} ({std.grade}학년 {std.classNo}반 {std.studentNo}번)
                         </span>
-                        <span className="text-xs font-extrabold bg-[#006970] text-white px-3 py-0.5 rounded-full whitespace-nowrap shadow-sm">
+                        <span className="text-xs font-extrabold bg-[#006970] text-white px-3.5 py-1 rounded-full whitespace-nowrap shadow-sm">
                           지망: {std.targetJob}
                         </span>
-                        <span className="text-xs font-extrabold text-[#6240d5] bg-white px-3 py-0.5 rounded-full border border-[#cac4d7]/50 whitespace-nowrap">
+                        <span className="text-xs font-extrabold text-[#6240d5] bg-white px-3.5 py-1 rounded-full border border-[#cac4d7]/60 whitespace-nowrap shadow-sm">
                           퀘스트 완수 {std.questCount}건
                         </span>
                       </div>
@@ -492,37 +540,100 @@ export const TeacherGuide: React.FC = () => {
                           setSelectedStudentId(std.id);
                           setActiveTab("recordDraft");
                         }}
-                        className="font-black whitespace-nowrap text-xs shadow-sm"
+                        className="font-black whitespace-nowrap text-xs shadow-md px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#006970] to-[#00929A] text-white"
                       >
-                        이 학생 AI 생기부 초안 생성 &rarr;
+                        이 학생 AI 생기부 리포트 생성 &rarr;
                       </Button>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      {std.recentPortfolios.map((pf, idx) => (
-                        <div key={idx} className="p-4 rounded-2xl bg-white border border-[#cac4d7]/60 shadow-inner flex flex-col justify-between space-y-3">
-                          <div className="space-y-1.5">
-                            <div className="flex items-center justify-between">
-                              <span className="text-[10px] font-black uppercase text-[#6240d5] bg-[#efedf5] px-2.5 py-0.5 rounded-full whitespace-nowrap">
-                                {pf.category}
-                              </span>
-                              <span className={`text-[11px] font-black px-2 py-0.5 rounded-full whitespace-nowrap ${
-                                pf.status === "검토 완료" ? "bg-[#006970]/15 text-[#006970]" : "bg-[#d97706]/15 text-[#d97706]"
-                              }`}>
-                                {pf.status === "검토 완료" ? "✓ 검토 완료" : "⌛ 확인 대기"}
+                    {/* Section A: 정량적 학습 목표 (KPI) & 과목별 타겟 */}
+                    {std.studyGoals && std.studyGoals.length > 0 && (
+                      <div className="space-y-3 bg-gradient-to-br from-[#E6FBFF]/80 via-[#F2FCFF]/90 to-white p-5 rounded-2xl border border-[#A6E8F2] shadow-inner">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#A6E8F2]/60 pb-2.5">
+                          <h4 className="text-xs font-black text-[#006970] flex items-center gap-1.5 uppercase tracking-wide">
+                            🎯 [ 이번 학기 정량적 학습 목표 및 KPI 현황 ]
+                          </h4>
+                          <span className="text-xs font-extrabold text-[#005257] bg-white px-3 py-1 rounded-lg border border-[#A6E8F2] shadow-sm">
+                            {std.targetAvgScore || "목표 수립 완료"}
+                          </span>
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                          {std.studyGoals.map((g, idx) => (
+                            <div key={idx} className="bg-white p-3.5 rounded-xl border border-[#C2F0F7] shadow-sm flex flex-col justify-between">
+                              <div className="flex items-center justify-between mb-1">
+                                <span className="text-xs font-black text-[#1A1626]">{g.subject}</span>
+                                <span className="text-[11px] font-extrabold bg-[#006970]/10 text-[#006970] px-2 py-0.5 rounded-md">
+                                  현재 {g.score}점
+                                </span>
+                              </div>
+                              <span className="text-xs font-bold text-[#3B364C] truncate mb-1">목표: {g.target}</span>
+                              <span className="text-[11px] font-extrabold text-[#059669] pt-1 border-t border-slate-100">
+                                ⚡ {g.currentStatus}
                               </span>
                             </div>
-                            <strong className="text-sm font-black text-[#1A1626] block leading-tight">
-                              {pf.title}
-                            </strong>
-                          </div>
-
-                          <div className="pt-2 border-t border-[#cac4d7]/30 flex items-center justify-between text-[11px] text-[#484554] font-bold">
-                            <span>등록일: {pf.date}</span>
-                            <span className="text-[#6240d5] cursor-pointer hover:underline font-black whitespace-nowrap">원문 열람 &rarr;</span>
-                          </div>
+                          ))}
                         </div>
-                      ))}
+                      </div>
+                    )}
+
+                    {/* Section B: AI 학습포트폴리오 (코넬 노트) */}
+                    {std.cornellNotes && std.cornellNotes.length > 0 && (
+                      <div className="space-y-3 bg-gradient-to-br from-[#F5EFFF] via-white to-[#FAF6FF] p-5 rounded-2xl border border-[#D5CAFF] shadow-inner">
+                        <h4 className="text-xs font-black text-[#6240D5] flex items-center gap-1.5 uppercase tracking-wide border-b border-[#D5CAFF]/60 pb-2">
+                          📘 [ AI 학습포트폴리오 · 교과 연계 코넬 노트 심화 요약 ]
+                        </h4>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          {std.cornellNotes.map((cn, idx) => (
+                            <div key={idx} className="p-4 rounded-xl bg-white border border-[#D5CAFF] shadow-sm space-y-2">
+                              <div className="flex items-center justify-between">
+                                <span className="text-[11px] font-black bg-[#6240D5] text-white px-2.5 py-0.5 rounded-md">
+                                  {cn.subject}
+                                </span>
+                                <span className="text-[11px] font-bold text-[#6E6A80]">{cn.date}</span>
+                              </div>
+                              <strong className="text-xs font-extrabold text-[#1A1626] block leading-snug">
+                                {cn.topic}
+                              </strong>
+                              <p className="text-[11px] font-semibold text-[#484554] bg-[#F8F6FF] p-2.5 rounded-lg border border-purple-50 leading-relaxed">
+                                ✨ <strong>AI 세특 요약:</strong> {cn.aiSummary}
+                              </p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Section C: 진로 포트폴리오 스펙 및 자율/동아리 */}
+                    <div className="space-y-3">
+                      <h4 className="text-xs font-black text-[#3D3554] flex items-center gap-1.5 pl-1">
+                        💼 [ 진로 포트폴리오 스펙 및 활동 제출 보드 ]
+                      </h4>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        {std.recentPortfolios.map((pf, idx) => (
+                          <div key={idx} className="p-4 rounded-2xl bg-white border border-[#cac4d7]/60 shadow-sm flex flex-col justify-between space-y-3 hover:shadow-md transition-all">
+                            <div className="space-y-1.5">
+                              <div className="flex items-center justify-between">
+                                <span className="text-[10px] font-black uppercase text-[#6240d5] bg-[#efedf5] px-2.5 py-0.5 rounded-full whitespace-nowrap">
+                                  {pf.category}
+                                </span>
+                                <span className={`text-[11px] font-black px-2.5 py-0.5 rounded-full whitespace-nowrap ${
+                                  pf.status === "검토 완료" ? "bg-[#006970]/15 text-[#006970]" : "bg-[#d97706]/15 text-[#d97706]"
+                                }`}>
+                                  {pf.status === "검토 완료" ? "✓ 검토 완료" : "⌛ 확인 대기"}
+                                </span>
+                              </div>
+                              <strong className="text-sm font-black text-[#1A1626] block leading-tight">
+                                {pf.title}
+                              </strong>
+                            </div>
+
+                            <div className="pt-2 border-t border-[#cac4d7]/30 flex items-center justify-between text-[11px] text-[#484554] font-bold">
+                              <span>등록일: {pf.date}</span>
+                              <span className="text-[#6240d5] cursor-pointer hover:underline font-black whitespace-nowrap">원문 열람 &rarr;</span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 ))}

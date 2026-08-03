@@ -46,6 +46,17 @@ export const StartScreen: React.FC = () => {
     navigate("/onboarding-test");
   };
 
+  // 교사·관리자 전용 대시보드 진입 핸들러 (학생 활동 관제 & AI 생기부 리포트 생성)
+  const handleStartTeacher = () => {
+    startExpoDemo("teacher", {
+      name: "진학지도교사",
+      school: "서울창의고등학교",
+      grade: 2,
+      role: "teacher",
+    });
+    navigate("/teacher");
+  };
+
   return (
     <div className="min-h-screen bg-[#FAF6FF] text-[#1A1626] relative overflow-x-hidden selection:bg-[#9E83FF]/20 selection:text-[#7B5CF0] flex flex-col justify-between">
       {/* 3D Infinite Marquee Keyframe Styles */}
@@ -207,21 +218,61 @@ export const StartScreen: React.FC = () => {
           </div>
         </div>
 
-        {/* PASTEL TACTILE 3D GLASS GAME START BUTTON (글자가 절대 줄바꿈이나 밑으로 안 떨어지도록 단면 보장) */}
-        <div className="w-full max-w-lg mx-auto px-4 flex flex-col items-center z-20 pt-4">
-          <div className="w-full p-2 rounded-[36px] bg-gradient-to-r from-[#D7CEFF] via-[#FFC0D9] to-[#BAF7FF] shadow-[0_0_50px_rgba(158,131,255,0.45)] hover:shadow-[0_0_70px_rgba(255,107,171,0.65)] transition-all duration-500 backdrop-blur-xl border border-white/60">
-            <button
-              onClick={handleStartExperience}
-              className="w-full py-5 sm:py-6 px-6 sm:px-10 bg-gradient-to-r from-[#8C74FF] via-[#9F72FF] to-[#6754E8] hover:from-[#9D87FF] hover:to-[#7863FA] text-white rounded-[28px] font-black text-xl sm:text-2xl md:text-3xl tracking-wide border-2 border-white/85 border-b-[8px] sm:border-b-[10px] border-b-[#4A32AA] active:border-b-[2px] active:translate-y-2 transition-all duration-150 flex flex-nowrap items-center justify-center gap-3 sm:gap-4 shadow-2xl cursor-pointer group whitespace-nowrap"
-            >
-              <span className="text-2xl sm:text-3xl md:text-4xl group-hover:scale-125 group-hover:rotate-12 transition-transform duration-300 drop-shadow-md flex-shrink-0">
-                🕹️
-              </span>
-              <span className="drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)] font-headline font-black tracking-tight whitespace-nowrap flex-shrink-0">
-                클릭하여 시작하기
-              </span>
-              <Play className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 fill-white text-white drop-shadow-md group-hover:translate-x-1.5 transition-transform flex-shrink-0" />
-            </button>
+        {/* PASTEL TACTILE 3D GLASS START CHOICE BUTTONS: 학생용 & 교사용 분기 선택 */}
+        <div className="w-full max-w-5xl mx-auto px-4 z-20 pt-2">
+          <div className="text-center mb-6">
+            <span className="px-5 py-2 rounded-full bg-white/95 shadow-md text-sm sm:text-base font-black text-[#6240D5] border-2 border-[#E2DAFF] inline-flex items-center gap-2">
+              <span>✨ 원하시는 체험 모드를 아래에서 선택해 주세요!</span>
+            </span>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 items-stretch">
+            {/* 🎓 학생용 시작하기 버튼 */}
+            <div className="w-full p-2.5 rounded-[40px] bg-gradient-to-r from-[#D7CEFF] via-[#FFC0D9] to-[#F1BFFF] shadow-[0_15px_50px_rgba(123,92,240,0.3)] hover:shadow-[0_22px_65px_rgba(255,88,149,0.5)] transition-all duration-500 backdrop-blur-xl border border-white/70 flex flex-col justify-center transform hover:-translate-y-1.5">
+              <button
+                onClick={handleStartExperience}
+                className="w-full h-full py-6 px-6 sm:px-8 bg-gradient-to-br from-[#7B5CF0] via-[#8E5BF2] to-[#6240D5] hover:from-[#8C74FF] hover:to-[#7050E0] text-white rounded-[32px] font-black tracking-wide border-2 border-white/85 border-b-[10px] border-b-[#4722AD] active:border-b-[2px] active:translate-y-2 transition-all duration-150 flex flex-col items-center justify-center gap-3 shadow-2xl cursor-pointer group text-center"
+              >
+                <div className="flex items-center justify-center gap-3">
+                  <span className="text-3xl sm:text-4xl group-hover:scale-125 group-hover:rotate-12 transition-transform duration-300 drop-shadow-md">
+                    🎓
+                  </span>
+                  <span className="text-2xl sm:text-3xl font-headline font-black tracking-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)] whitespace-nowrap">
+                    학생용 시작하기
+                  </span>
+                </div>
+                <span className="text-xs sm:text-sm text-purple-100 font-extrabold tracking-tight opacity-95">
+                  AI 꿈 설계 &amp; 과목별 진학 로드맵 아키텍트
+                </span>
+                <div className="mt-1 inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white/20 hover:bg-white/30 text-white text-xs font-black transition-colors shadow-sm">
+                  <span>진로·학습 퀘스트 개설</span>
+                  <Play className="w-4 h-4 fill-white text-white group-hover:translate-x-1 transition-transform" />
+                </div>
+              </button>
+            </div>
+
+            {/* 🏫 교사·관리자용 시작하기 버튼 */}
+            <div className="w-full p-2.5 rounded-[40px] bg-gradient-to-r from-[#BAF7FF] via-[#B5FFEB] to-[#D5EAFF] shadow-[0_15px_50px_rgba(0,163,168,0.3)] hover:shadow-[0_22px_65px_rgba(0,163,168,0.55)] transition-all duration-500 backdrop-blur-xl border border-white/70 flex flex-col justify-center transform hover:-translate-y-1.5">
+              <button
+                onClick={handleStartTeacher}
+                className="w-full h-full py-6 px-6 sm:px-8 bg-gradient-to-br from-[#00A3A8] via-[#008C92] to-[#006970] hover:from-[#15B8BD] hover:to-[#007C82] text-white rounded-[32px] font-black tracking-wide border-2 border-white/85 border-b-[10px] border-b-[#003D42] active:border-b-[2px] active:translate-y-2 transition-all duration-150 flex flex-col items-center justify-center gap-3 shadow-2xl cursor-pointer group text-center"
+              >
+                <div className="flex items-center justify-center gap-3">
+                  <span className="text-3xl sm:text-4xl group-hover:scale-125 group-hover:-rotate-12 transition-transform duration-300 drop-shadow-md">
+                    🏫
+                  </span>
+                  <span className="text-2xl sm:text-3xl font-headline font-black tracking-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)] whitespace-nowrap">
+                    교사·관리자용 시작하기
+                  </span>
+                </div>
+                <span className="text-xs sm:text-sm text-teal-100 font-extrabold tracking-tight opacity-95">
+                  학생 포트폴리오 관제 &amp; AI 생기부 리포트 생성기
+                </span>
+                <div className="mt-1 inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white/20 hover:bg-white/30 text-white text-xs font-black transition-colors shadow-sm">
+                  <span>교사 대시보드 직행</span>
+                  <Play className="w-4 h-4 fill-white text-white group-hover:translate-x-1 transition-transform" />
+                </div>
+              </button>
+            </div>
           </div>
         </div>
 
