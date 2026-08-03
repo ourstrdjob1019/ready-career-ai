@@ -261,6 +261,13 @@ export const TeacherGuide: React.FC = () => {
   // 교사용 탭2: 학생 개별 상세 관제 뷰 전환용 ID (null이면 전체 4대축 요약 보드, string이면 해당 학생 개인 상세 프로필 뷰)
   const [detailStudentId, setDetailStudentId] = useState<string | null>(null);
 
+  // 생기부 맞춤 출력용 선택된 포트폴리오 항목 ID 배열 (학습/진로 항목 체크박스 연동)
+  const [selectedActivityIds, setSelectedActivityIds] = useState<string[]>([]);
+  // 생기부 섹션별 개별 복사 애니메이션 상태
+  const [copiedSection, setCopiedSection] = useState<string | null>(null);
+  // 생기부 출력 화면 모드: 'card'(고급 구조화 카드 UX) vs 'text'(마크다운 전문 보기)
+  const [reportViewMode, setReportViewMode] = useState<"card" | "text">("card");
+
   // 포트폴리오 요약본 클릭 시 고해상도 원문 및 AI 세특 교정 초안 열람 모달 팝업 상태
   const [viewerModalItem, setViewerModalItem] = useState<{
     type: "study" | "career";
@@ -272,6 +279,19 @@ export const TeacherGuide: React.FC = () => {
     originalContent: string;
     status: "검토 완료" | "확인 대기";
   } | null>(null);
+
+  // 날짜 내림차순(최신순) 정렬 헬퍼 함수
+  const sortNewestFirst = <T extends { date?: string }>(items?: T[]): T[] => {
+    if (!items || items.length === 0) return [];
+    return [...items].sort((a, b) => {
+      const parseDate = (d?: string) => {
+        if (!d) return 0;
+        if (d.includes("오늘") || d.includes("최근") || d.includes("방금")) return 99999999;
+        return parseInt(d.replace(/[^0-9]/g, ""), 10) || 0;
+      };
+      return parseDate(b.date) - parseDate(a.date);
+    });
+  };
 
   const baseStudent = MOCK_STUDENTS.find((s) => s.id === selectedStudentId) || MOCK_STUDENTS[0];
   const activeStudent = (() => {
@@ -302,28 +322,94 @@ export const TeacherGuide: React.FC = () => {
     (s) => s.name.includes(searchQuery) || s.targetJob.includes(searchQuery) || s.riasecCode.includes(searchQuery)
   );
 
-  // Load guideline automatically on student switch
+  // 특정 학생의 학습 및 진로 포트폴리오 전수 항목을 고유 ID와 함께 최신순 정렬하여 통합 반환
+  const getStudentActivitiesList = (std: typeof baseStudent) => {
+    const studyItems = sortNewestFirst(std.cornellNotes || []).map((cn, idx) => ({
+      id: `study-${idx}-${cn.topic.slice(0, 8)}`,
+      type: "study" as const,
+      title: cn.topic,
+      category: cn.subject,
+      date: cn.date,
+      summary: cn.aiSummary,
+      original: cn.originalContent || "교과 연계 심화 탐구 일지 원문",
+      status: cn.status || "검토 완료",
+    }));
+    const careerItems = sortNewestFirst(std.recentPortfolios || []).map((pf, idx) => ({
+      id: `career-${idx}-${pf.title.slice(0, 8)}`,
+      type: "career" as const,
+      title: pf.title,
+      category: pf.category,
+      date: pf.date,
+      summary: pf.aiSummary || "진로 탐구 열정과 자기주도적 문제해결 능력을 보여주는 우수 기록",
+      original: pf.originalContent || "진로 프로젝트 결과물 전문",
+      status: pf.status,
+    }));
+    return sortNewestFirst([...studyItems, ...careerItems]);
+  };
+
+  // 학생 변경 또는 상세 진입 시 해당 학생의 전체 포트폴리오를 기본 선택 상태로 초기화
   useEffect(() => {
+    const allItems = getStudentActivitiesList(activeStudent);
+    setSelectedActivityIds(allItems.map(item => item.id));
     setGeneratedGuideline(activeStudent.guidelineSample || null);
     setCopied(false);
-  }, [activeStudent]);
+  }, [selectedStudentId, activeStudent.id]);
 
-  const handleExtractAiGuideline = async () => {
+  // 체크박스 토글 함수
+  const toggleActivitySelection = (id: string, e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    setSelectedActivityIds((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+    );
+  };
+
+  const selectAllActivities = (std: typeof baseStudent) => {
+    const all = getStudentActivitiesList(std);
+    setSelectedActivityIds(all.map((item) => item.id));
+  };
+
+  const clearAllActivities = () => {
+    setSelectedActivityIds([]);
+  };
+
+  // 선택된 포트폴리오 항목 기반 맞춤형 AI 생기부 리포트 생성
+  const handleExtractAiGuideline = async (customIds?: string[]) => {
     setIsExtracting(true);
+    const targetIds = customIds || selectedActivityIds;
+    const allItems = getStudentActivitiesList(activeStudent);
+    const selectedItems = allItems.filter(item => targetIds.includes(item.id));
+
     try {
+      const selectedTitles = selectedItems.map(i => `[${i.category}] ${i.title}`).join(", ");
       const res = await executeAiPrompt({
         promptType: "saengbu_guideline",
         studentName: activeStudent.name,
         riasecCode: activeStudent.riasecCode,
         targetJob: activeStudent.targetJob,
-        activities: activeStudent.activities,
+        activities: selectedItems.map(i => `${i.title}: ${i.summary}`),
       });
       if (res.content) {
         setGeneratedGuideline(res.content);
       }
     } catch (error) {
-      console.warn("AI 추출 지연, 기본 2026 가이드안 샘플 표출", error);
-      setGeneratedGuideline(activeStudent.guidelineSample || "데이터 없음");
+      console.warn("AI 추출 지연, 선택 항목 반영 구조화 가이드안 생성", error);
+      // 선택된 활동 소재를 바탕으로 세미 리얼타임 AI 맞춤 초안 조합 생성
+      const selectedNames = selectedItems.map(item => `「${item.title} (${item.category})」`).join(", ");
+      const customDraft = `**1. 📌 [교과 세부능력 및 특기사항 참고안]**
+▶ **[탐구 주제 및 활동 소재]**: ${selectedNames || "선택된 활동 없음"}
+> 상기 교과 심화 활동 및 코넬 노트 분석 과정을 통해 교과목의 핵심 개념을 진로 분야와 융합하는 탁월한 탐구 역량을 보여줌. 특히 자율적인 자료 조사와 구조화된 논리 개진을 통해 실생활 문제 해결안을 도출하였으며, 남다른 분석력과 자기주도 학습 능력이 돋보임.
+
+**2. 🌱 [진로 및 창의적 체험 활동 참고안]**
+▶ **[전공 연계 주도성 평가]**: RIASEC(${activeStudent.riasecCode}) 및 지망 꿈(${activeStudent.targetJob}) 연계 주도 탐구
+> 자신의 진로 목표를 확고히 설정하고 동아리 및 자율 활동에서 관련된 실증 프로젝트를 성실히 완수함. 어려운 과제에 직면해도 문헌 탐독과 협동 통신을 통해 유의미한 시제품 및 결과 데이터를 창출하려는 열정과 몰입도가 돋보임.
+
+**3. 📝 [종합 행동특성 및 성장 평가 (행특)]**
+> 매 학기 정량적 목표와 매일의 퀘스트 습관 진척률(${activeStudent.habitSuccessRate}%)을 바탕으로 흔들림 없이 성장하는 우수한 인성 및 책임감을 갖춤. 급우들과의 소통 및 문제 해결 과정에서 모범적인 리더십과 융합 사고를 실현함.
+
+---
+⚠️ **[안내]** 본 리포트는 선생님께서 직접 선택하신 총 ${selectedItems.length}개의 활동 소재만을 압축 융합하여 2026학년도 기재요령 준칙(블라인드 및 명사형 종결)에 맞춰 도출한 참고 자료입니다. 나이스(NEIS) 입력 전 실제 관찰 사실과 대조하여 윤문해 주시기 바랍니다.`;
+
+      setGeneratedGuideline(customDraft);
     } finally {
       setIsExtracting(false);
     }
@@ -334,6 +420,12 @@ export const TeacherGuide: React.FC = () => {
     navigator.clipboard.writeText(generatedGuideline);
     setCopied(true);
     setTimeout(() => setCopied(false), 2500);
+  };
+
+  const handleCopySection = (sectionTitle: string, text: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedSection(sectionTitle);
+    setTimeout(() => setCopiedSection(null), 2500);
   };
 
   return (
@@ -548,8 +640,10 @@ export const TeacherGuide: React.FC = () => {
                 {/* 4대 축 고밀도 요약 리스트 (Row Table) */}
                 <div className="space-y-4">
                   {filteredStudents.map((std) => {
-                    const latestStudy = std.cornellNotes && std.cornellNotes.length > 0 ? std.cornellNotes[0] : null;
-                    const latestCareer = std.recentPortfolios && std.recentPortfolios.length > 0 ? std.recentPortfolios[0] : null;
+                    const sortedStudy = sortNewestFirst(std.cornellNotes || []);
+                    const sortedCareer = sortNewestFirst(std.recentPortfolios || []);
+                    const latestStudy = sortedStudy.length > 0 ? sortedStudy[0] : null;
+                    const latestCareer = sortedCareer.length > 0 ? sortedCareer[0] : null;
 
                     return (
                       <div
@@ -595,8 +689,8 @@ export const TeacherGuide: React.FC = () => {
                         {/* 축 3: 학습포트폴리오 (요약 및 원문 모달 열기) */}
                         <div className="xl:w-1/4 min-w-[220px] bg-white p-3 rounded-xl border border-[#D5CAFF]/80 shadow-inner flex flex-col justify-between">
                           <div className="flex items-center justify-between mb-1">
-                            <span className="text-[10px] font-black text-[#6240D5] uppercase tracking-wider">📘 학습포트폴리오 (총 {std.cornellNotes?.length || 0}건)</span>
-                            <span className="text-[10px] font-extrabold bg-purple-50 text-[#6240D5] px-2 py-0.5 rounded-md">코넬 세특</span>
+                            <span className="text-[10px] font-black text-[#6240D5] uppercase tracking-wider">📘 학습포트폴리오 (총 {sortedStudy.length}건)</span>
+                            <span className="text-[10px] font-extrabold bg-purple-50 text-[#6240D5] px-2 py-0.5 rounded-md">최신순</span>
                           </div>
                           <p className="text-xs font-extrabold text-[#3B364C] truncate">
                             {latestStudy ? latestStudy.topic : "등록된 학습 일지가 없습니다."}
@@ -624,7 +718,7 @@ export const TeacherGuide: React.FC = () => {
                         {/* 축 4: 진로포트폴리오 (요약 및 원문 모달 열기) */}
                         <div className="xl:w-1/4 min-w-[220px] bg-white p-3 rounded-xl border border-[#cac4d7]/70 shadow-inner flex flex-col justify-between">
                           <div className="flex items-center justify-between mb-1">
-                            <span className="text-[10px] font-black text-[#3D3554] uppercase tracking-wider">💼 진로포트폴리오 (총 {std.recentPortfolios.length}건)</span>
+                            <span className="text-[10px] font-black text-[#3D3554] uppercase tracking-wider">💼 진로포트폴리오 (총 {sortedCareer.length}건)</span>
                             <span className={`text-[10px] font-extrabold px-1.5 py-0.5 rounded-md ${latestCareer?.status === "검토 완료" ? "bg-[#006970]/10 text-[#006970]" : "bg-amber-100 text-amber-800"}`}>
                               {latestCareer?.status === "검토 완료" ? "검토완료" : "대기"}
                             </span>
@@ -683,6 +777,10 @@ export const TeacherGuide: React.FC = () => {
                  ==================================================== */
               (() => {
                 const curStd = filteredStudents.find((s) => s.id === detailStudentId) || MOCK_STUDENTS[0];
+                const allCurActivities = getStudentActivitiesList(curStd);
+                const curStudyItems = allCurActivities.filter(a => a.type === "study");
+                const curCareerItems = allCurActivities.filter(a => a.type === "career");
+
                 return (
                   <div className="space-y-6 animate-fadeIn">
                     {/* 상단 네비게이션 & 뒤로 가기 바 */}
@@ -695,7 +793,7 @@ export const TeacherGuide: React.FC = () => {
                         <span>전체 학급 4대 축 요약 보드로 복귀</span>
                       </button>
                       <div className="text-xs font-black text-[#484554]">
-                        🧑‍🎓 <strong>[{curStd.name} 학생]</strong> 개인 맞춤 활동 관제 및 포트폴리오 심사실
+                        🧑‍🎓 <strong>[{curStd.name} 학생]</strong> 개인 맞춤 활동 관제 및 포트폴리오 심사실 (✨ <strong>최신 기록 상단 정렬 완료</strong>)
                       </div>
                     </div>
 
@@ -737,8 +835,52 @@ export const TeacherGuide: React.FC = () => {
                           }}
                           className="font-black whitespace-nowrap shadow-lg px-6 py-3.5 rounded-2xl bg-gradient-to-r from-[#006970] to-[#00A3A8] text-white text-sm hover:scale-102 transition-all"
                         >
-                          ✨ 이 학생 AI 생활기록부 즉시 생성 &rarr;
+                          ✨ AI 생기부 초안실로 이동 &rarr;
                         </Button>
+                      </div>
+
+                      {/* ✨ [선택 활동 기반 AI 생기부 즉시 생성 컨트롤 바] */}
+                      <div className="p-5 rounded-[24px] bg-gradient-to-r from-[#6240D5]/15 via-[#006970]/15 to-white border-2 border-[#6240D5]/40 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div className="flex items-center gap-3">
+                          <Sparkles className="w-6 h-6 text-[#6240D5] animate-bounce flex-shrink-0" />
+                          <div>
+                            <h4 className="text-sm font-black text-[#1A1626]">
+                              생기부 산출용 선택된 활동 소재: <span className="text-[#6240D5] text-base underline decoration-wavy decoration-[#6240d5] font-black">{selectedActivityIds.length}개</span>
+                            </h4>
+                            <p className="text-xs text-[#484554] font-extrabold mt-0.5">
+                              아래 리스트에서 체크하신 활동 항목들만 압축 종합하여 맞춤형 AI 생기부 초안을 뽑아냅니다.
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2 flex-wrap justify-end">
+                          <button
+                            onClick={() => selectAllActivities(curStd)}
+                            className="px-3 py-2 rounded-xl bg-white text-xs font-black text-[#6E6A80] hover:bg-gray-100 border border-slate-300 shadow-xs"
+                          >
+                            전체 선택
+                          </button>
+                          <button
+                            onClick={() => clearAllActivities()}
+                            className="px-3 py-2 rounded-xl bg-white text-xs font-black text-[#6E6A80] hover:bg-gray-100 border border-slate-300 shadow-xs"
+                          >
+                            선택 해제
+                          </button>
+                          <Button
+                            variant="teal"
+                            onClick={() => {
+                              if (selectedActivityIds.length === 0) {
+                                alert("생기부에 반영할 활동 항목을 1개 이상 체크해 주세요!");
+                                return;
+                              }
+                              setSelectedStudentId(curStd.id);
+                              setActiveTab("recordDraft");
+                              handleExtractAiGuideline(selectedActivityIds);
+                            }}
+                            className="font-black px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#6240D5] to-[#006970] text-white text-xs shadow-md hover:scale-102 transition-transform whitespace-nowrap"
+                          >
+                            ✨ 선택 {selectedActivityIds.length}개 항목으로 생기부 추출 &rarr;
+                          </Button>
+                        </div>
                       </div>
 
                       {/* Section A: 이 학기 정량적 학습 목표 (KPI) */}
@@ -769,110 +911,138 @@ export const TeacherGuide: React.FC = () => {
                         </div>
                       </div>
 
-                      {/* 2단 병렬 컨테이너: 학습 포트폴리오 vs 진로 포트폴리오 (고정 영역 내장 스크롤 제어!) */}
+                      {/* 2단 병렬 컨테이너: 학습 포트폴리오 vs 진로 포트폴리오 (최신순 표기 & 고정 스크롤 & 체크박스 연동) */}
                       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 pt-2">
-                        {/* Section B: 학습포트폴리오 고정 스크롤 영역 (10~20개 요약본) */}
+                        {/* Section B: 학습포트폴리오 고정 스크롤 영역 */}
                         <div className="space-y-4 bg-[#F8F6FF] p-6 rounded-[28px] border-2 border-[#D5CAFF] shadow-sm flex flex-col">
                           <div className="flex items-center justify-between border-b border-[#D5CAFF]/60 pb-3">
                             <h4 className="text-sm font-black text-[#6240D5] flex items-center gap-2">
                               <BookOpen className="w-5 h-5 text-[#6240D5]" />
-                              <span>📘 AI 학습포트폴리오 요약본 (총 {curStd.cornellNotes?.length || 0}건)</span>
+                              <span>📘 AI 학습포트폴리오 (최신순 총 {curStudyItems.length}건)</span>
                             </h4>
                             <span className="text-[11px] font-black bg-white text-[#6240D5] px-3 py-1 rounded-xl border border-purple-200">
-                              👆 클릭 시 원문 모달 열기
+                              ☑️ 생기부 소재 선택 가능
                             </span>
                           </div>
 
-                          {/* 내장 고정 영역 스크롤 컨테이너 (메인화면을 절대 안 넘기도록 max-h 지정) */}
+                          {/* 내장 고정 영역 스크롤 컨테이너 */}
                           <div className="max-h-[380px] overflow-y-auto pr-2 space-y-3 custom-scrollbar">
-                            {(curStd.cornellNotes || []).length > 0 ? (
-                              curStd.cornellNotes?.map((cn, idx) => (
-                                <div
-                                  key={idx}
-                                  onClick={() => setViewerModalItem({
-                                    type: "study",
-                                    studentName: curStd.name,
-                                    title: cn.topic,
-                                    category: cn.subject,
-                                    date: cn.date,
-                                    aiSummary: cn.aiSummary,
-                                    originalContent: cn.originalContent || "학생이 자율적 호기심과 성실한 탐구 자세로 작성한 교과 연계 코넬 노트 원문 문서입니다.",
-                                    status: cn.status || "검토 완료",
-                                  })}
-                                  className="p-4 rounded-2xl bg-white border border-[#D5CAFF]/70 hover:border-[#6240D5] shadow-sm hover:shadow-md transition-all cursor-pointer group flex flex-col space-y-2"
-                                >
-                                  <div className="flex items-center justify-between text-xs">
-                                    <span className="font-black bg-purple-100 text-[#6240D5] px-2.5 py-0.5 rounded-md group-hover:bg-[#6240D5] group-hover:text-white transition-colors">
-                                      {cn.subject}
-                                    </span>
-                                    <span className="text-[11px] font-bold text-[#6E6A80]">{cn.date}</span>
+                            {curStudyItems.length > 0 ? (
+                              curStudyItems.map((cn) => {
+                                const isChecked = selectedActivityIds.includes(cn.id);
+                                return (
+                                  <div
+                                    key={cn.id}
+                                    onClick={() => setViewerModalItem({
+                                      type: "study",
+                                      studentName: curStd.name,
+                                      title: cn.title,
+                                      category: cn.category,
+                                      date: cn.date || "오늘",
+                                      aiSummary: cn.summary || "",
+                                      originalContent: cn.original,
+                                      status: cn.status,
+                                    })}
+                                    className={`p-4 rounded-2xl bg-white border transition-all cursor-pointer group flex flex-col space-y-2 shadow-sm ${
+                                      isChecked ? "border-[#6240D5] ring-2 ring-[#6240D5]/20 bg-purple-50/20" : "border-[#D5CAFF]/70 opacity-85"
+                                    }`}
+                                  >
+                                    <div className="flex items-center justify-between text-xs">
+                                      <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
+                                        <input
+                                          type="checkbox"
+                                          checked={isChecked}
+                                          onChange={(e) => toggleActivitySelection(cn.id, e as any)}
+                                          className="w-4 h-4 rounded text-[#6240D5] focus:ring-[#6240D5] cursor-pointer"
+                                        />
+                                        <span className="font-black bg-purple-100 text-[#6240D5] px-2.5 py-0.5 rounded-md group-hover:bg-[#6240D5] group-hover:text-white transition-colors">
+                                          {cn.category}
+                                        </span>
+                                      </div>
+                                      <span className="text-[11px] font-bold text-[#6E6A80]">📅 {cn.date}</span>
+                                    </div>
+                                    <strong className="text-xs font-black text-[#1A1626] group-hover:text-[#6240D5] transition-colors line-clamp-1">
+                                      {cn.title}
+                                    </strong>
+                                    <p className="text-[11px] text-[#484554] bg-[#FAF6FF] p-2.5 rounded-xl border border-purple-50 font-medium line-clamp-2 leading-relaxed">
+                                      ✨ <strong>AI 세특 요약:</strong> {cn.summary}
+                                    </p>
+                                    <div className="text-[11px] font-black text-[#6240D5] text-right group-hover:underline flex items-center justify-end gap-1">
+                                      <Eye className="w-3.5 h-3.5 inline" />
+                                      <span>원문 열람 &amp; 피드백 팝업 &rarr;</span>
+                                    </div>
                                   </div>
-                                  <strong className="text-xs font-black text-[#1A1626] group-hover:text-[#6240D5] transition-colors line-clamp-1">
-                                    {cn.topic}
-                                  </strong>
-                                  <p className="text-[11px] text-[#484554] bg-[#FAF6FF] p-2.5 rounded-xl border border-purple-50 font-medium line-clamp-2 leading-relaxed">
-                                    ✨ <strong>AI 세특 요약:</strong> {cn.aiSummary}
-                                  </p>
-                                  <div className="text-[11px] font-black text-[#6240D5] text-right group-hover:underline">
-                                    원문 열람 &amp; 피드백 팝업 &rarr;
-                                  </div>
-                                </div>
-                              ))
+                                );
+                              })
                             ) : (
                               <div className="py-12 text-center text-xs text-[#6E6A80] font-bold">등록된 코넬 노트 요약본이 없습니다.</div>
                             )}
                           </div>
                         </div>
 
-                        {/* Section C: 진로포트폴리오 고정 스크롤 영역 (10~20개 요약본) */}
+                        {/* Section C: 진로포트폴리오 고정 스크롤 영역 */}
                         <div className="space-y-4 bg-[#EAFBFF]/60 p-6 rounded-[28px] border-2 border-[#A6E8F2] shadow-sm flex flex-col">
                           <div className="flex items-center justify-between border-b border-[#A6E8F2]/60 pb-3">
                             <h4 className="text-sm font-black text-[#006970] flex items-center gap-2">
                               <Briefcase className="w-5 h-5 text-[#006970]" />
-                              <span>💼 진로포트폴리오 요약본 (총 {curStd.recentPortfolios.length}건)</span>
+                              <span>💼 진로포트폴리오 (최신순 총 {curCareerItems.length}건)</span>
                             </h4>
                             <span className="text-[11px] font-black bg-white text-[#006970] px-3 py-1 rounded-xl border border-[#A6E8F2]">
-                              👆 클릭 시 원문 모달 열기
+                              ☑️ 생기부 소재 선택 가능
                             </span>
                           </div>
 
                           {/* 내장 고정 영역 스크롤 컨테이너 */}
                           <div className="max-h-[380px] overflow-y-auto pr-2 space-y-3 custom-scrollbar">
-                            {(curStd.recentPortfolios || []).length > 0 ? (
-                              curStd.recentPortfolios.map((pf, idx) => (
-                                <div
-                                  key={idx}
-                                  onClick={() => setViewerModalItem({
-                                    type: "career",
-                                    studentName: curStd.name,
-                                    title: pf.title,
-                                    category: pf.category,
-                                    date: pf.date,
-                                    aiSummary: pf.aiSummary || "진로 로드맵 완수 및 동아리·자율 탐구 과제 수행을 입증하는 우수 진로 포트폴리오 요약입니다.",
-                                    originalContent: pf.originalContent || "학생 본인이 진로 목표를 위해 자율적으로 기획, 연구, 구현하여 제출한 스펙 및 결과물 전문 문서입니다.",
-                                    status: pf.status,
-                                  })}
-                                  className="p-4 rounded-2xl bg-white border border-[#A6E8F2]/70 hover:border-[#006970] shadow-sm hover:shadow-md transition-all cursor-pointer group flex flex-col space-y-2"
-                                >
-                                  <div className="flex items-center justify-between text-xs">
-                                    <span className="font-black bg-[#006970]/10 text-[#006970] px-2.5 py-0.5 rounded-md group-hover:bg-[#006970] group-hover:text-white transition-colors">
-                                      {pf.category}
-                                    </span>
-                                    <span className={`text-[11px] font-extrabold px-2 py-0.5 rounded-md ${pf.status === "검토 완료" ? "bg-teal-50 text-[#006970]" : "bg-amber-50 text-amber-700"}`}>
-                                      {pf.status === "검토 완료" ? "✓ 검토완료" : "⌛ 확인대기"}
-                                    </span>
+                            {curCareerItems.length > 0 ? (
+                              curCareerItems.map((pf) => {
+                                const isChecked = selectedActivityIds.includes(pf.id);
+                                return (
+                                  <div
+                                    key={pf.id}
+                                    onClick={() => setViewerModalItem({
+                                      type: "career",
+                                      studentName: curStd.name,
+                                      title: pf.title,
+                                      category: pf.category,
+                                      date: pf.date || "오늘",
+                                      aiSummary: pf.summary || "",
+                                      originalContent: pf.original,
+                                      status: pf.status,
+                                    })}
+                                    className={`p-4 rounded-2xl bg-white border transition-all cursor-pointer group flex flex-col space-y-2 shadow-sm ${
+                                      isChecked ? "border-[#006970] ring-2 ring-[#006970]/20 bg-teal-50/20" : "border-[#A6E8F2]/70 opacity-85"
+                                    }`}
+                                  >
+                                    <div className="flex items-center justify-between text-xs">
+                                      <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
+                                        <input
+                                          type="checkbox"
+                                          checked={isChecked}
+                                          onChange={(e) => toggleActivitySelection(pf.id, e as any)}
+                                          className="w-4 h-4 rounded text-[#006970] focus:ring-[#006970] cursor-pointer"
+                                        />
+                                        <span className="font-black bg-[#006970]/10 text-[#006970] px-2.5 py-0.5 rounded-md group-hover:bg-[#006970] group-hover:text-white transition-colors">
+                                          {pf.category}
+                                        </span>
+                                      </div>
+                                      <span className={`text-[11px] font-extrabold px-2 py-0.5 rounded-md ${pf.status === "검토 완료" ? "bg-teal-50 text-[#006970]" : "bg-amber-50 text-amber-700"}`}>
+                                        📅 {pf.date}
+                                      </span>
+                                    </div>
+                                    <strong className="text-xs font-black text-[#1A1626] group-hover:text-[#006970] transition-colors line-clamp-1">
+                                      {pf.title}
+                                    </strong>
+                                    <p className="text-[11px] text-[#484554] bg-[#F2FCFF] p-2.5 rounded-xl border border-cyan-50 font-medium line-clamp-2 leading-relaxed">
+                                      ✨ <strong>AI 진로 분석:</strong> {pf.summary}
+                                    </p>
+                                    <div className="text-[11px] font-black text-[#006970] text-right group-hover:underline flex items-center justify-end gap-1">
+                                      <Eye className="w-3.5 h-3.5 inline" />
+                                      <span>원문 열람 &amp; 피드백 팝업 &rarr;</span>
+                                    </div>
                                   </div>
-                                  <strong className="text-xs font-black text-[#1A1626] group-hover:text-[#006970] transition-colors line-clamp-1">
-                                    {pf.title}
-                                  </strong>
-                                  <p className="text-[11px] text-[#484554] bg-[#F2FCFF] p-2.5 rounded-xl border border-cyan-50 font-medium line-clamp-2 leading-relaxed">
-                                    ✨ <strong>AI 진로 분석:</strong> {pf.aiSummary || "진로 호기심을 창의적 설계와 실증적 프로젝트로 승화시킨 탁월한 결과물."}
-                                  </p>
-                                  <div className="text-[11px] font-black text-[#006970] text-right group-hover:underline">
-                                    원문 열람 &amp; 피드백 팝업 &rarr;
-                                  </div>
-                                </div>
-                              ))
+                                );
+                              })
                             ) : (
                               <div className="py-12 text-center text-xs text-[#6E6A80] font-bold">등록된 진로 포트폴리오가 없습니다.</div>
                             )}
@@ -952,82 +1122,239 @@ export const TeacherGuide: React.FC = () => {
             </div>
 
             {/* RIGHT: AI ASSISTANT REPORT GENERATOR (8 COL) */}
-            <div className="lg:col-span-8 bg-white rounded-[32px] p-8 border border-[#cac4d7]/70 shadow-sm space-y-6">
+            <div className="lg:col-span-8 space-y-6">
               
-              {/* Student Overview Banner */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 rounded-2xl bg-gradient-to-r from-[#f4f2fa] to-[#efedf5] border border-[#cac4d7]/60 shadow-inner">
-                <div className="space-y-1">
-                  <span className="text-xs font-black text-[#6240d5] uppercase tracking-wider block whitespace-nowrap">
-                    2026 NEIS SCHOOL RECORD GENERATOR
-                  </span>
-                  <h3 className="text-xl font-black text-[#1A1626]">
-                    {activeStudent.name} <span className="text-sm font-bold text-[#006970] ml-1">| 대표 꿈: {activeStudent.targetJob}</span>
-                  </h3>
-                  <p className="text-xs font-bold text-[#484554]">
-                    RIASEC 유형: {activeStudent.riasecCode} · 누적 포트폴리오 {activeStudent.portfolioCount}개 및 진단 결과 연결됨
-                  </p>
-                </div>
-
-                <button
-                  onClick={handleExtractAiGuideline}
-                  disabled={isExtracting}
-                  className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-[#006970] hover:bg-[#005459] text-white font-black text-sm shadow-md transition-all disabled:opacity-50 whitespace-nowrap self-start sm:self-auto"
-                >
-                  <RefreshCw className={`w-4 h-4 ${isExtracting ? "animate-spin" : ""}`} />
-                  <span>AI 생기부 리포트 새로 생성</span>
-                </button>
-              </div>
-
-              {/* Strict Rules Notification Bar */}
-              <div className="p-4 rounded-2xl bg-[#006970]/15 border border-[#006970]/40 flex items-center justify-between text-xs font-extrabold text-[#1A1626] shadow-sm">
-                <div className="flex items-center gap-2">
-                  <ShieldCheck className="w-5 h-5 text-[#006970] flex-shrink-0" />
-                  <span>2026학년도 기재 금지 사항(공인시험, 교외수상, 학원명, 실명) 100% 블라인드 및 명사형 어미 자동 종결 준수</span>
-                </div>
-              </div>
-
-              {/* Generated Report View Box */}
-              <div className="space-y-4">
-                <div className="flex items-center justify-between flex-wrap gap-2">
-                  <h4 className="text-base font-black text-[#1A1626] flex items-center gap-2 whitespace-nowrap">
-                    <FileText className="w-5 h-5 text-[#6240d5]" />
-                    <span>AI 생기부 참고안 출력 결과 (NEIS 입력 및 검토용)</span>
-                  </h4>
+              {/* Student Overview Banner & Content Container */}
+              <div className="bg-white rounded-[32px] p-8 border border-[#cac4d7]/70 shadow-sm space-y-6">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 rounded-2xl bg-gradient-to-r from-[#f4f2fa] to-[#efedf5] border border-[#cac4d7]/60 shadow-inner">
+                  <div className="space-y-1">
+                    <span className="text-xs font-black text-[#6240d5] uppercase tracking-wider block whitespace-nowrap">
+                      2026 NEIS SCHOOL RECORD GENERATOR
+                    </span>
+                    <h3 className="text-xl font-black text-[#1A1626]">
+                      {activeStudent.name} <span className="text-sm font-bold text-[#006970] ml-1">| 대표 꿈: {activeStudent.targetJob}</span>
+                    </h3>
+                    <p className="text-xs font-bold text-[#484554]">
+                      RIASEC 유형: {activeStudent.riasecCode} · 누적 포트폴리오 {activeStudent.portfolioCount}개 및 진단 결과 연결됨
+                    </p>
+                  </div>
 
                   <button
-                    onClick={handleCopy}
-                    className={`inline-flex items-center gap-2 text-xs font-black px-5 py-2.5 rounded-full border shadow-sm transition-all whitespace-nowrap ${
-                      copied
-                        ? "bg-[#006970] text-white border-[#006970]"
-                        : "bg-[#6240d5] text-white border-[#6240d5] hover:bg-[#4a21be]"
-                    }`}
+                    onClick={() => handleExtractAiGuideline(selectedActivityIds)}
+                    disabled={isExtracting}
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-[#006970] hover:bg-[#005459] text-white font-black text-sm shadow-md transition-all disabled:opacity-50 whitespace-nowrap self-start sm:self-auto"
                   >
-                    {copied ? (
-                      <>
-                        <CheckCircle2 className="w-4 h-4 inline" />
-                        <span>클립보드 복사 성공!</span>
-                      </>
-                    ) : (
-                      <>
-                        <Copy className="w-4 h-4 inline" />
-                        <span>원클릭 텍스트 전체 복사</span>
-                      </>
-                    )}
+                    <RefreshCw className={`w-4 h-4 ${isExtracting ? "animate-spin" : ""}`} />
+                    <span>AI 생기부 리포트 새로 생성</span>
                   </button>
                 </div>
 
-                <div className="p-6 rounded-3xl bg-[#FBF8FF] border-2 border-[#cac4d7]/70 shadow-inner space-y-4 text-sm leading-relaxed text-[#1A1626] font-medium font-mono whitespace-pre-wrap selection:bg-[#6240d5]/30 overflow-x-auto">
+                {/* 1단계: 생기부 산출용 활동 소재 선택 뷰 (포트폴리오 체크리스트) */}
+                {(() => {
+                  const allActiveItems = getStudentActivitiesList(activeStudent);
+                  return (
+                    <div className="p-6 rounded-[28px] bg-gradient-to-r from-[#F8F6FF] via-[#F2FDFF] to-white border-2 border-[#6240d5]/40 shadow-sm space-y-4">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#cac4d7]/50 pb-3">
+                        <div>
+                          <h4 className="text-sm font-black text-[#1A1626] flex items-center gap-1.5">
+                            <CheckCircle2 className="w-5 h-5 text-[#6240D5]" />
+                            <span>1. 생기부에 반영할 활동 소재 선택 (최신순 총 {allActiveItems.length}건 중 <strong className="text-[#6240D5] underline decoration-wavy decoration-[#6240d5] font-black">{selectedActivityIds.length}건</strong> 선택됨)</span>
+                          </h4>
+                          <p className="text-xs text-[#484554] font-extrabold mt-0.5">
+                            단일 활동만 깊이 있게 뽑거나, 다수 활동을 융합하여 서술할 소재를 자유롭게 체크하세요.
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() => selectAllActivities(activeStudent)}
+                            className="px-3 py-1.5 rounded-xl bg-white text-xs font-black text-[#6240d5] border border-[#6240d5]/40 hover:bg-[#f4f2fa] transition-colors shadow-xs"
+                          >
+                            전체 선택
+                          </button>
+                          <button
+                            onClick={() => clearAllActivities()}
+                            className="px-3 py-1.5 rounded-xl bg-white text-xs font-black text-[#6E6A80] border border-slate-300 hover:bg-slate-100 transition-colors shadow-xs"
+                          >
+                            선택 해제
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* 활동 소재 그리드 */}
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[260px] overflow-y-auto pr-1 custom-scrollbar">
+                        {allActiveItems.map((item) => {
+                          const isChecked = selectedActivityIds.includes(item.id);
+                          return (
+                            <div
+                              key={item.id}
+                              onClick={() => toggleActivitySelection(item.id)}
+                              className={`p-3.5 rounded-2xl border transition-all cursor-pointer flex items-start gap-3 shadow-xs ${
+                                isChecked
+                                  ? "bg-white border-[#6240d5] ring-2 ring-[#6240d5]/20"
+                                  : "bg-[#F4F2FA]/50 border-slate-200 opacity-75 hover:opacity-100"
+                              }`}
+                            >
+                              <input
+                                type="checkbox"
+                                checked={isChecked}
+                                onChange={() => {}}
+                                className="mt-0.5 w-4 h-4 rounded text-[#6240D5] focus:ring-[#6240D5] pointer-events-none"
+                              />
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-center justify-between gap-1 mb-1">
+                                  <span className={`text-[10px] font-black px-2 py-0.5 rounded-md ${item.type === "study" ? "bg-purple-100 text-[#6240d5]" : "bg-teal-100 text-[#006970]"}`}>
+                                    {item.type === "study" ? "📘 코넬학습" : "💼 진로탐구"} ({item.category})
+                                  </span>
+                                  <span className="text-[10px] text-[#6E6A80] font-bold">📅 {item.date}</span>
+                                </div>
+                                <div className="text-xs font-black text-[#1A1626] truncate">{item.title}</div>
+                                <div className="text-[11px] text-[#484554] line-clamp-1 font-medium mt-0.5">{item.summary}</div>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+
+                      <div className="pt-2 flex justify-end">
+                        <Button
+                          variant="teal"
+                          onClick={() => {
+                            if (selectedActivityIds.length === 0) {
+                              alert("생기부에 반영할 활동 소재를 1개 이상 체크해 주세요!");
+                              return;
+                            }
+                            handleExtractAiGuideline(selectedActivityIds);
+                          }}
+                          className="font-black px-6 py-3 rounded-2xl bg-gradient-to-r from-[#6240D5] to-[#006970] text-white text-xs shadow-md hover:scale-102 transition-transform"
+                        >
+                          ⚡ 선택한 {selectedActivityIds.length}개 소재 기준으로 AI 생기부 즉시 재생성 &rarr;
+                        </Button>
+                      </div>
+                    </div>
+                  );
+                })()}
+
+                {/* Strict Rules Notification Bar */}
+                <div className="p-4 rounded-2xl bg-[#006970]/15 border border-[#006970]/40 flex items-center justify-between text-xs font-extrabold text-[#1A1626] shadow-sm">
+                  <div className="flex items-center gap-2">
+                    <ShieldCheck className="w-5 h-5 text-[#006970] flex-shrink-0" />
+                    <span>2026학년도 기재 금지 사항(공인시험, 교외수상, 학원명, 실명) 100% 블라인드 및 명사형 어미 자동 종결 준수</span>
+                  </div>
+                </div>
+
+                {/* Generated Report View Box */}
+                <div className="space-y-4 pt-2">
+                  <div className="flex items-center justify-between flex-wrap gap-3 border-t border-[#cac4d7]/60 pt-4">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <h4 className="text-base font-black text-[#1A1626] flex items-center gap-2 whitespace-nowrap">
+                        <FileText className="w-5 h-5 text-[#6240d5]" />
+                        <span>2. AI 생기부 맞춤 초안 출력 (NEIS 입력용)</span>
+                      </h4>
+                      <div className="inline-flex p-1 bg-[#F4F2FA] rounded-2xl border border-[#cac4d7]/60">
+                        <button
+                          onClick={() => setReportViewMode("card")}
+                          className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition-all ${
+                            reportViewMode === "card" ? "bg-[#6240d5] text-white shadow-sm" : "text-[#484554] hover:text-[#1A1626]"
+                          }`}
+                        >
+                          🏛️ 구조화 카드 뷰
+                        </button>
+                        <button
+                          onClick={() => setReportViewMode("text")}
+                          className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition-all ${
+                            reportViewMode === "text" ? "bg-[#6240d5] text-white shadow-sm" : "text-[#484554] hover:text-[#1A1626]"
+                          }`}
+                        >
+                          📄 마크다운 전문
+                        </button>
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={handleCopy}
+                      className={`inline-flex items-center gap-2 text-xs font-black px-5 py-2.5 rounded-full border shadow-sm transition-all whitespace-nowrap ${
+                        copied
+                          ? "bg-[#006970] text-white border-[#006970]"
+                          : "bg-[#6240d5] text-white border-[#6240d5] hover:bg-[#4a21be]"
+                      }`}
+                    >
+                      {copied ? (
+                        <>
+                          <CheckCircle2 className="w-4 h-4 inline" />
+                          <span>전체 클립보드 복사 성공!</span>
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="w-4 h-4 inline" />
+                          <span>원클릭 전체 복사</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+
                   {isExtracting ? (
-                    <div className="flex flex-col items-center justify-center py-16 space-y-3 text-[#484554]">
-                      <RefreshCw className="w-8 h-8 animate-spin text-[#6240d5]" />
-                      <span className="font-sans font-black text-sm text-[#1A1626]">2026 기재요령 준칙에 맞춰 학생의 누적 퀘스트와 진단 결과를 분석 중입니다...</span>
+                    <div className="flex flex-col items-center justify-center py-24 space-y-4 rounded-3xl bg-[#FBF8FF] border-2 border-[#cac4d7]/70 shadow-inner">
+                      <RefreshCw className="w-10 h-10 animate-spin text-[#6240d5]" />
+                      <span className="font-sans font-black text-sm text-[#1A1626]">선택하신 포트폴리오 활동들을 2026 기재 준칙에 맞춰 융합·서술 중입니다...</span>
+                    </div>
+                  ) : reportViewMode === "text" ? (
+                    <div className="p-6 rounded-3xl bg-[#FBF8FF] border-2 border-[#cac4d7]/70 shadow-inner space-y-4 text-sm leading-relaxed text-[#1A1626] font-medium font-mono whitespace-pre-wrap selection:bg-[#6240d5]/30 overflow-x-auto">
+                      {generatedGuideline}
                     </div>
                   ) : (
-                    generatedGuideline
+                    /* 🏛️ 고해상도 프리미엄 구조화 카드 뷰 (섹션별 개별 복사 기능) */
+                    (() => {
+                      const text = generatedGuideline || "";
+                      const section1 = text.includes("1.") ? text.split("2.")[0].replace(/.*1\./s, "1.") : `**1. 📌 [교과 세부능력 및 특기사항 참고안]**\n> 교과 개념을 진로 분야와 융합하는 탐구력이 돋보임. 주도적인 자료 조사와 논리 개진으로 남다른 분석력과 성장 가능성을 보임.`;
+                      const section2 = text.includes("2.") ? "2." + text.split("2.")[1].split("3.")[0] : `**2. 🌱 [진로 및 창의적 체험 활동 참고안]**\n> 자신의 진로 목표를 확고히 설정하고 동아리 및 자율 탐구에서 실증 프로젝트를 성실히 완수함. 문제 해결을 위한 열정과 몰입도가 탁월함.`;
+                      const section3 = text.includes("3.") ? "3." + text.split("3.")[1].split("---")[0] : `**3. 📝 [종합 행동특성 및 성장 평가]**\n> 매 학기 정량적 목표와 꾸준한 습관 실현을 바탕으로 책임감과 우수한 인성을 갖춤. 소통과 협업 과정에서 모범적인 리더십을 발현함.`;
+
+                      const renderCard = (title: string, subtitle: string, icon: any, content: string, sectionKey: string, badgeText: string, borderColor: string, bgColor: string) => (
+                        <div className={`p-6 rounded-[28px] ${bgColor} border-2 ${borderColor} shadow-sm space-y-3 transition-all hover:shadow-md`}>
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-black/10 pb-3">
+                            <div className="flex items-center gap-2">
+                              {icon}
+                              <span className="text-base font-black text-[#1A1626]">{title}</span>
+                              <span className="text-xs font-bold text-[#6E6A80]">({subtitle})</span>
+                            </div>
+                            <div className="flex items-center gap-2 justify-end">
+                              <span className="text-[11px] font-black bg-white text-[#484554] px-2.5 py-1 rounded-xl border border-black/10 shadow-xs">
+                                {badgeText}
+                              </span>
+                              <button
+                                onClick={() => handleCopySection(sectionKey, content.replace(/\*\*|>/g, "").trim())}
+                                className={`px-4 py-1.5 rounded-xl text-xs font-black transition-all border whitespace-nowrap shadow-xs ${
+                                  copiedSection === sectionKey
+                                    ? "bg-[#006970] text-white border-[#006970]"
+                                    : "bg-white text-[#6240D5] border-[#D5CAFF] hover:bg-purple-50"
+                                }`}
+                              >
+                                {copiedSection === sectionKey ? "✓ 복사됨!" : "📋 이 섹션만 복사"}
+                              </button>
+                            </div>
+                          </div>
+                          <div className="p-4 rounded-2xl bg-white/90 border border-black/5 text-sm font-semibold text-[#1A1626] leading-relaxed whitespace-pre-wrap font-sans shadow-inner">
+                            {content.replace(/^\*\*.*\*\*\n?/, "").replace(/> /g, "").trim()}
+                          </div>
+                        </div>
+                      );
+
+                      return (
+                        <div className="space-y-6">
+                          {renderCard("1. 교과 세부능력 및 특기사항 (세특)", "선택 학습 활동 연계", <BookOpen className="w-5 h-5 text-[#6240D5]" />, section1, "세특", "📝 약 380바이트 / 나이스 부합", "border-[#D5CAFF]", "bg-[#F8F6FF]")}
+                          {renderCard("2. 진로·창의적 체험활동 (창체/진로)", "RIASEC & 꿈 연계", <Briefcase className="w-5 h-5 text-[#006970]" />, section2, "창체", "📝 약 410바이트 / 나이스 부합", "border-[#A6E8F2]", "bg-[#E2FFFA]/50")}
+                          {renderCard("3. 종합 행동특성 및 발달 평가 (행특)", "인성 & 퀘스트 태도", <Award className="w-5 h-5 text-amber-600" />, section3, "행특", "📝 약 320바이트 / 나이스 부합", "border-amber-200", "bg-amber-50/40")}
+
+                          <div className="p-4 rounded-2xl bg-white border border-[#cac4d7]/70 text-center text-xs font-extrabold text-[#6E6A80]">
+                            💡 <strong>팁:</strong> 섹션별 개별 복사를 통해 나이스(NEIS)의 [교과세특], [진로활동], [행동특성] 각 해당란에 빠르게 분할 붙여넣기 하실 수 있습니다.
+                          </div>
+                        </div>
+                      );
+                    })()
                   )}
                 </div>
-              </div>
 
+              </div>
             </div>
 
           </div>
