@@ -103,27 +103,14 @@ const MOCK_STUDENTS: StudentData[] = [
       "교내 인공지능 코딩 동아리 아키텍처 과제 및 스터디 활동 주도",
       "자기이해 다중진단 리포트 (사회형-탐구형 이타적 논리 추론력 발휘)",
     ],
-    guidelineSample: `### 📊 [김수진 학생] 2026 AI 생기부 리포트 (교과 & 진로 통합)
+    guidelineSample: `[교과 세부능력 및 특기사항 참고안]
+영어 및 통합사회 교과 학습 과정에서 깊은 지적 호기심과 분석력을 바탕으로 자율적인 탐구를 실천함. 공공 교육 데이터를 시계열적으로 분석하여 지역 간 교육 격차 및 맞춤 멘토링 기획안을 심층 보고서로 완성하며 뛰어난 사회적 공감 능력과 정보 처리 역량을 증명함. 교육 심리학 강연을 자율 강독하고 주제 탐구 스터디를 주도하는 등 비판적 사유와 자기주도 학습 태도가 돋보임.
 
-**1. 📌 학생 정량 목표 및 활동 팩트 (Fact)**
-- 이번 학기 평균 92점 목표로 '영어 I', '화법과 작문', '통합사회' 등 교과 목표를 체계적으로 달성 중임.
-- 진로 탐색 및 자율 활동 시간 동안 '중등 교사 및 진로 상담 멘토' 직업군을 심층 탐구하며 학습 로드맵을 성실히 이행함.
-- 공공 교육 데이터 세트를 활용한 지역별 학습 진단 방안을 코넬 노트 탐구 일지로 작성 및 제출함.
+[진로 및 창의적 체험활동 참고안]
+중등 교사 및 진로 상담 멘토를 진로 목표로 설정하고 매주 교과 연계 탐구 일지를 구조화하여 기록하고 실천함. 청소년 정서 상담을 위한 기획 아이디어를 프로토타입 설계서로 구현하는 등 타인을 배려하는 감수성과 주도적인 과제 탐구 역량을 균형 있게 발휘함.
 
-**2. 🌱 성장 및 행동 특성 분석 (Growth)**
-- 문제 해결 과정에서 객관적인 공공 데이터를 바탕으로 대안을 제시하는 분석력을 보이며, 학업 태도가 매우 주도적임.
-- 동아리 스터디 및 영어 원문 강독 과정에서 동료의 견해를 수용하고 갈등을 중재하는 우수한 의사소통 역량을 발휘함.
-- 교육 심리 및 미래 에듀테크 분야에 대한 관심을 확장적인 독서 및 자율주도 퀘스트 완수로 구체화함.
-
-**3. 📝 [나이스(NEIS) 입력 초안] 분야별 분할 제공**
-▶ **[교과 세부능력 및 특기사항 참고안]**
-> 영어 및 통합사회 교과 학습 과정에서 깊은 지적 호기심과 분석력을 바탕으로 자율적인 탐구를 실천함. 공공 교육 데이터를 시계열적으로 분석하여 '지역 간 교육 격차 및 맞춤 멘토링 기획안'을 심층 보고서로 완성하며 뛰어난 사회적 공감 능력과 정보 처리 역량을 증명함. TED 교육학 강연을 자율 강독하고 토론을 주도하는 등 비판적 사유와 자기주도 학습 태도가 돋보임.
-
-▶ **[진로 및 창의적 체험 활동 참고안]**
-> 중등 교사 및 진로 상담 멘토를 목표로 매주 교과 연계 코넬 노트 탐구 일지를 구조화하여 기록하고 실천함. 청소년 정서 상담을 위한 기획 아이디어를 프로토타입 설계서로 구현하는 등 타인을 배려하는 감수성과 창작 열정을 균형 있게 발휘함.
-
----
-⚠️ **[안내]** 본 리포트는 입력된 활동 데이터와 목표를 바탕으로 2026학년도 기재요령에 맞춰 블라인드 및 구조화된 참고용 자료입니다. 나이스(NEIS) 최종 입력 전, 선생님의 실제 관찰 사실과 일치하는지 확인 후 윤문해 주시기 바랍니다.`,
+[종합 행동특성 및 발달평가 참고안]
+학습 목표를 스스로 설정하고 계획성 있게 실천하여 높은 학업 성취도를 유지하며 성실한 태도와 책임감을 갖춤. 학업 및 활동 진행 과정에서 이견을 조율하고 대안을 이끌어 내는 의사소통 능력과 배려심이 뛰어나 향후 교육 분야 인재로서의 발전 가능성이 높음.`,
   },
   {
     id: "std-2",
@@ -165,26 +152,14 @@ const MOCK_STUDENTS: StudentData[] = [
       "센서 기반 자율주행 모션 로봇 하드웨어 조합 및 알고리즘 검증 실습",
       "과학 기술 고전 비판적 독서 및 기계 윤리 지정 토론 메인 발언",
     ],
-    guidelineSample: `### 📊 [이재현 학생] 2026 AI 생기부 리포트 (교과 & 진로 통합)
+    guidelineSample: `[교과 세부능력 및 특기사항 참고안]
+물리학 I 및 수학 I 학습 과정에서 교과 원리를 실제 공학 기기 및 로봇에 적용하려는 실증적 열정이 탁월함. 센서 기반 모션 로봇 하드웨어 실습 및 알고리즘 검증을 주도하며 주행 중 발생한 오작동의 역학적 원인을 수치화하고 정교한 코드 변경으로 해결해 냄. 과제 수행 시 끈기 있게 가설을 증명하는 과학적 탐구 태도가 두드러짐.
 
-**1. 📌 학생 정량 목표 및 활동 팩트 (Fact)**
-- 물리학 I 역학 실험 만점 및 수학 I 오답 해금을 목표로 꾸준히 학업 성취를 높여 나가고 있음.
-- 진로 탐구 및 공학 기초 활동 시간 동안 센서 기반 자율주행 모션 로봇의 동작 과정을 실험하고 코드를 수정함.
-- RC(현실·관습형) 강점을 살려 기계장치의 오류 발생 로그를 수치화하고 대안 코드를 단계적으로 구성함.
+[진로 및 창의적 체험활동 참고안]
+기계·로봇 공학 엔지니어로의 확고한 진로 목표를 지니고 과학 기술 고전 독서 및 윤리 토론에 적극 참여함. 기술 발전이 공동체에 미치는 영향을 논리적으로 개진하며 협업 시 실질적인 기여를 해내는 등 전도유망한 엔지니어로서의 성장 가능성을 드러냄.
 
-**2. 🌱 성장 및 행동 특성 분석 (Growth)**
-- 복잡한 물리·공학적 오류 상황 앞에서 포기하지 않고 가설 검증을 통해 실증적인 해답을 유도하는 끈기 있는 탐구 자세를 보임.
-- 실험 기재 및 도구를 안전하고 체계적으로 다루며 정교하게 결과물을 수정해 나가는 집중력이 돋보임.
-
-**3. 📝 [나이스(NEIS) 입력 초안] 분야별 분할 제공**
-▶ **[교과 세부능력 및 특기사항 참고안]**
-> 물리학 I 및 수학 I 학습 과정에서 교과 원리를 실제 사물인터넷 및 공학 기기에 적용하려는 실증적 열정이 탁월함. '센서 기반 모션 로봇 하드웨어 실습 및 알고리즘 검증'을 주도하며 주행 중 발생한 오작동의 역학적 원인을 수치화하고 정교한 코드 변경으로 해결해 냄. 과제 수행 시 끈기 있게 가설을 증명하는 과학적 탐구 태도가 두드러짐.
-
-▶ **[진로 및 창의적 체험 활동 참고안]**
-> 기계·로봇 공학 엔지니어로의 확고한 꿈을 지니고 과학 기술 고전 독서 및 윤리 토론에 적극 참여함. 기술 발전이 공동체에 미치는 영향을 논리적으로 개진하며 협업 시 실질적인 기여를 해내는 등 전도유망한 엔지니어로서의 성장 가능성을 드러냄.
-
----
-⚠️ **[안내]** 본 리포트는 입력된 활동 데이터와 목표를 바탕으로 2026학년도 기재요령에 맞춰 블라인드 및 구조화된 참고용 자료입니다. 나이스(NEIS) 최종 입력 전, 선생님의 실제 관찰 사실과 일치하는지 확인 후 윤문해 주시기 바랍니다.`,
+[종합 행동특성 및 발달평가 참고안]
+복잡한 물리·공학적 오류 상황 앞에서도 포기하지 않고 실증적인 해답을 유도하는 끈기 있는 태도를 지님. 실험 도구를 안전하고 체계적으로 다루며 동료들과 협동하여 과제 완성도를 높이는 책임감과 문제해결력과 우수한 인성을 갖춤.`,
   },
   {
     id: "std-3",
@@ -225,26 +200,14 @@ const MOCK_STUDENTS: StudentData[] = [
       "파이썬 데이터 분석 모듈 기반 통계 시각화 실습 완성",
       "기후 환경 통계 머신러닝 데이터 집합체 구축 및 발표",
     ],
-    guidelineSample: `### 📊 [박도훈 학생] 2026 AI 생기부 리포트 (교과 & 진로 통합)
+    guidelineSample: `[교과 세부능력 및 특기사항 참고안]
+정보 교과 및 통계 학습 과정에서 빅데이터와 인공지능에 대한 열정으로 파이썬 데이터 분석 모듈 기반의 통계 시각화 실습을 훌륭히 완수함. 복잡한 기후 환경 통계를 차트 및 구조화된 기초 머신러닝 모델로 변환하는 등 남다른 자료 가공 역량과 수학적 추론 능력을 증명함.
 
-**1. 📌 학생 정량 목표 및 활동 팩트 (Fact)**
-- 정보 교과 파이썬 실습 및 확률과 통계 목표 고지를 실질적인 포트폴리오 성과로 직결시킴.
-- 교내 진로 시간 및 정보학 탐구 활동에서 데이터 구조와 분석 모델링을 주제로 보고서를 완성함.
-- IA(탐구·예술형) 흥미유형 바탕의 독창적 가설을 설정하여 데이터를 시각적인 차트로 재구성함.
+[진로 및 창의적 체험활동 참고안]
+빅데이터 및 AI 전문가로의 진로를 정립하고 관련 프로그래밍 생태계를 주도적으로 탐색함. 스스로 심화 기술 문헌을 조사하며 프로젝트의 완성도를 높이려는 성실함과 지적 몰입도가 돋보임.
 
-**2. 🌱 성장 및 행동 특성 분석 (Growth)**
-- 논리적 데이터 가이드라인을 설계하면서 복잡한 수치를 누구나 직관적으로 이해할 수 있는 정보로 변조하는 능력이 신장됨.
-- 과제 수행 과정에서 스스로 심화 문헌과 자료를 검색하며 지적 완성도를 높이고자 노력함.
-
-**3. 📝 [나이스(NEIS) 입력 초안] 분야별 분할 제공**
-▶ **[교과 세부능력 및 특기사항 참고안]**
-> 정보 교과 및 통계 학습 과정에서 빅데이터와 인공지능에 대한 열정으로 파이썬 데이터 분석 모듈 기반의 통계 시각화 실습을 훌륭히 마침. 복잡한 기후 환경 통계를 차트 및 구조화된 기초 머신러닝 모델로 변환하는 등 남다른 자료 가공 역량과 수학적 추론 능력을 증명함.
-
-▶ **[진로 및 창의적 체험 활동 참고안]**
-> 빅데이터 및 AI 전문가로의 진로를 정립하고 관련 프로그래밍 생태계를 주도적으로 탐색함. 스스로 심화 기술 문헌을 조사하며 프로젝트의 완성도를 높이려는 성실함과 지적 몰입도가 돋보임.
-
----
-⚠️ **[안내]** 본 리포트는 입력된 활동 데이터와 목표를 바탕으로 2026학년도 기재요령에 맞춰 블라인드 및 구조화된 참고용 자료입니다. 나이스(NEIS) 최종 입력 전, 선생님의 실제 관찰 사실과 일치하는지 확인 후 윤문해 주시기 바랍니다.`,
+[종합 행동특성 및 발달평가 참고안]
+매 학기 주도적으로 정량적 목표를 세우고 과제를 끝까지 이행하는 실천력과 성실성을 보유함. 복잡한 문제를 분석하여 타인이 이해하기 쉬운 형태로 설명해 주는 배려심과 뛰어난 논리적 커뮤니케이션 역량을 발휘함.`,
   },
 ];
 
@@ -396,22 +359,16 @@ export const TeacherGuide: React.FC = () => {
         setGeneratedGuideline(res.content);
       }
     } catch (error) {
-      console.warn("AI 추출 지연, 선택 항목 반영 구조화 가이드안 생성", error);
-      // 선택된 활동 소재를 바탕으로 세미 리얼타임 AI 맞춤 초안 조합 생성
-      const selectedNames = selectedItems.map(item => `「${item.title} (${item.category})」`).join(", ");
-      const customDraft = `**1. 📌 [교과 세부능력 및 특기사항 참고안]**
-▶ **[탐구 주제 및 활동 소재]**: ${selectedNames || "선택된 활동 없음"}
-> 상기 교과 심화 활동 및 코넬 노트 분석 과정을 통해 교과목의 핵심 개념을 진로 분야와 융합하는 탁월한 탐구 역량을 보여줌. 특히 자율적인 자료 조사와 구조화된 논리 개진을 통해 실생활 문제 해결안을 도출하였으며, 남다른 분석력과 자기주도 학습 능력이 돋보임.
+      // 선택된 활동 소재를 바탕으로 세미 리얼타임 AI 맞춤 초안 조합 생성 (나이스 기재 요령에 부합하는 정제된 문구)
+      const selectedNames = selectedItems.map(item => `${item.title}`).join(", ");
+      const customDraft = `[교과 세부능력 및 특기사항 참고안]
+선택된 학습 및 탐구 활동(${selectedNames || "교과 심화 탐구"})을 수행하는 과정에서 교과목의 핵심 개념을 실생활 진로 분야와 융합하는 탁월한 탐구 역량을 보여줌. 특히 자율적인 자료 조사와 구조화된 논리 개진을 통해 창의적인 문제 해결안을 도출하였으며, 남다른 분석력과 자기주도 학습 능력이 돋보임.
 
-**2. 🌱 [진로 및 창의적 체험 활동 참고안]**
-▶ **[전공 연계 주도성 평가]**: RIASEC(${activeStudent.riasecCode}) 및 지망 꿈(${activeStudent.targetJob}) 연계 주도 탐구
-> 자신의 진로 목표를 확고히 설정하고 동아리 및 자율 활동에서 관련된 실증 프로젝트를 성실히 완수함. 어려운 과제에 직면해도 문헌 탐독과 협동 통신을 통해 유의미한 시제품 및 결과 데이터를 창출하려는 열정과 몰입도가 돋보임.
+[진로 및 창의적 체험활동 참고안]
+자신의 진로 목표(${activeStudent.targetJob})를 확고히 설정하고 자율 활동 및 진로 심화 탐구 프로젝트를 성실히 완수함. 어려운 과제에 직면해도 심층 문헌 탐독과 구조적 분석을 통해 유의미한 시제품 및 결과 데이터를 창출하려는 열정과 몰입도가 돋보임.
 
-**3. 📝 [종합 행동특성 및 성장 평가 (행특)]**
-> 매 학기 정량적 목표와 매일의 퀘스트 습관 진척률(${activeStudent.habitSuccessRate}%)을 바탕으로 흔들림 없이 성장하는 우수한 인성 및 책임감을 갖춤. 급우들과의 소통 및 문제 해결 과정에서 모범적인 리더십과 융합 사고를 실현함.
-
----
-⚠️ **[안내]** 본 리포트는 선생님께서 직접 선택하신 총 ${selectedItems.length}개의 활동 소재만을 압축 융합하여 2026학년도 기재요령 준칙(블라인드 및 명사형 종결)에 맞춰 도출한 참고 자료입니다. 나이스(NEIS) 입력 전 실제 관찰 사실과 대조하여 윤문해 주시기 바랍니다.`;
+[종합 행동특성 및 발달평가 참고안]
+매 학기 주도적으로 정량적 목표를 세우고 과제를 끝까지 이행하는 자기유능감과 성실성을 보유함. 학급 내 문제 해결 및 토론 과정에서 타인에 대한 배려심과 뛰어난 논리적 의사소통 역량을 발현하여 향후 해당 전문가로의 발전 가능성이 높음.`;
 
       setGeneratedGuideline(customDraft);
     } finally {
@@ -667,18 +624,16 @@ export const TeacherGuide: React.FC = () => {
                 {/* 4대 축 고밀도 요약 리스트 (Row Table) */}
                 <div className="space-y-4">
                   {filteredStudents.map((std) => {
-                    const sortedStudy = sortNewestFirst(std.cornellNotes || []);
-                    const sortedCareer = sortNewestFirst(std.recentPortfolios || []);
-                    const latestStudy = sortedStudy.length > 0 ? sortedStudy[0] : null;
-                    const latestCareer = sortedCareer.length > 0 ? sortedCareer[0] : null;
+                    const studyCount = (std.cornellNotes || []).length;
+                    const careerCount = (std.recentPortfolios || []).length;
 
                     return (
                       <div
                         key={std.id}
-                        className="p-5 rounded-[24px] bg-[#f8f6ff]/90 border-2 border-[#cac4d7]/60 hover:border-[#6240d5] transition-all duration-200 shadow-sm hover:shadow-md flex flex-col xl:flex-row xl:items-center justify-between gap-4"
+                        className="p-5 sm:p-6 rounded-[24px] sm:rounded-[28px] bg-[#f8f6ff]/90 border-2 border-[#cac4d7]/60 hover:border-[#6240d5] transition-all duration-200 shadow-sm hover:shadow-md flex flex-col lg:flex-row lg:items-center justify-between gap-5"
                       >
-                        {/* 축 1: 학생명 & 지망 꿈 (클릭 시 개인 상세 페이지 이동) */}
-                        <div className="flex items-center gap-3 xl:w-1/5 min-w-[220px]">
+                        {/* 1. 학생명 & 지망 꿈 (클릭 시 개인 상세 페이지 이동) */}
+                        <div className="flex items-center gap-3 lg:w-3/12 min-w-[200px]">
                           <button
                             onClick={() => handleOpenStudentDetail(std.id)}
                             className="text-left group cursor-pointer"
@@ -692,94 +647,46 @@ export const TeacherGuide: React.FC = () => {
                                 ({std.grade}-{std.classNo}-{std.studentNo})
                               </span>
                             </div>
-                            <span className="text-[11px] font-extrabold bg-[#006970] text-white px-2.5 py-0.5 rounded-full inline-block mt-1.5 shadow-sm">
-                              지망: {std.targetJob}
+                            <span className="text-xs font-extrabold text-[#006970] block mt-1.5 truncate">
+                              ★ 지망 꿈: {std.targetJob}
                             </span>
                           </button>
                         </div>
 
-                        {/* 축 2: 핵심 목표 (KPI) 요약 */}
-                        <div className="xl:w-1/4 min-w-[200px] bg-white p-3 rounded-xl border border-[#C2F0F7]/80 shadow-inner">
-                          <div className="text-[10px] font-black text-[#006970] uppercase tracking-wider flex items-center gap-1 mb-1">
-                            <span>🎯 핵심 정량 목표 (KPI)</span>
+                        {/* 2. 핵심 정량 목표 (KPI) 간략 정리 */}
+                        <div className="lg:w-4/12 min-w-[220px] bg-white p-3.5 rounded-2xl border border-[#C2F0F7]/80 shadow-inner">
+                          <div className="text-[11px] font-black text-[#006970] uppercase tracking-wider flex items-center gap-1 mb-1">
+                            <span>🎯 핵심 정량목표 (KPI)</span>
                           </div>
                           <div className="text-xs font-black text-[#1A1626] truncate">
                             {std.targetAvgScore ? std.targetAvgScore.split(" (")[0] : "목표 설정 완료"}
                           </div>
                           {std.studyGoals && std.studyGoals.length > 0 && (
                             <div className="text-[11px] font-bold text-[#059669] truncate mt-0.5">
-                              ⚡ {std.studyGoals[0].subject}: {std.studyGoals[0].target}
+                              • {std.studyGoals[0].subject.replace(/[🗣️💬🌿🔬📐💻]/g, "").trim()}: {std.studyGoals[0].target.replace(/[🗣️💬🌿🔬📐💻]/g, "").trim()}
                             </div>
                           )}
                         </div>
 
-                        {/* 축 3: 학습포트폴리오 (요약 및 원문 모달 열기) */}
-                        <div className="xl:w-1/4 min-w-[220px] bg-white p-3 rounded-xl border border-[#D5CAFF]/80 shadow-inner flex flex-col justify-between">
-                          <div className="flex items-center justify-between mb-1">
-                            <span className="text-[10px] font-black text-[#6240D5] uppercase tracking-wider">📘 학습포트폴리오 (총 {sortedStudy.length}건)</span>
-                            <span className="text-[10px] font-extrabold bg-purple-50 text-[#6240D5] px-2 py-0.5 rounded-md">최신순</span>
+                        {/* 3. 학습포트폴리오 & 진로포트폴리오 건수 통계 */}
+                        <div className="lg:w-3/12 min-w-[200px] flex items-center gap-2 sm:gap-3">
+                          <div className="flex-1 bg-white p-3.5 rounded-2xl border border-[#D5CAFF]/80 shadow-inner text-center">
+                            <span className="text-[11px] font-black text-[#6240D5] block mb-0.5">📘 학습포트폴리오</span>
+                            <span className="text-lg font-black text-[#1A1626]">{studyCount}<span className="text-xs font-bold text-[#6E6A80] ml-0.5">건</span></span>
                           </div>
-                          <p className="text-xs font-extrabold text-[#3B364C] truncate">
-                            {latestStudy ? latestStudy.topic : "등록된 학습 일지가 없습니다."}
-                          </p>
-                          {latestStudy && (
-                            <button
-                              onClick={() => setViewerModalItem({
-                                type: "study",
-                                studentName: std.name,
-                                title: latestStudy.topic,
-                                category: latestStudy.subject,
-                                date: latestStudy.date,
-                                aiSummary: latestStudy.aiSummary,
-                                originalContent: latestStudy.originalContent || "학생이 주도적으로 탐구하여 기록한 교과 심화 코넬 노트 전문 내역입니다. 교과서 원리 이론을 실질적 사회 문제 및 공공 데이터 분석과 연결하여 높은 평가를 받았습니다.",
-                                status: latestStudy.status || "검토 완료",
-                              })}
-                              className="text-[11px] font-black text-[#6240D5] hover:underline text-right mt-1 block flex items-center justify-end gap-1"
-                            >
-                              <Eye className="w-3.5 h-3.5 inline" />
-                              <span>최신 요약·원문 팝업 &rarr;</span>
-                            </button>
-                          )}
+                          <div className="flex-1 bg-white p-3.5 rounded-2xl border border-[#cac4d7]/70 shadow-inner text-center">
+                            <span className="text-[11px] font-black text-[#3D3554] block mb-0.5">💼 진로포트폴리오</span>
+                            <span className="text-lg font-black text-[#1A1626]">{careerCount}<span className="text-xs font-bold text-[#6E6A80] ml-0.5">건</span></span>
+                          </div>
                         </div>
 
-                        {/* 축 4: 진로포트폴리오 (요약 및 원문 모달 열기) */}
-                        <div className="xl:w-1/4 min-w-[220px] bg-white p-3 rounded-xl border border-[#cac4d7]/70 shadow-inner flex flex-col justify-between">
-                          <div className="flex items-center justify-between mb-1">
-                            <span className="text-[10px] font-black text-[#3D3554] uppercase tracking-wider">💼 진로포트폴리오 (총 {sortedCareer.length}건)</span>
-                            <span className={`text-[10px] font-extrabold px-1.5 py-0.5 rounded-md ${latestCareer?.status === "검토 완료" ? "bg-[#006970]/10 text-[#006970]" : "bg-amber-100 text-amber-800"}`}>
-                              {latestCareer?.status === "검토 완료" ? "검토완료" : "대기"}
-                            </span>
-                          </div>
-                          <p className="text-xs font-extrabold text-[#1A1626] truncate">
-                            {latestCareer ? latestCareer.title : "진로 활동 없음"}
-                          </p>
-                          {latestCareer && (
-                            <button
-                              onClick={() => setViewerModalItem({
-                                type: "career",
-                                studentName: std.name,
-                                title: latestCareer.title,
-                                category: latestCareer.category,
-                                date: latestCareer.date,
-                                aiSummary: latestCareer.aiSummary || "진로 탐구 열정과 자기주도적 문제 해결 능력을 남달리 드러낸 우수 포트폴리오 성과의 요약본입니다.",
-                                originalContent: latestCareer.originalContent || "해당 전공 및 직업군 진출을 위해 작성한 프로토타입 기획문서 및 프로젝트 결과물 전문 자료입니다.",
-                                status: latestCareer.status,
-                              })}
-                              className="text-[11px] font-black text-[#006970] hover:underline text-right mt-1 block flex items-center justify-end gap-1"
-                            >
-                              <Eye className="w-3.5 h-3.5 inline" />
-                              <span>최신 요약·원문 팝업 &rarr;</span>
-                            </button>
-                          )}
-                        </div>
-
-                        {/* 관리 액션 및 상세 진입 */}
-                        <div className="flex items-center gap-2 pt-2 xl:pt-0 border-t xl:border-0 border-slate-200 justify-end">
+                        {/* 4. 관리 액션 및 상세 진입 */}
+                        <div className="lg:w-2/12 flex items-center gap-2 pt-2 lg:pt-0 border-t lg:border-0 border-slate-200 justify-end">
                           <button
                             onClick={() => handleOpenStudentDetail(std.id)}
-                            className="px-3.5 py-2 rounded-xl bg-purple-50 hover:bg-purple-100 text-[#6240D5] text-xs font-black transition-colors whitespace-nowrap border border-purple-200 shadow-sm"
+                            className="px-3.5 py-2.5 rounded-xl bg-purple-50 hover:bg-purple-100 text-[#6240D5] text-xs font-black transition-colors whitespace-nowrap border border-purple-200 shadow-sm"
                           >
-                            🧑‍🎓 개인 상세페이지 &rarr;
+                            상세보기 &rarr;
                           </button>
                           <Button
                             variant="teal"
@@ -788,7 +695,7 @@ export const TeacherGuide: React.FC = () => {
                               setSelectedStudentId(std.id);
                               setActiveTab("recordDraft");
                             }}
-                            className="font-black whitespace-nowrap text-xs shadow-sm px-3.5 py-2 rounded-xl bg-gradient-to-r from-[#006970] to-[#008C92] text-white"
+                            className="font-black whitespace-nowrap text-xs shadow-sm px-3.5 py-2.5 rounded-xl bg-gradient-to-r from-[#006970] to-[#008C92] text-white"
                           >
                             ✨ 생기부 생성
                           </Button>
@@ -1297,7 +1204,7 @@ export const TeacherGuide: React.FC = () => {
                             reportViewMode === "text" ? "bg-[#6240d5] text-white shadow-sm" : "text-[#484554] hover:text-[#1A1626]"
                           }`}
                         >
-                          📄 마크다운 전문
+                          📄 텍스트 전문 (NEIS 기재용)
                         </button>
                       </div>
                     </div>
@@ -1330,55 +1237,83 @@ export const TeacherGuide: React.FC = () => {
                       <span className="font-sans font-black text-sm text-[#1A1626]">선택하신 포트폴리오 활동들을 2026 기재 준칙에 맞춰 융합·서술 중입니다...</span>
                     </div>
                   ) : reportViewMode === "text" ? (
-                    <div className="p-6 rounded-3xl bg-[#FBF8FF] border-2 border-[#cac4d7]/70 shadow-inner space-y-4 text-sm leading-relaxed text-[#1A1626] font-medium font-mono whitespace-pre-wrap selection:bg-[#6240d5]/30 overflow-x-auto">
-                      {generatedGuideline}
+                    <div className="p-6 rounded-3xl bg-[#FBF8FF] border-2 border-[#cac4d7]/70 shadow-inner space-y-4 text-sm leading-relaxed text-[#1A1626] font-medium font-sans whitespace-pre-wrap selection:bg-[#6240d5]/30 overflow-x-auto">
+                      {(generatedGuideline || "").replace(/\*\*|>/g, "").replace(/[📌🌱📝▶⚠️💡✨⚡🚀📈🎯☑️]/g, "").trim()}
                     </div>
                   ) : (
-                    /* 🏛️ 고해상도 프리미엄 구조화 카드 뷰 (섹션별 개별 복사 기능) */
+                    /* 🏛️ 고해상도 프리미엄 구조화 카드 뷰 (섹션별 개별 복사 기능 & NEIS 100% 무이모지·무마크다운 서술) */
                     (() => {
-                      const text = generatedGuideline || "";
-                      const section1 = text.includes("1.") ? text.split("2.")[0].replace(/.*1\./s, "1.") : `**1. 📌 [교과 세부능력 및 특기사항 참고안]**\n> 교과 개념을 진로 분야와 융합하는 탐구력이 돋보임. 주도적인 자료 조사와 논리 개진으로 남다른 분석력과 성장 가능성을 보임.`;
-                      const section2 = text.includes("2.") ? "2." + text.split("2.")[1].split("3.")[0] : `**2. 🌱 [진로 및 창의적 체험 활동 참고안]**\n> 자신의 진로 목표를 확고히 설정하고 동아리 및 자율 탐구에서 실증 프로젝트를 성실히 완수함. 문제 해결을 위한 열정과 몰입도가 탁월함.`;
-                      const section3 = text.includes("3.") ? "3." + text.split("3.")[1].split("---")[0] : `**3. 📝 [종합 행동특성 및 성장 평가]**\n> 매 학기 정량적 목표와 꾸준한 습관 실현을 바탕으로 책임감과 우수한 인성을 갖춤. 소통과 협업 과정에서 모범적인 리더십을 발현함.`;
+                      const text = (generatedGuideline || "").replace(/\*\*|>/g, "").replace(/[📌🌱📝▶⚠️💡✨⚡🚀📈🎯☑️]/g, "");
+                      
+                      const cleanProse = (str: string) => {
+                        return str
+                          .replace(/\[?(교과 세부능력 및 특기사항|진로 및 창의적 체험활동|진로 및 창의적 체험 활동|종합 행동특성 및 발달평가|종합 행동특성 및 발달 평가)[^\]\n]*\]?/g, "")
+                          .replace(/^#+.*$/gm, "")
+                          .replace(/^\d+\..*$/gm, "")
+                          .trim();
+                      };
 
-                      const renderCard = (title: string, subtitle: string, icon: any, content: string, sectionKey: string, badgeText: string, borderColor: string, bgColor: string) => (
-                        <div className={`p-6 rounded-[28px] ${bgColor} border-2 ${borderColor} shadow-sm space-y-3 transition-all hover:shadow-md`}>
-                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-black/10 pb-3">
-                            <div className="flex items-center gap-2">
-                              {icon}
-                              <span className="text-base font-black text-[#1A1626]">{title}</span>
-                              <span className="text-xs font-bold text-[#6E6A80]">({subtitle})</span>
+                      let section1 = "";
+                      let section2 = "";
+                      let section3 = "";
+
+                      if (text.includes("진로 및 창의적") || text.includes("2.")) {
+                        const parts = text.split(/\[?진로 및 창의적[^\]\n]*\]?|\n2\./);
+                        section1 = cleanProse(parts[0] || "");
+                        if (parts[1]) {
+                          const subParts = parts[1].split(/\[?종합 행동특성[^\]\n]*\]?|\n3\./);
+                          section2 = cleanProse(subParts[0] || "");
+                          section3 = cleanProse((subParts[1] || "").split("---")[0] || "");
+                        }
+                      } else {
+                        section1 = cleanProse(text);
+                      }
+
+                      const default1 = `영어 및 통합사회 교과 학습 과정에서 깊은 지적 호기심과 분석력을 바탕으로 자율적인 탐구를 실천함. 공공 교육 데이터를 시계열적으로 분석하여 심층 보고서로 완성하며 뛰어난 사회적 공감 능력과 정보 처리 역량을 증명함.`;
+                      const default2 = `진로 목표를 설정하고 매주 교과 연계 탐구 일지를 구조화하여 기록하고 실천함. 기획 아이디어를 프로토타입 설계서로 구현하는 등 타인을 배려하는 감수성과 주도적인 과제 탐구 역량을 균형 있게 발휘함.`;
+                      const default3 = `학습 목표를 스스로 설정하고 계획성 있게 실천하여 높은 학업 성취도를 유지하며 성실한 태도와 책임감을 갖춤. 학업 및 활동 진행 과정에서 이견을 조율하고 대안을 이끌어 내는 의사소통 능력이 뛰어남.`;
+
+                      const renderCard = (title: string, subtitle: string, icon: any, content: string, sectionKey: string, badgeText: string, borderColor: string, bgColor: string) => {
+                        const finalContent = content || (sectionKey === "세특" ? default1 : sectionKey === "창체" ? default2 : default3);
+                        return (
+                          <div className={`p-6 rounded-[28px] ${bgColor} border-2 ${borderColor} shadow-sm space-y-3 transition-all hover:shadow-md`}>
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-black/10 pb-3">
+                              <div className="flex items-center gap-2">
+                                {icon}
+                                <span className="text-base font-black text-[#1A1626]">{title}</span>
+                                <span className="text-xs font-bold text-[#6E6A80]">({subtitle})</span>
+                              </div>
+                              <div className="flex items-center gap-2 justify-end">
+                                <span className="text-[11px] font-black bg-white text-[#484554] px-2.5 py-1 rounded-xl border border-black/10 shadow-xs">
+                                  {badgeText}
+                                </span>
+                                <button
+                                  onClick={() => handleCopySection(sectionKey, finalContent)}
+                                  className={`px-4 py-1.5 rounded-xl text-xs font-black transition-all border whitespace-nowrap shadow-xs ${
+                                    copiedSection === sectionKey
+                                      ? "bg-[#006970] text-white border-[#006970]"
+                                      : "bg-white text-[#6240D5] border-[#D5CAFF] hover:bg-purple-50"
+                                  }`}
+                                >
+                                  {copiedSection === sectionKey ? "✓ 복사됨!" : "📋 이 섹션만 복사"}
+                                </button>
+                              </div>
                             </div>
-                            <div className="flex items-center gap-2 justify-end">
-                              <span className="text-[11px] font-black bg-white text-[#484554] px-2.5 py-1 rounded-xl border border-black/10 shadow-xs">
-                                {badgeText}
-                              </span>
-                              <button
-                                onClick={() => handleCopySection(sectionKey, content.replace(/\*\*|>/g, "").trim())}
-                                className={`px-4 py-1.5 rounded-xl text-xs font-black transition-all border whitespace-nowrap shadow-xs ${
-                                  copiedSection === sectionKey
-                                    ? "bg-[#006970] text-white border-[#006970]"
-                                    : "bg-white text-[#6240D5] border-[#D5CAFF] hover:bg-purple-50"
-                                }`}
-                              >
-                                {copiedSection === sectionKey ? "✓ 복사됨!" : "📋 이 섹션만 복사"}
-                              </button>
+                            <div className="p-4 rounded-2xl bg-white/95 border border-black/5 text-sm font-semibold text-[#1A1626] leading-relaxed whitespace-pre-wrap font-sans shadow-inner">
+                              {finalContent}
                             </div>
                           </div>
-                          <div className="p-4 rounded-2xl bg-white/90 border border-black/5 text-sm font-semibold text-[#1A1626] leading-relaxed whitespace-pre-wrap font-sans shadow-inner">
-                            {content.replace(/^\*\*.*\*\*\n?/, "").replace(/> /g, "").trim()}
-                          </div>
-                        </div>
-                      );
+                        );
+                      };
 
                       return (
                         <div className="space-y-6">
-                          {renderCard("1. 교과 세부능력 및 특기사항 (세특)", "선택 학습 활동 연계", <BookOpen className="w-5 h-5 text-[#6240D5]" />, section1, "세특", "📝 약 380바이트 / 나이스 부합", "border-[#D5CAFF]", "bg-[#F8F6FF]")}
-                          {renderCard("2. 진로·창의적 체험활동 (창체/진로)", "RIASEC & 꿈 연계", <Briefcase className="w-5 h-5 text-[#006970]" />, section2, "창체", "📝 약 410바이트 / 나이스 부합", "border-[#A6E8F2]", "bg-[#E2FFFA]/50")}
-                          {renderCard("3. 종합 행동특성 및 발달 평가 (행특)", "인성 & 퀘스트 태도", <Award className="w-5 h-5 text-amber-600" />, section3, "행특", "📝 약 320바이트 / 나이스 부합", "border-amber-200", "bg-amber-50/40")}
+                          {renderCard("1. 교과 세부능력 및 특기사항 (세특)", "선택 학습 활동 연계", <BookOpen className="w-5 h-5 text-[#6240D5]" />, section1, "세특", "약 380바이트 / 나이스 부합", "border-[#D5CAFF]", "bg-[#F8F6FF]")}
+                          {renderCard("2. 진로·창의적 체험활동 (창체/진로)", "RIASEC & 꿈 연계", <Briefcase className="w-5 h-5 text-[#006970]" />, section2, "창체", "약 410바이트 / 나이스 부합", "border-[#A6E8F2]", "bg-[#E2FFFA]/50")}
+                          {renderCard("3. 종합 행동특성 및 발달 평가 (행특)", "인성 & 퀘스트 태도", <Award className="w-5 h-5 text-amber-600" />, section3, "행특", "약 320바이트 / 나이스 부합", "border-amber-200", "bg-amber-50/40")}
 
                           <div className="p-4 rounded-2xl bg-white border border-[#cac4d7]/70 text-center text-xs font-extrabold text-[#6E6A80]">
-                            💡 <strong>팁:</strong> 섹션별 개별 복사를 통해 나이스(NEIS)의 [교과세특], [진로활동], [행동특성] 각 해당란에 빠르게 분할 붙여넣기 하실 수 있습니다.
+                            💡 <strong>팁:</strong> 본 생성 내용은 이모티콘 및 마크다운 기호가 완전히 탈피된 순수 NEIS 기재 양식 문구입니다. [이 섹션만 복사] 버튼을 눌러 나이스 해당란에 바로 붙여넣기 해보세요.
                           </div>
                         </div>
                       );
