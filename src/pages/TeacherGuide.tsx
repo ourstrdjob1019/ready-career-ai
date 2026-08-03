@@ -19,7 +19,6 @@ import {
   Sparkles,
   BookOpen,
   Briefcase,
-  Calendar,
 } from "lucide-react";
 
 interface StudentData {
@@ -386,7 +385,6 @@ export const TeacherGuide: React.FC = () => {
     const selectedItems = allItems.filter(item => targetIds.includes(item.id));
 
     try {
-      const selectedTitles = selectedItems.map(i => `[${i.category}] ${i.title}`).join(", ");
       const res = await executeAiPrompt({
         promptType: "saengbu_guideline",
         studentName: activeStudent.name,
