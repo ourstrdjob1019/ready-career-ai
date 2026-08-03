@@ -695,7 +695,7 @@ export const HomeDashboard: React.FC = () => {
       </div>
 
       {/* =========================================================================
-          MODAL: 직업 변경 및 Lv.0 ~ Lv.5 마스코트 진화 로드맵
+          MODAL: 직업 변경 및 Lv.1 ~ Lv.5 마스코트 진화 로드맵
          ========================================================================= */}
       {jobIntroModalIdx !== null && interestedJobs[jobIntroModalIdx] && (
         <div className="fixed inset-0 z-[100] bg-black/75 backdrop-blur-md flex items-center justify-center p-4 sm:p-8 animate-fadeIn">
@@ -715,25 +715,24 @@ export const HomeDashboard: React.FC = () => {
                 </h2>
               </div>
 
-              {/* Lv.0 ~ Lv.5 순차적 레벨업 진화 화면 (군더더기 설명 박스 100% 제거) */}
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 relative items-stretch">
+              {/* Lv.1 ~ Lv.5 순차적 레벨업 진화 화면 (5단계 구조) */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4.5 relative items-stretch">
                 {[
-                  { lv: "Lv.0", badge: "🌱 새싹 탐구", name: "꿈결 탐험 아리", bg: "from-[#F5EFFF] to-[#E6DBFF]", scale: "w-20 h-20" },
                   { lv: "Lv.1", badge: "📖 지식 융합", name: "호기심 장착 아리", bg: "from-[#E3FAFF] to-[#C0F3FC]", scale: "w-24 h-24" },
-                  { lv: "Lv.2", badge: "⚡ 챌린지", name: "프로젝트 리더", bg: "from-[#FFEBF2] to-[#FFCFE2]", scale: "w-24 h-24" },
+                  { lv: "Lv.2", badge: "⚡ 챌린지", name: "프로젝트 리더", bg: "from-[#FFEBF2] to-[#FFCFE2]", scale: "w-26 h-26" },
                   { lv: "Lv.3", badge: "🏆 포폴 왕", name: "포트폴리오 왕", bg: "from-[#FFF8E4] to-[#FFECD2]", scale: "w-28 h-28" },
-                  { lv: "Lv.4", badge: "🚀 차세대 고수", name: "미래 엑스퍼트", bg: "from-[#E6F0FF] to-[#C8E0FF]", scale: "w-28 h-28" },
-                  { lv: "Lv.5", badge: "👑 마스터", name: "최상위 마스터", bg: "from-[#EBFFF8] to-[#9EFAEA]", scale: "w-32 h-32 animate-bounce-short" },
+                  { lv: "Lv.4", badge: "🚀 차세대 고수", name: "미래 엑스퍼트", bg: "from-[#E6F0FF] to-[#C8E0FF]", scale: "w-30 h-30" },
+                  { lv: "Lv.5", badge: "👑 마스터", name: "최상위 마스터", bg: "from-[#EBFFF8] to-[#9EFAEA]", scale: "w-34 h-34 animate-bounce-short" },
                 ].map((item, i) => (
-                  <div key={i} className={`rounded-[32px] bg-gradient-to-b ${item.bg} p-4 border border-white shadow-lg flex flex-col items-center justify-between space-y-3 transform hover:-translate-y-2 transition-all`}>
-                    <div className="w-full flex flex-col items-center space-y-1">
-                      <span className="text-xs font-black bg-white px-2.5 py-0.5 rounded-full">{item.lv}</span>
-                      <span className="text-[10px] font-bold text-slate-700 bg-white/50 px-2 py-0.5 rounded-md">{item.badge}</span>
+                  <div key={i} className={`rounded-[34px] bg-gradient-to-b ${item.bg} p-5 border-2 border-white shadow-lg flex flex-col items-center justify-between space-y-3.5 transform hover:-translate-y-2 transition-all`}>
+                    <div className="w-full flex flex-col items-center space-y-1.5">
+                      <span className="text-xs font-black bg-white px-3 py-0.5 rounded-full shadow-sm">{item.lv}</span>
+                      <span className="text-[11px] font-black text-slate-700 bg-white/70 px-2.5 py-0.5 rounded-lg">{item.badge}</span>
                     </div>
-                    <div className={`rounded-full bg-white/90 p-2 shadow-inner border border-white flex items-center justify-center my-2 ${item.scale}`}>
+                    <div className={`rounded-full bg-white/90 p-3 shadow-inner border-2 border-white flex items-center justify-center my-2 ${item.scale}`}>
                       <img src={interestedJobs[jobIntroModalIdx].imageUrl || ARI_BLOB_URL} alt="Ari" className="w-full h-full object-contain drop-shadow-md" />
                     </div>
-                    <strong className="text-[11px] sm:text-xs font-black text-[#1A1626] text-center w-full bg-white/80 rounded-xl py-1">{item.name}</strong>
+                    <strong className="text-xs sm:text-sm font-black text-[#1A1626] text-center w-full bg-white/90 rounded-2xl py-1.5 shadow-sm">{item.name}</strong>
                   </div>
                 ))}
               </div>
