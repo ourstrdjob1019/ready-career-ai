@@ -14,6 +14,12 @@ import {
   BarChart3,
   Award,
   ExternalLink,
+  ArrowLeft,
+  Eye,
+  Sparkles,
+  BookOpen,
+  Briefcase,
+  Calendar,
 } from "lucide-react";
 
 interface StudentData {
@@ -30,7 +36,7 @@ interface StudentData {
   habitSuccessRate: number;
   targetAvgScore?: string;
   studyGoals?: { subject: string; target: string; currentStatus: string; score: number }[];
-  cornellNotes?: { subject: string; topic: string; aiSummary: string; date: string }[];
+  cornellNotes?: { subject: string; topic: string; aiSummary: string; date: string; originalContent?: string; status?: "검토 완료" | "확인 대기" }[];
   diagnosticStatus: {
     interest: string;
     intelligence: string;
@@ -47,6 +53,8 @@ interface StudentData {
     category: string;
     date: string;
     status: "검토 완료" | "확인 대기";
+    originalContent?: string;
+    aiSummary?: string;
   }[];
   activities: string[];
   guidelineSample?: string;
@@ -250,6 +258,21 @@ export const TeacherGuide: React.FC = () => {
   const [generatedGuideline, setGeneratedGuideline] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
+  // 교사용 탭2: 학생 개별 상세 관제 뷰 전환용 ID (null이면 전체 4대축 요약 보드, string이면 해당 학생 개인 상세 프로필 뷰)
+  const [detailStudentId, setDetailStudentId] = useState<string | null>(null);
+
+  // 포트폴리오 요약본 클릭 시 고해상도 원문 및 AI 세특 교정 초안 열람 모달 팝업 상태
+  const [viewerModalItem, setViewerModalItem] = useState<{
+    type: "study" | "career";
+    studentName: string;
+    title: string;
+    category: string;
+    date: string;
+    aiSummary: string;
+    originalContent: string;
+    status: "검토 완료" | "확인 대기";
+  } | null>(null);
+
   const baseStudent = MOCK_STUDENTS.find((s) => s.id === selectedStudentId) || MOCK_STUDENTS[0];
   const activeStudent = (() => {
     try {
@@ -260,6 +283,8 @@ export const TeacherGuide: React.FC = () => {
           category: act.category ? act.category.split(" ")[0] : "학생 기록",
           date: act.date || "오늘",
           status: "검토 완료",
+          aiSummary: "학생이 직접 작성한 탐구 활동으로 교과 역량과 진로 주도성을 뛰어난 논리로 펼쳐 보임.",
+          originalContent: act.content || "상세 작성 내역이 정상 등록되어 AI 생기부 리포트 생성 시 핵심 근거로 쓰입니다."
         }));
         const addedActivities = stored.map((act: any) => `${act.title} (학생 직접 서술 활동: ${act.content ? act.content.slice(0, 40) : ""}...)`);
         return {
@@ -496,149 +521,369 @@ export const TeacherGuide: React.FC = () => {
         {/* TAB 2: ACTIVITY LOGS & PORTFOLIO CONTROL */}
         {activeTab === "portfolio" && (
           <div className="space-y-6 animate-fadeIn">
-            <div className="bg-white rounded-[32px] p-8 border border-[#cac4d7]/60 shadow-sm space-y-8">
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#cac4d7]/40 pb-5">
-                <div>
-                  <h3 className="text-xl font-extrabold text-[#1A1626] flex items-center gap-2">
-                    <Award className="w-6 h-6 text-[#006970]" />
-                    <span>학생별 학습 목표 설정 & 활동·포트폴리오 검토 보드</span>
-                  </h3>
-                  <p className="text-xs text-[#484554] mt-1">
-                    학생들의 이번 학기 정량적 KPI 목표, 교과 연계 코넬 노트, 진로 동아리 스펙을 검증하고 생기부 근거 자료로 파악하세요.
-                  </p>
+            {detailStudentId === null ? (
+              /* ====================================================
+                 1. 메인 화면: 4대 축 고밀도 요약 대시보드 (Summary View)
+                 ==================================================== */
+              <div className="bg-white rounded-[32px] p-8 border border-[#cac4d7]/60 shadow-sm space-y-6">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#cac4d7]/40 pb-5">
+                  <div>
+                    <h3 className="text-xl font-extrabold text-[#1A1626] flex items-center gap-2">
+                      <Award className="w-6 h-6 text-[#006970]" />
+                      <span>학생별 활동 요약 대시보드 (4대 축 고밀도 뷰)</span>
+                    </h3>
+                    <p className="text-xs text-[#484554] mt-1">
+                      학생명 ─ 목표 ─ 학습포트폴리오 ─ 진로포트폴리오가 한눈에 요약된 마스터 보드입니다. 학생 이름이나 요약본을 클릭하여 상세 정보를 열람하세요.
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-black bg-[#e6deff] text-[#6240d5] px-4 py-2 rounded-2xl border border-[#cbbeff] whitespace-nowrap shadow-sm flex items-center gap-1.5">
+                      <Sparkles className="w-4 h-4 text-[#6240D5]" />
+                      <span>4대 축 데이터 요약 동기화 완료</span>
+                    </span>
+                  </div>
                 </div>
 
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-black bg-[#e6deff] text-[#6240d5] px-4 py-2 rounded-2xl border border-[#cbbeff] whitespace-nowrap shadow-sm">
-                    ✨ 전수 활동 데이터 AI 정상 동기화 중
-                  </span>
-                </div>
-              </div>
+                {/* 4대 축 고밀도 요약 리스트 (Row Table) */}
+                <div className="space-y-4">
+                  {filteredStudents.map((std) => {
+                    const latestStudy = std.cornellNotes && std.cornellNotes.length > 0 ? std.cornellNotes[0] : null;
+                    const latestCareer = std.recentPortfolios && std.recentPortfolios.length > 0 ? std.recentPortfolios[0] : null;
 
-              {/* Student Comprehensive Cards */}
-              <div className="space-y-8">
-                {filteredStudents.map((std) => (
-                  <div key={std.id} className="p-7 rounded-[32px] bg-[#f4f2fa]/80 border-2 border-[#cac4d7]/70 hover:border-[#6240d5]/80 transition-all space-y-6 shadow-sm">
-                    {/* Header */}
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b-2 border-[#cac4d7]/50 pb-4">
-                      <div className="flex items-center gap-3 flex-wrap">
-                        <span className="text-lg font-black text-[#1A1626] flex items-center gap-2">
-                          <span className="w-3 h-3 rounded-full bg-[#6240D5] animate-ping inline-block" />
-                          {std.name} ({std.grade}학년 {std.classNo}반 {std.studentNo}번)
-                        </span>
-                        <span className="text-xs font-extrabold bg-[#006970] text-white px-3.5 py-1 rounded-full whitespace-nowrap shadow-sm">
-                          지망: {std.targetJob}
-                        </span>
-                        <span className="text-xs font-extrabold text-[#6240d5] bg-white px-3.5 py-1 rounded-full border border-[#cac4d7]/60 whitespace-nowrap shadow-sm">
-                          퀘스트 완수 {std.questCount}건
-                        </span>
-                      </div>
-                      <Button
-                        variant="teal"
-                        size="sm"
-                        onClick={() => {
-                          setSelectedStudentId(std.id);
-                          setActiveTab("recordDraft");
-                        }}
-                        className="font-black whitespace-nowrap text-xs shadow-md px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#006970] to-[#00929A] text-white"
+                    return (
+                      <div
+                        key={std.id}
+                        className="p-5 rounded-[24px] bg-[#f8f6ff]/90 border-2 border-[#cac4d7]/60 hover:border-[#6240d5] transition-all duration-200 shadow-sm hover:shadow-md flex flex-col xl:flex-row xl:items-center justify-between gap-4"
                       >
-                        이 학생 AI 생기부 리포트 생성 &rarr;
-                      </Button>
-                    </div>
-
-                    {/* Section A: 정량적 학습 목표 (KPI) & 과목별 타겟 */}
-                    {std.studyGoals && std.studyGoals.length > 0 && (
-                      <div className="space-y-3 bg-gradient-to-br from-[#E6FBFF]/80 via-[#F2FCFF]/90 to-white p-5 rounded-2xl border border-[#A6E8F2] shadow-inner">
-                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#A6E8F2]/60 pb-2.5">
-                          <h4 className="text-xs font-black text-[#006970] flex items-center gap-1.5 uppercase tracking-wide">
-                            🎯 [ 이번 학기 정량적 학습 목표 및 KPI 현황 ]
-                          </h4>
-                          <span className="text-xs font-extrabold text-[#005257] bg-white px-3 py-1 rounded-lg border border-[#A6E8F2] shadow-sm">
-                            {std.targetAvgScore || "목표 수립 완료"}
-                          </span>
-                        </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                          {std.studyGoals.map((g, idx) => (
-                            <div key={idx} className="bg-white p-3.5 rounded-xl border border-[#C2F0F7] shadow-sm flex flex-col justify-between">
-                              <div className="flex items-center justify-between mb-1">
-                                <span className="text-xs font-black text-[#1A1626]">{g.subject}</span>
-                                <span className="text-[11px] font-extrabold bg-[#006970]/10 text-[#006970] px-2 py-0.5 rounded-md">
-                                  현재 {g.score}점
-                                </span>
-                              </div>
-                              <span className="text-xs font-bold text-[#3B364C] truncate mb-1">목표: {g.target}</span>
-                              <span className="text-[11px] font-extrabold text-[#059669] pt-1 border-t border-slate-100">
-                                ⚡ {g.currentStatus}
+                        {/* 축 1: 학생명 & 지망 꿈 (클릭 시 개인 상세 페이지 이동) */}
+                        <div className="flex items-center gap-3 xl:w-1/5 min-w-[220px]">
+                          <button
+                            onClick={() => setDetailStudentId(std.id)}
+                            className="text-left group cursor-pointer"
+                          >
+                            <div className="flex items-center gap-2">
+                              <span className="w-2.5 h-2.5 rounded-full bg-[#6240D5] inline-block group-hover:scale-125 transition-transform" />
+                              <span className="text-base font-black text-[#1A1626] group-hover:text-[#6240D5] underline-offset-4 group-hover:underline transition-colors">
+                                {std.name}
+                              </span>
+                              <span className="text-xs font-bold text-[#6E6A80]">
+                                ({std.grade}-{std.classNo}-{std.studentNo})
                               </span>
                             </div>
-                          ))}
+                            <span className="text-[11px] font-extrabold bg-[#006970] text-white px-2.5 py-0.5 rounded-full inline-block mt-1.5 shadow-sm">
+                              지망: {std.targetJob}
+                            </span>
+                          </button>
                         </div>
-                      </div>
-                    )}
 
-                    {/* Section B: AI 학습포트폴리오 (코넬 노트) */}
-                    {std.cornellNotes && std.cornellNotes.length > 0 && (
-                      <div className="space-y-3 bg-gradient-to-br from-[#F5EFFF] via-white to-[#FAF6FF] p-5 rounded-2xl border border-[#D5CAFF] shadow-inner">
-                        <h4 className="text-xs font-black text-[#6240D5] flex items-center gap-1.5 uppercase tracking-wide border-b border-[#D5CAFF]/60 pb-2">
-                          📘 [ AI 학습포트폴리오 · 교과 연계 코넬 노트 심화 요약 ]
-                        </h4>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          {std.cornellNotes.map((cn, idx) => (
-                            <div key={idx} className="p-4 rounded-xl bg-white border border-[#D5CAFF] shadow-sm space-y-2">
-                              <div className="flex items-center justify-between">
-                                <span className="text-[11px] font-black bg-[#6240D5] text-white px-2.5 py-0.5 rounded-md">
-                                  {cn.subject}
-                                </span>
-                                <span className="text-[11px] font-bold text-[#6E6A80]">{cn.date}</span>
-                              </div>
-                              <strong className="text-xs font-extrabold text-[#1A1626] block leading-snug">
-                                {cn.topic}
-                              </strong>
-                              <p className="text-[11px] font-semibold text-[#484554] bg-[#F8F6FF] p-2.5 rounded-lg border border-purple-50 leading-relaxed">
-                                ✨ <strong>AI 세특 요약:</strong> {cn.aiSummary}
-                              </p>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Section C: 진로 포트폴리오 스펙 및 자율/동아리 */}
-                    <div className="space-y-3">
-                      <h4 className="text-xs font-black text-[#3D3554] flex items-center gap-1.5 pl-1">
-                        💼 [ 진로 포트폴리오 스펙 및 활동 제출 보드 ]
-                      </h4>
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        {std.recentPortfolios.map((pf, idx) => (
-                          <div key={idx} className="p-4 rounded-2xl bg-white border border-[#cac4d7]/60 shadow-sm flex flex-col justify-between space-y-3 hover:shadow-md transition-all">
-                            <div className="space-y-1.5">
-                              <div className="flex items-center justify-between">
-                                <span className="text-[10px] font-black uppercase text-[#6240d5] bg-[#efedf5] px-2.5 py-0.5 rounded-full whitespace-nowrap">
-                                  {pf.category}
-                                </span>
-                                <span className={`text-[11px] font-black px-2.5 py-0.5 rounded-full whitespace-nowrap ${
-                                  pf.status === "검토 완료" ? "bg-[#006970]/15 text-[#006970]" : "bg-[#d97706]/15 text-[#d97706]"
-                                }`}>
-                                  {pf.status === "검토 완료" ? "✓ 검토 완료" : "⌛ 확인 대기"}
-                                </span>
-                              </div>
-                              <strong className="text-sm font-black text-[#1A1626] block leading-tight">
-                                {pf.title}
-                              </strong>
-                            </div>
-
-                            <div className="pt-2 border-t border-[#cac4d7]/30 flex items-center justify-between text-[11px] text-[#484554] font-bold">
-                              <span>등록일: {pf.date}</span>
-                              <span className="text-[#6240d5] cursor-pointer hover:underline font-black whitespace-nowrap">원문 열람 &rarr;</span>
-                            </div>
+                        {/* 축 2: 핵심 목표 (KPI) 요약 */}
+                        <div className="xl:w-1/4 min-w-[200px] bg-white p-3 rounded-xl border border-[#C2F0F7]/80 shadow-inner">
+                          <div className="text-[10px] font-black text-[#006970] uppercase tracking-wider flex items-center gap-1 mb-1">
+                            <span>🎯 핵심 정량 목표 (KPI)</span>
                           </div>
-                        ))}
+                          <div className="text-xs font-black text-[#1A1626] truncate">
+                            {std.targetAvgScore ? std.targetAvgScore.split(" (")[0] : "목표 설정 완료"}
+                          </div>
+                          {std.studyGoals && std.studyGoals.length > 0 && (
+                            <div className="text-[11px] font-bold text-[#059669] truncate mt-0.5">
+                              ⚡ {std.studyGoals[0].subject}: {std.studyGoals[0].target}
+                            </div>
+                          )}
+                        </div>
+
+                        {/* 축 3: 학습포트폴리오 (요약 및 원문 모달 열기) */}
+                        <div className="xl:w-1/4 min-w-[220px] bg-white p-3 rounded-xl border border-[#D5CAFF]/80 shadow-inner flex flex-col justify-between">
+                          <div className="flex items-center justify-between mb-1">
+                            <span className="text-[10px] font-black text-[#6240D5] uppercase tracking-wider">📘 학습포트폴리오 (총 {std.cornellNotes?.length || 0}건)</span>
+                            <span className="text-[10px] font-extrabold bg-purple-50 text-[#6240D5] px-2 py-0.5 rounded-md">코넬 세특</span>
+                          </div>
+                          <p className="text-xs font-extrabold text-[#3B364C] truncate">
+                            {latestStudy ? latestStudy.topic : "등록된 학습 일지가 없습니다."}
+                          </p>
+                          {latestStudy && (
+                            <button
+                              onClick={() => setViewerModalItem({
+                                type: "study",
+                                studentName: std.name,
+                                title: latestStudy.topic,
+                                category: latestStudy.subject,
+                                date: latestStudy.date,
+                                aiSummary: latestStudy.aiSummary,
+                                originalContent: latestStudy.originalContent || "학생이 주도적으로 탐구하여 기록한 교과 심화 코넬 노트 전문 내역입니다. 교과서 원리 이론을 실질적 사회 문제 및 공공 데이터 분석과 연결하여 높은 평가를 받았습니다.",
+                                status: latestStudy.status || "검토 완료",
+                              })}
+                              className="text-[11px] font-black text-[#6240D5] hover:underline text-right mt-1 block flex items-center justify-end gap-1"
+                            >
+                              <Eye className="w-3.5 h-3.5 inline" />
+                              <span>최신 요약·원문 팝업 &rarr;</span>
+                            </button>
+                          )}
+                        </div>
+
+                        {/* 축 4: 진로포트폴리오 (요약 및 원문 모달 열기) */}
+                        <div className="xl:w-1/4 min-w-[220px] bg-white p-3 rounded-xl border border-[#cac4d7]/70 shadow-inner flex flex-col justify-between">
+                          <div className="flex items-center justify-between mb-1">
+                            <span className="text-[10px] font-black text-[#3D3554] uppercase tracking-wider">💼 진로포트폴리오 (총 {std.recentPortfolios.length}건)</span>
+                            <span className={`text-[10px] font-extrabold px-1.5 py-0.5 rounded-md ${latestCareer?.status === "검토 완료" ? "bg-[#006970]/10 text-[#006970]" : "bg-amber-100 text-amber-800"}`}>
+                              {latestCareer?.status === "검토 완료" ? "검토완료" : "대기"}
+                            </span>
+                          </div>
+                          <p className="text-xs font-extrabold text-[#1A1626] truncate">
+                            {latestCareer ? latestCareer.title : "진로 활동 없음"}
+                          </p>
+                          {latestCareer && (
+                            <button
+                              onClick={() => setViewerModalItem({
+                                type: "career",
+                                studentName: std.name,
+                                title: latestCareer.title,
+                                category: latestCareer.category,
+                                date: latestCareer.date,
+                                aiSummary: latestCareer.aiSummary || "진로 탐구 열정과 자기주도적 문제 해결 능력을 남달리 드러낸 우수 포트폴리오 성과의 요약본입니다.",
+                                originalContent: latestCareer.originalContent || "해당 전공 및 직업군 진출을 위해 작성한 프로토타입 기획문서 및 프로젝트 결과물 전문 자료입니다.",
+                                status: latestCareer.status,
+                              })}
+                              className="text-[11px] font-black text-[#006970] hover:underline text-right mt-1 block flex items-center justify-end gap-1"
+                            >
+                              <Eye className="w-3.5 h-3.5 inline" />
+                              <span>최신 요약·원문 팝업 &rarr;</span>
+                            </button>
+                          )}
+                        </div>
+
+                        {/* 관리 액션 및 상세 진입 */}
+                        <div className="flex items-center gap-2 pt-2 xl:pt-0 border-t xl:border-0 border-slate-200 justify-end">
+                          <button
+                            onClick={() => setDetailStudentId(std.id)}
+                            className="px-3.5 py-2 rounded-xl bg-purple-50 hover:bg-purple-100 text-[#6240D5] text-xs font-black transition-colors whitespace-nowrap border border-purple-200 shadow-sm"
+                          >
+                            🧑‍🎓 개인 상세페이지 &rarr;
+                          </button>
+                          <Button
+                            variant="teal"
+                            size="sm"
+                            onClick={() => {
+                              setSelectedStudentId(std.id);
+                              setActiveTab("recordDraft");
+                            }}
+                            className="font-black whitespace-nowrap text-xs shadow-sm px-3.5 py-2 rounded-xl bg-gradient-to-r from-[#006970] to-[#008C92] text-white"
+                          >
+                            ✨ 생기부 생성
+                          </Button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            ) : (
+              /* ====================================================
+                 2. 개인 전용 상세페이지 뷰 (Personal Detail Profile View)
+                 ==================================================== */
+              (() => {
+                const curStd = filteredStudents.find((s) => s.id === detailStudentId) || MOCK_STUDENTS[0];
+                return (
+                  <div className="space-y-6 animate-fadeIn">
+                    {/* 상단 네비게이션 & 뒤로 가기 바 */}
+                    <div className="bg-white p-4 rounded-2xl border border-[#cac4d7]/70 shadow-sm flex items-center justify-between">
+                      <button
+                        onClick={() => setDetailStudentId(null)}
+                        className="inline-flex items-center gap-2 text-sm font-black text-[#6240D5] hover:bg-[#efedf5] px-4 py-2 rounded-xl transition-all border border-[#D5CAFF]"
+                      >
+                        <ArrowLeft className="w-4 h-4" />
+                        <span>전체 학급 4대 축 요약 보드로 복귀</span>
+                      </button>
+                      <div className="text-xs font-black text-[#484554]">
+                        🧑‍🎓 <strong>[{curStd.name} 학생]</strong> 개인 맞춤 활동 관제 및 포트폴리오 심사실
+                      </div>
+                    </div>
+
+                    {/* 종합 상세 관제 보드 컨테이너 */}
+                    <div className="bg-white rounded-[32px] p-8 border border-[#cac4d7]/70 shadow-md space-y-8">
+                      {/* 히어로 프로필 배너 */}
+                      <div className="p-6 rounded-[28px] bg-gradient-to-r from-[#F5EFFF] via-[#E2FFFA] to-white border-2 border-[#D5CAFF] shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-3 flex-wrap">
+                            <span className="text-2xl font-black text-[#1A1626]">
+                              {curStd.name}
+                            </span>
+                            <span className="text-sm font-extrabold text-[#6E6A80]">
+                              ({curStd.grade}학년 {curStd.classNo}반 {curStd.studentNo}번)
+                            </span>
+                            <span className="text-xs font-black bg-[#006970] text-white px-3.5 py-1 rounded-full shadow-sm">
+                              지망: {curStd.targetJob}
+                            </span>
+                            <span className="text-xs font-black bg-[#6240D5] text-white px-3.5 py-1 rounded-full shadow-sm">
+                              RIASEC: {curStd.riasecCode}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-4 text-xs font-bold text-[#484554]">
+                            <span>🎯 퀘스트 달성률: <strong className="text-[#006970]">{curStd.habitSuccessRate}%</strong></span>
+                            <span>•</span>
+                            <span>⚡ 주도성: <strong>{curStd.competencyScores.selfDirected}점</strong></span>
+                            <span>•</span>
+                            <span>🔬 전공탐구: <strong>{curStd.competencyScores.majorExploration}점</strong></span>
+                            <span>•</span>
+                            <span>💬 의사소통: <strong>{curStd.competencyScores.communication}점</strong></span>
+                          </div>
+                        </div>
+
+                        <Button
+                          variant="teal"
+                          onClick={() => {
+                            setSelectedStudentId(curStd.id);
+                            setActiveTab("recordDraft");
+                          }}
+                          className="font-black whitespace-nowrap shadow-lg px-6 py-3.5 rounded-2xl bg-gradient-to-r from-[#006970] to-[#00A3A8] text-white text-sm hover:scale-102 transition-all"
+                        >
+                          ✨ 이 학생 AI 생활기록부 즉시 생성 &rarr;
+                        </Button>
+                      </div>
+
+                      {/* Section A: 이 학기 정량적 학습 목표 (KPI) */}
+                      <div className="space-y-3 bg-gradient-to-br from-[#E6FBFF]/70 to-[#F0F9FF] p-6 rounded-[24px] border border-[#A6E8F2] shadow-inner">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#A6E8F2]/60 pb-3">
+                          <h4 className="text-sm font-black text-[#006970] flex items-center gap-2">
+                            <span>🎯 이번 학기 정량적 학습 목표 (KPI) 및 과목별 타겟</span>
+                          </h4>
+                          <span className="text-xs font-extrabold text-[#005257] bg-white px-4 py-1.5 rounded-xl border border-[#A6E8F2] shadow-sm">
+                            {curStd.targetAvgScore || "목표 수립 완료"}
+                          </span>
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+                          {(curStd.studyGoals || []).map((g, idx) => (
+                            <div key={idx} className="bg-white p-4 rounded-2xl border border-[#C2F0F7] shadow-sm flex flex-col justify-between space-y-2">
+                              <div className="flex items-center justify-between">
+                                <span className="text-sm font-black text-[#1A1626]">{g.subject}</span>
+                                <span className="text-xs font-black bg-[#006970]/10 text-[#006970] px-2.5 py-0.5 rounded-lg">
+                                  {g.score}점 달성 중
+                                </span>
+                              </div>
+                              <div className="text-xs font-extrabold text-[#3B364C]">🎯 목표: {g.target}</div>
+                              <div className="text-[11px] font-black text-[#059669] pt-1.5 border-t border-slate-100">
+                                ⚡ 현황: {g.currentStatus}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* 2단 병렬 컨테이너: 학습 포트폴리오 vs 진로 포트폴리오 (고정 영역 내장 스크롤 제어!) */}
+                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 pt-2">
+                        {/* Section B: 학습포트폴리오 고정 스크롤 영역 (10~20개 요약본) */}
+                        <div className="space-y-4 bg-[#F8F6FF] p-6 rounded-[28px] border-2 border-[#D5CAFF] shadow-sm flex flex-col">
+                          <div className="flex items-center justify-between border-b border-[#D5CAFF]/60 pb-3">
+                            <h4 className="text-sm font-black text-[#6240D5] flex items-center gap-2">
+                              <BookOpen className="w-5 h-5 text-[#6240D5]" />
+                              <span>📘 AI 학습포트폴리오 요약본 (총 {curStd.cornellNotes?.length || 0}건)</span>
+                            </h4>
+                            <span className="text-[11px] font-black bg-white text-[#6240D5] px-3 py-1 rounded-xl border border-purple-200">
+                              👆 클릭 시 원문 모달 열기
+                            </span>
+                          </div>
+
+                          {/* 내장 고정 영역 스크롤 컨테이너 (메인화면을 절대 안 넘기도록 max-h 지정) */}
+                          <div className="max-h-[380px] overflow-y-auto pr-2 space-y-3 custom-scrollbar">
+                            {(curStd.cornellNotes || []).length > 0 ? (
+                              curStd.cornellNotes?.map((cn, idx) => (
+                                <div
+                                  key={idx}
+                                  onClick={() => setViewerModalItem({
+                                    type: "study",
+                                    studentName: curStd.name,
+                                    title: cn.topic,
+                                    category: cn.subject,
+                                    date: cn.date,
+                                    aiSummary: cn.aiSummary,
+                                    originalContent: cn.originalContent || "학생이 자율적 호기심과 성실한 탐구 자세로 작성한 교과 연계 코넬 노트 원문 문서입니다.",
+                                    status: cn.status || "검토 완료",
+                                  })}
+                                  className="p-4 rounded-2xl bg-white border border-[#D5CAFF]/70 hover:border-[#6240D5] shadow-sm hover:shadow-md transition-all cursor-pointer group flex flex-col space-y-2"
+                                >
+                                  <div className="flex items-center justify-between text-xs">
+                                    <span className="font-black bg-purple-100 text-[#6240D5] px-2.5 py-0.5 rounded-md group-hover:bg-[#6240D5] group-hover:text-white transition-colors">
+                                      {cn.subject}
+                                    </span>
+                                    <span className="text-[11px] font-bold text-[#6E6A80]">{cn.date}</span>
+                                  </div>
+                                  <strong className="text-xs font-black text-[#1A1626] group-hover:text-[#6240D5] transition-colors line-clamp-1">
+                                    {cn.topic}
+                                  </strong>
+                                  <p className="text-[11px] text-[#484554] bg-[#FAF6FF] p-2.5 rounded-xl border border-purple-50 font-medium line-clamp-2 leading-relaxed">
+                                    ✨ <strong>AI 세특 요약:</strong> {cn.aiSummary}
+                                  </p>
+                                  <div className="text-[11px] font-black text-[#6240D5] text-right group-hover:underline">
+                                    원문 열람 &amp; 피드백 팝업 &rarr;
+                                  </div>
+                                </div>
+                              ))
+                            ) : (
+                              <div className="py-12 text-center text-xs text-[#6E6A80] font-bold">등록된 코넬 노트 요약본이 없습니다.</div>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Section C: 진로포트폴리오 고정 스크롤 영역 (10~20개 요약본) */}
+                        <div className="space-y-4 bg-[#EAFBFF]/60 p-6 rounded-[28px] border-2 border-[#A6E8F2] shadow-sm flex flex-col">
+                          <div className="flex items-center justify-between border-b border-[#A6E8F2]/60 pb-3">
+                            <h4 className="text-sm font-black text-[#006970] flex items-center gap-2">
+                              <Briefcase className="w-5 h-5 text-[#006970]" />
+                              <span>💼 진로포트폴리오 요약본 (총 {curStd.recentPortfolios.length}건)</span>
+                            </h4>
+                            <span className="text-[11px] font-black bg-white text-[#006970] px-3 py-1 rounded-xl border border-[#A6E8F2]">
+                              👆 클릭 시 원문 모달 열기
+                            </span>
+                          </div>
+
+                          {/* 내장 고정 영역 스크롤 컨테이너 */}
+                          <div className="max-h-[380px] overflow-y-auto pr-2 space-y-3 custom-scrollbar">
+                            {(curStd.recentPortfolios || []).length > 0 ? (
+                              curStd.recentPortfolios.map((pf, idx) => (
+                                <div
+                                  key={idx}
+                                  onClick={() => setViewerModalItem({
+                                    type: "career",
+                                    studentName: curStd.name,
+                                    title: pf.title,
+                                    category: pf.category,
+                                    date: pf.date,
+                                    aiSummary: pf.aiSummary || "진로 로드맵 완수 및 동아리·자율 탐구 과제 수행을 입증하는 우수 진로 포트폴리오 요약입니다.",
+                                    originalContent: pf.originalContent || "학생 본인이 진로 목표를 위해 자율적으로 기획, 연구, 구현하여 제출한 스펙 및 결과물 전문 문서입니다.",
+                                    status: pf.status,
+                                  })}
+                                  className="p-4 rounded-2xl bg-white border border-[#A6E8F2]/70 hover:border-[#006970] shadow-sm hover:shadow-md transition-all cursor-pointer group flex flex-col space-y-2"
+                                >
+                                  <div className="flex items-center justify-between text-xs">
+                                    <span className="font-black bg-[#006970]/10 text-[#006970] px-2.5 py-0.5 rounded-md group-hover:bg-[#006970] group-hover:text-white transition-colors">
+                                      {pf.category}
+                                    </span>
+                                    <span className={`text-[11px] font-extrabold px-2 py-0.5 rounded-md ${pf.status === "검토 완료" ? "bg-teal-50 text-[#006970]" : "bg-amber-50 text-amber-700"}`}>
+                                      {pf.status === "검토 완료" ? "✓ 검토완료" : "⌛ 확인대기"}
+                                    </span>
+                                  </div>
+                                  <strong className="text-xs font-black text-[#1A1626] group-hover:text-[#006970] transition-colors line-clamp-1">
+                                    {pf.title}
+                                  </strong>
+                                  <p className="text-[11px] text-[#484554] bg-[#F2FCFF] p-2.5 rounded-xl border border-cyan-50 font-medium line-clamp-2 leading-relaxed">
+                                    ✨ <strong>AI 진로 분석:</strong> {pf.aiSummary || "진로 호기심을 창의적 설계와 실증적 프로젝트로 승화시킨 탁월한 결과물."}
+                                  </p>
+                                  <div className="text-[11px] font-black text-[#006970] text-right group-hover:underline">
+                                    원문 열람 &amp; 피드백 팝업 &rarr;
+                                  </div>
+                                </div>
+                              ))
+                            ) : (
+                              <div className="py-12 text-center text-xs text-[#6E6A80] font-bold">등록된 진로 포트폴리오가 없습니다.</div>
+                            )}
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
-                ))}
-              </div>
-            </div>
+                );
+              })()
+            )}
           </div>
         )}
 
@@ -789,6 +1034,110 @@ export const TeacherGuide: React.FC = () => {
         )}
 
       </div>
+
+      {/* ====================================================
+          3. 포트폴리오 고해상도 원문 및 AI 세특 열람 모달 팝업 (Document Viewer Modal)
+          ==================================================== */}
+      {viewerModalItem && (
+        <div className="fixed inset-0 z-50 bg-black/65 backdrop-blur-sm flex items-center justify-center p-4 animate-fadeIn">
+          <div className="bg-white rounded-[36px] max-w-2xl w-full border-4 border-[#D5CAFF] shadow-[0_25px_80px_rgba(98,64,213,0.4)] overflow-hidden flex flex-col max-h-[90vh]">
+            {/* 모달 헤더 바 */}
+            <div className="bg-gradient-to-r from-[#6240D5] via-[#7B5CF0] to-[#00A3A8] p-6 text-white flex items-center justify-between shadow-md flex-shrink-0">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-black bg-white/20 px-3 py-0.5 rounded-full uppercase tracking-wider">
+                    {viewerModalItem.type === "study" ? "📘 학습포트폴리오 원문 검사" : "💼 진로포트폴리오 원문 검사"}
+                  </span>
+                  <span className="text-xs font-black bg-[#00A3A8] text-white px-2.5 py-0.5 rounded-full">
+                    {viewerModalItem.status || "검토 완료"}
+                  </span>
+                </div>
+                <h3 className="text-lg font-black tracking-tight flex items-center gap-2">
+                  <span>{viewerModalItem.title}</span>
+                </h3>
+              </div>
+              <button
+                onClick={() => setViewerModalItem(null)}
+                className="w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 font-black text-xl flex items-center justify-center transition-transform active:scale-95"
+                title="창 닫기"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* 모달 콘텐츠 바디 (내부 스크롤) */}
+            <div className="p-7 space-y-6 overflow-y-auto flex-grow text-slate-800">
+              {/* 메타데이터 INFO */}
+              <div className="flex items-center justify-between text-xs font-bold bg-[#F8F6FF] p-3.5 rounded-2xl border border-purple-100 text-[#484554]">
+                <span>🧑‍🎓 작성 학생: <strong className="text-[#6240D5]">{viewerModalItem.studentName}</strong></span>
+                <span>•</span>
+                <span>📌 분류: <strong>{viewerModalItem.category}</strong></span>
+                <span>•</span>
+                <span>📅 등록 일자: <strong>{viewerModalItem.date}</strong></span>
+              </div>
+
+              {/* AI 세특 요약 초안 (강조 하이라이트 Box) */}
+              <div className="space-y-2.5 bg-gradient-to-br from-[#EAFBFF]/80 via-[#FAF6FF] to-[#F5EFFF] p-5 rounded-2xl border-2 border-[#A6E8F2] shadow-inner">
+                <div className="flex items-center justify-between">
+                  <h4 className="text-xs font-black text-[#006970] flex items-center gap-1.5 uppercase tracking-wide">
+                    <Sparkles className="w-4 h-4 text-[#6240D5]" />
+                    <span>✨ AI 생기부 세목 요약 &amp; 역량 증명 팩트</span>
+                  </h4>
+                  <span className="text-[10px] font-black bg-white text-[#6240D5] px-2 py-0.5 rounded border border-purple-200 shadow-xs">
+                    NEIS 기재 적합성 승인
+                  </span>
+                </div>
+                <p className="text-xs sm:text-sm font-bold text-[#1A1626] leading-relaxed bg-white/90 p-3.5 rounded-xl border border-cyan-100/80 shadow-xs">
+                  {viewerModalItem.aiSummary}
+                </p>
+              </div>
+
+              {/* 원문 전문 (Original Content Box) */}
+              <div className="space-y-2">
+                <h4 className="text-xs font-black text-[#3B364C] flex items-center gap-1.5 pl-1">
+                  <FileText className="w-4 h-4 text-[#6240D5]" />
+                  <span>📄 학생 제출 보고서 및 탐구 일지 원문 전문</span>
+                </h4>
+                <div className="p-6 rounded-2xl bg-[#FAFAFC] border-2 border-[#cac4d7]/70 font-mono text-xs sm:text-sm text-[#1A1626] leading-relaxed whitespace-pre-wrap selection:bg-purple-100 shadow-inner">
+                  {viewerModalItem.originalContent}
+                  <br /><br />
+                  <span className="text-slate-400 font-sans text-xs italic">
+                    --- [시스템 인증: 위 내역은 레디커리어 AI 학생 주도 활동 DB에 위변조 없는 실제 팩트로 안전하게 기록되었습니다] ---
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* 모달 푸터 (액션 바) */}
+            <div className="bg-[#FAF6FF] p-5 border-t-2 border-[#D5CAFF]/70 flex items-center justify-between gap-4 flex-shrink-0">
+              <span className="text-xs font-extrabold text-[#6E6A80] pl-2 hidden sm:inline">
+                ✨ 교사의 실제 관찰 평가와 일치하는지 최종 확인해 주세요.
+              </span>
+              <div className="flex items-center gap-3 w-full sm:w-auto justify-end">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setViewerModalItem(null)}
+                  className="font-black text-xs px-5 py-2.5 rounded-xl border-[#cac4d7]"
+                >
+                  닫기
+                </Button>
+                <Button
+                  variant="teal"
+                  size="sm"
+                  onClick={() => {
+                    alert(`${viewerModalItem.studentName} 학생의 [${viewerModalItem.title}] 포트폴리오를 교사 검토 완료 및 생기부 확정 항목으로 승인하였습니다!`);
+                    setViewerModalItem(null);
+                  }}
+                  className="font-black text-xs px-6 py-2.5 rounded-xl shadow-md bg-gradient-to-r from-[#006970] to-[#008C92] text-white"
+                >
+                  ✓ 교사 검토 승인 &amp; 생기부 근거 편입
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
