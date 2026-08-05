@@ -340,6 +340,17 @@ export const TeacherGuide: React.FC = () => {
     setSelectedActivityIds([]);
   };
 
+  // NEIS 생기부 기재 규격 완벽 충족을 위한 이모티콘 및 마크다운 원천 소거 헬퍼
+  const cleanNeisProse = (str?: string | null): string => {
+    if (!str) return "";
+    return str
+      .replace(/[\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF]|[\u2300-\u23FF]|[\u2B00-\u2BFF]|[\u3030-\u303F]/g, "") // 모든 이모티콘 및 특기부호 소거
+      .replace(/[📌🌱📝▶⚠️💡✨⚡🚀📈🎯☑️🗣️💬🌿🔬📐💻✓]/g, "") // 개별 기호 완벽 필터
+      .replace(/\*{1,3}|_{1,3}|#{1,6}\s?|~{1,2}|`{1,3}|>/g, "") // 마크다운 서양 특기 부호 소거
+      .replace(/<[^>]*>?/gm, "") // HTML 태그 필터링
+      .trim();
+  };
+
   // 선택된 포트폴리오 항목 기반 맞춤형 AI 생기부 리포트 생성
   const handleExtractAiGuideline = async (customIds?: string[]) => {
     setIsExtracting(true);
@@ -356,21 +367,21 @@ export const TeacherGuide: React.FC = () => {
         activities: selectedItems.map(i => `${i.title}: ${i.summary}`),
       });
       if (res.content) {
-        setGeneratedGuideline(res.content);
+        setGeneratedGuideline(cleanNeisProse(res.content));
       }
     } catch (error) {
       // 선택된 활동 소재를 바탕으로 세미 리얼타임 AI 맞춤 초안 조합 생성 (나이스 기재 요령에 부합하는 정제된 문구)
-      const selectedNames = selectedItems.map(item => `${item.title}`).join(", ");
+      const selectedNames = selectedItems.map(item => cleanNeisProse(item.title)).join(", ");
       const customDraft = `[교과 세부능력 및 특기사항 참고안]
 선택된 학습 및 탐구 활동(${selectedNames || "교과 심화 탐구"})을 수행하는 과정에서 교과목의 핵심 개념을 실생활 진로 분야와 융합하는 탁월한 탐구 역량을 보여줌. 특히 자율적인 자료 조사와 구조화된 논리 개진을 통해 창의적인 문제 해결안을 도출하였으며, 남다른 분석력과 자기주도 학습 능력이 돋보임.
 
 [진로 및 창의적 체험활동 참고안]
-자신의 진로 목표(${activeStudent.targetJob})를 확고히 설정하고 자율 활동 및 진로 심화 탐구 프로젝트를 성실히 완수함. 어려운 과제에 직면해도 심층 문헌 탐독과 구조적 분석을 통해 유의미한 시제품 및 결과 데이터를 창출하려는 열정과 몰입도가 돋보임.
+자신의 진로 목표(${cleanNeisProse(activeStudent.targetJob)})를 확고히 설정하고 자율 활동 및 진로 심화 탐구 프로젝트를 성실히 완수함. 어려운 과제에 직면해도 심층 문헌 탐독과 구조적 분석을 통해 유의미한 시제품 및 결과 데이터를 창출하려는 열정과 몰입도가 돋보임.
 
 [종합 행동특성 및 발달평가 참고안]
 매 학기 주도적으로 정량적 목표를 세우고 과제를 끝까지 이행하는 자기유능감과 성실성을 보유함. 학급 내 문제 해결 및 토론 과정에서 타인에 대한 배려심과 뛰어난 논리적 의사소통 역량을 발현하여 향후 해당 전문가로의 발전 가능성이 높음.`;
 
-      setGeneratedGuideline(customDraft);
+      setGeneratedGuideline(cleanNeisProse(customDraft));
     } finally {
       setIsExtracting(false);
     }
@@ -378,13 +389,13 @@ export const TeacherGuide: React.FC = () => {
 
   const handleCopy = () => {
     if (!generatedGuideline) return;
-    navigator.clipboard.writeText(generatedGuideline);
+    navigator.clipboard.writeText(cleanNeisProse(generatedGuideline));
     setCopied(true);
     setTimeout(() => setCopied(false), 2500);
   };
 
   const handleCopySection = (sectionTitle: string, text: string) => {
-    navigator.clipboard.writeText(text);
+    navigator.clipboard.writeText(cleanNeisProse(text));
     setCopiedSection(sectionTitle);
     setTimeout(() => setCopiedSection(null), 2500);
   };
@@ -1237,20 +1248,22 @@ export const TeacherGuide: React.FC = () => {
                       <span className="font-sans font-black text-sm text-[#1A1626]">선택하신 포트폴리오 활동들을 2026 기재 준칙에 맞춰 융합·서술 중입니다...</span>
                     </div>
                   ) : reportViewMode === "text" ? (
-                    <div className="p-6 rounded-3xl bg-[#FBF8FF] border-2 border-[#cac4d7]/70 shadow-inner space-y-4 text-sm leading-relaxed text-[#1A1626] font-medium font-sans whitespace-pre-wrap selection:bg-[#6240d5]/30 overflow-x-auto">
-                      {(generatedGuideline || "").replace(/\*\*|>/g, "").replace(/[📌🌱📝▶⚠️💡✨⚡🚀📈🎯☑️]/g, "").trim()}
+                    <div className="p-6 rounded-3xl bg-slate-50 border border-slate-300 shadow-inner space-y-4 text-sm leading-relaxed text-[#111] font-normal font-sans whitespace-pre-wrap selection:bg-[#111]/10 overflow-x-auto">
+                      {cleanNeisProse(generatedGuideline || "")}
                     </div>
                   ) : (
                     /* 🏛️ 고해상도 프리미엄 구조화 카드 뷰 (섹션별 개별 복사 기능 & NEIS 100% 무이모지·무마크다운 서술) */
                     (() => {
-                      const text = (generatedGuideline || "").replace(/\*\*|>/g, "").replace(/[📌🌱📝▶⚠️💡✨⚡🚀📈🎯☑️]/g, "");
+                      const text = cleanNeisProse(generatedGuideline || "");
                       
                       const cleanProse = (str: string) => {
-                        return str
-                          .replace(/\[?(교과 세부능력 및 특기사항|진로 및 창의적 체험활동|진로 및 창의적 체험 활동|종합 행동특성 및 발달평가|종합 행동특성 및 발달 평가)[^\]\n]*\]?/g, "")
-                          .replace(/^#+.*$/gm, "")
-                          .replace(/^\d+\..*$/gm, "")
-                          .trim();
+                        return cleanNeisProse(
+                          str
+                            .replace(/\[?(교과 세부능력 및 특기사항|진로 및 창의적 체험활동|진로 및 창의적 체험 활동|종합 행동특성 및 발달평가|종합 행동특성 및 발달 평가)[^\]\n]*\]?/g, "")
+                            .replace(/^#+.*$/gm, "")
+                            .replace(/^\d+\..*$/gm, "")
+                            .trim()
+                        );
                       };
 
                       let section1 = "";
