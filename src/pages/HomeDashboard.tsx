@@ -662,54 +662,78 @@ export const HomeDashboard: React.FC = () => {
       </div>
 
       {/* =========================================================================
-          MODAL: 직업 변경 및 Lv.1 ~ Lv.5 마스코트 진화 로드맵
+          MODAL: 직업 변경 및 Lv.1 ~ Lv.5 마스코트 진화 로드맵 - Klyro Clean Bento
          ========================================================================= */}
       {jobIntroModalIdx !== null && interestedJobs[jobIntroModalIdx] && (
-        <div className="fixed inset-0 z-[100] bg-black/75 backdrop-blur-md flex items-center justify-center p-4 sm:p-8 animate-fadeIn">
-          <div className="bg-white w-full max-w-5xl rounded-[44px] shadow-[0_30px_90px_rgba(0,0,0,0.5)] border-4 border-[#E2DAFF] max-h-[95vh] overflow-y-auto relative">
-            <button onClick={() => setJobIntroModalIdx(null)} className="absolute top-6 right-6 p-2 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors z-50">
-              <Plus className="w-6 h-6 rotate-45" />
+        <div className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 sm:p-8 animate-fadeIn">
+          <div className="bg-white w-full max-w-5xl rounded-[36px] shadow-2xl border border-slate-200 max-h-[92vh] overflow-y-auto relative p-6 sm:p-10 lg:p-12 space-y-8 text-left font-sans">
+            <button 
+              onClick={() => setJobIntroModalIdx(null)} 
+              className="absolute top-6 right-6 p-3 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 transition-all z-50 shadow-xs"
+              title="닫기"
+            >
+              <Plus className="w-5 h-5 rotate-45" />
             </button>
             
-            <div className="p-8 sm:p-12 space-y-10">
-              <div className="text-center space-y-3">
-                <span className="text-sm font-black text-[#7B5CF0] bg-purple-100 px-4 py-1.5 rounded-full inline-block">
-                  새로운 꿈을 향한 위대한 여정
-                </span>
-                <h2 className="text-3xl sm:text-5xl font-black text-[#1A1626] leading-tight">
-                  <span className="text-[#008A90]">{interestedJobs[jobIntroModalIdx].name}</span> <br className="hidden sm:block"/>
-                  진화 레벨업 스토리!
-                </h2>
+            <div className="space-y-8">
+              {/* Dark Charcoal Header */}
+              <div className="rounded-[32px] bg-[#111111] text-white p-8 sm:p-10 border border-slate-800 shadow-xl flex flex-col sm:flex-row items-center justify-between gap-6 relative overflow-hidden">
+                <div className="space-y-3 max-w-2xl text-center sm:text-left z-10">
+                  <span className="text-xs font-black px-4 py-1.5 rounded-full bg-white/10 text-emerald-400 border border-white/15 inline-block">
+                    ⚡ 2026 맞춤 진로 탐험 스위칭
+                  </span>
+                  <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
+                    <span className="text-emerald-400">{interestedJobs[jobIntroModalIdx].name}</span> <br className="hidden sm:block"/>
+                    진화 레벨업 로드맵
+                  </h2>
+                  <p className="text-xs sm:text-sm font-medium text-slate-400">
+                    선택 즉시 홈 화면의 어시스턴트 마스코트와 AI 맞춤 루틴 큐레이션이 신규 직업으로 개통됩니다.
+                  </p>
+                </div>
+                <div className="w-36 h-36 sm:w-44 sm:h-44 rounded-[28px] bg-white p-4 shadow-2xl border border-slate-200 shrink-0 flex items-center justify-center">
+                  <img src={interestedJobs[jobIntroModalIdx].imageUrl || ARI_BLOB_URL} alt="Mascot" className="w-full h-full object-contain filter drop-shadow-md" />
+                </div>
               </div>
 
-              {/* Lv.1 ~ Lv.5 순차적 레벨업 진화 화면 (5단계 구조) */}
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4.5 relative items-stretch">
-                {[
-                  { lv: "Lv.1", badge: "📖 지식 융합", name: "호기심 장착 아리", bg: "from-[#E3FAFF] to-[#C0F3FC]", scale: "w-24 h-24" },
-                  { lv: "Lv.2", badge: "⚡ 챌린지", name: "프로젝트 리더", bg: "from-[#FFEBF2] to-[#FFCFE2]", scale: "w-26 h-26" },
-                  { lv: "Lv.3", badge: "🏆 포폴 왕", name: "포트폴리오 왕", bg: "from-[#FFF8E4] to-[#FFECD2]", scale: "w-28 h-28" },
-                  { lv: "Lv.4", badge: "🚀 차세대 고수", name: "미래 엑스퍼트", bg: "from-[#E6F0FF] to-[#C8E0FF]", scale: "w-30 h-30" },
-                  { lv: "Lv.5", badge: "👑 마스터", name: "최상위 마스터", bg: "from-[#EBFFF8] to-[#9EFAEA]", scale: "w-34 h-34 animate-bounce-short" },
-                ].map((item, i) => (
-                  <div key={i} className={`rounded-[34px] bg-gradient-to-b ${item.bg} p-5 border-2 border-white shadow-lg flex flex-col items-center justify-between space-y-3.5 transform hover:-translate-y-2 transition-all`}>
-                    <div className="w-full flex flex-col items-center space-y-1.5">
-                      <span className="text-xs font-black bg-white px-3 py-0.5 rounded-full shadow-sm">{item.lv}</span>
-                      <span className="text-[11px] font-black text-slate-700 bg-white/70 px-2.5 py-0.5 rounded-lg">{item.badge}</span>
+              {/* Lv.1 ~ Lv.5 순차적 레벨업 진화 화면 (Clean White/Slate Modular Bento) */}
+              <div className="space-y-4">
+                <div className="flex items-center justify-between px-2">
+                  <span className="text-xs font-black text-slate-500 uppercase tracking-wider block">
+                    🏅 5-STAGE CAREER EVOLUTION TREE
+                  </span>
+                  <span className="text-xs font-extrabold text-[#111] bg-slate-100 px-3 py-1 rounded-full border border-slate-200">
+                    Lv.1부터 Lv.5 마스터까지 순차 진화
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 relative items-stretch">
+                  {[
+                    { lv: "Lv.1", badge: "📖 지식 융합", name: "호기심 장착 아리" },
+                    { lv: "Lv.2", badge: "⚡ 챌린지", name: "프로젝트 리더" },
+                    { lv: "Lv.3", badge: "🏆 포폴 왕", name: "포트폴리오 왕" },
+                    { lv: "Lv.4", badge: "🚀 차세대 고수", name: "미래 엑스퍼트" },
+                    { lv: "Lv.5", badge: "👑 마스터", name: "최상위 마스터" },
+                  ].map((item, i) => (
+                    <div key={i} className="rounded-[24px] bg-slate-50 p-5 border border-slate-200 hover:border-slate-800 transition-all flex flex-col items-center justify-between space-y-3.5 group">
+                      <div className="w-full flex flex-col items-center space-y-1.5">
+                        <span className="text-xs font-black bg-white px-3 py-0.5 rounded-full shadow-xs border border-slate-200">{item.lv}</span>
+                        <span className="text-xs font-bold text-slate-600">{item.badge}</span>
+                      </div>
+                      <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-white p-3 border border-slate-100 flex items-center justify-center my-2 group-hover:scale-105 transition-transform shadow-xs">
+                        <img src={interestedJobs[jobIntroModalIdx].imageUrl || ARI_BLOB_URL} alt="Ari" className="w-full h-full object-contain filter drop-shadow-xs" />
+                      </div>
+                      <strong className="text-xs font-black text-[#111111] text-center w-full bg-white rounded-xl py-2 border border-slate-200/80 shadow-xs truncate">{item.name}</strong>
                     </div>
-                    <div className={`rounded-full bg-white/90 p-3 shadow-inner border-2 border-white flex items-center justify-center my-2 ${item.scale}`}>
-                      <img src={interestedJobs[jobIntroModalIdx].imageUrl || ARI_BLOB_URL} alt="Ari" className="w-full h-full object-contain drop-shadow-md" />
-                    </div>
-                    <strong className="text-xs sm:text-sm font-black text-[#1A1626] text-center w-full bg-white/90 rounded-2xl py-1.5 shadow-sm">{item.name}</strong>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
 
-              <div className="pt-6 w-full max-w-2xl mx-auto">
+              <div className="pt-4 w-full max-w-2xl mx-auto border-t border-slate-100 flex flex-col items-center gap-3">
                 <button
                   onClick={handleConfirmJobChange}
-                  className="w-full py-5 px-8 rounded-full bg-gradient-to-r from-[#FF3B7C] via-[#FF7043] to-[#FF9800] hover:brightness-110 text-white font-black text-xl shadow-[0_15px_40px_rgba(255,59,124,0.4)] transition-all flex items-center justify-center gap-3 cursor-pointer transform hover:scale-105"
+                  className="w-full py-5 px-8 rounded-2xl bg-[#111111] hover:bg-slate-800 text-white font-black text-base sm:text-xl shadow-xl transition-all duration-200 flex items-center justify-center gap-3 cursor-pointer"
                 >
-                  <Award className="w-6 h-6 text-white" />
+                  <Award className="w-6 h-6 text-emerald-400" />
                   <span>이 직업으로 내 홈화면 & 포트폴리오 맞춤 스위칭!</span>
                 </button>
               </div>
@@ -722,3 +746,4 @@ export const HomeDashboard: React.FC = () => {
   );
 };
 export default HomeDashboard;
+

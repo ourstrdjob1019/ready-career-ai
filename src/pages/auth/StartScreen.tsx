@@ -58,7 +58,7 @@ export const StartScreen: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF6FF] text-[#1A1626] relative overflow-x-hidden selection:bg-[#9E83FF]/20 selection:text-[#7B5CF0] flex flex-col justify-between">
+    <div className="min-h-screen bg-[#FAFAFC] text-[#111111] relative overflow-x-hidden selection:bg-[#111] selection:text-white flex flex-col justify-between font-sans">
       {/* 3D Infinite Marquee Keyframe Styles */}
       <style>{`
         @keyframes jobvengerMarquee {
@@ -76,21 +76,21 @@ export const StartScreen: React.FC = () => {
 
         /* 리얼 3D 무중력 둥둥 부유 애니메이션 (4가지 자유 궤도) */
         @keyframes float3D_1 {
-          0%, 100% { transform: translate3d(0px, 0px, 0px) rotate(-8deg) scale(1); }
-          33% { transform: translate3d(20px, -25px, 0px) rotate(6deg) scale(1.08); }
-          66% { transform: translate3d(-15px, -18px, 0px) rotate(-14deg) scale(0.94); }
+          0%, 100% { transform: translate3d(0px, 0px, 0px) rotate(-6deg) scale(1); }
+          33% { transform: translate3d(16px, -20px, 0px) rotate(4deg) scale(1.05); }
+          66% { transform: translate3d(-12px, -15px, 0px) rotate(-10deg) scale(0.95); }
         }
         @keyframes float3D_2 {
-          0%, 100% { transform: translate3d(0px, 0px, 0px) rotate(12deg) scale(1); }
-          50% { transform: translate3d(-25px, 32px, 0px) rotate(24deg) scale(1.09); }
+          0%, 100% { transform: translate3d(0px, 0px, 0px) rotate(8deg) scale(1); }
+          50% { transform: translate3d(-20px, 25px, 0px) rotate(18deg) scale(1.06); }
         }
         @keyframes float3D_3 {
-          0%, 100% { transform: translate3d(0px, 0px, 0px) rotate(-15deg) scale(0.95); }
-          50% { transform: translate3d(28px, -36px, 0px) rotate(-3deg) scale(1.1); }
+          0%, 100% { transform: translate3d(0px, 0px, 0px) rotate(-12deg) scale(0.95); }
+          50% { transform: translate3d(22px, -28px, 0px) rotate(-2deg) scale(1.05); }
         }
         @keyframes float3D_4 {
-          0%, 100% { transform: translate3d(0px, 0px, 0px) rotate(5deg) scale(1.03); }
-          50% { transform: translate3d(-18px, -28px, 0px) rotate(-12deg) scale(0.96); }
+          0%, 100% { transform: translate3d(0px, 0px, 0px) rotate(4deg) scale(1.02); }
+          50% { transform: translate3d(-15px, -22px, 0px) rotate(-10deg) scale(0.97); }
         }
         .animate-3d-float-1 { animation: float3D_1 6.5s ease-in-out infinite; }
         .animate-3d-float-2 { animation: float3D_2 8s ease-in-out infinite; }
@@ -98,27 +98,23 @@ export const StartScreen: React.FC = () => {
         .animate-3d-float-4 { animation: float3D_4 7.2s ease-in-out infinite; }
       `}</style>
 
-      {/* Ambient Pastel Glassmorphism Halo Spheres */}
-      <div className="absolute top-10 left-1/4 -translate-x-1/2 w-[550px] h-[550px] bg-gradient-to-tr from-[#E6DEFF]/70 via-[#FEE2FA]/60 to-[#CFFBFF]/60 rounded-full blur-[110px] pointer-events-none -z-0" />
-      <div className="absolute top-1/3 right-10 w-[500px] h-[500px] bg-gradient-to-tl from-[#FFEBF2]/70 via-[#DCEBFF]/60 to-[#E8D4FF]/50 rounded-full blur-[100px] pointer-events-none -z-0" />
-
-      {/* 🔮 3D 직업 캐릭터 자유 매트릭스 배경 레이어 (14개 좌표에서 크기와 높낮이를 달리하여 둥둥 떠다니는 입체 부유) */}
+      {/* 🔮 3D 직업 캐릭터 자유 매트릭스 배경 레이어 (절도 있는 투명도와 깔끔한 대비로 부유) */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
         {[
-          { pos: "top-[2%] left-[2%]", size: "w-32 h-32 sm:w-44 sm:h-44", idx: 0, anim: "animate-3d-float-1", delay: "0s" },
+          { pos: "top-[2%] left-[2%]", size: "w-28 h-28 sm:w-40 sm:h-40", idx: 0, anim: "animate-3d-float-1", delay: "0s" },
           { pos: "top-[5%] left-[24%]", size: "w-24 h-24 sm:w-36 sm:h-36", idx: 1, anim: "animate-3d-float-4", delay: "1.5s" },
           { pos: "top-[3%] right-[24%]", size: "w-28 h-28 sm:w-40 sm:h-40", idx: 2, anim: "animate-3d-float-2", delay: "0.7s" },
-          { pos: "top-[6%] right-[3%]", size: "w-36 h-36 sm:w-48 sm:h-48", idx: 3, anim: "animate-3d-float-3", delay: "2.1s" },
-          { pos: "top-[26%] left-[4%]", size: "w-36 h-36 sm:w-52 sm:h-52", idx: 4, anim: "animate-3d-float-2", delay: "1.2s" },
-          { pos: "top-[29%] right-[5%]", size: "w-36 h-36 sm:w-50 sm:h-50", idx: 5, anim: "animate-3d-float-1", delay: "2.8s" },
-          { pos: "top-[46%] left-[1%]", size: "w-32 h-32 sm:w-44 sm:h-44", idx: 6, anim: "animate-3d-float-4", delay: "0.4s" },
-          { pos: "top-[49%] right-[2%]", size: "w-32 h-32 sm:w-48 sm:h-48", idx: 7, anim: "animate-3d-float-3", delay: "1.9s" },
-          { pos: "top-[68%] left-[6%]", size: "w-36 h-36 sm:w-54 sm:h-54", idx: 8, anim: "animate-3d-float-1", delay: "2.3s" },
-          { pos: "top-[71%] right-[6%]", size: "w-36 h-36 sm:w-52 sm:h-52", idx: 9, anim: "animate-3d-float-2", delay: "0.9s" },
-          { pos: "bottom-[18%] left-[28%]", size: "w-28 h-28 sm:w-40 sm:h-40", idx: 0, anim: "animate-3d-float-3", delay: "1.6s" },
-          { pos: "bottom-[20%] right-[28%]", size: "w-28 h-28 sm:w-40 sm:h-40", idx: 1, anim: "animate-3d-float-4", delay: "2.5s" },
-          { pos: "bottom-[3%] left-[10%]", size: "w-32 h-32 sm:w-44 sm:h-44", idx: 2, anim: "animate-3d-float-2", delay: "0.3s" },
-          { pos: "bottom-[4%] right-[10%]", size: "w-32 h-32 sm:w-48 sm:h-48", idx: 3, anim: "animate-3d-float-1", delay: "1.8s" },
+          { pos: "top-[6%] right-[3%]", size: "w-32 h-32 sm:w-44 sm:h-44", idx: 3, anim: "animate-3d-float-3", delay: "2.1s" },
+          { pos: "top-[26%] left-[4%]", size: "w-32 h-32 sm:w-48 sm:h-48", idx: 4, anim: "animate-3d-float-2", delay: "1.2s" },
+          { pos: "top-[29%] right-[5%]", size: "w-32 h-32 sm:w-48 sm:h-48", idx: 5, anim: "animate-3d-float-1", delay: "2.8s" },
+          { pos: "top-[46%] left-[1%]", size: "w-28 h-28 sm:w-40 sm:h-40", idx: 6, anim: "animate-3d-float-4", delay: "0.4s" },
+          { pos: "top-[49%] right-[2%]", size: "w-28 h-28 sm:w-44 sm:h-44", idx: 7, anim: "animate-3d-float-3", delay: "1.9s" },
+          { pos: "top-[68%] left-[6%]", size: "w-32 h-32 sm:w-48 sm:h-48", idx: 8, anim: "animate-3d-float-1", delay: "2.3s" },
+          { pos: "top-[71%] right-[6%]", size: "w-32 h-32 sm:w-48 sm:h-48", idx: 9, anim: "animate-3d-float-2", delay: "0.9s" },
+          { pos: "bottom-[18%] left-[28%]", size: "w-24 h-24 sm:w-36 sm:h-36", idx: 0, anim: "animate-3d-float-3", delay: "1.6s" },
+          { pos: "bottom-[20%] right-[28%]", size: "w-24 h-24 sm:w-36 sm:h-36", idx: 1, anim: "animate-3d-float-4", delay: "2.5s" },
+          { pos: "bottom-[3%] left-[10%]", size: "w-28 h-28 sm:w-40 sm:h-40", idx: 2, anim: "animate-3d-float-2", delay: "0.3s" },
+          { pos: "bottom-[4%] right-[10%]", size: "w-28 h-28 sm:w-44 sm:h-44", idx: 3, anim: "animate-3d-float-1", delay: "1.8s" },
         ].map((item, i) => {
           const character = JOB_VENGERS_LIST[item.idx % JOB_VENGERS_LIST.length];
           return (
@@ -127,7 +123,7 @@ export const StartScreen: React.FC = () => {
               className={`absolute ${item.pos} ${item.size} pointer-events-none`}
             >
               <div 
-                className={`w-full h-full ${item.anim} opacity-[0.26] sm:opacity-[0.34] filter drop-shadow-[0_15px_30px_rgba(123,92,240,0.3)] transition-opacity duration-300`}
+                className={`w-full h-full ${item.anim} opacity-[0.16] sm:opacity-[0.22] grayscale hover:grayscale-0 filter drop-shadow-[0_10px_20px_rgba(0,0,0,0.08)] transition-all duration-300`}
                 style={{ animationDelay: item.delay }}
               >
                 <img
@@ -146,69 +142,71 @@ export const StartScreen: React.FC = () => {
       {/* Main Landing Hero Container */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-20 relative z-10 flex flex-col items-center justify-center flex-grow w-full space-y-12">
         
-        {/* Hero Main Titles */}
-        <div className="text-center space-y-5 max-w-5xl">
+        {/* Hero Main Titles - Klyro High-Contrast & Minimalist */}
+        <div className="text-center space-y-6 max-w-4xl">
+          {/* Top Pill Badge */}
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#111111] text-white text-xs font-extrabold shadow-sm tracking-wide">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+            <span>2026 AI ADVANCED CAREER EXPLORATION PLATFORM</span>
+          </div>
+
           {/* Main Giant Hero Title */}
-          <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter text-[#1A1626] drop-shadow-[0_12px_32px_rgba(123,92,240,0.18)] selection:bg-[#FF4081] selection:text-white">
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#7B5CF0] via-[#8E5BF2] to-[#00A3A8]">
-              ReadyCareerAI
-            </span>
+          <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter text-[#111111] leading-none">
+            ReadyCareerAI
           </h1>
 
-          {/* Subtitle with Highlighting on '꿈' */}
-          <h2 className="text-2xl sm:text-4xl md:text-6xl font-extrabold text-[#3D3554] tracking-tight flex flex-wrap items-center justify-center gap-2 sm:gap-3 pt-2">
+          {/* Subtitle with Sleek Dark Contrast Badge on '꿈' */}
+          <h2 className="text-2xl sm:text-4xl md:text-5xl font-extrabold text-[#111111] tracking-tight flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 pt-1">
             <span>나의</span>
-            <span className="relative inline-flex items-center justify-center px-5 sm:px-7 py-1 sm:py-2 mx-1 rounded-[26px] bg-gradient-to-r from-[#FF4081] via-[#FF5895] to-[#FF2A72] text-white font-black text-3xl sm:text-5xl md:text-6xl shadow-[0_12px_35px_rgba(255,64,129,0.5)] transform -rotate-3 hover:rotate-0 hover:scale-110 transition-all duration-300 animate-pulse">
-              <span>꿈</span>
-              <span className="absolute -top-3 -right-2 text-xl sm:text-2xl animate-bounce">✨</span>
+            <span className="inline-flex items-center justify-center px-6 sm:px-8 py-1 sm:py-1.5 mx-1 rounded-[24px] bg-[#111111] text-emerald-400 font-black text-2xl sm:text-4xl md:text-5xl shadow-md border border-slate-700 transform -rotate-2 hover:rotate-0 transition-transform duration-200">
+              <span>꿈 ✨</span>
             </span>
-            <span>! 설계하기</span>
+            <span>설계하기</span>
           </h2>
 
-          <p className="text-sm sm:text-base md:text-lg text-[#6E6A80] font-semibold max-w-2xl mx-auto pt-3 leading-relaxed">
+          <p className="text-sm sm:text-base md:text-lg text-slate-600 font-medium max-w-2xl mx-auto pt-2 leading-relaxed">
             나만의 고유한 흥미와 재능을 AI 파트너 아리와 함께 분석하고, <br className="hidden sm:block" />
-            밤하늘 커리어 별자리 로드맵을 향한 여정을 지금 즉시 시작하세요!
+            밤하늘 커리어 별자리 로드맵을 향한 맞춤 여정을 지금 즉시 경험해보세요.
           </p>
         </div>
 
-        {/* JOB-VENGERS Infinite Horizontal Marquee Section */}
-        <div className="w-full my-8 relative py-4">
-          {/* Faded Gradient Mask for Left/Right Edges */}
-          <div className="absolute top-0 left-0 w-16 sm:w-32 h-full bg-gradient-to-r from-[#FAF6FF] to-transparent z-10 pointer-events-none" />
-          <div className="absolute top-0 right-0 w-16 sm:w-32 h-full bg-gradient-to-l from-[#FAF6FF] to-transparent z-10 pointer-events-none" />
+        {/* JOB-VENGERS Infinite Horizontal Marquee Section - Bento Clean Tiles */}
+        <div className="w-full my-6 relative py-2">
+          <div className="absolute top-0 left-0 w-20 sm:w-36 h-full bg-gradient-to-r from-[#FAFAFC] to-transparent z-10 pointer-events-none" />
+          <div className="absolute top-0 right-0 w-20 sm:w-36 h-full bg-gradient-to-l from-[#FAFAFC] to-transparent z-10 pointer-events-none" />
 
           {/* Infinite Rolling Track */}
-          <div className="overflow-hidden py-4">
-            <div className="animate-jobvenger-marquee gap-6 px-3">
+          <div className="overflow-hidden py-3">
+            <div className="animate-jobvenger-marquee gap-5 px-3">
               {[...JOB_VENGERS_LIST, ...JOB_VENGERS_LIST].map((item, index) => (
                 <div
                   key={index}
-                  className={`w-56 sm:w-64 h-72 rounded-[34px] bg-gradient-to-b ${item.bgGradient} p-5 border-2 border-white shadow-[0_16px_36px_rgba(123,92,240,0.12)] hover:shadow-[0_24px_48px_rgba(123,92,240,0.28)] transition-all duration-300 flex flex-col items-center justify-between group transform hover:-translate-y-2.5 cursor-pointer relative backdrop-blur-md`}
+                  className="w-52 sm:w-60 h-64 rounded-[28px] bg-white p-5 border border-slate-200 shadow-sm hover:border-slate-800 hover:shadow-md transition-all duration-200 flex flex-col items-center justify-between group cursor-pointer"
                   onClick={handleStartExperience}
                   title={`${item.title}와 함께 온보딩 바로 개설하기!`}
                 >
                   <div className="w-full flex items-center justify-between">
-                    <span className="text-[11px] font-black px-3 py-1 rounded-full bg-white/90 shadow-sm text-[#3E3852]">
+                    <span className="text-[11px] font-extrabold px-3 py-1 rounded-full bg-slate-100 text-[#111111] border border-slate-200/80">
                       #{item.id} 직벤져스
                     </span>
-                    <span className="w-2.5 h-2.5 rounded-full bg-green-500 animate-ping" />
+                    <span className="w-2 h-2 rounded-full bg-emerald-500" />
                   </div>
 
                   {/* Character Avatar */}
-                  <div className="w-32 h-32 rounded-full bg-white/85 p-2.5 shadow-inner border-2 border-white flex items-center justify-center my-1 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+                  <div className="w-28 h-28 rounded-full bg-slate-50 p-2 border border-slate-100 flex items-center justify-center my-1 group-hover:scale-105 group-hover:-rotate-3 transition-transform duration-200">
                     <img
                       src={item.imageUrl}
                       alt={item.title}
-                      className="w-full h-full object-contain filter drop-shadow-md"
+                      className="w-full h-full object-contain filter drop-shadow-xs"
                     />
                   </div>
 
                   {/* Role Title & Category */}
-                  <div className="w-full text-center space-y-1.5 bg-white/95 backdrop-blur-md py-2.5 px-3 rounded-2xl border border-white shadow-sm">
-                    <span className={`text-[10px] font-black px-2.5 py-0.5 rounded-full ${item.badgeColor} block w-fit mx-auto`}>
+                  <div className="w-full text-center space-y-1 pt-2 border-t border-slate-100">
+                    <span className="text-[10px] font-black text-slate-500 block w-fit mx-auto">
                       {item.category}
                     </span>
-                    <strong className="text-sm font-extrabold text-[#1A1626] block tracking-tight group-hover:text-[#7B5CF0] transition-colors truncate">
+                    <strong className="text-sm font-black text-[#111111] block tracking-tight truncate">
                       {item.title}
                     </strong>
                   </div>
@@ -218,60 +216,80 @@ export const StartScreen: React.FC = () => {
           </div>
         </div>
 
-        {/* PASTEL TACTILE 3D GLASS START CHOICE BUTTONS: 학생용 & 교사용 분기 선택 */}
+        {/* KLYRO HIGH-CONTRAST BENTO ACTION MODES: 학생용 & 교사용 분기 선택 */}
         <div className="w-full max-w-5xl mx-auto px-4 z-20 pt-2">
           <div className="text-center mb-6">
-            <span className="px-5 py-2 rounded-full bg-white/95 shadow-md text-sm sm:text-base font-black text-[#6240D5] border-2 border-[#E2DAFF] inline-flex items-center gap-2">
-              <span>✨ 원하시는 체험 모드를 아래에서 선택해 주세요!</span>
+            <span className="px-5 py-2 rounded-full bg-white shadow-xs text-xs sm:text-sm font-black text-slate-700 border border-slate-200 inline-flex items-center gap-2">
+              <span>⚡ 원하시는 전공 탐구 및 대시보드 체험 모드를 선택해 주세요</span>
             </span>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 items-stretch">
-            {/* 🎓 학생용 시작하기 버튼 */}
-            <div className="w-full p-2.5 rounded-[40px] bg-gradient-to-r from-[#D7CEFF] via-[#FFC0D9] to-[#F1BFFF] shadow-[0_15px_50px_rgba(123,92,240,0.3)] hover:shadow-[0_22px_65px_rgba(255,88,149,0.5)] transition-all duration-500 backdrop-blur-xl border border-white/70 flex flex-col justify-center transform hover:-translate-y-1.5">
-              <button
-                onClick={handleStartExperience}
-                className="w-full h-full py-6 px-6 sm:px-8 bg-gradient-to-br from-[#7B5CF0] via-[#8E5BF2] to-[#6240D5] hover:from-[#8C74FF] hover:to-[#7050E0] text-white rounded-[32px] font-black tracking-wide border-2 border-white/85 border-b-[10px] border-b-[#4722AD] active:border-b-[2px] active:translate-y-2 transition-all duration-150 flex flex-col items-center justify-center gap-3 shadow-2xl cursor-pointer group text-center"
-              >
-                <div className="flex items-center justify-center gap-3">
-                  <span className="text-3xl sm:text-4xl group-hover:scale-125 group-hover:rotate-12 transition-transform duration-300 drop-shadow-md">
-                    🎓
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+            {/* 🎓 학생용 시작하기 버튼 - Main Dark Charcoal Hero Card */}
+            <div
+              onClick={handleStartExperience}
+              className="group cursor-pointer p-8 rounded-[32px] bg-[#111111] text-white border border-slate-800 shadow-xl hover:shadow-2xl hover:border-slate-600 transition-all duration-200 flex flex-col justify-between space-y-8 relative overflow-hidden"
+            >
+              <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-emerald-500/10 via-purple-500/5 to-transparent rounded-full blur-3xl pointer-events-none" />
+              
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 text-emerald-300 text-xs font-black border border-white/15">
+                    <span>학생 전용 세션 🎓</span>
                   </span>
-                  <span className="text-2xl sm:text-3xl font-headline font-black tracking-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)] whitespace-nowrap">
-                    학생용 시작하기
+                  <span className="text-2xl sm:text-3xl group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform">
+                    ✨
                   </span>
                 </div>
-                <span className="text-xs sm:text-sm text-purple-100 font-extrabold tracking-tight opacity-95">
-                  AI 꿈 설계 &amp; 과목별 진학 로드맵 아키텍트
+                <h3 className="text-3xl sm:text-4xl font-black tracking-tight pt-2 text-white">
+                  학생용 시작하기
+                </h3>
+                <p className="text-sm text-slate-400 font-medium leading-relaxed">
+                  AI 꿈 설계 &amp; 과목별 진학 로드맵 아키텍트로 맞춤 커버 스토리와 코넬노트 포트폴리오를 빠르게 구축하세요.
+                </p>
+              </div>
+
+              <div className="pt-4 border-t border-slate-800/80 flex items-center justify-between">
+                <span className="text-xs font-bold text-slate-400 group-hover:text-white transition-colors">
+                  박람회 간편 입장 · 즉각 레벨업 지원
                 </span>
-                <div className="mt-1 inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white/20 hover:bg-white/30 text-white text-xs font-black transition-colors shadow-sm">
+                <div className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-white text-[#111111] group-hover:bg-emerald-400 group-hover:text-[#111] text-xs font-black transition-all shadow-md">
                   <span>진로·학습 퀘스트 개설</span>
-                  <Play className="w-4 h-4 fill-white text-white group-hover:translate-x-1 transition-transform" />
+                  <Play className="w-3.5 h-3.5 fill-[#111111] text-[#111111] group-hover:translate-x-0.5 transition-transform" />
                 </div>
-              </button>
+              </div>
             </div>
 
-            {/* 🏫 교사·관리자용 시작하기 버튼 */}
-            <div className="w-full p-2.5 rounded-[40px] bg-gradient-to-r from-[#BAF7FF] via-[#B5FFEB] to-[#D5EAFF] shadow-[0_15px_50px_rgba(0,163,168,0.3)] hover:shadow-[0_22px_65px_rgba(0,163,168,0.55)] transition-all duration-500 backdrop-blur-xl border border-white/70 flex flex-col justify-center transform hover:-translate-y-1.5">
-              <button
-                onClick={handleStartTeacher}
-                className="w-full h-full py-6 px-6 sm:px-8 bg-gradient-to-br from-[#00A3A8] via-[#008C92] to-[#006970] hover:from-[#15B8BD] hover:to-[#007C82] text-white rounded-[32px] font-black tracking-wide border-2 border-white/85 border-b-[10px] border-b-[#003D42] active:border-b-[2px] active:translate-y-2 transition-all duration-150 flex flex-col items-center justify-center gap-3 shadow-2xl cursor-pointer group text-center"
-              >
-                <div className="flex items-center justify-center gap-3">
-                  <span className="text-3xl sm:text-4xl group-hover:scale-125 group-hover:-rotate-12 transition-transform duration-300 drop-shadow-md">
-                    🏫
+            {/* 🏫 교사·관리자용 시작하기 버튼 - Clean White/Slate Bento Card */}
+            <div
+              onClick={handleStartTeacher}
+              className="group cursor-pointer p-8 rounded-[32px] bg-white text-[#111111] border border-slate-200 hover:border-slate-800 shadow-sm hover:shadow-lg transition-all duration-200 flex flex-col justify-between space-y-8 relative overflow-hidden"
+            >
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-black border border-slate-200">
+                    <span>교사·관리자 전용 🏫</span>
                   </span>
-                  <span className="text-2xl sm:text-3xl font-headline font-black tracking-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)] whitespace-nowrap">
-                    교사·관리자용 시작하기
+                  <span className="text-2xl sm:text-3xl opacity-75 group-hover:scale-110 transition-transform">
+                    📋
                   </span>
                 </div>
-                <span className="text-xs sm:text-sm text-teal-100 font-extrabold tracking-tight opacity-95">
-                  학생 포트폴리오 관제 &amp; AI 생기부 리포트 생성기
+                <h3 className="text-3xl sm:text-4xl font-black tracking-tight pt-2 text-[#111111]">
+                  교사·관리자용 시작하기
+                </h3>
+                <p className="text-sm text-slate-500 font-medium leading-relaxed">
+                  학급 학생별 활동 통계 요약 관제 &amp; 2026학년도 기재 요령에 최적화된 AI 생기부 커스텀 초안 생성실.
+                </p>
+              </div>
+
+              <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
+                <span className="text-xs font-bold text-slate-500 group-hover:text-[#111] transition-colors">
+                  선택적 생기부 취합 &amp; 무이모지·무마크다운 출력
                 </span>
-                <div className="mt-1 inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white/20 hover:bg-white/30 text-white text-xs font-black transition-colors shadow-sm">
+                <div className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 text-[#111111] text-xs font-black transition-all">
                   <span>교사 대시보드 직행</span>
-                  <Play className="w-4 h-4 fill-white text-white group-hover:translate-x-1 transition-transform" />
+                  <Play className="w-3.5 h-3.5 fill-[#111111] text-[#111111] group-hover:translate-x-0.5 transition-transform" />
                 </div>
-              </button>
+              </div>
             </div>
           </div>
         </div>
@@ -282,3 +300,4 @@ export const StartScreen: React.FC = () => {
 };
 
 export default StartScreen;
+
