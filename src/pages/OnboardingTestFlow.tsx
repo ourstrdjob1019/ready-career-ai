@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context";
 import { JOB_VENGERS_LIST, type JobVengerItem, ARI_BLOB_URL, ARI_BLOB_NEW_URL } from "../assets/mascotData";
-import { rewardXP } from "../services/expService";
 import { Sparkles, ArrowRight, ArrowLeft, CheckCircle2, RotateCcw, Award, Star, ChevronRight } from "lucide-react";
 
 interface DiagnosticQuestion {
@@ -77,8 +76,8 @@ export const OnboardingTestFlow: React.FC = () => {
     }
     // 16개 진단을 마친 직후, 홈화면 입장 시 4대 모듈은 비어있어야 하고 AI 맞춤 활동 버튼을 가동하도록 숨김 초기화!
     localStorage.removeItem("readycareer_roadmap_generated");
-    localStorage.removeItem("my_habits_v2");
-    rewardXP(80, "16문항 커리어 온보딩 진단 완수!");
+    // 초기 경험치는 팝업 없이 깔끔하게 20 XP (Lv.1 브론즈)로 기본 설정
+    localStorage.setItem("readycareer_student_xp_v1", "20");
     navigate("/");
   };
 

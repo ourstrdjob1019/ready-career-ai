@@ -53,9 +53,9 @@ export const HabitManagement: React.FC = () => {
   });
   const [newTitle, setNewTitle] = useState("");
   const [todayQuests, setTodayQuests] = useState([
-    { id: "q1", title: "전공 서적 30분 읽기", desc: "매일 꾸준한 지식 쌓기 및 진로 역량 강화", icon: "📚", exp: "+50 EXP", completed: !isNewClean && true },
-    { id: "q2", title: "최신 진로 산업 뉴스 1건 스크랩", desc: "AI 인프라 및 전공 관련 트렌드 파악하기", icon: "📰", exp: "+40 EXP", completed: false },
-    { id: "q3", title: "아리에게 진로 고민 1회 실시간 질문하기", desc: "AI 상담을 통한 세특 가이드 아이디어 탐색", icon: "🤖", exp: "+70 EXP", completed: false },
+    { id: "q1", title: "전공 서적 30분 읽기", desc: "매일 꾸준한 지식 쌓기 및 진로 역량 강화", icon: "📚", exp: "+15 EXP", completed: !isNewClean && true },
+    { id: "q2", title: "최신 진로 산업 뉴스 1건 스크랩", desc: "AI 인프라 및 전공 관련 트렌드 파악하기", icon: "📰", exp: "+15 EXP", completed: false },
+    { id: "q3", title: "아리에게 진로 고민 1회 실시간 질문하기", desc: "AI 상담을 통한 세특 가이드 아이디어 탐색", icon: "🤖", exp: "+15 EXP", completed: false },
   ]);
   const [flippedQuestId, setFlippedQuestId] = useState<string | null>(null);
 
@@ -63,7 +63,7 @@ export const HabitManagement: React.FC = () => {
     setTodayQuests((prev) =>
       prev.map((q) => {
         if (q.id === id) {
-          if (!q.completed) rewardXP(60, `[${q.title}] 일일 퀘스트 완수!`);
+          if (!q.completed) rewardXP(15, `[${q.title}] 일일 퀘스트 완수!`);
           return { ...q, completed: !q.completed };
         }
         return q;
@@ -86,7 +86,7 @@ export const HabitManagement: React.FC = () => {
           ? curDays.filter((d) => d !== dayNo)
           : [...curDays, dayNo].sort((a, b) => a - b);
         if (!exists) {
-          rewardXP(60, `[${h.title}] 50일 챌린지 ${dayNo}일차 루틴 체크 완수!`);
+          rewardXP(10, `[${h.title}] 50일 챌린지 ${dayNo}일차 루틴 체크 완수!`);
         }
         return { ...h, completedDays: nextDays };
       });
@@ -138,7 +138,7 @@ export const HabitManagement: React.FC = () => {
             <span>50-Day Career Challenge &amp; Routine Tracker</span>
           </div>
           <h1 className="text-4xl md:text-5xl font-headline font-black text-text-primary tracking-tight">
-            습관 &amp; <span className="text-transparent bg-clip-text gradient-hero-card">목표 관리</span>
+            습관 &amp; <span className="text-[#6A42ED]">목표 관리</span>
           </h1>
           <p className="text-sm text-text-muted mt-2 font-body-md max-w-2xl leading-relaxed">
             매일 작은 루틴을 달성하며 1~50일 그리드를 채워나가세요! 연속 성공 수치가 오를 때마다 진로 퀘스트 EXP가 누적되어 상위 캐릭터 외형을 해금합니다.

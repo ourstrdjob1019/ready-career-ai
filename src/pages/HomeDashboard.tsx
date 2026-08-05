@@ -407,10 +407,12 @@ export const HomeDashboard: React.FC = () => {
                 <button
                   onClick={handleGenerateRoadmap}
                   disabled={isGeneratingAnim}
-                  className="w-full py-5 px-8 sm:px-12 rounded-[26px] bg-gradient-to-r from-[#FFB800] via-[#FFCA3A] to-[#FFE07D] hover:brightness-105 text-[#201150] font-black text-xl sm:text-3xl shadow-[0_15px_45px_rgba(255,184,0,0.5)] hover:shadow-[0_20px_60px_rgba(255,184,0,0.65)] transition-all transform hover:scale-[1.02] active:scale-98 cursor-pointer border-2 border-amber-100/70 flex items-center justify-center gap-4"
+                  className="w-full py-5 px-6 sm:px-12 rounded-[26px] bg-gradient-to-r from-[#FFB800] via-[#FFCA3A] to-[#FFE07D] hover:brightness-105 text-[#201150] font-black text-lg sm:text-2xl lg:text-3xl shadow-[0_15px_45px_rgba(255,184,0,0.5)] hover:shadow-[0_20px_60px_rgba(255,184,0,0.65)] transition-all transform hover:scale-[1.01] active:scale-98 cursor-pointer border-2 border-amber-100/70 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-center break-keep"
                 >
-                  <span className="text-2xl sm:text-4xl animate-bounce-short shrink-0">🚀</span>
-                  <span className="tracking-tight drop-shadow-xs">&lt;아리와 함께 실전 맞춤 진로 활동 찾아보기&gt; ✨</span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-2xl sm:text-3xl animate-bounce-short shrink-0">🚀</span>
+                    <span className="tracking-tight drop-shadow-xs leading-tight">&lt;아리와 함께 실전 맞춤 진로 활동 찾아보기&gt; ✨</span>
+                  </div>
                 </button>
               ) : (
                 <div className="flex flex-col items-center gap-2 w-full">
@@ -609,32 +611,32 @@ export const HomeDashboard: React.FC = () => {
           </form>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 pt-2">
           {interestedJobs.map((job, idx) => {
             const isSelected = selectedJobIdx === idx;
             return (
               <div
                 key={idx}
                 onClick={() => !isSelected && handleSelectJob(idx)}
-                className={`p-3 rounded-2xl border transition-all duration-200 flex flex-col items-center text-center justify-between cursor-pointer group min-h-[96px] ${
+                className={`p-4 sm:p-5 rounded-[24px] border-2 transition-all duration-200 flex flex-col items-center text-center justify-between cursor-pointer group min-h-[148px] ${
                   isSelected
-                    ? "bg-[#6A42ED] text-white border-[#5328E0] shadow-md scale-[1.02]"
-                    : "bg-white text-[#1F193B] border-purple-100 hover:border-[#6A42ED] hover:bg-purple-50/50 shadow-2xs hover:shadow-sm"
+                    ? "bg-gradient-to-br from-[#6A42ED] to-[#5428DC] text-white border-[#8862FE] shadow-lg scale-[1.02]"
+                    : "bg-white text-[#1F193B] border-purple-150 hover:border-[#6A42ED] hover:bg-purple-50/60 shadow-xs hover:shadow-md"
                 }`}
               >
-                <div className="w-10 h-10 rounded-xl bg-white p-1.5 border border-purple-100 shrink-0 flex items-center justify-center my-1 shadow-2xs group-hover:scale-105 transition-transform">
+                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-white p-2 border border-purple-100 shrink-0 flex items-center justify-center my-1.5 shadow-sm group-hover:scale-105 transition-transform">
                   {job.imageUrl ? (
                     <img src={job.imageUrl} alt={job.name} className="w-full h-full object-contain" />
                   ) : (
-                    <span className="text-lg">{job.image}</span>
+                    <span className="text-2xl">{job.image}</span>
                   )}
                 </div>
-                <div className="w-full overflow-hidden space-y-0.5">
-                  <strong className={`text-xs font-extrabold block truncate ${isSelected ? "text-white" : "text-[#1F193B] group-hover:text-[#6A42ED]"}`}>
+                <div className="w-full overflow-hidden space-y-1 mt-1">
+                  <strong className={`text-sm sm:text-base font-black block line-clamp-2 leading-snug break-keep ${isSelected ? "text-white" : "text-[#1F193B] group-hover:text-[#6A42ED]"}`}>
                     {job.name}
                   </strong>
-                  <span className={`text-[10px] font-bold block ${isSelected ? "text-amber-300" : "text-slate-400"}`}>
-                    {isSelected ? "★ 적용 중" : "변경하기 &rarr;"}
+                  <span className={`text-xs font-extrabold block pt-1 ${isSelected ? "text-amber-300" : "text-slate-400 group-hover:text-purple-600"}`}>
+                    {isSelected ? "★ 현재 맞춤 적용 중" : "클릭하여 즉시 변경 &rarr;"}
                   </span>
                 </div>
               </div>

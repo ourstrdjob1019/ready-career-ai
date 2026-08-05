@@ -103,7 +103,7 @@ export const SuperAdminConsole: React.FC = () => {
 
             <button
               onClick={toggleSignupOpen}
-              className={`px-6 py-4 rounded-3xl font-headline font-black text-sm md:text-base flex items-center gap-2 shadow-2xl transition-transform hover:scale-105 active:scale-95 whitespace-nowrap ${
+              className={`px-6 py-4 rounded-md font-headline font-black text-sm md:text-base flex items-center gap-2 shadow-2xl transition-transform hover:scale-105 active:scale-95 whitespace-nowrap ${
                 signupOpen
                   ? "bg-error text-white shadow-error/30"
                   : "bg-secondary text-white shadow-secondary/30"
@@ -131,14 +131,14 @@ export const SuperAdminConsole: React.FC = () => {
           </div>
 
           <div className="my-4 grid grid-cols-2 gap-4">
-            <div className="bg-surface-container-low p-4 rounded-2xl border border-surface-variant/40">
+            <div className="bg-surface-container-low p-4 rounded-md border border-surface-variant/40">
               <span className="text-xs text-text-muted font-bold block mb-1">이번 달 AI 호출 누적수</span>
               <strong className="text-2xl font-headline font-black text-text-primary">4,821 <small className="text-xs text-primary font-bold">/ 50k</small></strong>
               <div className="w-full bg-surface-variant/50 h-1.5 rounded-full mt-2">
                 <div className="bg-primary h-1.5 rounded-full w-[10%]" />
               </div>
             </div>
-            <div className="bg-surface-container-low p-4 rounded-2xl border border-surface-variant/40">
+            <div className="bg-surface-container-low p-4 rounded-md border border-surface-variant/40">
               <span className="text-xs text-text-muted font-bold block mb-1">생기부 가이드안 생성수</span>
               <strong className="text-2xl font-headline font-black text-secondary">312 <small className="text-xs text-secondary-spot font-bold">건 완료</small></strong>
               <span className="text-[10px] text-text-muted mt-1 block">프롬프트 가이드라인 주입됨</span>
@@ -222,7 +222,7 @@ export const SuperAdminConsole: React.FC = () => {
                     </span>
                   </div>
 
-                  <div className="p-3.5 bg-surface-container-lowest rounded-2xl border border-surface-variant/50 flex items-center justify-between shadow-inner">
+                  <div className="p-3.5 bg-surface-container-lowest rounded-md border border-surface-variant/50 flex items-center justify-between shadow-inner">
                     <span className="font-headline font-black text-lg md:text-xl text-text-primary tracking-wider font-mono">
                       {item.code}
                     </span>
@@ -262,7 +262,7 @@ export const SuperAdminConsole: React.FC = () => {
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
           {schoolList.map((sc) => (
-            <div key={sc.code} className="p-4 bg-surface-container-low rounded-2xl border border-surface-variant/40 flex items-center justify-between shadow-sm">
+            <div key={sc.code} className="p-4 bg-surface-container-low rounded-md border border-surface-variant/40 flex items-center justify-between shadow-sm">
               <div>
                 <span className="text-xs text-secondary font-black font-mono block">[{sc.code}]</span>
                 <strong className="text-sm font-headline font-extrabold text-text-primary">{sc.name}</strong>

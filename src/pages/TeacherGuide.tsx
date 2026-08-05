@@ -435,7 +435,7 @@ export const TeacherGuide: React.FC = () => {
         <div className="flex border-b border-[#cac4d7]/60 overflow-x-auto gap-2 sm:gap-4 pb-0">
           <button
             onClick={() => setActiveTab("diagnostics")}
-            className={`flex items-center gap-2 px-6 py-3.5 rounded-t-2xl font-black text-sm transition-all whitespace-nowrap border-t-2 border-x-2 ${
+            className={`flex items-center gap-2 px-6 py-3.5 rounded-t-md font-black text-sm transition-all whitespace-nowrap border-t-2 border-x-2 ${
               activeTab === "diagnostics"
                 ? "bg-[#6240d5] text-white border-[#6240d5] shadow-md"
                 : "bg-[#efedf5] text-[#484554] border-[#cac4d7]/40 hover:bg-[#e9e7ef]"
@@ -447,7 +447,7 @@ export const TeacherGuide: React.FC = () => {
 
           <button
             onClick={() => setActiveTab("portfolio")}
-            className={`flex items-center gap-2 px-6 py-3.5 rounded-t-2xl font-black text-sm transition-all whitespace-nowrap border-t-2 border-x-2 ${
+            className={`flex items-center gap-2 px-6 py-3.5 rounded-t-md font-black text-sm transition-all whitespace-nowrap border-t-2 border-x-2 ${
               activeTab === "portfolio"
                 ? "bg-[#6240d5] text-white border-[#6240d5] shadow-md"
                 : "bg-[#efedf5] text-[#484554] border-[#cac4d7]/40 hover:bg-[#e9e7ef]"
@@ -459,7 +459,7 @@ export const TeacherGuide: React.FC = () => {
 
           <button
             onClick={() => setActiveTab("recordDraft")}
-            className={`flex items-center gap-2 px-6 py-3.5 rounded-t-2xl font-black text-sm transition-all whitespace-nowrap border-t-2 border-x-2 ${
+            className={`flex items-center gap-2 px-6 py-3.5 rounded-t-md font-black text-sm transition-all whitespace-nowrap border-t-2 border-x-2 ${
               activeTab === "recordDraft"
                 ? "bg-[#006970] text-white border-[#006970] shadow-md"
                 : "bg-[#efedf5] text-[#484554] border-[#cac4d7]/40 hover:bg-[#e9e7ef]"
@@ -475,39 +475,39 @@ export const TeacherGuide: React.FC = () => {
           <div className="space-y-6 animate-fadeIn">
             {/* Top Stat Summary Banner */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-              <div className="p-6 rounded-[28px] bg-white border border-[#cac4d7]/50 shadow-sm flex items-center justify-between">
+              <div className="p-6 rounded-md bg-white border border-[#cac4d7]/50 shadow-sm flex items-center justify-between">
                 <div>
                   <span className="text-xs font-black text-[#484554] uppercase tracking-wider block mb-1 whitespace-nowrap">총 학급 인원 및 진단 완수</span>
                   <span className="text-3xl font-extrabold text-[#1A1626]">3명 / 3명 (100%)</span>
                 </div>
-                <div className="w-14 h-14 rounded-2xl bg-[#6240d5]/10 text-[#6240d5] flex items-center justify-center font-bold text-2xl shadow-inner">
+                <div className="w-14 h-14 rounded-md bg-[#6240d5]/10 text-[#6240d5] flex items-center justify-center font-bold text-2xl shadow-inner">
                   🎯
                 </div>
               </div>
 
-              <div className="p-6 rounded-[28px] bg-white border border-[#cac4d7]/50 shadow-sm flex items-center justify-between">
+              <div className="p-6 rounded-md bg-white border border-[#cac4d7]/50 shadow-sm flex items-center justify-between">
                 <div>
                   <span className="text-xs font-black text-[#484554] uppercase tracking-wider block mb-1 whitespace-nowrap">주요 희망 직업 분포군</span>
                   <span className="text-xl font-extrabold text-[#006970] truncate">AI/로봇 · 빅데이터 · 교육멘토</span>
                 </div>
-                <div className="w-14 h-14 rounded-2xl bg-[#006970]/10 text-[#006970] flex items-center justify-center font-bold text-2xl shadow-inner">
+                <div className="w-14 h-14 rounded-md bg-[#006970]/10 text-[#006970] flex items-center justify-center font-bold text-2xl shadow-inner">
                   🚀
                 </div>
               </div>
 
-              <div className="p-6 rounded-[28px] bg-white border border-[#cac4d7]/50 shadow-sm flex items-center justify-between">
+              <div className="p-6 rounded-md bg-white border border-[#cac4d7]/50 shadow-sm flex items-center justify-between">
                 <div>
                   <span className="text-xs font-black text-[#484554] uppercase tracking-wider block mb-1 whitespace-nowrap">학급 평균 역량 성장율</span>
                   <span className="text-3xl font-extrabold text-[#6240d5]">+18.4% 상승 ✨</span>
                 </div>
-                <div className="w-14 h-14 rounded-2xl bg-[#7b5cf0]/15 text-[#6240d5] flex items-center justify-center font-bold text-2xl shadow-inner">
+                <div className="w-14 h-14 rounded-md bg-[#7b5cf0]/15 text-[#6240d5] flex items-center justify-center font-bold text-2xl shadow-inner">
                   📈
                 </div>
               </div>
             </div>
 
             {/* Diagnostics Roster Table */}
-            <div className="bg-white rounded-[32px] p-8 border border-[#cac4d7]/60 shadow-sm space-y-6">
+            <div className="bg-white rounded-md p-8 border border-[#cac4d7]/60 shadow-sm space-y-6">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#cac4d7]/40 pb-4">
                 <div className="space-y-1">
                   <h3 className="text-xl font-extrabold text-[#1A1626] flex items-center gap-2">
@@ -524,7 +524,7 @@ export const TeacherGuide: React.FC = () => {
                     placeholder="학생명 또는 흥미유형 검색..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full text-xs pl-9 pr-3.5 py-2.5 rounded-2xl bg-[#F4F2FA] border border-[#cac4d7]/50 text-[#1A1626] focus:outline-none focus:ring-2 focus:ring-[#6240d5] font-bold shadow-inner"
+                    className="w-full text-xs pl-9 pr-3.5 py-2.5 rounded-md bg-[#F4F2FA] border border-[#cac4d7]/50 text-[#1A1626] focus:outline-none focus:ring-2 focus:ring-[#6240d5] font-bold shadow-inner"
                   />
                 </div>
               </div>
@@ -612,7 +612,7 @@ export const TeacherGuide: React.FC = () => {
               /* ====================================================
                  1. 메인 화면: 4대 축 고밀도 요약 대시보드 (Summary View)
                  ==================================================== */
-              <div className="bg-white rounded-[32px] p-8 border border-[#cac4d7]/60 shadow-sm space-y-6">
+              <div className="bg-white rounded-md p-8 border border-[#cac4d7]/60 shadow-sm space-y-6">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#cac4d7]/40 pb-5">
                   <div>
                     <h3 className="text-xl font-extrabold text-[#1A1626] flex items-center gap-2">
@@ -625,7 +625,7 @@ export const TeacherGuide: React.FC = () => {
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-black bg-[#e6deff] text-[#6240d5] px-4 py-2 rounded-2xl border border-[#cbbeff] whitespace-nowrap shadow-sm flex items-center gap-1.5">
+                    <span className="text-xs font-black bg-[#e6deff] text-[#6240d5] px-4 py-2 rounded-md border border-[#cbbeff] whitespace-nowrap shadow-sm flex items-center gap-1.5">
                       <Sparkles className="w-4 h-4 text-[#6240D5]" />
                       <span>4대 축 데이터 요약 동기화 완료</span>
                     </span>
@@ -641,7 +641,7 @@ export const TeacherGuide: React.FC = () => {
                     return (
                       <div
                         key={std.id}
-                        className="p-5 sm:p-6 rounded-[24px] sm:rounded-[28px] bg-[#f8f6ff]/90 border-2 border-[#cac4d7]/60 hover:border-[#6240d5] transition-all duration-200 shadow-sm hover:shadow-md flex flex-col lg:flex-row lg:items-center justify-between gap-5"
+                        className="p-5 sm:p-6 rounded-md sm:rounded-md bg-[#f8f6ff]/90 border-2 border-[#cac4d7]/60 hover:border-[#6240d5] transition-all duration-200 shadow-sm hover:shadow-md flex flex-col lg:flex-row lg:items-center justify-between gap-5"
                       >
                         {/* 1. 학생명 & 지망 꿈 (클릭 시 개인 상세 페이지 이동) */}
                         <div className="flex items-center gap-3 lg:w-3/12 min-w-[200px]">
@@ -665,7 +665,7 @@ export const TeacherGuide: React.FC = () => {
                         </div>
 
                         {/* 2. 핵심 정량 목표 (KPI) 간략 정리 */}
-                        <div className="lg:w-4/12 min-w-[220px] bg-white p-3.5 rounded-2xl border border-[#C2F0F7]/80 shadow-inner">
+                        <div className="lg:w-4/12 min-w-[220px] bg-white p-3.5 rounded-md border border-[#C2F0F7]/80 shadow-inner">
                           <div className="text-[11px] font-black text-[#006970] uppercase tracking-wider flex items-center gap-1 mb-1">
                             <span>🎯 핵심 정량목표 (KPI)</span>
                           </div>
@@ -681,11 +681,11 @@ export const TeacherGuide: React.FC = () => {
 
                         {/* 3. 학습포트폴리오 & 진로포트폴리오 건수 통계 */}
                         <div className="lg:w-3/12 min-w-[200px] flex items-center gap-2 sm:gap-3">
-                          <div className="flex-1 bg-white p-3.5 rounded-2xl border border-[#D5CAFF]/80 shadow-inner text-center">
+                          <div className="flex-1 bg-white p-3.5 rounded-md border border-[#D5CAFF]/80 shadow-inner text-center">
                             <span className="text-[11px] font-black text-[#6240D5] block mb-0.5">📘 학습포트폴리오</span>
                             <span className="text-lg font-black text-[#1A1626]">{studyCount}<span className="text-xs font-bold text-[#6E6A80] ml-0.5">건</span></span>
                           </div>
-                          <div className="flex-1 bg-white p-3.5 rounded-2xl border border-[#cac4d7]/70 shadow-inner text-center">
+                          <div className="flex-1 bg-white p-3.5 rounded-md border border-[#cac4d7]/70 shadow-inner text-center">
                             <span className="text-[11px] font-black text-[#3D3554] block mb-0.5">💼 진로포트폴리오</span>
                             <span className="text-lg font-black text-[#1A1626]">{careerCount}<span className="text-xs font-bold text-[#6E6A80] ml-0.5">건</span></span>
                           </div>
@@ -729,7 +729,7 @@ export const TeacherGuide: React.FC = () => {
                 return (
                   <div className="space-y-6 animate-fadeIn">
                     {/* 상단 네비게이션 & 뒤로 가기 바 */}
-                    <div className="bg-white p-4 rounded-2xl border border-[#cac4d7]/70 shadow-sm flex items-center justify-between">
+                    <div className="bg-white p-4 rounded-md border border-[#cac4d7]/70 shadow-sm flex items-center justify-between">
                       <button
                         onClick={() => setDetailStudentId(null)}
                         className="inline-flex items-center gap-2 text-sm font-black text-[#6240D5] hover:bg-[#efedf5] px-4 py-2 rounded-xl transition-all border border-[#D5CAFF]"
@@ -743,9 +743,9 @@ export const TeacherGuide: React.FC = () => {
                     </div>
 
                     {/* 종합 상세 관제 보드 컨테이너 */}
-                    <div className="bg-white rounded-[32px] p-8 border border-[#cac4d7]/70 shadow-md space-y-8">
+                    <div className="bg-white rounded-md p-8 border border-[#cac4d7]/70 shadow-md space-y-8">
                       {/* 히어로 프로필 배너 */}
-                      <div className="p-6 rounded-[28px] bg-gradient-to-r from-[#F5EFFF] via-[#E2FFFA] to-white border-2 border-[#D5CAFF] shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
+                      <div className="p-6 rounded-md bg-gradient-to-r from-[#F5EFFF] via-[#E2FFFA] to-white border-2 border-[#D5CAFF] shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
                         <div className="space-y-2">
                           <div className="flex items-center gap-3 flex-wrap">
                             <span className="text-2xl font-black text-[#1A1626]">
@@ -778,14 +778,14 @@ export const TeacherGuide: React.FC = () => {
                             setSelectedStudentId(curStd.id);
                             setActiveTab("recordDraft");
                           }}
-                          className="font-black whitespace-nowrap shadow-lg px-6 py-3.5 rounded-2xl bg-gradient-to-r from-[#006970] to-[#00A3A8] text-white text-sm hover:scale-102 transition-all"
+                          className="font-black whitespace-nowrap shadow-lg px-6 py-3.5 rounded-md bg-gradient-to-r from-[#006970] to-[#00A3A8] text-white text-sm hover:scale-102 transition-all"
                         >
                           ✨ AI 생기부 초안실로 이동 &rarr;
                         </Button>
                       </div>
 
                       {/* ✨ [선택 활동 기반 AI 생기부 즉시 생성 컨트롤 바] */}
-                      <div className="p-5 rounded-[24px] bg-gradient-to-r from-[#6240D5]/15 via-[#006970]/15 to-white border-2 border-[#6240D5]/40 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                      <div className="p-5 rounded-md bg-gradient-to-r from-[#6240D5]/15 via-[#006970]/15 to-white border-2 border-[#6240D5]/40 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div className="flex items-center gap-3">
                           <Sparkles className="w-6 h-6 text-[#6240D5] animate-bounce flex-shrink-0" />
                           <div>
@@ -829,7 +829,7 @@ export const TeacherGuide: React.FC = () => {
                       </div>
 
                       {/* Section A: 이 학기 정량적 학습 목표 (KPI) */}
-                      <div className="space-y-3 bg-gradient-to-br from-[#E6FBFF]/70 to-[#F0F9FF] p-6 rounded-[24px] border border-[#A6E8F2] shadow-inner">
+                      <div className="space-y-3 bg-gradient-to-br from-[#E6FBFF]/70 to-[#F0F9FF] p-6 rounded-md border border-[#A6E8F2] shadow-inner">
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#A6E8F2]/60 pb-3">
                           <h4 className="text-sm font-black text-[#006970] flex items-center gap-2">
                             <span>🎯 이번 학기 정량적 학습 목표 (KPI) 및 과목별 타겟</span>
@@ -840,7 +840,7 @@ export const TeacherGuide: React.FC = () => {
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
                           {(curStd.studyGoals || []).map((g, idx) => (
-                            <div key={idx} className="bg-white p-4 rounded-2xl border border-[#C2F0F7] shadow-sm flex flex-col justify-between space-y-2">
+                            <div key={idx} className="bg-white p-4 rounded-md border border-[#C2F0F7] shadow-sm flex flex-col justify-between space-y-2">
                               <div className="flex items-center justify-between">
                                 <span className="text-sm font-black text-[#1A1626]">{g.subject}</span>
                                 <span className="text-xs font-black bg-[#006970]/10 text-[#006970] px-2.5 py-0.5 rounded-lg">
@@ -859,7 +859,7 @@ export const TeacherGuide: React.FC = () => {
                       {/* 2단 병렬 컨테이너: 학습 포트폴리오 vs 진로 포트폴리오 (최신순 표기 & 고정 스크롤 & 체크박스 연동) */}
                       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 pt-2">
                         {/* Section B: 학습포트폴리오 고정 스크롤 영역 */}
-                        <div className="space-y-4 bg-[#F8F6FF] p-6 rounded-[28px] border-2 border-[#D5CAFF] shadow-sm flex flex-col">
+                        <div className="space-y-4 bg-[#F8F6FF] p-6 rounded-md border-2 border-[#D5CAFF] shadow-sm flex flex-col">
                           <div className="flex items-center justify-between border-b border-[#D5CAFF]/60 pb-3">
                             <h4 className="text-sm font-black text-[#6240D5] flex items-center gap-2">
                               <BookOpen className="w-5 h-5 text-[#6240D5]" />
@@ -888,7 +888,7 @@ export const TeacherGuide: React.FC = () => {
                                       originalContent: cn.original,
                                       status: cn.status,
                                     })}
-                                    className={`p-4 rounded-2xl bg-white border transition-all cursor-pointer group flex flex-col space-y-2 shadow-sm ${
+                                    className={`p-4 rounded-md bg-white border transition-all cursor-pointer group flex flex-col space-y-2 shadow-sm ${
                                       isChecked ? "border-[#6240D5] ring-2 ring-[#6240D5]/20 bg-purple-50/20" : "border-[#D5CAFF]/70 opacity-85"
                                     }`}
                                   >
@@ -926,7 +926,7 @@ export const TeacherGuide: React.FC = () => {
                         </div>
 
                         {/* Section C: 진로포트폴리오 고정 스크롤 영역 */}
-                        <div className="space-y-4 bg-[#EAFBFF]/60 p-6 rounded-[28px] border-2 border-[#A6E8F2] shadow-sm flex flex-col">
+                        <div className="space-y-4 bg-[#EAFBFF]/60 p-6 rounded-md border-2 border-[#A6E8F2] shadow-sm flex flex-col">
                           <div className="flex items-center justify-between border-b border-[#A6E8F2]/60 pb-3">
                             <h4 className="text-sm font-black text-[#006970] flex items-center gap-2">
                               <Briefcase className="w-5 h-5 text-[#006970]" />
@@ -955,7 +955,7 @@ export const TeacherGuide: React.FC = () => {
                                       originalContent: pf.original,
                                       status: pf.status,
                                     })}
-                                    className={`p-4 rounded-2xl bg-white border transition-all cursor-pointer group flex flex-col space-y-2 shadow-sm ${
+                                    className={`p-4 rounded-md bg-white border transition-all cursor-pointer group flex flex-col space-y-2 shadow-sm ${
                                       isChecked ? "border-[#006970] ring-2 ring-[#006970]/20 bg-teal-50/20" : "border-[#A6E8F2]/70 opacity-85"
                                     }`}
                                   >
@@ -1007,7 +1007,7 @@ export const TeacherGuide: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start animate-fadeIn">
             
             {/* LEFT: STUDENT ROSTER (4 COL) */}
-            <div className="lg:col-span-4 bg-white rounded-[32px] p-6 border border-[#cac4d7]/70 shadow-sm space-y-5">
+            <div className="lg:col-span-4 bg-white rounded-md p-6 border border-[#cac4d7]/70 shadow-sm space-y-5">
               <div className="flex items-center justify-between">
                 <h2 className="text-lg font-black text-[#1A1626] flex items-center gap-2">
                   <Users className="w-5 h-5 text-[#6240d5]" />
@@ -1024,7 +1024,7 @@ export const TeacherGuide: React.FC = () => {
                   placeholder="이름 또는 지망 꿈 검색..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full text-xs pl-9 pr-3.5 py-3 rounded-2xl bg-[#F4F2FA] border border-[#cac4d7]/50 text-[#1A1626] focus:outline-none focus:ring-2 focus:ring-[#6240d5] font-bold shadow-inner"
+                  className="w-full text-xs pl-9 pr-3.5 py-3 rounded-md bg-[#F4F2FA] border border-[#cac4d7]/50 text-[#1A1626] focus:outline-none focus:ring-2 focus:ring-[#6240d5] font-bold shadow-inner"
                 />
               </div>
 
@@ -1036,7 +1036,7 @@ export const TeacherGuide: React.FC = () => {
                     <div
                       key={s.id}
                       onClick={() => setSelectedStudentId(s.id)}
-                      className={`p-4 rounded-2xl border-2 cursor-pointer transition-all duration-200 ${
+                      className={`p-4 rounded-md border-2 cursor-pointer transition-all duration-200 ${
                         isSelected
                           ? "bg-[#6240d5]/10 border-[#6240d5] shadow-md scale-[1.02]"
                           : "bg-[#F4F2FA]/60 border-[#cac4d7]/60 hover:bg-[#F4F2FA] hover:border-[#6240d5]/40"
@@ -1075,8 +1075,8 @@ export const TeacherGuide: React.FC = () => {
             <div className="lg:col-span-8 space-y-6">
               
               {/* Student Overview Banner & Content Container */}
-              <div className="bg-white rounded-[32px] p-8 border border-[#cac4d7]/70 shadow-sm space-y-6">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 rounded-2xl bg-gradient-to-r from-[#f4f2fa] to-[#efedf5] border border-[#cac4d7]/60 shadow-inner">
+              <div className="bg-white rounded-md p-8 border border-[#cac4d7]/70 shadow-sm space-y-6">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 rounded-md bg-gradient-to-r from-[#f4f2fa] to-[#efedf5] border border-[#cac4d7]/60 shadow-inner">
                   <div className="space-y-1">
                     <span className="text-xs font-black text-[#6240d5] uppercase tracking-wider block whitespace-nowrap">
                       2026 NEIS SCHOOL RECORD GENERATOR
@@ -1103,7 +1103,7 @@ export const TeacherGuide: React.FC = () => {
                 {(() => {
                   const allActiveItems = getStudentActivitiesList(activeStudent);
                   return (
-                    <div className="p-6 rounded-[28px] bg-gradient-to-r from-[#F8F6FF] via-[#F2FDFF] to-white border-2 border-[#6240d5]/40 shadow-sm space-y-4">
+                    <div className="p-6 rounded-md bg-gradient-to-r from-[#F8F6FF] via-[#F2FDFF] to-white border-2 border-[#6240d5]/40 shadow-sm space-y-4">
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#cac4d7]/50 pb-3">
                         <div>
                           <h4 className="text-sm font-black text-[#1A1626] flex items-center gap-1.5">
@@ -1138,7 +1138,7 @@ export const TeacherGuide: React.FC = () => {
                             <div
                               key={item.id}
                               onClick={() => toggleActivitySelection(item.id)}
-                              className={`p-3.5 rounded-2xl border transition-all cursor-pointer flex items-start gap-3 shadow-xs ${
+                              className={`p-3.5 rounded-md border transition-all cursor-pointer flex items-start gap-3 shadow-xs ${
                                 isChecked
                                   ? "bg-white border-[#6240d5] ring-2 ring-[#6240d5]/20"
                                   : "bg-[#F4F2FA]/50 border-slate-200 opacity-75 hover:opacity-100"
@@ -1175,7 +1175,7 @@ export const TeacherGuide: React.FC = () => {
                             }
                             handleExtractAiGuideline(selectedActivityIds);
                           }}
-                          className="font-black px-6 py-3 rounded-2xl bg-gradient-to-r from-[#6240D5] to-[#006970] text-white text-xs shadow-md hover:scale-102 transition-transform"
+                          className="font-black px-6 py-3 rounded-md bg-gradient-to-r from-[#6240D5] to-[#006970] text-white text-xs shadow-md hover:scale-102 transition-transform"
                         >
                           ⚡ 선택한 {selectedActivityIds.length}개 소재 기준으로 AI 생기부 즉시 재생성 &rarr;
                         </Button>
@@ -1185,7 +1185,7 @@ export const TeacherGuide: React.FC = () => {
                 })()}
 
                 {/* Strict Rules Notification Bar */}
-                <div className="p-4 rounded-2xl bg-[#006970]/15 border border-[#006970]/40 flex items-center justify-between text-xs font-extrabold text-[#1A1626] shadow-sm">
+                <div className="p-4 rounded-md bg-[#006970]/15 border border-[#006970]/40 flex items-center justify-between text-xs font-extrabold text-[#1A1626] shadow-sm">
                   <div className="flex items-center gap-2">
                     <ShieldCheck className="w-5 h-5 text-[#006970] flex-shrink-0" />
                     <span>2026학년도 기재 금지 사항(공인시험, 교외수상, 학원명, 실명) 100% 블라인드 및 명사형 어미 자동 종결 준수</span>
@@ -1200,7 +1200,7 @@ export const TeacherGuide: React.FC = () => {
                         <FileText className="w-5 h-5 text-[#6240d5]" />
                         <span>2. AI 생기부 맞춤 초안 출력 (NEIS 입력용)</span>
                       </h4>
-                      <div className="inline-flex p-1 bg-[#F4F2FA] rounded-2xl border border-[#cac4d7]/60">
+                      <div className="inline-flex p-1 bg-[#F4F2FA] rounded-md border border-[#cac4d7]/60">
                         <button
                           onClick={() => setReportViewMode("card")}
                           className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition-all ${
@@ -1243,12 +1243,12 @@ export const TeacherGuide: React.FC = () => {
                   </div>
 
                   {isExtracting ? (
-                    <div className="flex flex-col items-center justify-center py-24 space-y-4 rounded-3xl bg-[#FBF8FF] border-2 border-[#cac4d7]/70 shadow-inner">
+                    <div className="flex flex-col items-center justify-center py-24 space-y-4 rounded-md bg-[#FBF8FF] border-2 border-[#cac4d7]/70 shadow-inner">
                       <RefreshCw className="w-10 h-10 animate-spin text-[#6240d5]" />
                       <span className="font-sans font-black text-sm text-[#1A1626]">선택하신 포트폴리오 활동들을 2026 기재 준칙에 맞춰 융합·서술 중입니다...</span>
                     </div>
                   ) : reportViewMode === "text" ? (
-                    <div className="p-6 rounded-3xl bg-slate-50 border border-slate-300 shadow-inner space-y-4 text-sm leading-relaxed text-[#111] font-normal font-sans whitespace-pre-wrap selection:bg-[#111]/10 overflow-x-auto">
+                    <div className="p-6 rounded-md bg-slate-50 border border-slate-300 shadow-inner space-y-4 text-sm leading-relaxed text-[#111] font-normal font-sans whitespace-pre-wrap selection:bg-[#111]/10 overflow-x-auto">
                       {cleanNeisProse(generatedGuideline || "")}
                     </div>
                   ) : (
@@ -1289,7 +1289,7 @@ export const TeacherGuide: React.FC = () => {
                       const renderCard = (title: string, subtitle: string, icon: any, content: string, sectionKey: string, badgeText: string, borderColor: string, bgColor: string) => {
                         const finalContent = content || (sectionKey === "세특" ? default1 : sectionKey === "창체" ? default2 : default3);
                         return (
-                          <div className={`p-6 rounded-[28px] ${bgColor} border-2 ${borderColor} shadow-sm space-y-3 transition-all hover:shadow-md`}>
+                          <div className={`p-6 rounded-md ${bgColor} border-2 ${borderColor} shadow-sm space-y-3 transition-all hover:shadow-md`}>
                             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-black/10 pb-3">
                               <div className="flex items-center gap-2">
                                 {icon}
@@ -1312,7 +1312,7 @@ export const TeacherGuide: React.FC = () => {
                                 </button>
                               </div>
                             </div>
-                            <div className="p-4 rounded-2xl bg-white/95 border border-black/5 text-sm font-semibold text-[#1A1626] leading-relaxed whitespace-pre-wrap font-sans shadow-inner">
+                            <div className="p-4 rounded-md bg-white/95 border border-black/5 text-sm font-semibold text-[#1A1626] leading-relaxed whitespace-pre-wrap font-sans shadow-inner">
                               {finalContent}
                             </div>
                           </div>
@@ -1325,7 +1325,7 @@ export const TeacherGuide: React.FC = () => {
                           {renderCard("2. 진로·창의적 체험활동 (창체/진로)", "RIASEC & 꿈 연계", <Briefcase className="w-5 h-5 text-[#006970]" />, section2, "창체", "약 410바이트 / 나이스 부합", "border-[#A6E8F2]", "bg-[#E2FFFA]/50")}
                           {renderCard("3. 종합 행동특성 및 발달 평가 (행특)", "인성 & 퀘스트 태도", <Award className="w-5 h-5 text-amber-600" />, section3, "행특", "약 320바이트 / 나이스 부합", "border-amber-200", "bg-amber-50/40")}
 
-                          <div className="p-4 rounded-2xl bg-white border border-[#cac4d7]/70 text-center text-xs font-extrabold text-[#6E6A80]">
+                          <div className="p-4 rounded-md bg-white border border-[#cac4d7]/70 text-center text-xs font-extrabold text-[#6E6A80]">
                             💡 <strong>팁:</strong> 본 생성 내용은 이모티콘 및 마크다운 기호가 완전히 탈피된 순수 NEIS 기재 양식 문구입니다. [이 섹션만 복사] 버튼을 눌러 나이스 해당란에 바로 붙여넣기 해보세요.
                           </div>
                         </div>
@@ -1347,7 +1347,7 @@ export const TeacherGuide: React.FC = () => {
           ==================================================== */}
       {viewerModalItem && (
         <div className="fixed inset-0 z-50 bg-black/65 backdrop-blur-sm flex items-center justify-center p-4 animate-fadeIn">
-          <div className="bg-white rounded-[36px] max-w-2xl w-full border-4 border-[#D5CAFF] shadow-[0_25px_80px_rgba(98,64,213,0.4)] overflow-hidden flex flex-col max-h-[90vh]">
+          <div className="bg-white rounded-md max-w-2xl w-full border-4 border-[#D5CAFF] shadow-[0_25px_80px_rgba(98,64,213,0.4)] overflow-hidden flex flex-col max-h-[90vh]">
             {/* 모달 헤더 바 */}
             <div className="bg-gradient-to-r from-[#6240D5] via-[#7B5CF0] to-[#00A3A8] p-6 text-white flex items-center justify-between shadow-md flex-shrink-0">
               <div className="space-y-1">
@@ -1375,7 +1375,7 @@ export const TeacherGuide: React.FC = () => {
             {/* 모달 콘텐츠 바디 (내부 스크롤) */}
             <div className="p-7 space-y-6 overflow-y-auto flex-grow text-slate-800">
               {/* 메타데이터 INFO */}
-              <div className="flex items-center justify-between text-xs font-bold bg-[#F8F6FF] p-3.5 rounded-2xl border border-purple-100 text-[#484554]">
+              <div className="flex items-center justify-between text-xs font-bold bg-[#F8F6FF] p-3.5 rounded-md border border-purple-100 text-[#484554]">
                 <span>🧑‍🎓 작성 학생: <strong className="text-[#6240D5]">{viewerModalItem.studentName}</strong></span>
                 <span>•</span>
                 <span>📌 분류: <strong>{viewerModalItem.category}</strong></span>
@@ -1384,7 +1384,7 @@ export const TeacherGuide: React.FC = () => {
               </div>
 
               {/* AI 세특 요약 초안 (강조 하이라이트 Box) */}
-              <div className="space-y-2.5 bg-gradient-to-br from-[#EAFBFF]/80 via-[#FAF6FF] to-[#F5EFFF] p-5 rounded-2xl border-2 border-[#A6E8F2] shadow-inner">
+              <div className="space-y-2.5 bg-gradient-to-br from-[#EAFBFF]/80 via-[#FAF6FF] to-[#F5EFFF] p-5 rounded-md border-2 border-[#A6E8F2] shadow-inner">
                 <div className="flex items-center justify-between">
                   <h4 className="text-xs font-black text-[#006970] flex items-center gap-1.5 uppercase tracking-wide">
                     <Sparkles className="w-4 h-4 text-[#6240D5]" />
@@ -1405,7 +1405,7 @@ export const TeacherGuide: React.FC = () => {
                   <FileText className="w-4 h-4 text-[#6240D5]" />
                   <span>📄 학생 제출 보고서 및 탐구 일지 원문 전문</span>
                 </h4>
-                <div className="p-6 rounded-2xl bg-[#FAFAFC] border-2 border-[#cac4d7]/70 font-mono text-xs sm:text-sm text-[#1A1626] leading-relaxed whitespace-pre-wrap selection:bg-purple-100 shadow-inner">
+                <div className="p-6 rounded-md bg-[#FAFAFC] border-2 border-[#cac4d7]/70 font-mono text-xs sm:text-sm text-[#1A1626] leading-relaxed whitespace-pre-wrap selection:bg-purple-100 shadow-inner">
                   {viewerModalItem.originalContent}
                   <br /><br />
                   <span className="text-slate-400 font-sans text-xs italic">

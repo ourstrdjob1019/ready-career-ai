@@ -748,7 +748,7 @@ export const Portfolio: React.FC = () => {
             <span className="text-xs font-bold text-[#8A859C]">위의 직접 추가 버튼을 누르거나 AI 추천 풀에서 스펙을 장착해 보세요!</span>
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {filteredItems.map((it) => {
               const isCert = it.category.includes("자격증");
               return (
@@ -756,28 +756,28 @@ export const Portfolio: React.FC = () => {
                   key={it.id}
                   onClick={() => setViewingItem(it)}
                   title={`${it.title} (터치하여 전체 내용 확대 보기)`}
-                  className="bg-white rounded-[18px] p-3.5 border border-purple-150 hover:border-[#6A42ED] hover:bg-[#FAF8FF] shadow-2xs hover:shadow-md transition-all duration-200 flex flex-col justify-between cursor-pointer group relative min-h-[92px]"
+                  className="bg-white rounded-[22px] p-4.5 border border-purple-150 hover:border-[#6A42ED] hover:bg-[#FAF8FF] shadow-2xs hover:shadow-md transition-all duration-200 flex flex-col justify-between cursor-pointer group relative min-h-[125px]"
                 >
-                  <div className="space-y-1.5 overflow-hidden w-full">
-                    <div className="flex items-center justify-between gap-1">
-                      <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded-md border truncate max-w-[90px] ${
+                  <div className="space-y-2 overflow-hidden w-full">
+                    <div className="flex items-center justify-between gap-1.5">
+                      <span className={`text-[11px] font-black px-2.5 py-0.5 rounded-md border truncate max-w-[130px] ${
                         isCert
                           ? "bg-rose-50 text-rose-600 border-rose-200"
                           : "bg-purple-50 text-[#6A42ED] border-purple-200/80"
                       }`}>
                         • {it.category}
                       </span>
-                      <span className="text-[9px] font-extrabold text-teal-600 bg-teal-50 px-1.5 py-0.5 rounded shrink-0">
+                      <span className="text-[10px] font-black text-teal-600 bg-teal-50 px-2 py-0.5 rounded border border-teal-200/50 shrink-0">
                         {it.photoUrl ? "📷 인증" : "✨ AI"}
                       </span>
                     </div>
 
-                    <h4 className="text-xs font-extrabold text-[#1F193B] group-hover:text-[#6A42ED] transition-colors line-clamp-2 tracking-tight leading-snug">
+                    <h4 className="text-sm font-black text-[#1F193B] group-hover:text-[#6A42ED] transition-colors line-clamp-2 leading-snug break-keep">
                       {it.title}
                     </h4>
                   </div>
 
-                  <div className="pt-2 mt-2 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-400 font-bold group-hover:text-[#6A42ED]">
+                  <div className="pt-3 mt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400 font-bold group-hover:text-[#6A42ED]">
                     <span>{it.dateRange?.split(' ')[0] || "2026.05"}</span>
                     <span>확대 보기 ↗</span>
                   </div>

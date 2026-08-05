@@ -9,7 +9,7 @@ export interface RankLevel {
 }
 
 export const getRankFromXP = (xp: number): RankLevel => {
-  if (xp >= 240) {
+  if (xp >= 400) {
     return {
       levelNum: 5,
       lvTitle: "Lv.5",
@@ -19,7 +19,7 @@ export const getRankFromXP = (xp: number): RankLevel => {
       textColor: "text-emerald-500 font-black",
       border: "border-emerald-400"
     };
-  } else if (xp >= 180) {
+  } else if (xp >= 300) {
     return {
       levelNum: 4,
       lvTitle: "Lv.4",
@@ -29,7 +29,7 @@ export const getRankFromXP = (xp: number): RankLevel => {
       textColor: "text-cyan-600",
       border: "border-cyan-400"
     };
-  } else if (xp >= 120) {
+  } else if (xp >= 200) {
     return {
       levelNum: 3,
       lvTitle: "Lv.3",
@@ -39,7 +39,7 @@ export const getRankFromXP = (xp: number): RankLevel => {
       textColor: "text-amber-600",
       border: "border-amber-400"
     };
-  } else if (xp >= 60) {
+  } else if (xp >= 100) {
     return {
       levelNum: 2,
       lvTitle: "Lv.2",

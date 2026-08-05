@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button, Card, ProgressBar, MascotAri } from "../components";
 import { useAuth } from "../context";
+import { getCurrentXP, getRankFromXP } from "../services/expService";
 import {
   Award,
   Sparkles,
@@ -85,10 +86,13 @@ export const MyPage: React.FC = () => {
     setJobToDelete(null);
   };
 
-  const level = 5;
-  const currentExp = 380;
-  const targetExp = 500;
-  const expPercent = Math.round((currentExp / targetExp) * 100);
+  const currentExp = getCurrentXP();
+  const currentRank = getRankFromXP(currentExp);
+  const level = currentRank.levelNum;
+  const nextRank = getRankFromXP(Math.min(500, (level * 100) + 10));
+  const targetExp = level < 5 ? level * 100 : 500;
+  const remainingExp = Math.max(0, targetExp - currentExp);
+  const expPercent = Math.min(100, Math.round((currentExp / 500) * 100));
   const streakDays = 14;
 
   const badgeCollection = [
@@ -206,15 +210,30 @@ export const MyPage: React.FC = () => {
               </span>
             </div>
 
-            <div className="flex items-center gap-5">
-              <div className="w-24 h-24 rounded-3xl bg-gradient-to-tr from-primary-container to-secondary flex flex-col items-center justify-center border-4 border-white/40 shadow-2xl transform rotate-3 flex-shrink-0">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-5">
+              <div className="w-24 h-24 rounded-3xl bg-gradient-to-tr from-purple-600 to-indigo-600 flex flex-col items-center justify-center border-4 border-white/40 shadow-2xl transform rotate-3 flex-shrink-0 mx-auto sm:mx-0">
                 <span className="text-xs font-bold uppercase text-white/80 whitespace-nowrap">LEVEL</span>
                 <span className="text-4xl font-black tracking-tight">{level}</span>
               </div>
-              <div>
-                <span className="text-xs font-extrabold text-secondary-container uppercase block mb-1 whitespace-nowrap">AURA TIER &middot; GOLD CHASER</span>
-                <h3 className="text-2xl font-black text-white">세부능력 실증 개척자</h3>
-                <p className="text-xs text-white/80 mt-0.5 whitespace-nowrap">다음 레벨(Lv.6)까지 120 EXP 남았습니다!</p>
+              <div className="space-y-1.5 overflow-hidden text-center sm:text-left">
+                <div className="flex flex-wrap gap-1.5 justify-center sm:justify-start items-center">
+                  <span className="text-xs font-extrabold bg-white/20 text-amber-300 px-2.5 py-0.5 rounded-md border border-white/30 truncate max-w-[200px]">
+                    현재 등급: {currentRank.title.replace(/👑|💎|🥇|🥈|🥉/g, "").trim()}
+                  </span>
+                  {level < 5 && (
+                    <span className="text-xs font-extrabold bg-purple-900/60 text-purple-200 px-2.5 py-0.5 rounded-md border border-purple-400/30 truncate max-w-[200px]">
+                      앞으로 등급: {nextRank.title.replace(/👑|💎|🥇|🥈|🥉/g, "").trim()}
+                    </span>
+                  )}
+                </div>
+                <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight truncate">
+                  {currentRank.title} ({currentRank.lvTitle})
+                </h3>
+                <p className="text-xs sm:text-sm font-extrabold text-amber-300 leading-tight">
+                  {level < 5
+                    ? `🎯 다음 등급(${nextRank.lvTitle}) 승급까지 ${remainingExp} XP 남았습니다!`
+                    : `👑 최고 등급(Lv.5 마스터)에 도달하였습니다!`}
+                </p>
               </div>
             </div>
 

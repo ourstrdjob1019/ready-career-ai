@@ -1049,30 +1049,30 @@ export const StarRoadmap: React.FC = () => {
                   </div>
 
                   {/* 스티커 카드 그리드 (Ultra-Compact Summary Stickers) */}
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                     {displayNotes.map((note) => (
                       <div
                         key={note.id}
                         onClick={() => setSelectedDetailNote(note)}
                         title={`${note.topic} 상세 노트 열람 (클릭 시 확대 창 Open)`}
-                        className="bg-white rounded-[18px] p-3.5 border border-purple-150 hover:border-[#6A42ED] hover:bg-[#FAF8FF] shadow-2xs hover:shadow-md transition-all duration-200 flex flex-col justify-between cursor-pointer group relative min-h-[92px]"
+                        className="bg-white rounded-[22px] p-4.5 border border-purple-150 hover:border-[#6A42ED] hover:bg-[#FAF8FF] shadow-2xs hover:shadow-md transition-all duration-200 flex flex-col justify-between cursor-pointer group relative min-h-[125px]"
                       >
-                        <div className="space-y-1.5 overflow-hidden w-full">
-                          <div className="flex items-center justify-between gap-1">
-                            <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-md bg-purple-50 text-[#6A42ED] border border-purple-200/80 truncate max-w-[90px]">
+                        <div className="space-y-2 overflow-hidden w-full">
+                          <div className="flex items-center justify-between gap-1.5">
+                            <span className="text-[11px] font-black px-2.5 py-0.5 rounded-md bg-purple-50 text-[#6A42ED] border border-purple-200/80 truncate max-w-[130px]">
                               {note.subject.split(/[-&(/]/)[0].trim()}
                             </span>
-                            <span className="text-[9px] font-extrabold text-amber-600 shrink-0 bg-amber-50 px-1.5 py-0.5 rounded">
+                            <span className="text-[10px] font-black text-amber-600 shrink-0 bg-amber-50 px-2 py-0.5 rounded border border-amber-200/50">
                               💡 세특
                             </span>
                           </div>
 
-                          <h4 className="text-xs font-extrabold text-[#1F193B] group-hover:text-[#6A42ED] transition-colors line-clamp-2 tracking-tight leading-snug">
+                          <h4 className="text-sm font-black text-[#1F193B] group-hover:text-[#6A42ED] transition-colors line-clamp-2 leading-snug break-keep">
                             {note.topic}
                           </h4>
                         </div>
 
-                        <div className="pt-2 mt-2 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-400 font-bold group-hover:text-[#6A42ED]">
+                        <div className="pt-3 mt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400 font-bold group-hover:text-[#6A42ED]">
                           <span>{note.date.slice(-5)}</span>
                           <span>확대 보기 ↗</span>
                         </div>
@@ -1157,30 +1157,30 @@ export const StarRoadmap: React.FC = () => {
                     </button>
                   </div>
 
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                     {unitNotes.map(note => (
                       <div
                         key={note.id}
                         onClick={() => setSelectedDetailNote(note)}
                         title={`${note.topic} 상세 노트 열람 (클릭 시 확대 창 Open)`}
-                        className="bg-white rounded-[18px] p-3.5 border border-purple-150 hover:border-[#6A42ED] hover:bg-[#FAF8FF] shadow-2xs hover:shadow-md transition-all duration-200 flex flex-col justify-between cursor-pointer group relative min-h-[92px]"
+                        className="bg-white rounded-[22px] p-4.5 border border-purple-150 hover:border-[#6A42ED] hover:bg-[#FAF8FF] shadow-2xs hover:shadow-md transition-all duration-200 flex flex-col justify-between cursor-pointer group relative min-h-[125px]"
                       >
-                        <div className="space-y-1.5 overflow-hidden w-full">
-                          <div className="flex items-center justify-between gap-1">
-                            <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-md bg-purple-50 text-[#6A42ED] border border-purple-200/80 truncate max-w-[90px]">
+                        <div className="space-y-2 overflow-hidden w-full">
+                          <div className="flex items-center justify-between gap-1.5">
+                            <span className="text-[11px] font-black px-2.5 py-0.5 rounded-md bg-purple-50 text-[#6A42ED] border border-purple-200/80 truncate max-w-[130px]">
                               {note.subject.split(/[-&(/]/)[0].trim()}
                             </span>
-                            <span className="text-[9px] font-extrabold text-amber-600 shrink-0 bg-amber-50 px-1.5 py-0.5 rounded">
+                            <span className="text-[10px] font-black text-amber-600 shrink-0 bg-amber-50 px-2 py-0.5 rounded border border-amber-200/50">
                               💡 세특
                             </span>
                           </div>
 
-                          <h4 className="text-xs font-extrabold text-[#1F193B] group-hover:text-[#6A42ED] transition-colors line-clamp-2 tracking-tight leading-snug">
+                          <h4 className="text-sm font-black text-[#1F193B] group-hover:text-[#6A42ED] transition-colors line-clamp-2 leading-snug break-keep">
                             {note.topic}
                           </h4>
                         </div>
 
-                        <div className="pt-2 mt-2 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-400 font-bold group-hover:text-[#6A42ED]">
+                        <div className="pt-3 mt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400 font-bold group-hover:text-[#6A42ED]">
                           <span>{note.date.slice(-5)}</span>
                           <span>확대 보기 ↗</span>
                         </div>
