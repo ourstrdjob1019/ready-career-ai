@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
-import { Header, BottomNav, AriChatModal } from "./components";
+import { Header, BottomNav, AriChatModal, GlobalExpRewardModal } from "./components";
 import { ARI_BLOB_URL } from "./assets/mascotData";
 import {
   HomeDashboard,
@@ -139,6 +139,9 @@ const AppContent: React.FC = () => {
 
       {/* Ask Ari Modal */}
       <AriChatModal isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
+
+      {/* Global EXP Reward & Level Up Modal */}
+      <GlobalExpRewardModal />
     </div>
   );
 };

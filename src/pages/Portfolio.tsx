@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useAuth } from "../context";
 import { executeAiPrompt } from "../services/aiService";
 import { ARI_BLOB_URL } from "../assets/mascotData";
+import { rewardXP } from "../services/expService";
 import {
   Sparkles,
   RefreshCw,
@@ -14,9 +15,7 @@ import {
   X,
   Save,
   Trophy,
-  Briefcase,
-  Filter,
-  Eye
+  Filter
 } from "lucide-react";
 
 interface PortfolioItem {
@@ -248,6 +247,7 @@ export const Portfolio: React.FC = () => {
     const updated = [newItem, ...items];
     setItems(updated);
     localStorage.setItem("readycareer_portfolio_items_v2", JSON.stringify(updated));
+    rewardXP(60, "진로 포트폴리오 스펙 등록!");
 
     setFormTitle("");
     setFormContent("");
@@ -271,6 +271,7 @@ export const Portfolio: React.FC = () => {
     const updated = [imported, ...items];
     setItems(updated);
     localStorage.setItem("readycareer_portfolio_items_v2", JSON.stringify(updated));
+    rewardXP(60, `[${rec.title}] 진로 활동 보관함 장착!`);
     showToast(`✅ [${rec.title}] 항목이 내 진로 포트폴리오 스펙 쇼룸으로 즉시 이동되었습니다!`);
   };
 
@@ -747,100 +748,62 @@ export const Portfolio: React.FC = () => {
             <span className="text-xs font-bold text-[#8A859C]">위의 직접 추가 버튼을 누르거나 AI 추천 풀에서 스펙을 장착해 보세요!</span>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {filteredItems.map((it) => {
               const isCert = it.category.includes("자격증");
               return (
                 <div
                   key={it.id}
                   onClick={() => setViewingItem(it)}
-                  className="bg-white rounded-[32px] p-6 sm:p-7 shadow-[0_10px_30px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_45px_rgba(123,92,240,0.18)] border-2 border-[#E7E0FF] hover:border-[#7B5CF0] transition-all duration-300 flex flex-col justify-between group cursor-pointer transform hover:-translate-y-1 relative overflow-hidden"
+                  className="bg-white rounded-[20px] p-4.5 border border-slate-200 hover:border-slate-800 shadow-xs hover:shadow-md transition-all duration-200 flex flex-col justify-between h-48 group cursor-pointer relative overflow-hidden"
                 >
-                  <div className="space-y-4">
-                    {/* 상단 뱃지 & 기간 */}
-                    <div className="flex items-center justify-between gap-2">
-                      <span className={`text-xs font-black px-3.5 py-1 rounded-full shadow-2xs ${
+                  <div className="space-y-2">
+                    {/* 상단 간편 알약 뱃지 & 날짜 */}
+                    <div className="flex items-center justify-between gap-1.5">
+                      <span className={`text-[11px] font-extrabold px-2.5 py-0.5 rounded-full border truncate max-w-[130px] ${
                         isCert
-                          ? "bg-[#FF3B7C] text-white animate-pulse"
-                          : "bg-[#7B5CF0] text-white"
+                          ? "bg-rose-50 text-rose-600 border-rose-200"
+                          : "bg-slate-100 text-slate-700 border-slate-200"
                       }`}>
-                        {it.category}
+                        • {it.category}
                       </span>
-                      <span className="text-[11px] font-extrabold text-[#6E6A80] bg-[#F2EEFF] px-2.5 py-1 rounded-lg">
-                        ⏳ {it.dateRange || "2026.05 ~ 07"}
+                      <span className="text-[10px] font-bold text-slate-400 truncate shrink-0">
+                        {it.dateRange?.split(' ')[0] || "2026.05"}
                       </span>
                     </div>
 
-                    {/* 사진 썸네일 또는 아키텍처 박스 */}
-                    {it.photoUrl ? (
-                      <div className="w-full h-40 rounded-2xl overflow-hidden border border-purple-100 relative bg-slate-50">
-                        <img src={it.photoUrl} alt="Portfolio Verification" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end p-3">
-                          <span className="text-white text-xs font-black flex items-center gap-1">
-                            ✨ 인증 사진 포함됨
-                          </span>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="w-full h-24 rounded-2xl bg-gradient-to-r from-purple-50 via-slate-50 to-purple-50 border border-purple-100/60 flex items-center justify-center gap-2 text-purple-700/60 font-black text-xs">
-                        <Briefcase className="w-5 h-5 text-purple-400" />
-                        <span>누적 진로 스펙 #Verified</span>
-                      </div>
-                    )}
-
-                    {/* 제목 및 내용 미리보기 */}
-                    <div className="space-y-2">
-                      <h4 className="text-lg font-black text-[#1A1626] leading-snug group-hover:text-[#7B5CF0] transition-colors line-clamp-2">
+                    {/* 제목 및 짧은 본문 */}
+                    <div>
+                      <h4 className="text-sm font-black text-[#111] leading-tight group-hover:text-purple-600 transition-colors line-clamp-2">
                         {it.title}
                       </h4>
-                      <p className="text-xs font-semibold text-[#5C5672] leading-relaxed line-clamp-2 bg-[#FAF8FF] p-3 rounded-2xl border border-purple-50">
+                      <p className="text-[11px] font-medium text-slate-500 line-clamp-1 mt-1">
                         {it.content}
                       </p>
                     </div>
 
-                    {/* 역량 태그 */}
-                    <div className="flex flex-wrap gap-1.5 pt-0.5">
-                      {it.tags?.map((tag, tIdx) => (
-                        <span key={tIdx} className="text-[11px] font-black bg-[#EFEAFE] text-[#6240D5] px-2.5 py-0.5 rounded-lg border border-purple-200">
+                    {/* 알약 태그 1~2개 */}
+                    <div className="flex flex-wrap gap-1 pt-1">
+                      {it.tags?.slice(0, 2).map((tag, tIdx) => (
+                        <span key={tIdx} className="text-[10px] font-extrabold bg-slate-50 text-slate-600 px-2 py-0.5 rounded-md border border-slate-150">
                           #{tag}
                         </span>
                       ))}
+                      {(it.tags?.length || 0) > 2 && (
+                        <span className="text-[10px] font-bold text-slate-400 px-1 py-0.5">+{it.tags.length - 2}</span>
+                      )}
                     </div>
                   </div>
 
-                  {/* 하단 액션 버튼 */}
-                  <div className="pt-5 mt-5 border-t border-purple-100 flex items-center justify-between">
-                    <span className="text-xs font-black text-[#008A90] flex items-center gap-1">
-                      <Sparkles className="w-3.5 h-3.5 text-amber-400" /> AI 평가 승인됨
+                  {/* 하단 심야 스티커 액션바 */}
+                  <div className="pt-2 mt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
+                    <span className="font-extrabold text-[#0D9488] flex items-center gap-1">
+                      {it.photoUrl ? "📷 인증사진 포함" : "✨ AI 평가 완료"}
                     </span>
-                    <div className="flex items-center gap-1.5">
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setEditingItem(it);
-                        }}
-                        className="p-2 rounded-xl bg-purple-50 hover:bg-purple-100 text-[#7B5CF0] transition-colors"
-                        title="수정하기"
-                      >
-                        <Edit2 className="w-3.5 h-3.5" />
-                      </button>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleDeleteItem(it.id);
-                        }}
-                        className="p-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 transition-colors"
-                        title="삭제하기"
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                      </button>
-                      <div className="px-3 py-1.5 rounded-xl bg-[#7B5CF0] text-white font-black text-xs flex items-center gap-1">
-                        <Eye className="w-3.5 h-3.5" />
-                        <span>상세보기</span>
-                      </div>
-                    </div>
+                    <span className="font-bold text-slate-500 group-hover:text-purple-600 flex items-center gap-0.5">
+                      터치하여 확장 &rarr;
+                    </span>
                   </div>
-
                 </div>
               );
             })}

@@ -7,3 +7,4 @@ export * from "./Input";
 export * from "./ProgressBar";
 export * from "./MascotAri";
 export * from "./AriChatModal";
+export * from "./GlobalExpRewardModal";

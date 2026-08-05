@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useAuth } from "../context";
 import { executeAiPrompt } from "../services/aiService";
 import { ARI_BLOB_URL } from "../assets/mascotData";
+import { rewardXP } from "../services/expService";
 import {
   Sparkles,
   CheckCircle2,
@@ -10,8 +11,6 @@ import {
   Brain,
   X,
   Plus,
-  ChevronDown,
-  ChevronUp,
   Layers,
   CheckSquare,
   ArrowRight,
@@ -137,9 +136,9 @@ export const StarRoadmap: React.FC = () => {
   const [notes, setNotes] = useState<CornellNote[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("전체");
   
-  // UX UI 개선: 새 노트 작성폼 표시 토글 & 아코디언 상태
+  // UX UI 개선: 새 노트 작성폼 표시 토글 & 모달 상세 확인 상태
   const [showNoteForm, setShowNoteForm] = useState<boolean>(false);
-  const [expandedNoteIds, setExpandedNoteIds] = useState<Record<string, boolean>>({});
+  const [selectedDetailNote, setSelectedDetailNote] = useState<CornellNote | null>(null);
 
   // 신규 코넬 노트 작성 폼 상태
   const [selectedSchoolLevel, setSelectedSchoolLevel] = useState<"high" | "middle">("high");
@@ -276,16 +275,11 @@ export const StarRoadmap: React.FC = () => {
 
   const deleteGoal = (id: string) => {
     const updated = studyGoals.filter(g => g.id !== id);
-    setStudyGoals(updated);
-    localStorage.setItem("readycareer_study_goals_v1", JSON.stringify(updated));
-  };
+  setStudyGoals(updated);
+  localStorage.setItem("readycareer_study_goals_v1", JSON.stringify(updated));
+};
 
-  // 아코디언 펼치기/접기 핸들러
-  const toggleNoteExpand = (id: string) => {
-    setExpandedNoteIds(prev => ({ ...prev, [id]: !prev[id] }));
-  };
-
-  // AI 코넬 스마트 정리본 자동 생성 및 누적 등록 핸들러
+// AI 코넬 스마트 정리본 자동 생성 및 누적 등록 핸들러
   const handleCreateCornellNote = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!subjectInput.trim() || !topicInput.trim() || !summaryInput.trim()) {
@@ -327,9 +321,7 @@ export const StarRoadmap: React.FC = () => {
     const updated = [newNote, ...notes];
     setNotes(updated);
     localStorage.setItem("readycareer_cornell_notes_v1", JSON.stringify(updated));
-
-    setExpandedNoteIds(prev => ({ ...prev, [newNote.id]: true }));
-
+    rewardXP(60, "AI 학습포트폴리오(코넬노트) 등록!");
     setSubjectInput("");
     setTopicInput("");
     setKeywordsInput("");
@@ -1057,141 +1049,54 @@ export const StarRoadmap: React.FC = () => {
                   </div>
 
                   {/* 스티커 카드 그리드 */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {displayNotes.map((note) => {
-                      const isExpanded = !!expandedNoteIds[note.id];
-                      return (
-                        <div
-                          key={note.id}
-                          className={`rounded-[28px] transition-all duration-300 border-2 flex flex-col justify-between relative overflow-hidden ${
-                            isExpanded 
-                              ? "col-span-1 md:col-span-2 lg:col-span-3 bg-white border-[#0D9488] shadow-2xl scale-[1.005]" 
-                              : "bg-[#FFFDF9] border-[#E8DFC8] hover:border-[#0D9488] shadow-[0_8px_25px_rgba(0,0,0,0.06)] hover:shadow-lg"
-                          }`}
-                        >
-                          <div className="w-full py-2 bg-[#F5EEDC] flex items-center justify-center gap-4 border-b border-[#DFD3B6] shadow-inner">
-                            {[...Array(isExpanded ? 12 : 5)].map((_, i) => (
-                              <div key={i} className="w-2.5 h-2.5 rounded-full bg-[#3D3522]/30 shadow-inner border border-white/70" />
-                            ))}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    {displayNotes.map((note) => (
+                      <div
+                        key={note.id}
+                        onClick={() => setSelectedDetailNote(note)}
+                        className="bg-white rounded-[20px] p-4.5 border border-slate-200 hover:border-slate-800 shadow-xs hover:shadow-md transition-all duration-200 flex flex-col justify-between h-48 group cursor-pointer relative overflow-hidden"
+                      >
+                        <div className="space-y-2">
+                          <div className="flex items-center justify-between gap-1.5">
+                            <span className="text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-teal-50 text-[#0D9488] border border-teal-200 truncate max-w-[130px]">
+                              • {note.subject}
+                            </span>
+                            <span className="text-[10px] font-bold text-slate-400 truncate shrink-0">
+                              {note.date}
+                            </span>
                           </div>
 
-                          <div className="p-5 sm:p-6 space-y-4 flex-grow flex flex-col justify-between">
-                            <div className="space-y-2.5">
-                              <div className="flex items-center justify-between gap-2">
-                                <span className="text-[11px] font-black px-3 py-1 rounded-full bg-[#0F766E] text-white shadow-2xs">
-                                  {note.subject}
-                                </span>
-                                <span className="text-[11px] font-bold text-[#6E6A80] bg-[#F3ECE0] px-2.5 py-1 rounded-lg">
-                                  📅 {note.date}
-                                </span>
-                              </div>
+                          <div>
+                            <h4 className="text-sm font-black text-[#111] leading-tight group-hover:text-purple-600 transition-colors line-clamp-2">
+                              🎯 {note.topic}
+                            </h4>
+                            <p className="text-[11px] font-medium text-slate-500 line-clamp-1 mt-1">
+                              {note.mySummary || note.aiSummary}
+                            </p>
+                          </div>
 
-                              <h4 className="text-base sm:text-lg font-black text-[#0F172A] leading-snug tracking-tight">
-                                🎯 {note.topic}
-                              </h4>
-
-                              <div className="flex flex-wrap gap-1.5 pt-1">
-                                {note.keywords.split(',').map((kw, kIdx) => (
-                                  <span key={kIdx} className="text-[11px] font-extrabold px-2.5 py-0.5 rounded-md bg-[#FFFBF0] text-[#D97706] border border-[#FDE68A]">
-                                    #{kw.trim()}
-                                  </span>
-                                ))}
-                              </div>
-                            </div>
-
-                            {!isExpanded && (
-                              <div className="p-3.5 rounded-2xl bg-[#F0FDFA] border border-teal-100 space-y-1 mt-3">
-                                <span className="text-[10px] font-black text-[#0D9488] flex items-center gap-1">
-                                  <Sparkles className="w-3 h-3 text-amber-400" /> AI 세특 요약 미리보기:
-                                </span>
-                                <p className="text-xs font-bold text-[#334155] line-clamp-2 leading-relaxed">
-                                  {note.aiSummary || note.mySummary}
-                                </p>
-                              </div>
+                          <div className="flex flex-wrap gap-1 pt-1">
+                            {note.keywords.split(',').slice(0, 2).map((kw, kIdx) => (
+                              <span key={kIdx} className="text-[10px] font-extrabold bg-slate-50 text-slate-600 px-2 py-0.5 rounded-md border border-slate-150">
+                                #{kw.trim()}
+                              </span>
+                            ))}
+                            {note.keywords.split(',').length > 2 && (
+                              <span className="text-[10px] font-bold text-slate-400 px-1 py-0.5">+{note.keywords.split(',').length - 2}</span>
                             )}
                           </div>
-
-                          {isExpanded && (
-                            <div className="border-t-2 border-teal-150 bg-[#F0FDFA] animate-fadeIn">
-                              <div className="flex flex-col lg:flex-row">
-                                <div className="w-full lg:w-1/3 bg-[#FFFBF0] p-6 sm:p-8 lg:border-r-[3px] border-b lg:border-b-0 border-[#FCA5A5] space-y-3">
-                                  <div className="inline-flex items-center gap-1.5 bg-[#FEF2F2] text-[#DC2626] px-3 py-1 rounded-lg text-xs font-black border border-red-200">
-                                    <span>📌 Cues (핵심 키워드 & 개념)</span>
-                                  </div>
-                                  <p className="text-sm font-extrabold text-[#3F3952] leading-relaxed break-keep">
-                                    {note.keywords}
-                                  </p>
-                                  <div className="p-4 rounded-2xl bg-white border border-amber-200 space-y-1 mt-4">
-                                    <span className="text-[11px] font-black text-amber-700 block">💡 코넬 기법 활용 팁:</span>
-                                    <span className="text-xs font-bold text-slate-600 leading-relaxed block">
-                                      좌측 키워드를 보며 우측 본문 내용을 떠올려보는 인출 연습이 기억 고착화에 효과적입니다.
-                                    </span>
-                                  </div>
-                                </div>
-
-                                <div className="w-full lg:w-2/3 bg-[#FFFDFC] p-6 sm:p-8 space-y-3">
-                                  <div className="inline-flex items-center gap-1.5 bg-[#F0FDF4] text-[#15803D] px-3 py-1 rounded-lg text-xs font-black border border-green-200">
-                                    <span>📝 Notes (나의 학업 요약 & 심화 고찰)</span>
-                                  </div>
-                                  <p className="text-sm sm:text-base font-bold text-[#0F172A] leading-relaxed whitespace-pre-wrap break-keep">
-                                    {note.mySummary}
-                                  </p>
-                                </div>
-                              </div>
-
-                              {note.aiSummary && (
-                                <div className="w-full border-t-[3px] border-t-[#5EEAD4] bg-gradient-to-r from-[#F0FDFA] via-[#ECFDF5] to-[#F0FDFA] p-6 sm:p-8 space-y-3">
-                                  <div className="flex flex-wrap items-center justify-between gap-2">
-                                    <div className="inline-flex items-center gap-2 bg-[#0F766E] text-white px-4 py-1.5 rounded-full text-xs font-black shadow-md">
-                                      <Sparkles className="w-4 h-4 text-amber-300 animate-spin-slow" />
-                                      <span>💡 AI 스마트 심화 정리 및 세특 매칭</span>
-                                    </div>
-                                    <span className="text-xs font-black text-[#0F766E] bg-white px-3 py-1 rounded-full border border-teal-200 shadow-sm">
-                                      ⚡ "{targetJobName}" 진료 역량 98% 부합
-                                    </span>
-                                  </div>
-                                  <p className="text-sm sm:text-base font-extrabold text-[#064E3B] leading-relaxed break-keep pt-1">
-                                    {note.aiSummary}
-                                  </p>
-                                </div>
-                              )}
-                            </div>
-                          )}
-
-                          <div className="p-4 bg-[#F8FAFC] border-t border-[#DFD3B6] flex items-center justify-between gap-3">
-                            <button
-                              onClick={() => toggleNoteExpand(note.id)}
-                              className={`flex-grow py-2.5 px-4 rounded-xl font-black text-xs sm:text-sm transition-all flex items-center justify-center gap-1.5 ${
-                                isExpanded 
-                                  ? "bg-[#0D9488] text-white shadow-md" 
-                                  : "bg-white hover:bg-teal-50 text-[#0D9488] border border-[#A7F3D0]"
-                              }`}
-                            >
-                              {isExpanded ? (
-                                <>
-                                  <ChevronUp className="w-4 h-4 text-white stroke-[3]" />
-                                  <span>🔼 요약 스티커로 접기</span>
-                                </>
-                              ) : (
-                                <>
-                                  <ChevronDown className="w-4 h-4 text-[#0D9488] stroke-[3]" />
-                                  <span>🔽 세부 내용 및 AI 심화정리 펼치기</span>
-                                </>
-                              )}
-                            </button>
-
-                            <button
-                              onClick={() => handleStartQuiz([note])}
-                              className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#FF3B7C] to-[#FF7043] hover:brightness-110 text-white font-black text-xs shadow-md transition-all flex items-center gap-1 shrink-0"
-                            >
-                              <Brain className="w-4 h-4 text-white" />
-                              <span>🧠 단독 퀴즈</span>
-                            </button>
-                          </div>
-
                         </div>
-                      );
-                    })}
+
+                        <div className="pt-2 mt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
+                          <span className="font-extrabold text-amber-600 flex items-center gap-1">
+                            💡 AI 세특 연계
+                          </span>
+                          <span className="font-bold text-slate-500 group-hover:text-purple-600 flex items-center gap-0.5">
+                            터치하여 보기 &rarr;
+                          </span>
+                        </div>
+                      </div>
+                    ))}
                   </div>
 
                   {remainingCount > 0 && (
@@ -1271,118 +1176,54 @@ export const StarRoadmap: React.FC = () => {
                     </button>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {unitNotes.map(note => {
-                      const isExpanded = !!expandedNoteIds[note.id];
-                      return (
-                        <div
-                          key={note.id}
-                          className={`rounded-[28px] transition-all duration-300 border-2 flex flex-col justify-between relative overflow-hidden ${
-                            isExpanded 
-                              ? "col-span-1 md:col-span-2 lg:col-span-3 bg-white border-[#0D9488] shadow-2xl scale-[1.005]" 
-                              : "bg-[#FFFDF9] border-[#E8DFC8] hover:border-[#0D9488] shadow-[0_8px_25px_rgba(0,0,0,0.06)] hover:shadow-lg"
-                          }`}
-                        >
-                          <div className="w-full py-2 bg-[#F5EEDC] flex items-center justify-center gap-4 border-b border-[#DFD3B6] shadow-inner">
-                            {[...Array(isExpanded ? 12 : 5)].map((_, i) => (
-                              <div key={i} className="w-2.5 h-2.5 rounded-full bg-[#3D3522]/30 shadow-inner border border-white/70" />
-                            ))}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    {unitNotes.map(note => (
+                      <div
+                        key={note.id}
+                        onClick={() => setSelectedDetailNote(note)}
+                        className="bg-white rounded-[20px] p-4.5 border border-slate-200 hover:border-slate-800 shadow-xs hover:shadow-md transition-all duration-200 flex flex-col justify-between h-48 group cursor-pointer relative overflow-hidden"
+                      >
+                        <div className="space-y-2">
+                          <div className="flex items-center justify-between gap-1.5">
+                            <span className="text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-teal-50 text-[#0D9488] border border-teal-200 truncate max-w-[130px]">
+                              • {note.subject}
+                            </span>
+                            <span className="text-[10px] font-bold text-slate-400 truncate shrink-0">
+                              {note.date}
+                            </span>
                           </div>
 
-                          <div className="p-5 sm:p-6 space-y-4 flex-grow flex flex-col justify-between">
-                            <div className="space-y-2">
-                              <div className="flex items-center justify-between">
-                                <span className="text-[11px] font-black px-3 py-1 rounded-full bg-[#0F766E] text-white">
-                                  {note.subject}
-                                </span>
-                                <span className="text-[11px] font-bold text-[#6E6A80] bg-[#F3ECE0] px-2.5 py-1 rounded-lg">
-                                  📅 {note.date}
-                                </span>
-                              </div>
-                              <h4 className="text-base font-black text-[#0F172A] leading-snug">🎯 {note.topic}</h4>
-                              <div className="flex flex-wrap gap-1 pt-1">
-                                {note.keywords.split(',').map((kw, kIdx) => (
-                                  <span key={kIdx} className="text-[11px] font-extrabold px-2 py-0.5 rounded-md bg-[#FFFBF0] text-[#D97706] border border-[#FDE68A]">
-                                    #{kw.trim()}
-                                  </span>
-                                ))}
-                              </div>
-                            </div>
+                          <div>
+                            <h4 className="text-sm font-black text-[#111] leading-tight group-hover:text-purple-600 transition-colors line-clamp-2">
+                              🎯 {note.topic}
+                            </h4>
+                            <p className="text-[11px] font-medium text-slate-500 line-clamp-1 mt-1">
+                              {note.mySummary || note.aiSummary}
+                            </p>
+                          </div>
 
-                            {!isExpanded && (
-                              <div className="p-3.5 rounded-2xl bg-[#F0FDFA] border border-teal-100 space-y-1 mt-3">
-                                <span className="text-[10px] font-black text-[#0D9488] flex items-center gap-1">
-                                  <Sparkles className="w-3 h-3 text-amber-400" /> AI 세특 요약 미리보기:
-                                </span>
-                                <p className="text-xs font-bold text-[#334155] line-clamp-2 leading-relaxed">
-                                  {note.aiSummary || note.mySummary}
-                                </p>
-                              </div>
+                          <div className="flex flex-wrap gap-1 pt-1">
+                            {note.keywords.split(',').slice(0, 2).map((kw, kIdx) => (
+                              <span key={kIdx} className="text-[10px] font-extrabold bg-slate-50 text-slate-600 px-2 py-0.5 rounded-md border border-slate-150">
+                                #{kw.trim()}
+                              </span>
+                            ))}
+                            {note.keywords.split(',').length > 2 && (
+                              <span className="text-[10px] font-bold text-slate-400 px-1 py-0.5">+{note.keywords.split(',').length - 2}</span>
                             )}
                           </div>
-
-                          {isExpanded && (
-                            <div className="border-t-2 border-teal-150 bg-[#F0FDFA] animate-fadeIn">
-                              <div className="flex flex-col lg:flex-row">
-                                <div className="w-full lg:w-1/3 bg-[#FFFBF0] p-6 sm:p-8 lg:border-r-[3px] border-b lg:border-b-0 border-[#FCA5A5] space-y-3">
-                                  <div className="inline-flex items-center gap-1.5 bg-[#FEF2F2] text-[#DC2626] px-3 py-1 rounded-lg text-xs font-black border border-red-200">
-                                    <span>📌 Cues (핵심 키워드)</span>
-                                  </div>
-                                  <p className="text-sm font-extrabold text-[#3F3952] leading-relaxed break-keep">
-                                    {note.keywords}
-                                  </p>
-                                </div>
-                                <div className="w-full lg:w-2/3 bg-[#FFFDFC] p-6 sm:p-8 space-y-3">
-                                  <div className="inline-flex items-center gap-1.5 bg-[#F0FDF4] text-[#15803D] px-3 py-1 rounded-lg text-xs font-black border border-green-200">
-                                    <span>📝 Notes (탐구 요약 & 심화 고찰)</span>
-                                  </div>
-                                  <p className="text-sm sm:text-base font-bold text-[#0F172A] leading-relaxed whitespace-pre-wrap break-keep">
-                                    {note.mySummary}
-                                  </p>
-                                </div>
-                              </div>
-                              {note.aiSummary && (
-                                <div className="w-full border-t-[3px] border-t-[#5EEAD4] bg-gradient-to-r from-[#F0FDFA] via-[#ECFDF5] to-[#F0FDFA] p-6 sm:p-8 space-y-3">
-                                  <div className="flex flex-wrap items-center justify-between gap-2">
-                                    <div className="inline-flex items-center gap-2 bg-[#0F766E] text-white px-4 py-1.5 rounded-full text-xs font-black shadow-md">
-                                      <Sparkles className="w-4 h-4 text-amber-300" />
-                                      <span>💡 AI 스마트 심화 정리 및 세특 매칭</span>
-                                    </div>
-                                    <span className="text-xs font-black text-[#0F766E] bg-white px-3 py-1 rounded-full border border-teal-200 shadow-sm">
-                                      ⚡ "{targetJobName}" 지망 역량 자동 연계
-                                    </span>
-                                  </div>
-                                  <p className="text-sm sm:text-base font-extrabold text-[#064E3B] leading-relaxed break-keep pt-1">
-                                    {note.aiSummary}
-                                  </p>
-                                </div>
-                              )}
-                            </div>
-                          )}
-
-                          <div className="p-4 bg-[#F8FAFC] border-t border-[#DFD3B6] flex items-center justify-between gap-3">
-                            <button
-                              onClick={() => toggleNoteExpand(note.id)}
-                              className={`flex-grow py-2.5 px-4 rounded-xl font-black text-xs sm:text-sm transition-all flex items-center justify-center gap-1.5 ${
-                                isExpanded 
-                                  ? "bg-[#0D9488] text-white shadow-md" 
-                                  : "bg-white hover:bg-teal-50 text-[#0D9488] border border-[#A7F3D0]"
-                              }`}
-                            >
-                              {isExpanded ? "🔼 요약 스티커로 접기" : "🔽 세부 내용 및 AI 심화정리 펼치기"}
-                            </button>
-
-                            <button
-                              onClick={() => handleStartQuiz([note])}
-                              className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#FF3B7C] to-[#FF7043] text-white font-black text-xs shadow-md hover:brightness-110 transition-all flex items-center gap-1 shrink-0"
-                            >
-                              <Brain className="w-4 h-4 text-white" />
-                              <span>🧠 단독 퀴즈</span>
-                            </button>
-                          </div>
                         </div>
-                      );
-                    })}
+
+                        <div className="pt-2 mt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
+                          <span className="font-extrabold text-amber-600 flex items-center gap-1">
+                            💡 AI 세특 연계
+                          </span>
+                          <span className="font-bold text-slate-500 group-hover:text-purple-600 flex items-center gap-0.5">
+                            터치하여 보기 &rarr;
+                          </span>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
               ));
@@ -1488,6 +1329,7 @@ export const StarRoadmap: React.FC = () => {
                           return;
                         }
                         setShowResults(true);
+                        rewardXP(60, "AI 맞춤 셀프 테스트 퀴즈 완료!");
                       }}
                       className="w-full sm:w-auto py-4 px-10 rounded-2xl bg-[#0D9488] hover:bg-[#0F766E] text-white font-black text-base shadow-xl transition-transform transform hover:scale-105 cursor-pointer"
                     >
@@ -1682,6 +1524,105 @@ export const StarRoadmap: React.FC = () => {
               </div>
             )}
 
+          </div>
+        </div>
+      )}
+
+      {/* =========================================================================
+          MODAL 3: 코넬 노트 스티커 터치 상세 팝업 모달
+          ========================================================================= */}
+      {selectedDetailNote && (
+        <div className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-fadeIn" onClick={() => setSelectedDetailNote(null)}>
+          <div 
+            className="bg-white w-full max-w-4xl rounded-[32px] overflow-hidden shadow-2xl border border-slate-200 flex flex-col max-h-[90vh]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* 헤더 */}
+            <div className="p-6 bg-[#F8FAFC] border-b border-slate-200 flex items-center justify-between shrink-0">
+              <div className="flex items-center gap-2">
+                <span className="px-3 py-1 bg-teal-600 text-white font-extrabold text-xs rounded-full shadow-2xs">
+                  {selectedDetailNote.subject}
+                </span>
+                <span className="text-xs text-slate-500 font-bold">📅 {selectedDetailNote.date}</span>
+              </div>
+              <button 
+                onClick={() => setSelectedDetailNote(null)}
+                className="p-2 rounded-full bg-slate-200/70 hover:bg-slate-300 text-slate-600 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* 메인 스크롤 콘텐츠 영역 */}
+            <div className="p-6 sm:p-8 overflow-y-auto space-y-6 flex-grow">
+              <div className="space-y-2">
+                <h3 className="text-2xl font-black text-[#111] tracking-tight">
+                  🎯 {selectedDetailNote.topic}
+                </h3>
+                <div className="flex flex-wrap gap-1.5">
+                  {selectedDetailNote.keywords.split(',').map((kw, kIdx) => (
+                    <span key={kIdx} className="text-xs font-extrabold bg-amber-50 text-amber-700 px-2.5 py-1 rounded-lg border border-amber-200">
+                      #{kw.trim()}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 border-2 border-slate-200 rounded-3xl overflow-hidden">
+                <div className="bg-amber-50/50 p-5 space-y-2 md:col-span-1 border-b md:border-b-0 md:border-r border-slate-200">
+                  <span className="text-xs font-black text-rose-600 bg-rose-50 px-2.5 py-1 rounded-md border border-rose-200 inline-block">
+                    📌 Cues (핵심 개념)
+                  </span>
+                  <p className="text-sm font-bold text-slate-700 leading-relaxed pt-1">
+                    {selectedDetailNote.keywords}
+                  </p>
+                </div>
+
+                <div className="bg-white p-5 space-y-2 md:col-span-2">
+                  <span className="text-xs font-black text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200 inline-block">
+                    📝 Notes (학업 요약 & 고찰)
+                  </span>
+                  <p className="text-sm font-medium text-[#111] leading-relaxed whitespace-pre-wrap pt-1">
+                    {selectedDetailNote.mySummary}
+                  </p>
+                </div>
+              </div>
+
+              {selectedDetailNote.aiSummary && (
+                <div className="bg-gradient-to-r from-[#F0FDFA] to-[#ECFDF5] p-6 rounded-3xl border border-teal-200 space-y-2">
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="w-5 h-5 text-teal-600 animate-spin-slow" />
+                    <span className="text-xs font-extrabold text-teal-800 bg-white px-3 py-1 rounded-full border border-teal-200 shadow-2xs">
+                      💡 AI 스마트 심화 정리 및 세특 매칭
+                    </span>
+                  </div>
+                  <p className="text-sm font-extrabold text-teal-900 leading-relaxed pt-1">
+                    {selectedDetailNote.aiSummary}
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {/* 푸터 버튼 */}
+            <div className="p-4 bg-slate-50 border-t border-slate-200 flex items-center justify-end gap-3 shrink-0">
+              <button
+                onClick={() => {
+                  const target = selectedDetailNote;
+                  setSelectedDetailNote(null);
+                  handleStartQuiz([target]);
+                }}
+                className="px-6 py-3 rounded-xl bg-gradient-to-r from-rose-500 to-amber-500 hover:brightness-110 text-white font-black text-sm shadow-md transition-all flex items-center gap-2"
+              >
+                <Brain className="w-4 h-4 text-white" />
+                <span>🧠 이 노트 단독 퀴즈 도전</span>
+              </button>
+              <button
+                onClick={() => setSelectedDetailNote(null)}
+                className="px-6 py-3 rounded-xl bg-[#111] hover:bg-slate-800 text-white font-bold text-sm transition-all"
+              >
+                닫기
+              </button>
+            </div>
           </div>
         </div>
       )}

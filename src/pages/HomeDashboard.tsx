@@ -4,11 +4,10 @@ import { Button } from "../components";
 import { useAuth } from "../context";
 import { executeAiPrompt } from "../services/aiService";
 import { ARI_BLOB_URL, JOB_VENGERS_LIST } from "../assets/mascotData";
+import { getCurrentXP, getRankFromXP } from "../services/expService";
 import {
   Sparkles,
-  ArrowRight,
   Plus,
-  CheckCircle2,
   Edit2,
   RefreshCw,
   Star,
@@ -17,7 +16,7 @@ import {
   ListCheck,
   Award,
   Unlock,
-  Play
+  Compass
 } from "lucide-react";
 
 export const HomeDashboard: React.FC = () => {
@@ -243,368 +242,333 @@ export const HomeDashboard: React.FC = () => {
   const storedCustomAvatar = localStorage.getItem("readycareer_custom_avatar_url");
   const displayAvatarUrl = storedCustomAvatar || currentJob.imageUrl || ARI_BLOB_URL;
 
-  // 계급 뱃지 및 동기부여 등급 산출 시스템 (브론즈, 실버, 골드, 다이아, 마스터)
-  const isNewStudentClean = localStorage.getItem("is_new_student_clean_state") === "true";
-  const allActivities = JSON.parse(localStorage.getItem("readycareer_student_activities_v1") || "[]");
-  const practiceActivities = allActivities.filter((a: any) => !a.id?.startsWith("act-riasec-") && !a.id?.startsWith("act-star-"));
-  const computedXP = isNewStudentClean ? (practiceActivities.length * 60) : Math.min(500, 320 + (practiceActivities.length * 60));
-  const currentXP = Math.min(500, Math.max(0, computedXP));
+  // 계급 뱃지 및 동기부여 등급 산출 시스템 (전역 expService 싱크)
+  const currentXP = getCurrentXP();
   const maxXP = 500;
-  const progressPercent = Math.round((currentXP / maxXP) * 100);
+  const progressPercent = Math.min(100, Math.round((currentXP / maxXP) * 100));
+  const rankInfo = getRankFromXP(currentXP);
 
-  let rankBadge = { title: "🥉 브론즈 탐구어", classBadge: "[ 🥉 브론즈 클래스 ]", glow: "from-amber-600 to-amber-800", textColor: "text-amber-200", border: "border-amber-400" };
-  if (currentXP >= 350) {
-    rankBadge = { title: "👑 마스터 아키텍트", classBadge: "[ 👑 최고 권위 마스터 랭크 ]", glow: "from-emerald-400 via-amber-300 to-purple-500", textColor: "text-amber-300 font-black animate-pulse", border: "border-emerald-300" };
-  } else if (currentXP >= 240) {
-    rankBadge = { title: "💎 다이아 엑스퍼트", classBadge: "[ 💎 다이아 클래스 ]", glow: "from-cyan-400 to-blue-600", textColor: "text-cyan-200", border: "border-cyan-300" };
-  } else if (currentXP >= 120) {
-    rankBadge = { title: "🥇 골드 프로젝트 리더", classBadge: "[ 🥇 골드 클래스 ]", glow: "from-yellow-400 to-amber-600", textColor: "text-yellow-200", border: "border-yellow-300" };
-  } else if (currentXP >= 60) {
-    rankBadge = { title: "🥈 실버 지식 융합러", classBadge: "[ 🥈 실버 클래스 ]", glow: "from-slate-300 to-slate-500", textColor: "text-slate-200", border: "border-slate-300" };
-  }
+  const rankIcon = rankInfo.levelNum === 5 ? "👑" : rankInfo.levelNum === 4 ? "💎" : rankInfo.levelNum === 3 ? "🥇" : rankInfo.levelNum === 2 ? "🥈" : "🥉";
+  const rankBadge = {
+    title: rankInfo.title,
+    classBadge: `[ ${rankIcon} ${rankInfo.title} ]`,
+    textColor: "text-amber-300",
+    border: "border-slate-700",
+    icon: rankIcon
+  };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 py-8 space-y-12 selection:bg-[#7B5CF0]/20 selection:text-[#7B5CF0]">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 py-8 space-y-10 text-[#111]">
       
       {/* =========================================================================
-          SECTION 1: User Welcome Header & Rank Badges
+          SECTION 1: User Welcome Header & Clean Pill Badges
          ========================================================================= */}
-      <div className="space-y-2.5 pl-2">
-        <div className="flex flex-wrap items-center gap-2.5 mb-1">
-          <span className="text-xs font-headline font-black bg-purple-100 text-[#6240D5] px-3.5 py-1.5 rounded-full border border-purple-200 shadow-sm flex items-center gap-1.5">
-            <Star className="w-4 h-4 text-[#7B5CF0] fill-[#7B5CF0]" />
-            <span>★ 선택 직업: {currentJob.name}</span>
+      <div className="space-y-2 pl-1">
+        <div className="flex flex-wrap items-center gap-2 mb-1">
+          <span className="text-xs font-extrabold bg-slate-100 text-slate-800 px-3.5 py-1 rounded-full border border-slate-200 flex items-center gap-1.5">
+            <Star className="w-3.5 h-3.5 text-purple-600 fill-purple-600" />
+            <span>선택 직업: {currentJob.name}</span>
           </span>
-          <span className={`text-xs font-black px-4 py-1.5 rounded-full border shadow-sm bg-gradient-to-r ${rankBadge.glow} text-white`}>
+          <span className="text-xs font-black px-3.5 py-1 rounded-full border border-slate-800 bg-[#111] text-white shadow-2xs">
             {rankBadge.classBadge}
           </span>
-          <span className="text-xs font-black text-[#006970] bg-[#E5FAFC] px-3.5 py-1.5 rounded-full border border-[#B0EFF7] shadow-sm">
+          <span className="text-xs font-extrabold text-[#0D9488] bg-teal-50 px-3.5 py-1 rounded-full border border-teal-200">
             ✨ 진단 유형: {displayRiasec}
           </span>
         </div>
-        <h2 className="text-3xl md:text-4xl font-headline font-extrabold text-[#1A1626] tracking-tight">
+        <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-[#111]">
           {userName}님, 안녕하세요! 🚀
         </h2>
-        <p className="text-sm sm:text-base font-semibold text-[#5C5672]">
-          {userSchool} ({userGrade}학년) · {rankBadge.title}의 품격으로 진로 별자리 로드맵을 완성해 나가세요!
+        <p className="text-xs sm:text-sm font-bold text-slate-500">
+          {userSchool} ({userGrade}학년) · {rankBadge.title} 단계에서 맞춤 진로 활동 마주하기
         </p>
       </div>
 
       {/* =========================================================================
-          SECTION 2: 상단 네모박스 (메인 마스코트를 가장 크게! 명칭 계급 뱃지 탑재)
+          SECTION 2 & 3 COMBINED: Master Hero Board & Primary CTA
+          (가장 눈에 잘 띄는 다크 차콜 히어로 영역 + 아리 커리어 가이던스 트리거)
          ========================================================================= */}
-      <section className="relative rounded-[36px] overflow-hidden bg-gradient-to-r from-[#7B5CF0] via-[#653FE2] to-[#36139C] shadow-[0px_16px_48px_rgba(123,92,240,0.28)] text-white p-8 sm:p-12 flex flex-col md:flex-row justify-between items-center gap-8 border-4 border-white/25">
-        
-        {/* Ambient Halo behind Character */}
-        <div className="absolute top-1/2 right-10 -translate-y-1/2 w-80 h-80 sm:w-96 sm:h-96 bg-gradient-to-br from-white/20 via-pink-400/20 to-cyan-400/20 rounded-full blur-[60px] pointer-events-none" />
+      <section className="rounded-[32px] overflow-hidden bg-[#111] text-white p-8 sm:p-10 shadow-xl border border-slate-800 space-y-8 relative">
+        {/* Subtle background gradient halo */}
+        <div className="absolute -top-24 -right-24 w-96 h-96 bg-purple-600/20 rounded-full blur-[90px] pointer-events-none" />
+        <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-teal-500/20 rounded-full blur-[90px] pointer-events-none" />
 
-        <div className="space-y-6 z-10 w-full md:w-3/5 text-center md:text-left">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-8 relative z-10">
           
-          {/* 단계에 맞는 명칭 및 계급 뱃지 */}
-          <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-xl px-5 py-2 rounded-full font-black text-xs sm:text-sm tracking-wide border-2 border-white/40 shadow-xl">
-            <Award className="w-5 h-5 text-amber-300 animate-spin-slow" />
-            <span className={rankBadge.textColor}>{rankBadge.title} 단계 장착됨!</span>
-          </div>
-          
-          <div>
-            <p className="text-[#DFD7FF] text-xs sm:text-sm font-headline uppercase tracking-wider mb-1 font-extrabold">
-              🎯 나의 꿈의 별자리 (MY PRIMARY TARGET JOB)
-            </p>
-            <h3 className="text-3xl sm:text-5xl md:text-6xl font-headline font-black text-white tracking-tight leading-none drop-shadow-[0_4px_12px_rgba(0,0,0,0.35)]">
-              {currentJob.name}
-            </h3>
-          </div>
-
-          {/* Vision Statement box inside Hero */}
-          <div className="bg-white/15 backdrop-blur-xl rounded-[28px] p-5 border-2 border-white/30 space-y-2.5 shadow-xl text-left">
-            <div className="flex items-center justify-between text-xs sm:text-sm font-black text-[#EFEAFF]">
-              <span className="flex items-center gap-1.5">
-                <Sparkles className="w-4 h-4 text-amber-300" />
-                <span>나만의 비전 선언문 (Vision Statement)</span>
+          {/* Left Info & Vision Statement */}
+          <div className="space-y-5 w-full md:w-3/5 text-center md:text-left">
+            <div className="inline-flex items-center gap-2 bg-slate-800/80 px-4 py-1.5 rounded-full font-extrabold text-xs border border-slate-700">
+              <Award className="w-4 h-4 text-amber-400" />
+              <span className="text-amber-300">{rankBadge.title} 랭크 장착 중!</span>
+            </div>
+            
+            <div className="space-y-1">
+              <span className="text-xs font-extrabold text-slate-400 uppercase tracking-widest block">
+                🎯 MY PRIMARY TARGET JOB
               </span>
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={handleAiSuggestVision}
-                  disabled={isAiLoading}
-                  className="px-3 py-1 rounded-xl bg-[#008A90] text-white font-black text-xs hover:brightness-115 transition-all flex items-center gap-1 shadow-md disabled:opacity-50"
-                >
-                  <RefreshCw className={`w-3.5 h-3.5 ${isAiLoading ? "animate-spin" : ""}`} />
-                  <span>AI 자동 추천</span>
-                </button>
-                <button
-                  onClick={() => setIsEditingVision(!isEditingVision)}
-                  className="p-1.5 rounded-lg bg-white/20 hover:bg-white/30 text-white transition-colors"
-                  title="직접 수정하기"
-                >
-                  <Edit2 className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-            
-            {isEditingVision ? (
-              <div className="flex gap-2.5 mt-2">
-                <input
-                  type="text"
-                  value={visionStatement}
-                  onChange={(e) => setVisionStatement(e.target.value)}
-                  className="flex-grow px-4 py-2 rounded-2xl border-2 border-white/60 bg-black/40 text-xs sm:text-sm font-bold text-white placeholder:text-white/60 focus:outline-none shadow-inner"
-                />
-                <button onClick={handleSaveVision} className="px-5 py-2 bg-white text-[#6240D5] rounded-2xl text-xs sm:text-sm font-black shadow-lg">
-                  저장
-                </button>
-              </div>
-            ) : (
-              <p className="text-base sm:text-lg font-headline font-black text-white italic leading-relaxed drop-shadow-sm">
-                "{visionStatement}"
-              </p>
-            )}
-          </div>
-
-          {/* XP Progress Bar */}
-          <div className="space-y-2 w-full max-w-lg pt-1">
-            <div className="flex justify-between text-xs sm:text-sm font-extrabold text-[#F2EEFF]">
-              <span>성장 진행도 ({rankBadge.title})</span>
-              <span className="font-black text-white bg-black/30 px-3 py-0.5 rounded-full border border-white/20">{currentXP} / {maxXP} XP ({progressPercent}%)</span>
-            </div>
-            <div className="h-4 w-full bg-black/30 rounded-full overflow-hidden shadow-inner p-1 border-2 border-white/35">
-              <div className="h-full bg-gradient-to-r from-[#7EF4FE] via-[#FF80B5] to-white rounded-full shadow-[0_0_15px_rgba(255,255,255,0.95)] transition-all duration-700" style={{ width: `${progressPercent}%` }}></div>
-            </div>
-          </div>
-
-        </div>
-
-        {/* PROMINENT HUGE 3D MASCOT CHARACTER SHOWCASE (메인 캐릭터를 가장 크게 보여지게 구현) */}
-        <div className="z-10 flex flex-col items-center justify-center relative w-full md:w-2/5 my-4 md:my-0">
-          <div className="w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-full bg-white/20 backdrop-blur-md p-6 border-4 border-white/50 shadow-[0_25px_65px_rgba(0,0,0,0.45)] flex items-center justify-center transform hover:scale-105 hover:rotate-2 transition-all duration-500 group relative">
-            
-            {/* Rank Crown Emoji floating above character */}
-            <span className="absolute -top-6 left-1/2 -translate-x-1/2 bg-white/95 text-3xl sm:text-4xl p-3 rounded-3xl shadow-2xl border-2 border-purple-200 animate-bounce">
-              {currentXP >= 350 ? "👑" : currentXP >= 240 ? "💎" : currentXP >= 120 ? "🥇" : currentXP >= 60 ? "🥈" : "🌱"}
-            </span>
-
-            <img
-              src={displayAvatarUrl}
-              alt="My Primary 3D Job Character"
-              className="w-full h-full object-contain drop-shadow-[0_18px_32px_rgba(0,0,0,0.5)] group-hover:scale-110 transition-transform duration-500"
-            />
-          </div>
-          
-          <div className="mt-4 bg-white/90 text-[#1A1626] px-6 py-2 rounded-full font-black text-xs sm:text-sm shadow-2xl border-2 border-white flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-green-500 animate-ping" />
-            <span>✨ 현재 장착 마이 어시스턴트 아리</span>
-          </div>
-        </div>
-      </section>
-
-      {/* =========================================================================
-          SECTION 3: AI자기이해 진단 및 로드맵 생성 버튼 ➜ 누르면 4개 실전 활동 나타남
-         ========================================================================= */}
-      <div className="space-y-6">
-        
-        {/* AI 자기이해 진단 및 아리 가이던스 네모박스 (트리거 탑재) */}
-        <div className="rounded-[36px] bg-gradient-to-r from-[#F7F4FF] via-[#F2EEFF] to-[#E5FAFF] p-7 sm:p-10 border-4 border-[#DED4FF] shadow-[0_16px_40px_rgba(123,92,240,0.14)] flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden">
-          
-          <div className="flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left flex-grow">
-            <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-[32px] bg-white shadow-xl flex items-center justify-center border-4 border-white p-3 flex-shrink-0">
-              <img src={ARI_BLOB_URL} alt="Ari Guidance" className="w-full h-full object-contain animate-float" />
-            </div>
-            <div className="space-y-2">
-              <div className="inline-flex items-center gap-1.5 bg-[#6240D5] text-white px-4 py-1 rounded-full text-xs font-black shadow-md">
-                <Sparkles className="w-4 h-4 text-amber-300" />
-                <span>AI 자기이해 진단 및 아리 가이던스</span>
-              </div>
-              <h3 className="text-2xl sm:text-3xl font-black text-[#1A1626] tracking-tight">
-                나만의 맞춤 진로 보고서 &amp; AI 포트폴리오 개설하기
+              <h3 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-none">
+                {currentJob.name}
               </h3>
-              <p className="text-xs sm:text-sm font-bold text-[#5C5672] leading-relaxed">
-                6유형 진학 흥미 검사 및 선택 직업 결과를 분석하여, 오직 회원님만을 위한 <strong>AI 학습포트폴리오 · 습관 &amp; 목표 · 진로포트폴리오 · 세특 활동기록</strong> 모듈을 즉시 생성해 드립니다!
-              </p>
+            </div>
+
+            {/* Vision Statement Box */}
+            <div className="bg-slate-900/90 rounded-2xl p-4.5 border border-slate-800 space-y-2 text-left">
+              <div className="flex items-center justify-between text-xs font-bold text-slate-300">
+                <span className="flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-teal-400" />
+                  <span>나만의 비전 선언문 (Vision Statement)</span>
+                </span>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={handleAiSuggestVision}
+                    disabled={isAiLoading}
+                    className="px-2.5 py-1 rounded-lg bg-teal-600 hover:bg-teal-500 text-white font-black text-[11px] transition-all flex items-center gap-1 disabled:opacity-50"
+                  >
+                    <RefreshCw className={`w-3 h-3 ${isAiLoading ? "animate-spin" : ""}`} />
+                    <span>AI 추천</span>
+                  </button>
+                  <button
+                    onClick={() => setIsEditingVision(!isEditingVision)}
+                    className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-white transition-colors"
+                    title="직접 수정"
+                  >
+                    <Edit2 className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              </div>
+              
+              {isEditingVision ? (
+                <div className="flex gap-2 mt-1">
+                  <input
+                    type="text"
+                    value={visionStatement}
+                    onChange={(e) => setVisionStatement(e.target.value)}
+                    className="flex-grow px-3.5 py-1.5 rounded-xl border border-slate-700 bg-black/60 text-xs sm:text-sm font-medium text-white focus:outline-none"
+                  />
+                  <button onClick={handleSaveVision} className="px-4 py-1.5 bg-white text-[#111] rounded-xl text-xs font-black">
+                    저장
+                  </button>
+                </div>
+              ) : (
+                <p className="text-sm sm:text-base font-black text-white italic leading-relaxed">
+                  "{visionStatement}"
+                </p>
+              )}
+            </div>
+
+            {/* XP Bar */}
+            <div className="space-y-1.5 pt-1">
+              <div className="flex justify-between text-xs font-extrabold text-slate-300">
+                <span>성장 마일리지 ({rankBadge.title})</span>
+                <span className="text-teal-400 font-black">{currentXP} / {maxXP} XP ({progressPercent}%)</span>
+              </div>
+              <div className="h-2.5 w-full bg-slate-900 rounded-full overflow-hidden border border-slate-800">
+                <div className="h-full bg-gradient-to-r from-teal-500 via-purple-500 to-white rounded-full transition-all duration-700" style={{ width: `${progressPercent}%` }} />
+              </div>
             </div>
           </div>
 
-          {/* 🤖 아리와 함께 실전 맞춤 진로 활동 찾아보기 버튼 (클릭 시 AI 분석 후 4대 모듈 개장!) */}
-          <div className="flex-shrink-0 w-full xl:w-auto text-center flex flex-col items-center justify-center gap-3">
+          {/* Right Mascot Showcase */}
+          <div className="flex flex-col items-center justify-center relative w-full md:w-2/5 shrink-0">
+            <div className="w-56 h-56 sm:w-64 sm:h-64 rounded-full bg-gradient-to-b from-slate-800/80 to-slate-900/40 p-5 border border-slate-700 flex items-center justify-center relative group shadow-2xl">
+              <span className="absolute -top-4 left-1/2 -translate-x-1/2 bg-slate-900 text-2xl p-2.5 rounded-2xl border border-slate-700 shadow-md">
+                {rankBadge.icon}
+              </span>
+              <img
+                src={displayAvatarUrl}
+                alt="3D Character Avatar"
+                className="w-full h-full object-contain drop-shadow-[0_12px_24px_rgba(0,0,0,0.6)] group-hover:scale-105 transition-transform duration-300"
+              />
+            </div>
+            <div className="mt-3.5 bg-slate-900/90 text-slate-300 px-4 py-1.5 rounded-full font-bold text-xs border border-slate-800 flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+              <span>장착 어시스턴트 아리</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Primary CTA Block (아리와 함께 실전 맞춤 진로 활동 찾아보기) */}
+        <div className="pt-8 border-t border-slate-800/80 flex flex-col xl:flex-row items-center justify-between gap-6 relative z-10">
+          <div className="text-center xl:text-left space-y-1 max-w-xl">
+            <span className="text-[11px] font-extrabold text-teal-400 bg-teal-950/80 border border-teal-800 px-3 py-1 rounded-full mb-1 inline-block">
+              🔥 CORE CAREER MODULES
+            </span>
+            <h4 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+              나만의 실전 맞춤 진로 활동 & AI 로드맵 오픈하기
+            </h4>
+            <p className="text-xs font-medium text-slate-400 leading-relaxed">
+              16개 온보딩 진단 검사 및 목표 직군을 완벽 연계하여, 4대 핵심 역량 모듈과 50일 루틴을 1초 만에 세부 큐레이션합니다.
+            </p>
+          </div>
+
+          <div className="w-full xl:w-auto shrink-0 flex justify-center">
             {!isRoadmapGenerated ? (
-              <div className="w-full sm:w-[380px] md:w-[420px] p-2 rounded-[36px] bg-gradient-to-r from-[#00A3A8] via-[#5270FF] to-[#FF3B7C] shadow-[0_12px_40px_rgba(0,163,168,0.4)] hover:shadow-[0_18px_55px_rgba(255,59,124,0.6)] transition-all duration-300">
-                <button
-                  onClick={handleGenerateRoadmap}
-                  disabled={isGeneratingAnim}
-                  className="w-full py-5 px-8 rounded-[30px] bg-gradient-to-r from-[#008A90] via-[#2563EB] to-[#7B5CF0] hover:brightness-110 text-white font-black text-lg sm:text-xl border-2 border-white/90 border-b-[8px] border-b-[#0D3B66] active:translate-y-1.5 active:border-b-2 transition-all flex items-center justify-center gap-3.5 whitespace-nowrap cursor-pointer shadow-2xl tracking-tight break-keep"
-                >
-                  <span className="text-2xl sm:text-3xl animate-bounce-short flex-shrink-0">🤖</span>
-                  <span>아리와 함께 실전 맞춤 진로 활동 찾아보기 ✨</span>
-                </button>
-              </div>
+              <button
+                onClick={handleGenerateRoadmap}
+                disabled={isGeneratingAnim}
+                className="w-full sm:w-auto py-4 px-8 rounded-[24px] bg-gradient-to-r from-teal-400 via-white to-white hover:bg-white text-[#111] font-black text-lg sm:text-xl shadow-[0_8px_30px_rgba(255,255,255,0.2)] hover:shadow-[0_12px_40px_rgba(255,255,255,0.35)] transition-all flex items-center justify-center gap-3 transform hover:-translate-y-1 active:scale-95 cursor-pointer border border-white/50"
+              >
+                <span className="text-2xl sm:text-3xl animate-bounce-short shrink-0">🤖</span>
+                <span className="tracking-tight">아리와 함께 실전 맞춤 진로 활동 찾아보기 ✨</span>
+              </button>
             ) : (
-              <div className="flex flex-col items-center gap-3">
-                <span className="inline-flex items-center gap-2 px-5 py-2.5 bg-green-500/15 text-[#059669] rounded-2xl font-black text-xs sm:text-sm border border-green-300 shadow-sm">
-                  <Unlock className="w-4 h-4 text-green-600" />
-                  <span>✅ 실전 맞춤 진로 활동 모듈 개방 완료!</span>
+              <div className="flex flex-col items-center gap-2">
+                <span className="inline-flex items-center gap-2 px-5 py-2.5 bg-emerald-500/20 text-emerald-300 rounded-2xl font-black text-xs sm:text-sm border border-emerald-500/40">
+                  <Unlock className="w-4 h-4 text-emerald-400" />
+                  <span>✅ 실전 맞춤 진로 활동 4대 모듈 개방 완료!</span>
                 </span>
                 <button
                   onClick={() => { setIsRoadmapGenerated(false); localStorage.removeItem("readycareer_roadmap_generated"); }}
-                  className="text-xs font-bold text-[#6E6A80] hover:text-[#7B5CF0] underline decoration-1"
+                  className="text-xs font-bold text-slate-400 hover:text-white underline decoration-1"
                 >
-                  (활동 모듈 화면 접기 / 리셋)
+                  (모듈 접기 / 초기화)
                 </button>
               </div>
             )}
           </div>
         </div>
 
-        {/* 🤖 아리 AI 실전 맞춤 진로 활동 발동 및 습관 자동세팅 로딩 연출 화면 */}
+        {/* 로딩 연출 화면 */}
         {isGeneratingAnim && (
-          <div className="w-full my-8 p-8 sm:p-12 rounded-[44px] bg-gradient-to-br from-[#FAF5FF] via-[#EBF9FF] to-[#F3E8FF] border-4 border-white shadow-[0_25px_65px_rgba(123,92,240,0.25)] text-center space-y-6 relative overflow-hidden backdrop-blur-2xl animate-fadeIn">
-            <div className="absolute top-0 left-1/4 w-64 h-64 bg-[#7B5CF0]/20 rounded-full blur-3xl -z-0 pointer-events-none animate-pulse" />
-            <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-[#008A90]/20 rounded-full blur-3xl -z-0 pointer-events-none" />
-
-            {/* 아리 마스코트 부유 및 회전 아우라 */}
-            <div className="relative w-36 h-36 sm:w-44 sm:h-44 mx-auto z-10">
-              <div className="absolute inset-0 rounded-full border-4 border-dashed border-[#7B5CF0] animate-spin-slow opacity-60" />
-              <div className="w-full h-full rounded-full bg-white/95 p-4 shadow-2xl border-4 border-white flex items-center justify-center animate-float">
-                <img src={ARI_BLOB_URL} alt="AI Ari Mascot" className="w-full h-full object-contain filter drop-shadow-xl" />
-              </div>
-              <span className="absolute -bottom-2 -right-2 text-3xl sm:text-4xl bg-white p-2 rounded-2xl shadow-lg border border-purple-200 animate-bounce">
-                🎯
-              </span>
+          <div className="my-6 p-8 sm:p-10 rounded-[28px] bg-slate-900 border border-slate-800 text-center space-y-5 animate-fadeIn">
+            <div className="w-24 h-24 mx-auto rounded-full bg-slate-800 p-3 border border-slate-700 animate-bounce">
+              <img src={ARI_BLOB_URL} alt="Ari Loading" className="w-full h-full object-contain" />
             </div>
-
-            <div className="space-y-3 z-10 max-w-2xl mx-auto">
-              <div className="inline-flex items-center gap-2 px-5 py-1.5 rounded-full bg-gradient-to-r from-[#7B5CF0] via-[#FF3B7C] to-[#008A90] text-white font-black text-xs sm:text-sm shadow-md animate-pulse">
-                <Sparkles className="w-4 h-4 text-amber-300" />
-                <span>AI 아리의 맞춤 진로 설계 알고리즘 발동 중!</span>
-              </div>
-              <h4 className="text-xl sm:text-2xl md:text-3xl font-black text-[#1A1626] leading-snug break-keep tracking-tight">
-                "잠시만 기다려 줘! 회원님의 진도 성향과 직업군에 딱 맞춘 <br className="hidden sm:block"/> 
-                <span className="text-[#7B5CF0]">습관 & 목표 루틴</span> 및 <span className="text-[#008A90]">4대 실전 활동 모듈</span>을 세팅 중이야!"
+            <div className="space-y-2 max-w-xl mx-auto">
+              <span className="px-4 py-1 rounded-full bg-teal-500/20 text-teal-300 text-xs font-black border border-teal-500/30 inline-block">
+                💡 AI 아리 맞춤 진로 알고리즘 발동 중...
+              </span>
+              <h4 className="text-lg sm:text-xl font-black text-white leading-snug">
+                "잠시만 기다려! 회원님의 흥미 유형과 꿈의 직무에 최적화된 4대 실전 모듈과 50일 루틴을 세팅하고 있어!"
               </h4>
-              <div className="w-full max-w-md mx-auto h-3 bg-purple-100 rounded-full overflow-hidden p-0.5 border border-white shadow-inner">
-                <div className="h-full bg-gradient-to-r from-[#7B5CF0] via-[#FF3B7C] to-[#008A90] rounded-full animate-pulse w-3/4 shadow-sm" />
+              <div className="w-full max-w-xs mx-auto h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                <div className="h-full bg-teal-400 rounded-full animate-pulse w-3/4" />
               </div>
-              <p className="text-xs sm:text-sm font-extrabold text-[#5C5672] animate-bounce-short">
-                ⚙️ 전공 핵심 키워드 매핑 및 AI 학습 퀴즈 뱅크 초기화 중... (85%)
-              </p>
             </div>
           </div>
         )}
 
+        {/* 실전 맞춤 진로 활동 4대 모듈 (클린 화이트 & 다크 블랙 텍스트 레퍼런스 적용) */}
         {isRoadmapGenerated && !isGeneratingAnim && (
-          <div className="space-y-4 animate-fadeIn pt-4">
-            <div className="pl-2 flex items-center justify-between border-b border-purple-100 pb-3">
-              <h3 className="text-2xl font-headline font-black text-[#1A1626] flex items-center gap-2">
+          <div className="pt-6 border-t border-slate-800/80 space-y-4 animate-fadeIn">
+            <div className="flex items-center justify-between">
+              <h4 className="text-lg sm:text-xl font-black text-white flex items-center gap-2">
                 <span>🌌 실전 맞춤 진로 활동 4대 모듈</span>
-                <span className="text-xs bg-[#7B5CF0] text-white px-3 py-1 rounded-full font-bold">오픈됨</span>
-              </h3>
-              <span className="text-xs sm:text-sm font-extrabold text-[#7B5CF0]">
-                ⚡ 원하는 모듈을 터치하여 바로 진로 마일리지를 쌓으세요!
-              </span>
+                <span className="text-xs bg-teal-500/20 text-teal-300 px-3 py-0.5 rounded-full border border-teal-500/40">Active</span>
+              </h4>
+              <span className="text-xs font-bold text-slate-400">원하는 카드를 터치하여 바로 진입하세요 ↗</span>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               
-              {/* Card 1: 별자리 로드맵 */}
+              {/* Card 1: AI 학습포트폴리오 */}
               <Link to="/roadmap" className="block h-full group">
-                <div className="bg-white rounded-[32px] p-7 shadow-[0_12px_35px_rgba(123,92,240,0.12)] hover:shadow-[0_20px_55px_rgba(123,92,240,0.25)] transition-all duration-300 transform hover:-translate-y-2 cursor-pointer flex flex-col justify-between h-full min-h-[200px] border-2 border-[#EADFFF] group-hover:border-[#7B5CF0] relative overflow-hidden">
-                  <div className="absolute top-0 right-0 w-24 h-24 bg-purple-50 rounded-bl-[50px] -z-0 pointer-events-none" />
-                  <div className="space-y-4 z-10">
-                    <div className="w-14 h-14 rounded-2xl bg-[#7B5CF0] text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                      <Route className="w-7 h-7 text-white" />
+                <div className="bg-white rounded-[24px] p-6 border border-slate-200 hover:border-[#111] shadow-xs hover:shadow-lg transition-all duration-200 flex flex-col justify-between h-full min-h-[200px] text-[#111]">
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-purple-50 text-purple-700 border border-purple-200">
+                        • STEP 1. 심화 학습
+                      </span>
+                      <div className="w-9 h-9 rounded-xl bg-slate-900 text-white flex items-center justify-center group-hover:bg-purple-600 transition-colors">
+                        <Route className="w-4 h-4" />
+                      </div>
                     </div>
                     <div>
-                      <span className="text-[11px] font-black bg-purple-100 text-[#7B5CF0] px-2.5 py-0.5 rounded-md block w-fit mb-1.5">
-                        STEP 1. 심화 지식
-                      </span>
-                      <h4 className="text-xl font-headline font-black text-[#1A1626] group-hover:text-[#7B5CF0] transition-colors">
-                        📘 AI 학습포트폴리오 (코넬노트)
-                      </h4>
-                      <p className="text-xs text-[#5B556D] mt-2 font-bold leading-relaxed bg-[#F9F7FF] p-3 rounded-2xl border border-purple-50">
-                        과목별 핵심 요약 작성 시 AI가 스마트 정리 및 셀프 퀴즈 생성 누적!
+                      <h5 className="text-base font-black text-[#111] group-hover:text-purple-700 transition-colors">
+                        AI 학습포트폴리오 (코넬노트)
+                      </h5>
+                      <p className="text-xs font-medium text-slate-500 mt-1.5 leading-relaxed">
+                        교과 핵심 키워드 정리 및 AI가 추출하는 세특 연계 요약과 셀프 퀴즈 도전
                       </p>
                     </div>
                   </div>
-                  <div className="mt-4 pt-3 border-t border-purple-100 flex items-center justify-between text-xs font-black text-[#7B5CF0]">
-                    <span>학습 노트 보관함 접속 &rarr;</span>
-                    <Play className="w-4 h-4 fill-current" />
+                  <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-[#111] group-hover:text-purple-600">
+                    <span>학습 노트 입장</span>
+                    <span>↗</span>
                   </div>
                 </div>
               </Link>
 
               {/* Card 2: 습관 & 목표 */}
               <Link to="/habits" className="block h-full group">
-                <div className="bg-white rounded-[32px] p-7 shadow-[0_12px_35px_rgba(123,92,240,0.12)] hover:shadow-[0_20px_55px_rgba(0,138,144,0.25)] transition-all duration-300 transform hover:-translate-y-2 cursor-pointer flex flex-col justify-between h-full min-h-[200px] border-2 border-[#CBF7FB] group-hover:border-[#008A90] relative overflow-hidden">
-                  <div className="absolute top-0 right-0 w-24 h-24 bg-cyan-50 rounded-bl-[50px] -z-0 pointer-events-none" />
-                  <div className="space-y-4 z-10">
-                    <div className="w-14 h-14 rounded-2xl bg-[#008A90] text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                      <ListCheck className="w-7 h-7 text-white" />
+                <div className="bg-white rounded-[24px] p-6 border border-slate-200 hover:border-[#111] shadow-xs hover:shadow-lg transition-all duration-200 flex flex-col justify-between h-full min-h-[200px] text-[#111]">
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-teal-50 text-[#0D9488] border border-teal-200">
+                        • STEP 2. 실천 루틴
+                      </span>
+                      <div className="w-9 h-9 rounded-xl bg-slate-900 text-white flex items-center justify-center group-hover:bg-teal-600 transition-colors">
+                        <ListCheck className="w-4 h-4" />
+                      </div>
                     </div>
                     <div>
-                      <span className="text-[11px] font-black bg-cyan-100 text-[#008A90] px-2.5 py-0.5 rounded-md block w-fit mb-1.5">
-                        STEP 2. 꾸준한 실천
-                      </span>
-                      <h4 className="text-xl font-headline font-black text-[#1A1626] group-hover:text-[#008A90] transition-colors">
-                        🎯 습관 &amp; 목표 관리
-                      </h4>
-                      <p className="text-xs text-[#5B556D] mt-2 font-bold leading-relaxed bg-[#F2FEFF] p-3 rounded-2xl border border-cyan-50">
-                        매일매일 실천하는 루틴 챌린지 및 7일차 연속 스트릭 마일리지 적립
+                      <h5 className="text-base font-black text-[#111] group-hover:text-teal-700 transition-colors">
+                        습관 & 목표 관리
+                      </h5>
+                      <p className="text-xs font-medium text-slate-500 mt-1.5 leading-relaxed">
+                        매일 수행하는 커스텀 진로 루틴 및 1일 체크 달성 시 즉시 EXP 마일리지 획득
                       </p>
                     </div>
                   </div>
-                  <div className="mt-4 pt-3 border-t border-cyan-100 flex items-center justify-between text-xs font-black text-[#008A90]">
-                    <span>습관 대시보드 입장 &rarr;</span>
-                    <Play className="w-4 h-4 fill-current text-[#008A90]" />
+                  <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-[#111] group-hover:text-teal-600">
+                    <span>습관 대시보드 입장</span>
+                    <span>↗</span>
                   </div>
                 </div>
               </Link>
 
               {/* Card 3: 진로 포트폴리오 */}
               <Link to="/portfolio" className="block h-full group">
-                <div className="bg-white rounded-[32px] p-7 shadow-[0_12px_35px_rgba(123,92,240,0.12)] hover:shadow-[0_20px_55px_rgba(255,64,129,0.25)] transition-all duration-300 transform hover:-translate-y-2 cursor-pointer flex flex-col justify-between h-full min-h-[200px] border-2 border-[#FFD1E3] group-hover:border-[#FF4081] relative overflow-hidden">
-                  <div className="absolute top-0 right-0 w-24 h-24 bg-pink-50 rounded-bl-[50px] -z-0 pointer-events-none" />
-                  <div className="space-y-4 z-10">
-                    <div className="w-14 h-14 rounded-2xl bg-[#FF4081] text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                      <FolderCheck className="w-7 h-7 text-white" />
+                <div className="bg-white rounded-[24px] p-6 border border-slate-200 hover:border-[#111] shadow-xs hover:shadow-lg transition-all duration-200 flex flex-col justify-between h-full min-h-[200px] text-[#111]">
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-rose-50 text-rose-600 border border-rose-200">
+                        • STEP 3. 누적 성과
+                      </span>
+                      <div className="w-9 h-9 rounded-xl bg-slate-900 text-white flex items-center justify-center group-hover:bg-rose-600 transition-colors">
+                        <FolderCheck className="w-4 h-4" />
+                      </div>
                     </div>
                     <div>
-                      <span className="text-[11px] font-black bg-pink-100 text-[#FF2A72] px-2.5 py-0.5 rounded-md block w-fit mb-1.5">
-                        STEP 3. 누적 성과
-                      </span>
-                      <h4 className="text-xl font-headline font-black text-[#1A1626] group-hover:text-[#FF4081] transition-colors">
-                        📁 진로 포트폴리오
-                      </h4>
-                      <p className="text-xs text-[#5B556D] mt-2 font-bold leading-relaxed bg-[#FFF5F9] p-3 rounded-2xl border border-pink-50">
-                        학기별 활동 성실도와 AI 역량 진단 보고서를 열람하고 다운로드!
+                      <h5 className="text-base font-black text-[#111] group-hover:text-rose-600 transition-colors">
+                        진로 포트폴리오
+                      </h5>
+                      <p className="text-xs font-medium text-slate-500 mt-1.5 leading-relaxed">
+                        고교 3개년 누적 성과 및 항목을 선택하여 NEIS 제출용 생기부 초안 즉시 변환
                       </p>
                     </div>
                   </div>
-                  <div className="mt-4 pt-3 border-t border-pink-100 flex items-center justify-between text-xs font-black text-[#FF4081]">
-                    <span>보관함 확인하기 &rarr;</span>
-                    <Play className="w-4 h-4 fill-current text-[#FF4081]" />
+                  <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-[#111] group-hover:text-rose-600">
+                    <span>포폴 보관함 확인</span>
+                    <span>↗</span>
                   </div>
                 </div>
               </Link>
 
-              {/* Card 4: 활동 기록 작성 */}
-              <Link to="/activity-form" className="block h-full group">
-                <div className="bg-gradient-to-br from-[#F5F2FF] via-white to-[#EEFAFF] rounded-[32px] p-7 shadow-[0_15px_40px_rgba(123,92,240,0.16)] hover:shadow-[0_25px_60px_rgba(123,92,240,0.3)] transition-all duration-300 transform hover:-translate-y-2 cursor-pointer flex flex-col justify-between h-full min-h-[200px] border-4 border-[#8C74FF] group-hover:border-[#6240D5] relative overflow-hidden">
-                  <div className="space-y-4 z-10">
-                    <div className="w-14 h-14 rounded-2xl bg-[#6240D5] text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform animate-pulse">
-                      <Edit2 className="w-7 h-7 text-white" />
+              {/* Card 4: 자기이해 검사 (사용자 요청에 따라 활동기록 작성을 자기이해 검사로 교체) */}
+              <Link to="/self-understanding" className="block h-full group">
+                <div className="bg-slate-900 rounded-[24px] p-6 border border-slate-800 hover:border-teal-400 shadow-sm hover:shadow-lg transition-all duration-200 flex flex-col justify-between h-full min-h-[200px] text-white">
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-teal-900/80 text-teal-300 border border-teal-700">
+                        • STEP 4. 흥미 진단
+                      </span>
+                      <div className="w-9 h-9 rounded-xl bg-teal-500 text-white flex items-center justify-center group-hover:scale-105 transition-transform">
+                        <Compass className="w-4 h-4" />
+                      </div>
                     </div>
                     <div>
-                      <span className="text-[11px] font-black bg-[#6240D5] text-white px-3 py-1 rounded-full block w-fit mb-1.5 shadow-sm">
-                        🔥 NEW +60 EXP 적립
-                      </span>
-                      <h4 className="text-xl font-headline font-black text-[#6240D5]">
-                        ✍️ 활동 기록 작성
-                      </h4>
-                      <p className="text-xs text-[#4E4962] mt-2 font-extrabold leading-relaxed bg-white p-3 rounded-2xl border border-purple-100 shadow-sm">
-                        NEIS 생기부 100% 반영 세탁 문구 기재 및 AI 자동 문구 교정!
+                      <h5 className="text-base font-black text-white group-hover:text-teal-300 transition-colors">
+                        자기이해 진로검사
+                      </h5>
+                      <p className="text-xs font-medium text-slate-400 mt-1.5 leading-relaxed">
+                        6유형 RIASEC 진단 설문 및 AI 매핑을 통해 내 잠재 흥미와 역량을 재확인!
                       </p>
                     </div>
                   </div>
-                  <div className="mt-4 pt-3 border-t border-purple-200 flex items-center justify-between text-xs font-black text-[#6240D5]">
-                    <span>새 기록 작성 &rarr;</span>
-                    <ArrowRight className="w-4 h-4 stroke-[3]" />
+                  <div className="pt-4 mt-4 border-t border-slate-800 flex items-center justify-between text-xs font-extrabold text-teal-300">
+                    <span>검사 결과 보러가기</span>
+                    <span>↗</span>
                   </div>
                 </div>
               </Link>
@@ -612,81 +576,84 @@ export const HomeDashboard: React.FC = () => {
             </div>
           </div>
         )}
-
-      </div>
+      </section>
 
       {/* =========================================================================
-          SECTION 4: 나의 관심 직업군 (멀티 커리어 스위칭 시스템)
+          SECTION 4: 진로 탐험 목표 변경 (Compact Career Switching Aux Area)
          ========================================================================= */}
-      <div className="bg-white/90 backdrop-blur-xl rounded-[36px] p-8 sm:p-10 shadow-[0_15px_45px_rgba(123,92,240,0.1)] border-2 border-[#E7E0FF] space-y-8">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b-2 border-purple-100 pb-5">
-          <div className="space-y-1">
-            <h3 className="text-xl sm:text-2xl font-headline font-black text-[#1A1626] flex items-center gap-2">
-              <Sparkles className="w-6 h-6 text-[#7B5CF0]" />
-              <span>진로 탐험 목표 변경 (Career Switching)</span>
+      <div className="bg-slate-50 rounded-[28px] p-6 sm:p-8 border border-slate-200 space-y-6">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-4">
+          <div>
+            <h3 className="text-lg sm:text-xl font-black text-[#111] flex items-center gap-2">
+              <span>⚡ 진로 탐험 직군 변경 (Career Switching)</span>
             </h3>
+            <p className="text-xs font-medium text-slate-500 mt-0.5">
+              메인 화면의 눈부신 활동에 집중하되, 필요 시 언제든 후보 직군을 클릭하여 마스코트와 목표를 간편 전환하세요.
+            </p>
           </div>
 
-          <form onSubmit={handleAddJob} className="flex items-center gap-2 max-w-md w-full">
+          <form onSubmit={handleAddJob} className="flex items-center gap-2 max-w-sm w-full">
             <input
               type="text"
-              placeholder="예: AI 바이오 데이터 연구원..."
+              placeholder="예: AI 바이오 연구원..."
               value={newJobInput}
               onChange={(e) => setNewJobInput(e.target.value)}
-              className="flex-grow h-12 text-xs md:text-sm px-5 rounded-2xl bg-[#F8F5FF] border-2 border-[#E2DAFF] focus:border-[#7B5CF0] text-[#1A1626] placeholder:text-[#8D88A0] focus:outline-none focus:ring-2 focus:ring-[#7B5CF0]/20 font-bold transition-all shadow-inner"
+              className="flex-grow h-10 text-xs px-4 rounded-xl bg-white border border-slate-300 text-[#111] placeholder:text-slate-400 focus:outline-none focus:border-slate-800 font-medium shadow-2xs"
             />
-            <Button type="submit" variant="teal" size="sm" className="h-12 px-6 whitespace-nowrap font-black text-sm rounded-2xl shadow-md bg-[#008A90] hover:bg-[#00767C] text-white">
-              <Plus className="w-4 h-4 mr-1 stroke-[3]" />
-              추가
+            <Button type="submit" variant="primary" size="sm" className="h-10 px-4 whitespace-nowrap font-bold text-xs rounded-xl bg-[#111] hover:bg-slate-800 text-white">
+              + 추가
             </Button>
           </form>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {interestedJobs.map((job, idx) => {
             const isSelected = selectedJobIdx === idx;
             return (
               <div
                 key={idx}
-                className={`p-6 rounded-[28px] border-3 transition-all duration-300 flex flex-col justify-between space-y-5 transform ${
+                className={`p-4 rounded-[20px] border transition-all duration-200 flex flex-col justify-between h-44 ${
                   isSelected
-                    ? "bg-gradient-to-b from-[#E6FAFE] to-[#F2FEFF] border-[#008A90] shadow-[0_15px_40px_rgba(0,138,144,0.25)] scale-[1.03]"
-                    : "bg-[#FAFAFF] border-[#E8DFFA] shadow-sm hover:shadow-lg"
+                    ? "bg-white border-slate-800 shadow-md scale-[1.01]"
+                    : "bg-white border-slate-200 hover:border-slate-400 shadow-xs hover:shadow-sm"
                 }`}
               >
                 <div className="flex items-center justify-between">
-                  <span className={`text-[11px] font-black px-3 py-1 rounded-full shadow-sm ${isSelected ? "bg-[#008A90] text-white" : "bg-purple-100 text-[#6240D5]"}`}>
-                    {isSelected ? "★ 현재 활성 메인 직업" : `후보 직군`}
+                  <span className={`text-[10px] font-extrabold px-2.5 py-0.5 rounded-full ${isSelected ? "bg-[#111] text-white" : "bg-slate-100 text-slate-600"}`}>
+                    {isSelected ? "★ 현재 활성 메인" : "후보 직군"}
                   </span>
-                  {isSelected && <CheckCircle2 className="w-6 h-6 text-[#008A90] fill-white animate-bounce-short" />}
+                  {isSelected && <span className="text-[10px] font-bold text-emerald-600">Active</span>}
                 </div>
 
-                <div className="w-24 h-24 rounded-full bg-white p-2.5 shadow-sm border-2 border-white mx-auto flex items-center justify-center my-2">
-                  {job.imageUrl ? (
-                    <img src={job.imageUrl} alt={job.name} className="w-full h-full object-contain filter drop-shadow-md" />
-                  ) : (
-                    <span className="text-4xl">{job.image}</span>
-                  )}
+                <div className="flex items-center gap-3 my-2">
+                  <div className="w-12 h-12 rounded-xl bg-slate-50 p-2 border border-slate-150 shrink-0 flex items-center justify-center">
+                    {job.imageUrl ? (
+                      <img src={job.imageUrl} alt={job.name} className="w-full h-full object-contain" />
+                    ) : (
+                      <span className="text-xl">{job.image}</span>
+                    )}
+                  </div>
+                  <div className="overflow-hidden">
+                    <span className="text-[10px] font-semibold text-slate-400 block truncate">
+                      {job.category}
+                    </span>
+                    <strong className="text-sm font-black text-[#111] block truncate">
+                      {job.name}
+                    </strong>
+                  </div>
                 </div>
 
-                <div className="text-center space-y-1">
-                  <span className="text-[10px] font-bold text-[#6E6A80] block">
-                    {job.category}
-                  </span>
-                  <strong className={`text-base font-black block tracking-tight ${isSelected ? "text-[#008A90]" : "text-[#1A1626]"}`}>
-                    {job.name}
-                  </strong>
-                </div>
-
-                {/* 변경 액션 버튼 */}
-                {!isSelected && (
+                {!isSelected ? (
                   <button
                     onClick={() => handleSelectJob(idx)}
-                    className="w-full py-3 rounded-2xl bg-gradient-to-r from-[#7B5CF0] to-[#6240D5] hover:brightness-110 text-white font-black text-xs shadow-md transition-all flex items-center justify-center gap-1.5 cursor-pointer transform hover:scale-105"
+                    className="w-full py-2 rounded-xl bg-slate-100 hover:bg-[#111] hover:text-white text-slate-700 font-bold text-xs transition-colors"
                   >
-                    <RefreshCw className="w-3.5 h-3.5" />
-                    <span>이 직업으로 변경하기</span>
+                    이 직업으로 변경 &rarr;
                   </button>
+                ) : (
+                  <div className="w-full py-2 text-center text-xs font-bold text-slate-400 bg-slate-50 rounded-xl border border-dashed border-slate-200">
+                    현재 적용 중
+                  </div>
                 )}
               </div>
             );

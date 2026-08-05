@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Button, Card, Input, Chip, MascotAri } from "../components";
 import { FileText, Calendar, Sparkles, Save } from "lucide-react";
 import { supabase, isSupabaseConfigured } from "../lib/supabase";
+import { rewardXP } from "../services/expService";
 
 export const ActivityForm: React.FC = () => {
   const navigate = useNavigate();
@@ -62,7 +63,8 @@ export const ActivityForm: React.FC = () => {
       console.error("Save activity error:", err);
     }
 
-    alert("🎉 신규 진로 활동이 포트폴리오 및 교사용 생기부 보드에 실시간 누적되었습니다!\n🎁 실천 보상: +50 EXP 획득!");
+    alert("🎉 신규 진로 활동이 포트폴리오 및 교사용 생기부 보드에 실시간 누적되었습니다!");
+    rewardXP(60, "신규 진로 활동 기록 완수!");
     navigate("/portfolio");
   };
 

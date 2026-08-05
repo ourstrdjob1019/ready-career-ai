@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Card, MascotAri } from "../components";
 import { Sparkles, Flame, CheckCircle2, Plus, Calendar, FileText } from "lucide-react";
+import { rewardXP } from "../services/expService";
 
 interface Habit {
   id: string;
@@ -60,7 +61,13 @@ export const HabitManagement: React.FC = () => {
 
   const toggleQuest = (id: string) => {
     setTodayQuests((prev) =>
-      prev.map((q) => (q.id === id ? { ...q, completed: !q.completed } : q))
+      prev.map((q) => {
+        if (q.id === id) {
+          if (!q.completed) rewardXP(60, `[${q.title}] 일일 퀘스트 완수!`);
+          return { ...q, completed: !q.completed };
+        }
+        return q;
+      })
     );
   };
 
@@ -78,6 +85,9 @@ export const HabitManagement: React.FC = () => {
         const nextDays = exists
           ? curDays.filter((d) => d !== dayNo)
           : [...curDays, dayNo].sort((a, b) => a - b);
+        if (!exists) {
+          rewardXP(60, `[${h.title}] 50일 챌린지 ${dayNo}일차 루틴 체크 완수!`);
+        }
         return { ...h, completedDays: nextDays };
       });
       localStorage.setItem("my_habits_v2", JSON.stringify(next));
