@@ -13,7 +13,6 @@ import {
   Plus,
   Layers,
   CheckSquare,
-  ArrowRight,
   Filter,
   Bookmark,
   Target,
@@ -436,10 +435,6 @@ export const StarRoadmap: React.FC = () => {
   const filteredNotes = selectedCategory === "전체" 
     ? notes 
     : notes.filter(n => normalizeCategory(n.category) === selectedCategory);
-
-  const activeCategories = SUBJECT_CATEGORIES.filter(cat => 
-    cat !== "전체" && notes.some(n => normalizeCategory(n.category) === cat)
-  );
 
   // 미완료 목표 선택
   const pendingGoals = studyGoals.filter(g => !g.isCompleted);
@@ -1002,194 +997,85 @@ export const StarRoadmap: React.FC = () => {
           </div>
         </div>
 
-        {/* 노트 리스트 렌더링 */}
+        {/* 노트 쇼룸 리스트 렌더링 (진로포트폴리오 쇼룸 스타일 1:1 적용) */}
         {filteredNotes.length === 0 ? (
           <div className="w-full py-20 text-center bg-white rounded-[36px] border-2 border-dashed border-slate-200 space-y-3 shadow-sm">
             <span className="text-5xl block">📭</span>
             <p className="text-lg font-extrabold text-[#0D9488]">선택하신 교과 영역에 등록된 학습 노트가 없습니다.</p>
             <p className="text-xs font-bold text-[#64748B]">상단 [ ✨ 새로운 학습 기록하기 ] 버튼을 눌러 중·고교 교목 노트를 채워보세요!</p>
           </div>
-        ) : selectedCategory === "전체" ? (
-          /* [전체 탭 모드] */
-          <div className="space-y-10">
-            {activeCategories.map((catName) => {
-              const catNotes = notes.filter(n => normalizeCategory(n.category) === catName);
-              const displayNotes = catNotes.slice(0, 3);
-              const remainingCount = catNotes.length - 3;
-
-              return (
-                <div key={catName} className="bg-[#F8FAFC] p-6 sm:p-8 rounded-[36px] border-2 border-slate-200/80 shadow-xs space-y-6">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200 pb-4">
-                    <div className="flex items-center gap-3">
-                      <span className="text-xl sm:text-2xl font-black text-[#0F172A]">
-                        {catName}
-                      </span>
-                      <span className="px-3 py-1 rounded-full bg-[#0D9488] text-white text-xs font-black shadow-xs">
-                        총 {catNotes.length}개 기록
-                      </span>
-                    </div>
-
-                    <div className="flex flex-wrap items-center gap-2">
-                      <button
-                        onClick={() => handleStartQuiz(catNotes)}
-                        className="px-4 py-2 rounded-xl bg-[#0F766E] hover:bg-[#047857] text-white font-black text-xs shadow-sm transition-transform transform hover:scale-105 flex items-center gap-1.5 cursor-pointer"
-                      >
-                        <Brain className="w-4 h-4 text-amber-300 animate-pulse" />
-                        <span>⚡ 이 과목 ({catNotes.length}건) 전체 취합 퀴즈</span>
-                      </button>
-                      
-                      <button
-                        onClick={() => setSelectedCategory(catName)}
-                        className="px-4 py-2 rounded-xl bg-white hover:bg-teal-50 text-[#0D9488] border border-teal-200 font-black text-xs transition-all flex items-center gap-1"
-                      >
-                        <span>과목 모아보기</span>
-                        <ArrowRight className="w-3.5 h-3.5" />
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* 스티커 카드 그리드 (Ultra-Compact Summary Stickers) */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                    {displayNotes.map((note) => (
-                      <div
-                        key={note.id}
-                        onClick={() => setSelectedDetailNote(note)}
-                        title={`${note.topic} 상세 노트 열람 (클릭 시 확대 창 Open)`}
-                        className="bg-white rounded-[22px] p-4.5 border border-purple-150 hover:border-[#6A42ED] hover:bg-[#FAF8FF] shadow-2xs hover:shadow-md transition-all duration-200 flex flex-col justify-between cursor-pointer group relative min-h-[125px]"
-                      >
-                        <div className="space-y-2 overflow-hidden w-full">
-                          <div className="flex items-center justify-between gap-1.5">
-                            <span className="text-[11px] font-black px-2.5 py-0.5 rounded-md bg-purple-50 text-[#6A42ED] border border-purple-200/80 truncate max-w-[130px]">
-                              {note.subject.split(/[-&(/]/)[0].trim()}
-                            </span>
-                            <span className="text-[10px] font-black text-amber-600 shrink-0 bg-amber-50 px-2 py-0.5 rounded border border-amber-200/50">
-                              💡 세특
-                            </span>
-                          </div>
-
-                          <h4 className="text-sm font-black text-[#1F193B] group-hover:text-[#6A42ED] transition-colors line-clamp-2 leading-snug break-keep">
-                            {note.topic}
-                          </h4>
-                        </div>
-
-                        <div className="pt-3 mt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400 font-bold group-hover:text-[#6A42ED]">
-                          <span>{note.date.slice(-5)}</span>
-                          <span>확대 보기 ↗</span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-
-                  {remainingCount > 0 && (
-                    <div className="text-center pt-2">
-                      <button
-                        onClick={() => setSelectedCategory(catName)}
-                        className="w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-[#0D9488] hover:bg-[#0F766E] text-white font-black text-sm shadow-md hover:shadow-xl transition-all inline-flex items-center justify-center gap-2 transform hover:-translate-y-0.5"
-                      >
-                        <Bookmark className="w-4 h-4 text-amber-300" />
-                        <span>+ '{catName}' 과목의 학습 노트 {remainingCount}개 더보기 (단원별 모아보기 탭으로 이동) &rarr;</span>
-                      </button>
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
         ) : (
-          /* [과목 특정 탭 모드] */
-          <div className="space-y-12">
-            <div className="p-6 rounded-3xl bg-[#F0FDFA] border-2 border-[#5EEAD4] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <div className="space-y-1">
-                <button 
-                  onClick={() => setSelectedCategory("전체")} 
-                  className="text-xs font-black text-[#0D9488] hover:underline flex items-center gap-1 mb-2"
-                >
-                  &larr; 전체 보관함 및 과목별 요약 보드로 돌아가기
-                </button>
-                <span className="text-xs font-black bg-[#0D9488] text-white px-3 py-1 rounded-full inline-block mb-1">
-                  단원별 집중 탐험 모드
-                </span>
-                <h4 className="text-2xl font-black text-[#0F172A]">
-                  {selectedCategory} 교과 전수 누적 (총 {filteredNotes.length}건)
-                </h4>
-                <p className="text-xs font-bold text-slate-500">
-                  이 교과목에 누적하신 모든 노트를 단원별로 확인하고 통합 퀴즈로 테스트해 보세요!
-                </p>
-              </div>
-
-              <div className="flex flex-col sm:flex-row items-center gap-2 shrink-0">
-                <button
-                  onClick={() => setSelectedCategory("전체")}
-                  className="w-full sm:w-auto px-5 py-3.5 rounded-2xl bg-white hover:bg-teal-50 text-[#0F766E] border border-teal-300 font-black text-xs sm:text-sm transition-all"
-                >
-                  전체 목록으로 &rarr;
-                </button>
-                <button
-                  onClick={() => handleStartQuiz(filteredNotes)}
-                  className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-[#0F766E] hover:bg-[#047857] text-white font-black text-sm shadow-md transition-transform transform hover:scale-105 flex items-center justify-center gap-2"
-                >
-                  <Brain className="w-5 h-5 text-amber-300 animate-pulse" />
-                  <span>⚡ {selectedCategory} 취합 퀴즈 ({filteredNotes.length}건)</span>
-                </button>
-              </div>
+          <div className="space-y-6">
+            <div className="flex items-center justify-between bg-white px-6 py-4 rounded-2xl border border-slate-200/80 shadow-xs">
+              <span className="text-sm font-black text-[#0F172A] flex items-center gap-2">
+                <span>📚 <strong>{selectedCategory}</strong> 교과 쇼룸 갤러리</span>
+                <span className="px-2.5 py-0.5 rounded-full bg-teal-50 text-[#0D9488] text-xs border border-teal-200/80">총 {filteredNotes.length}개 기록</span>
+              </span>
+              <button
+                onClick={() => handleStartQuiz(filteredNotes)}
+                className="px-5 py-2 rounded-xl bg-[#0F766E] hover:bg-[#047857] text-white font-black text-xs sm:text-sm shadow-md transition-transform transform hover:scale-105 flex items-center gap-1.5"
+              >
+                <Brain className="w-4 h-4 text-amber-300 animate-pulse" />
+                <span>⚡ 이 교과 ({filteredNotes.length}건) 전체 취합 퀴즈</span>
+              </button>
             </div>
 
-            {(() => {
-              const grouped: Record<string, CornellNote[]> = {};
-              filteredNotes.forEach(n => {
-                const unitName = n.subject.split(/[-&(/]/)[0].trim() || n.subject;
-                if (!grouped[unitName]) grouped[unitName] = [];
-                grouped[unitName].push(n);
-              });
-
-              return Object.entries(grouped).map(([unit, unitNotes]) => (
-                <div key={unit} className="space-y-4">
-                  <div className="flex items-center justify-between border-b-2 border-teal-150 pb-2 pl-2">
-                    <h5 className="text-lg font-black text-[#1E293B] flex items-center gap-2">
-                      <Bookmark className="w-5 h-5 text-[#0D9488]" />
-                      <span>📑 {unit} 단원 / 세목 (총 {unitNotes.length}건)</span>
-                    </h5>
-                    <button
-                      onClick={() => handleStartQuiz(unitNotes)}
-                      className="text-xs font-black text-[#0D9488] bg-teal-50 hover:bg-[#0D9488] hover:text-white px-3.5 py-1.5 rounded-xl border border-teal-200 transition-colors flex items-center gap-1"
-                    >
-                      <span>🧠 이 단원 통합 퀴즈 &rarr;</span>
-                    </button>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                    {unitNotes.map(note => (
-                      <div
-                        key={note.id}
-                        onClick={() => setSelectedDetailNote(note)}
-                        title={`${note.topic} 상세 노트 열람 (클릭 시 확대 창 Open)`}
-                        className="bg-white rounded-[22px] p-4.5 border border-purple-150 hover:border-[#6A42ED] hover:bg-[#FAF8FF] shadow-2xs hover:shadow-md transition-all duration-200 flex flex-col justify-between cursor-pointer group relative min-h-[125px]"
-                      >
-                        <div className="space-y-2 overflow-hidden w-full">
-                          <div className="flex items-center justify-between gap-1.5">
-                            <span className="text-[11px] font-black px-2.5 py-0.5 rounded-md bg-purple-50 text-[#6A42ED] border border-purple-200/80 truncate max-w-[130px]">
-                              {note.subject.split(/[-&(/]/)[0].trim()}
-                            </span>
-                            <span className="text-[10px] font-black text-amber-600 shrink-0 bg-amber-50 px-2 py-0.5 rounded border border-amber-200/50">
-                              💡 세특
-                            </span>
-                          </div>
-
-                          <h4 className="text-sm font-black text-[#1F193B] group-hover:text-[#6A42ED] transition-colors line-clamp-2 leading-snug break-keep">
-                            {note.topic}
-                          </h4>
-                        </div>
-
-                        <div className="pt-3 mt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400 font-bold group-hover:text-[#6A42ED]">
-                          <span>{note.date.slice(-5)}</span>
-                          <span>확대 보기 ↗</span>
-                        </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+              {filteredNotes.map((note) => {
+                const tagList = note.keywords ? note.keywords.split(',').map(s => s.trim()).filter(Boolean) : [];
+                return (
+                  <div
+                    key={note.id}
+                    onClick={() => setSelectedDetailNote(note)}
+                    className="bg-white rounded-[24px] p-5 border-2 border-slate-200 hover:border-[#0D9488] shadow-sm hover:shadow-xl transition-all duration-200 flex flex-col justify-between min-h-[220px] group cursor-pointer relative overflow-hidden"
+                  >
+                    <div className="space-y-2.5 overflow-hidden w-full">
+                      {/* 상단 과목 뱃지 & 날짜 */}
+                      <div className="flex items-center justify-between gap-1.5">
+                        <span className="text-xs font-black px-3 py-1 rounded-full bg-teal-50 text-[#0D9488] border border-teal-200 truncate max-w-[140px] shadow-2xs">
+                          • {note.subject}
+                        </span>
+                        <span className="text-xs font-bold text-slate-400 shrink-0">
+                          {note.date?.split(' ')[0] || note.date}
+                        </span>
                       </div>
-                    ))}
+
+                      {/* 주제(Topic) 및 내 요약(MySummary) */}
+                      <div className="space-y-1">
+                        <h4 className="text-base font-black text-[#1F193B] group-hover:text-[#0D9488] transition-colors line-clamp-2 leading-snug break-keep">
+                          {note.topic}
+                        </h4>
+                        <p className="text-xs font-semibold text-slate-500 line-clamp-2 leading-relaxed break-keep">
+                          {note.mySummary || "작성된 코넬 노트 요약 내용이 없습니다."}
+                        </p>
+                      </div>
+
+                      {/* 핵심 키워드 태그 리스트 */}
+                      <div className="flex flex-wrap gap-1.5 pt-1">
+                        {tagList.slice(0, 3).map((tag, tIdx) => (
+                          <span key={tIdx} className="text-[11px] font-extrabold bg-slate-50 text-slate-600 px-2.5 py-0.5 rounded-lg border border-slate-200 shadow-2xs">
+                            #{tag.replace(/^#/, '')}
+                          </span>
+                        ))}
+                        {tagList.length > 3 && (
+                          <span className="text-[11px] font-black text-teal-600 px-1.5 py-0.5">+{tagList.length - 3}</span>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* 하단 스티커 액션바 */}
+                    <div className="pt-3.5 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-extrabold">
+                      <span className="text-amber-600 flex items-center gap-1">
+                        💡 {note.aiSummary ? "AI 세특 분석 완료" : "코넬 노트 완성"}
+                      </span>
+                      <span className="text-slate-500 group-hover:text-[#0D9488] transition-colors flex items-center gap-1">
+                        터치하여 확장 &rarr;
+                      </span>
+                    </div>
                   </div>
-                </div>
-              ));
-            })()}
+                );
+              })}
+            </div>
           </div>
         )}
       </div>

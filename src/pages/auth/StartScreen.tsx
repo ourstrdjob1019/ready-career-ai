@@ -58,7 +58,7 @@ export const StartScreen: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAFAFC] text-[#111111] relative overflow-x-hidden selection:bg-[#111] selection:text-white flex flex-col justify-between font-sans">
+    <div className="min-h-screen bg-[#FAFAFC] text-[#2C156B] relative overflow-x-hidden selection:bg-[#5E32EB] selection:text-white flex flex-col justify-between font-sans">
       {/* 3D Infinite Marquee Keyframe Styles */}
       <style>{`
         @keyframes jobvengerMarquee {
@@ -145,18 +145,18 @@ export const StartScreen: React.FC = () => {
         {/* Hero Main Titles - Klyro High-Contrast & Minimalist */}
         <div className="text-center space-y-6 max-w-4xl">
           {/* Top Pill Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#111111] text-white text-xs font-extrabold shadow-sm tracking-wide">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+          <div className="inline-flex items-center gap-2 px-5 py-1.5 rounded-full bg-gradient-to-r from-[#4F22CC] to-[#7343F0] text-white text-xs font-extrabold shadow-md tracking-wide border border-[#916BFF]/40">
+            <span className="w-2 h-2 rounded-full bg-amber-300 animate-ping" />
             <span>2026 AI ADVANCED CAREER EXPLORATION PLATFORM</span>
           </div>
 
           {/* Main Giant Hero Title */}
-          <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter text-[#111111] leading-none">
+          <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter text-[#3B1E8A] bg-clip-text bg-gradient-to-r from-[#31147A] via-[#5E32EB] to-[#8A63FF] leading-none drop-shadow-xs">
             ReadyCareerAI
           </h1>
 
           {/* Subtitle with Sleek Purple & Violet Contrast Badge on '꿈' */}
-          <h2 className="text-2xl sm:text-4xl md:text-5xl font-extrabold text-[#1F193B] tracking-tight flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 pt-1">
+          <h2 className="text-2xl sm:text-4xl md:text-5xl font-extrabold text-[#43219C] tracking-tight flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 pt-1">
             <span>나의</span>
             <span className="inline-flex items-center justify-center px-6 sm:px-8 py-1 sm:py-1.5 mx-1 rounded-[24px] bg-gradient-to-r from-[#5E32EB] to-[#8A63FF] text-amber-300 font-black text-2xl sm:text-4xl md:text-5xl shadow-[0_6px_20px_rgba(94,50,235,0.35)] border border-[#A582FF]/50 transform -rotate-2 hover:rotate-0 transition-transform duration-200">
               <span>꿈 ✨</span>
@@ -164,7 +164,7 @@ export const StartScreen: React.FC = () => {
             <span>설계하기</span>
           </h2>
 
-          <p className="text-sm sm:text-base md:text-lg text-slate-600 font-medium max-w-2xl mx-auto pt-2 leading-relaxed">
+          <p className="text-sm sm:text-base md:text-lg text-[#5D429B] font-semibold max-w-2xl mx-auto pt-2 leading-relaxed break-keep">
             나만의 고유한 흥미와 재능을 AI 파트너 아리와 함께 분석하고, <br className="hidden sm:block" />
             밤하늘 커리어 별자리 로드맵을 향한 맞춤 여정을 지금 즉시 경험해보세요.
           </p>
@@ -181,19 +181,19 @@ export const StartScreen: React.FC = () => {
               {[...JOB_VENGERS_LIST, ...JOB_VENGERS_LIST].map((item, index) => (
                 <div
                   key={index}
-                  className="w-52 sm:w-60 h-64 rounded-[28px] bg-white p-5 border border-slate-200 shadow-sm hover:border-slate-800 hover:shadow-md transition-all duration-200 flex flex-col items-center justify-between group cursor-pointer"
+                  className="w-52 sm:w-60 h-64 rounded-[28px] bg-white p-5 border border-purple-150 shadow-sm hover:border-[#6A42ED] hover:shadow-md transition-all duration-200 flex flex-col items-center justify-between group cursor-pointer"
                   onClick={handleStartExperience}
                   title={`${item.title}와 함께 온보딩 바로 개설하기!`}
                 >
                   <div className="w-full flex items-center justify-between">
-                    <span className="text-[11px] font-extrabold px-3 py-1 rounded-full bg-slate-100 text-[#111111] border border-slate-200/80">
+                    <span className="text-[11px] font-extrabold px-3 py-1 rounded-full bg-purple-50 text-[#43219C] border border-purple-200/80 shadow-2xs">
                       #{item.id} 직벤져스
                     </span>
-                    <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                    <span className="w-2 h-2 rounded-full bg-[#6A42ED]" />
                   </div>
 
                   {/* Character Avatar */}
-                  <div className="w-28 h-28 rounded-full bg-slate-50 p-2 border border-slate-100 flex items-center justify-center my-1 group-hover:scale-105 group-hover:-rotate-3 transition-transform duration-200">
+                  <div className="w-28 h-28 rounded-full bg-purple-50/50 p-2 border border-purple-100 flex items-center justify-center my-1 group-hover:scale-105 group-hover:-rotate-3 transition-transform duration-200">
                     <img
                       src={item.imageUrl}
                       alt={item.title}
@@ -202,11 +202,11 @@ export const StartScreen: React.FC = () => {
                   </div>
 
                   {/* Role Title & Category */}
-                  <div className="w-full text-center space-y-1 pt-2 border-t border-slate-100">
-                    <span className="text-[10px] font-black text-slate-500 block w-fit mx-auto">
+                  <div className="w-full text-center space-y-1 pt-2 border-t border-purple-100/70">
+                    <span className="text-[10px] font-extrabold text-purple-700/80 block w-fit mx-auto">
                       {item.category}
                     </span>
-                    <strong className="text-sm font-black text-[#111111] block tracking-tight truncate">
+                    <strong className="text-sm font-black text-[#2B1668] block tracking-tight truncate group-hover:text-[#5E32EB] transition-colors">
                       {item.title}
                     </strong>
                   </div>
@@ -219,7 +219,7 @@ export const StartScreen: React.FC = () => {
         {/* KLYRO HIGH-CONTRAST BENTO ACTION MODES: 학생용 & 교사용 분기 선택 */}
         <div className="w-full max-w-5xl mx-auto px-4 z-20 pt-2">
           <div className="text-center mb-6">
-            <span className="px-5 py-2 rounded-full bg-white shadow-xs text-xs sm:text-sm font-black text-slate-700 border border-slate-200 inline-flex items-center gap-2">
+            <span className="px-5 py-2.5 rounded-full bg-purple-50/90 shadow-xs text-xs sm:text-sm font-black text-[#4F22CC] border border-purple-200 inline-flex items-center gap-2">
               <span>⚡ 원하시는 전공 탐구 및 대시보드 체험 모드를 선택해 주세요</span>
             </span>
           </div>
@@ -243,7 +243,7 @@ export const StartScreen: React.FC = () => {
                 <h3 className="text-3xl sm:text-4xl font-black tracking-tight pt-2 text-white">
                   학생용 시작하기
                 </h3>
-                <p className="text-sm text-purple-100 font-medium leading-relaxed">
+                <p className="text-sm text-purple-100 font-medium leading-relaxed break-keep">
                   AI 꿈 설계 &amp; 과목별 진학 로드맵 아키텍트로 맞춤 커버 스토리와 코넬노트 포트폴리오를 빠르게 구축하세요.
                 </p>
               </div>
@@ -262,27 +262,27 @@ export const StartScreen: React.FC = () => {
             {/* 🏫 교사·관리자용 시작하기 버튼 - Clean White/Slate Bento Card with Soft Lavender Accents */}
             <div
               onClick={handleStartTeacher}
-              className="group cursor-pointer p-8 rounded-[32px] bg-white text-[#1F193B] border border-slate-200 hover:border-[#6A42ED] shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between space-y-8 relative overflow-hidden"
+              className="group cursor-pointer p-8 rounded-[32px] bg-white text-[#2B1668] border border-purple-200 hover:border-[#6A42ED] shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between space-y-8 relative overflow-hidden"
             >
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-purple-50 text-[#6A42ED] text-xs font-black border border-purple-100">
+                  <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-purple-50 text-[#6A42ED] text-xs font-black border border-purple-150 shadow-2xs">
                     <span>교사·관리자 전용 🏫</span>
                   </span>
-                  <span className="text-2xl sm:text-3xl opacity-75 group-hover:scale-110 transition-transform">
+                  <span className="text-2xl sm:text-3xl opacity-80 group-hover:scale-110 transition-transform">
                     📋
                   </span>
                 </div>
-                <h3 className="text-3xl sm:text-4xl font-black tracking-tight pt-2 text-[#1F193B]">
+                <h3 className="text-3xl sm:text-4xl font-black tracking-tight pt-2 text-[#3B1E8A] group-hover:text-[#5E32EB] transition-colors">
                   교사·관리자용 시작하기
                 </h3>
-                <p className="text-sm text-slate-600 font-medium leading-relaxed">
+                <p className="text-sm text-[#5D429B] font-medium leading-relaxed break-keep">
                   학급 학생별 활동 통계 요약 관제 &amp; 2026학년도 기재 요령에 최적화된 AI 생기부 커스텀 초안 생성실.
                 </p>
               </div>
 
-              <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
-                <span className="text-xs font-bold text-slate-500 group-hover:text-[#6A42ED] transition-colors">
+              <div className="pt-4 border-t border-purple-100 flex items-center justify-between">
+                <span className="text-xs font-bold text-purple-700/80 group-hover:text-[#6A42ED] transition-colors break-keep">
                   선택적 생기부 취합 &amp; 무이모지·무마크다운 출력
                 </span>
                 <div className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-purple-50 hover:bg-[#6A42ED] text-[#6A42ED] hover:text-white text-xs font-black transition-all">

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Button, Card, ProgressBar, MascotAri } from "../components";
 import { useAuth } from "../context";
 import { getCurrentXP, getRankFromXP } from "../services/expService";
+import { ARI_BLOB_URL, ARI_BLOB_NEW_URL } from "../assets/mascotData";
 import {
   Award,
   Sparkles,
@@ -196,65 +197,130 @@ export const MyPage: React.FC = () => {
       </div>
 
       {/* HERO GAMIFICATION & LEVEL STATS BANNER */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+      <div className="space-y-8">
         
-        {/* Level & EXP Ring Dashboard Card (5 COL) */}
-        <Card variant="hero" padding="lg" className="lg:col-span-5 shadow-3d-ambient flex flex-col justify-between relative overflow-hidden text-white min-h-[280px]">
-          <div className="space-y-4 z-10">
-            <div className="flex items-center justify-between">
-              <span className="bg-white/20 px-3.5 py-1 rounded-full text-xs font-black whitespace-nowrap border border-white/20 uppercase tracking-wider">
-                CURRENT GROWTH STATUS
+        {/* Full-Width Level & EXP Dashboard Card with Character Visuals */}
+        <Card variant="hero" padding="lg" className="w-full shadow-3d-ambient flex flex-col justify-between relative overflow-hidden text-white">
+          <div className="space-y-6 z-10">
+            {/* 상단 뱃지 및 스트리크 */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <span className="bg-white/20 px-4 py-1.5 rounded-full text-xs font-black whitespace-nowrap border border-white/30 uppercase tracking-wider inline-flex items-center gap-1.5 self-start">
+                <Award className="w-4 h-4 text-amber-300 animate-pulse" />
+                CURRENT GROWTH STATUS (현재 성장 및 등급 현황)
               </span>
-              <span className="text-xs font-black text-secondary-container flex items-center gap-1 whitespace-nowrap">
+              <span className="text-xs font-black text-secondary-container flex items-center gap-1 whitespace-nowrap bg-black/30 px-3 py-1.5 rounded-full border border-white/10 self-start sm:self-auto">
                 <Flame className="w-4 h-4 text-orange-400 fill-orange-400" /> {streakDays}일째 열정 불기둥
               </span>
             </div>
 
-            <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-5">
-              <div className="w-24 h-24 rounded-3xl bg-gradient-to-tr from-purple-600 to-indigo-600 flex flex-col items-center justify-center border-4 border-white/40 shadow-2xl transform rotate-3 flex-shrink-0 mx-auto sm:mx-0">
-                <span className="text-xs font-bold uppercase text-white/80 whitespace-nowrap">LEVEL</span>
-                <span className="text-4xl font-black tracking-tight">{level}</span>
-              </div>
-              <div className="space-y-1.5 overflow-hidden text-center sm:text-left">
-                <div className="flex flex-wrap gap-1.5 justify-center sm:justify-start items-center">
-                  <span className="text-xs font-extrabold bg-white/20 text-amber-300 px-2.5 py-0.5 rounded-md border border-white/30 truncate max-w-[200px]">
-                    현재 등급: {currentRank.title.replace(/👑|💎|🥇|🥈|🥉/g, "").trim()}
-                  </span>
-                  {level < 5 && (
-                    <span className="text-xs font-extrabold bg-purple-900/60 text-purple-200 px-2.5 py-0.5 rounded-md border border-purple-400/30 truncate max-w-[200px]">
-                      앞으로 등급: {nextRank.title.replace(/👑|💎|🥇|🥈|🥉/g, "").trim()}
-                    </span>
-                  )}
+            {/* 레벨 및 프로그레스 핵심 요약 */}
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-black/25 p-5 sm:p-6 rounded-3xl border border-white/15 shadow-inner">
+              <div className="flex items-center gap-5">
+                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-3xl bg-gradient-to-tr from-purple-600 to-indigo-600 flex flex-col items-center justify-center border-4 border-white/40 shadow-2xl transform rotate-2 flex-shrink-0">
+                  <span className="text-xs font-bold uppercase text-white/80 whitespace-nowrap">LEVEL</span>
+                  <span className="text-3xl sm:text-4xl font-black tracking-tight">{level}</span>
                 </div>
-                <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight truncate">
-                  {currentRank.title} ({currentRank.lvTitle})
-                </h3>
-                <p className="text-xs sm:text-sm font-extrabold text-amber-300 leading-tight">
-                  {level < 5
-                    ? `🎯 다음 등급(${nextRank.lvTitle}) 승급까지 ${remainingExp} XP 남았습니다!`
-                    : `👑 최고 등급(Lv.5 마스터)에 도달하였습니다!`}
-                </p>
+                <div className="space-y-1 overflow-hidden">
+                  <h3 className="text-2xl sm:text-3xl font-black text-white tracking-tight truncate">
+                    {currentRank.title} ({currentRank.lvTitle})
+                  </h3>
+                  <p className="text-xs sm:text-sm font-black text-amber-300 leading-tight">
+                    {level < 5
+                      ? `🎯 다음 등급(${nextRank.lvTitle}) 승급까지 ${remainingExp} XP 남았습니다!`
+                      : `👑 최고 등급(Lv.5 마스터)에 도달하였습니다!`}
+                  </p>
+                </div>
+              </div>
+
+              {/* 게이지 바 */}
+              <div className="w-full md:w-5/12 space-y-2">
+                <div className="flex justify-between text-xs font-black text-white/95">
+                  <span>누적 EXP: <strong>{currentExp} / {targetExp} XP</strong></span>
+                  <span className="text-cyan-300 font-extrabold">{expPercent}% 달성 중</span>
+                </div>
+                <div className="w-full bg-black/50 h-3.5 rounded-full overflow-hidden p-0.5 border border-white/30 shadow-inner">
+                  <div className="h-full bg-gradient-to-r from-[#7af1fc] via-[#38bdf8] to-[#4eed80] rounded-full transition-all duration-1000" style={{ width: `${expPercent}%` }} />
+                </div>
               </div>
             </div>
 
-            <div className="space-y-2 pt-2">
-              <div className="flex justify-between text-xs font-black text-white/90">
-                <span>누적 EXP: {currentExp} / {targetExp} XP</span>
-                <span className="text-secondary-container">{expPercent}% 달성 중</span>
+            {/* ✨ 현재 등급 vs 다음 등급 마스코트 캐릭터 비주얼 쇼케이스 */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pt-2">
+              {/* 현재 등급 캐릭터 카드 */}
+              <div className="bg-white/10 rounded-2xl p-4 sm:p-5 border border-amber-300/50 flex items-center gap-4 relative overflow-hidden group hover:bg-white/15 transition-all shadow-md">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-tr from-amber-400/20 via-purple-500/20 to-white/30 border-2 border-amber-300 flex items-center justify-center p-1.5 shadow-lg flex-shrink-0">
+                  <img
+                    src={level % 2 === 1 ? ARI_BLOB_URL : ARI_BLOB_NEW_URL}
+                    alt="현재 등급 마스코트 아리"
+                    className="w-full h-full object-contain filter drop-shadow-md transform group-hover:scale-110 transition-transform duration-300"
+                  />
+                </div>
+                <div className="overflow-hidden space-y-1 flex-1">
+                  <span className="text-[11px] font-black uppercase px-2.5 py-0.5 rounded-md bg-amber-400 text-slate-950 inline-block shadow-2xs">
+                    🏆 현재 달성 등급
+                  </span>
+                  <h4 className="text-base sm:text-lg font-black text-white tracking-tight truncate">
+                    {currentRank.lvTitle} {currentRank.title.replace(/👑|💎|🥇|🥈|🥉/g, "").trim()}
+                  </h4>
+                  <p className="text-xs text-amber-200 font-semibold leading-relaxed break-keep">
+                    현재 달성 완료한 영예의 탐험 캐릭터 모습입니다. 지속적인 활동으로 다음 단계에 도전하세요!
+                  </p>
+                </div>
               </div>
-              <div className="w-full bg-black/40 h-3 rounded-full overflow-hidden p-0.5 border border-white/20 shadow-inner">
-                <div className="h-full bg-gradient-to-r from-[#7af1fc] to-[#4eed80] rounded-full transition-all duration-1000" style={{ width: `${expPercent}%` }} />
-              </div>
+
+              {/* 다음 등급 캐릭터 카드 */}
+              {level < 5 ? (
+                <div className="bg-white/5 rounded-2xl p-4 sm:p-5 border border-cyan-300/40 flex items-center gap-4 relative overflow-hidden group hover:bg-white/10 transition-all shadow-md">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-tr from-cyan-400/20 via-blue-500/20 to-white/20 border-2 border-cyan-300/70 flex items-center justify-center p-1.5 shadow-lg flex-shrink-0 relative">
+                    <img
+                      src={level % 2 === 0 ? ARI_BLOB_URL : ARI_BLOB_NEW_URL}
+                      alt="다음 등급 마스코트 아리"
+                      className="w-full h-full object-contain filter drop-shadow-md opacity-85 group-hover:opacity-100 transform group-hover:scale-110 transition-all duration-300"
+                    />
+                    <div className="absolute -top-2 -right-2 bg-cyan-400 text-slate-950 text-[10px] font-black px-2 py-0.5 rounded-md shadow-sm border border-white">
+                      NEXT
+                    </div>
+                  </div>
+                  <div className="overflow-hidden space-y-1 flex-1">
+                    <span className="text-[11px] font-black uppercase px-2.5 py-0.5 rounded-md bg-cyan-400 text-slate-950 inline-block shadow-2xs">
+                      🚀 다음 승급 목표 캐릭터
+                    </span>
+                    <h4 className="text-base sm:text-lg font-black text-cyan-200 tracking-tight truncate">
+                      {nextRank.lvTitle} {nextRank.title.replace(/👑|💎|🥇|🥈|🥉/g, "").trim()}
+                    </h4>
+                    <p className="text-xs text-slate-300 font-semibold leading-relaxed break-keep">
+                      <strong className="text-amber-300 underline font-black">{remainingExp} XP</strong>를 추가로 획득하시면 새로운 마스코트 캐릭터가 공식 해금되어 뱃지가 진화합니다!
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <div className="bg-gradient-to-r from-amber-500/20 to-emerald-500/20 rounded-2xl p-4 sm:p-5 border-2 border-emerald-400 flex items-center gap-4 shadow-md">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-emerald-400/20 border-2 border-emerald-300 flex items-center justify-center p-2 text-4xl flex-shrink-0">
+                    👑
+                  </div>
+                  <div className="overflow-hidden space-y-1 flex-1">
+                    <span className="text-[11px] font-black uppercase px-2.5 py-0.5 rounded-md bg-emerald-400 text-slate-950 inline-block">
+                      ✨ 최고 등급 마스터 달성
+                    </span>
+                    <h4 className="text-base sm:text-lg font-black text-emerald-200">
+                      최상위 마스터 랭크
+                    </h4>
+                    <p className="text-xs text-slate-200 font-semibold leading-relaxed break-keep">
+                      모든 탐험 레벨과 캐릭터를 해독하신 진정한 맞춤 설계 마이스터입니다!
+                    </p>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
-          <div className="absolute -bottom-4 -right-4 opacity-20 pointer-events-none transform scale-150">
+          <div className="absolute -bottom-6 -right-6 opacity-15 pointer-events-none transform scale-150">
             <MascotAri pose="celebrate" size="lg" />
           </div>
         </Card>
 
-        {/* Cumulative Quick Stat Cards (7 COL) */}
-        <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-6">
+        {/* Cumulative Quick Stat Cards (3 COL) */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <Card variant="surface" padding="md" hoverEffect className="flex flex-col justify-between border-2 border-primary/20 bg-white shadow-sm">
             <div className="flex justify-between items-start">
               <div className="space-y-1">
@@ -262,7 +328,7 @@ export const MyPage: React.FC = () => {
                   📊 3대 다면 진단 완료도
                 </span>
                 <h4 className="text-2xl font-black text-text-primary mt-1">3종 모두 완료 ✨</h4>
-                <p className="text-xs text-text-muted">흥미무드, 다중지능, 학습스타일 리포트 누적</p>
+                <p className="text-xs text-text-muted break-keep">흥미무드, 다중지능, 학습스타일 리포트 누적</p>
               </div>
               <span className="p-3.5 rounded-2xl bg-primary-fixed text-primary text-2xl shadow-sm font-black flex-shrink-0">
                 🧠
@@ -280,7 +346,7 @@ export const MyPage: React.FC = () => {
                   🎯 누적 퀘스트 클리어
                 </span>
                 <h4 className="text-2xl font-black text-text-primary mt-1">총 14개 완수 🚀</h4>
-                <p className="text-xs text-text-muted">세특 탐구 및 로드맵 실전 미션 누적</p>
+                <p className="text-xs text-text-muted break-keep">세특 탐구 및 로드맵 실전 미션 누적</p>
               </div>
               <span className="p-3.5 rounded-2xl bg-[#7af1fc]/30 text-secondary-spot text-2xl shadow-sm font-black flex-shrink-0">
                 🌌
@@ -291,29 +357,26 @@ export const MyPage: React.FC = () => {
             </Link>
           </Card>
 
-          <Card variant="surface" padding="md" hoverEffect className="flex flex-col justify-between border-2 border-orange-200 bg-gradient-to-br from-orange-50/50 to-white shadow-sm sm:col-span-2">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <div className="flex items-center gap-4">
-                <div className="w-14 h-14 rounded-2xl bg-orange-500 text-white flex items-center justify-center font-black text-2xl shadow-md flex-shrink-0">
-                  <Flame className="w-8 h-8 fill-white animate-pulse" />
-                </div>
-                <div className="space-y-0.5">
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-black text-orange-600 bg-orange-100 px-2.5 py-0.5 rounded-full whitespace-nowrap">
-                      50일 자기주도 챌린지
-                    </span>
-                    <span className="text-xs font-bold text-text-muted whitespace-nowrap">상위 1.2% 실천력</span>
-                  </div>
-                  <h4 className="text-xl font-black text-text-primary">현재 <strong className="text-orange-600">14일 연속</strong> 습관 미션 완결 성공!</h4>
-                  <p className="text-xs text-text-muted">내일 한 번 더 완수 시 '3주차 열정 마스터 뱃지'와 +50 EXP 보너스가 추가 지급됩니다.</p>
+          <Card variant="surface" padding="md" hoverEffect className="flex flex-col justify-between border-2 border-orange-200 bg-gradient-to-br from-orange-50/50 to-white shadow-sm">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-black text-orange-600 bg-orange-100 px-2.5 py-1 rounded-full whitespace-nowrap">
+                  🔥 50일 자기주도 챌린지
+                </span>
+                <div className="w-10 h-10 rounded-xl bg-orange-500 text-white flex items-center justify-center font-black shadow-md flex-shrink-0">
+                  <Flame className="w-6 h-6 fill-white animate-pulse" />
                 </div>
               </div>
-              <Link to="/habits" className="self-start sm:self-center">
-                <Button variant="outline" size="sm" className="font-extrabold whitespace-nowrap bg-white border-orange-300 text-orange-600 shadow-sm">
-                  오늘의 루틴 체크하기 &rarr;
-                </Button>
-              </Link>
+              <div className="space-y-1">
+                <h4 className="text-xl font-black text-text-primary">현재 <strong className="text-orange-600">14일 연속</strong> 완결 성공!</h4>
+                <p className="text-xs text-text-muted leading-relaxed break-keep">내일 한 번 더 완수 시 '3주차 열정 마스터 뱃지'와 +50 EXP 보너스가 추가 지급됩니다.</p>
+              </div>
             </div>
+            <Link to="/habits" className="mt-4 pt-3 border-t border-orange-200/60 flex justify-end">
+              <Button variant="outline" size="sm" className="font-extrabold whitespace-nowrap bg-white border-orange-300 text-orange-600 shadow-sm w-full">
+                오늘의 루틴 체크하기 &rarr;
+              </Button>
+            </Link>
           </Card>
         </div>
 
