@@ -465,18 +465,18 @@ export const HomeDashboard: React.FC = () => {
               
               {/* Card 1: AI 학습포트폴리오 */}
               <Link to="/roadmap" className="block h-full group">
-                <div className="bg-white rounded-[24px] p-6 border border-slate-200 hover:border-[#111] shadow-xs hover:shadow-lg transition-all duration-200 flex flex-col justify-between h-full min-h-[200px] text-[#111]">
+                <div className="bg-white rounded-[24px] p-6 border border-slate-200 hover:border-[#6A42ED] shadow-xs hover:shadow-lg transition-all duration-200 flex flex-col justify-between h-full min-h-[200px] text-[#1F193B]">
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
                       <span className="text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-purple-50 text-purple-700 border border-purple-200">
                         • STEP 1. 심화 학습
                       </span>
-                      <div className="w-9 h-9 rounded-xl bg-slate-900 text-white flex items-center justify-center group-hover:bg-purple-600 transition-colors">
+                      <div className="w-9 h-9 rounded-xl bg-[#6A42ED] text-white flex items-center justify-center group-hover:scale-110 transition-transform">
                         <Route className="w-4 h-4" />
                       </div>
                     </div>
                     <div>
-                      <h5 className="text-base font-black text-[#111] group-hover:text-purple-700 transition-colors">
+                      <h5 className="text-base font-black text-[#1F193B] group-hover:text-purple-700 transition-colors">
                         AI 학습포트폴리오 (코넬노트)
                       </h5>
                       <p className="text-xs font-medium text-slate-500 mt-1.5 leading-relaxed">
@@ -484,7 +484,7 @@ export const HomeDashboard: React.FC = () => {
                       </p>
                     </div>
                   </div>
-                  <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-[#111] group-hover:text-purple-600">
+                  <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-[#1F193B] group-hover:text-purple-600">
                     <span>학습 노트 입장</span>
                     <span>↗</span>
                   </div>
@@ -493,12 +493,61 @@ export const HomeDashboard: React.FC = () => {
 
               {/* Card 2: 습관 & 목표 */}
               <Link to="/habits" className="block h-full group">
-                <div className="bg-white rounded-[24px] p-6 border border-slate-200 hover:border-[#111] shadow-xs hover:shadow-lg transition-all duration-200 flex flex-col justify-between h-full min-h-[200px] text-[#111]">
+                <div className="bg-white rounded-[24px] p-6 border border-slate-200 hover:border-[#6A42ED] shadow-xs hover:shadow-lg transition-all duration-200 flex flex-col justify-between h-full min-h-[200px] text-[#1F193B]">
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
                       <span className="text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-teal-50 text-[#0D9488] border border-teal-200">
                         • STEP 2. 실천 루틴
-                         {/* Card 4: 자기이해 검사 */}
+                      </span>
+                      <div className="w-9 h-9 rounded-xl bg-teal-600 text-white flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <ListCheck className="w-4 h-4" />
+                      </div>
+                    </div>
+                    <div>
+                      <h5 className="text-base font-black text-[#1F193B] group-hover:text-teal-700 transition-colors">
+                        습관 &amp; 목표 관리
+                      </h5>
+                      <p className="text-xs font-medium text-slate-500 mt-1.5 leading-relaxed">
+                        매일 수행하는 커스텀 진로 루틴 및 1일 체크 달성 시 즉시 EXP 마일리지 획득
+                      </p>
+                    </div>
+                  </div>
+                  <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-[#1F193B] group-hover:text-teal-600">
+                    <span>습관 대시보드 입장</span>
+                    <span>↗</span>
+                  </div>
+                </div>
+              </Link>
+
+              {/* Card 3: 진로 포트폴리오 */}
+              <Link to="/portfolio" className="block h-full group">
+                <div className="bg-white rounded-[24px] p-6 border border-slate-200 hover:border-[#6A42ED] shadow-xs hover:shadow-lg transition-all duration-200 flex flex-col justify-between h-full min-h-[200px] text-[#1F193B]">
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-rose-50 text-rose-600 border border-rose-200">
+                        • STEP 3. 누적 성과
+                      </span>
+                      <div className="w-9 h-9 rounded-xl bg-rose-500 text-white flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <FolderCheck className="w-4 h-4" />
+                      </div>
+                    </div>
+                    <div>
+                      <h5 className="text-base font-black text-[#1F193B] group-hover:text-rose-600 transition-colors">
+                        진로 포트폴리오
+                      </h5>
+                      <p className="text-xs font-medium text-slate-500 mt-1.5 leading-relaxed">
+                        고교 3개년 누적 성과 및 항목을 선택하여 NEIS 제출용 생기부 초안 즉시 변환
+                      </p>
+                    </div>
+                  </div>
+                  <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-[#1F193B] group-hover:text-rose-600">
+                    <span>포폴 보관함 확인</span>
+                    <span>↗</span>
+                  </div>
+                </div>
+              </Link>
+
+              {/* Card 4: 자기이해 검사 */}
               <Link to="/self-understanding" className="block h-full group">
                 <div className="bg-gradient-to-br from-[#361685] to-[#5124BA] rounded-[24px] p-6 border-2 border-[#8C64FF]/60 hover:border-amber-300 shadow-md hover:shadow-xl transition-all duration-200 flex flex-col justify-between h-full min-h-[200px] text-white">
                   <div className="space-y-3">
