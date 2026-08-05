@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context";
 import { JOB_VENGERS_LIST, type JobVengerItem, ARI_BLOB_URL, ARI_BLOB_NEW_URL } from "../assets/mascotData";
+import { rewardXP } from "../services/expService";
 import { Sparkles, ArrowRight, ArrowLeft, CheckCircle2, RotateCcw, Award, Star, ChevronRight } from "lucide-react";
 
 interface DiagnosticQuestion {
@@ -77,6 +78,7 @@ export const OnboardingTestFlow: React.FC = () => {
     // 16개 진단을 마친 직후, 홈화면 입장 시 4대 모듈은 비어있어야 하고 AI 맞춤 활동 버튼을 가동하도록 숨김 초기화!
     localStorage.removeItem("readycareer_roadmap_generated");
     localStorage.removeItem("my_habits_v2");
+    rewardXP(80, "16문항 커리어 온보딩 진단 완수!");
     navigate("/");
   };
 
@@ -136,10 +138,10 @@ export const OnboardingTestFlow: React.FC = () => {
                 </span>
               </div>
 
-              {/* 질문 문항 말풍선 - Dark Charcoal Accent */}
-              <div className="flex-grow text-center sm:text-left space-y-4 w-full bg-[#111111] text-white p-8 sm:p-10 rounded-[28px] shadow-lg relative z-10">
-                <span className="text-xs font-black text-emerald-400 uppercase tracking-widest bg-white/10 px-3.5 py-1 rounded-full inline-flex items-center gap-1.5 border border-white/10">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+              {/* 질문 문항 말풍선 - Balanced Purple Pastel & Rich Violet */}
+              <div className="flex-grow text-center sm:text-left space-y-4 w-full bg-gradient-to-r from-[#5E32EB] via-[#6F42F5] to-[#8C62FF] text-white p-8 sm:p-10 rounded-[28px] shadow-[0_15px_40px_rgba(94,50,235,0.25)] border border-[#A17CFF]/30 relative z-10">
+                <span className="text-xs font-black text-amber-300 uppercase tracking-widest bg-white/15 px-3.5 py-1 rounded-full inline-flex items-center gap-1.5 border border-white/20 shadow-xs">
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-300 animate-pulse" />
                   <span>QUESTION 0{currentQ.id}</span>
                 </span>
                 <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-white leading-snug tracking-tight break-keep">
@@ -177,15 +179,15 @@ export const OnboardingTestFlow: React.FC = () => {
                 {/* 선택지 A (Positive / 긍정 반응) */}
                 <div
                   onClick={handleAnswerQuestion}
-                  className="group cursor-pointer p-8 rounded-[28px] bg-white border-2 border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/10 shadow-sm hover:shadow-md transition-all duration-200 flex flex-col items-center justify-center space-y-4 text-center"
+                  className="group cursor-pointer p-8 rounded-[28px] bg-white border-2 border-slate-200 hover:border-[#6A42ED] hover:bg-[#F9F6FF] shadow-sm hover:shadow-md transition-all duration-200 flex flex-col items-center justify-center space-y-4 text-center"
                 >
                   <span className="text-5xl sm:text-6xl group-hover:scale-110 transition-transform duration-200">
                     💖
                   </span>
-                  <span className="text-xl sm:text-2xl font-black tracking-tight text-[#111111] break-keep">
+                  <span className="text-xl sm:text-2xl font-black tracking-tight text-[#1F193B] break-keep">
                     😍 완전 설레고 꼭 해볼래요!
                   </span>
-                  <div className="inline-flex items-center text-xs font-black bg-slate-100 group-hover:bg-emerald-500 group-hover:text-white text-[#111111] px-4 py-1.5 rounded-full transition-colors">
+                  <div className="inline-flex items-center text-xs font-black bg-purple-50 group-hover:bg-[#6A42ED] group-hover:text-white text-[#6A42ED] px-4 py-1.5 rounded-full transition-colors border border-purple-100">
                     <span>이 직무 성향 선택 &rarr;</span>
                   </div>
                 </div>
@@ -193,15 +195,15 @@ export const OnboardingTestFlow: React.FC = () => {
                 {/* 선택지 B (Alternative / 탐색 반응) */}
                 <div
                   onClick={handleAnswerQuestion}
-                  className="group cursor-pointer p-8 rounded-[28px] bg-white border-2 border-slate-200 hover:border-slate-800 hover:bg-slate-50/50 shadow-sm hover:shadow-md transition-all duration-200 flex flex-col items-center justify-center space-y-4 text-center"
+                  className="group cursor-pointer p-8 rounded-[28px] bg-white border-2 border-slate-200 hover:border-slate-400 hover:bg-slate-50/50 shadow-sm hover:shadow-md transition-all duration-200 flex flex-col items-center justify-center space-y-4 text-center"
                 >
                   <span className="text-5xl sm:text-6xl group-hover:scale-110 transition-transform duration-200">
                     🔍
                   </span>
-                  <span className="text-xl sm:text-2xl font-black tracking-tight text-[#111111] break-keep">
+                  <span className="text-xl sm:text-2xl font-black tracking-tight text-slate-700 break-keep">
                     🤔 다른 멋진 분야도 궁금해요!
                   </span>
-                  <div className="inline-flex items-center text-xs font-black bg-slate-100 group-hover:bg-[#111111] group-hover:text-white text-slate-700 px-4 py-1.5 rounded-full transition-colors">
+                  <div className="inline-flex items-center text-xs font-black bg-slate-100 group-hover:bg-slate-700 group-hover:text-white text-slate-600 px-4 py-1.5 rounded-full transition-colors">
                     <span>다른 가능성 탐험 &rarr;</span>
                   </div>
                 </div>
@@ -315,23 +317,23 @@ export const OnboardingTestFlow: React.FC = () => {
                 <span className="text-lg font-black block px-1">✕</span>
               </button>
 
-              {/* 상단 선택 캐릭터 히어로 뱃지 헤더 - Dark Charcoal Contrast */}
-              <div className="rounded-[32px] bg-[#111111] text-white p-8 sm:p-10 border border-slate-800 shadow-xl flex flex-col sm:flex-row items-center justify-between gap-6 relative overflow-hidden">
+              {/* 상단 선택 캐릭터 히어로 뱃지 헤더 - Balanced Purple & Violet Theme */}
+              <div className="rounded-[32px] bg-gradient-to-r from-[#5328E0] via-[#6537EA] to-[#8054FC] text-white p-8 sm:p-10 border border-[#9A75FF]/40 shadow-xl flex flex-col sm:flex-row items-center justify-between gap-6 relative overflow-hidden">
                 <div className="space-y-3 max-w-2xl text-center sm:text-left z-10">
-                  <span className="text-xs font-black px-4 py-1.5 rounded-full bg-white/10 text-emerald-400 border border-white/15 inline-block">
+                  <span className="text-xs font-black px-4 py-1.5 rounded-full bg-white/15 text-amber-300 border border-white/20 inline-block shadow-xs">
                     ✨ AI 맞춤 추천 랭크 캐릭터 · {selectedJob.category}
                   </span>
                   <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
-                    <span className="text-emerald-400">{selectedJob.title}</span> <br className="hidden sm:block"/>
+                    <span className="text-amber-300">{selectedJob.title}</span> <br className="hidden sm:block"/>
                     5단계 진화 로드맵
                   </h2>
                 </div>
 
                 <div className="flex-shrink-0 z-10 flex flex-col items-center">
-                  <div className="w-40 h-40 sm:w-48 sm:h-48 rounded-[32px] bg-white p-4 shadow-2xl border border-slate-200 flex items-center justify-center">
+                  <div className="w-40 h-40 sm:w-48 sm:h-48 rounded-[32px] bg-white p-4 shadow-2xl border border-purple-100 flex items-center justify-center">
                     <img src={selectedJob.imageUrl} alt={selectedJob.title} className="w-full h-full object-contain filter drop-shadow-md" />
                   </div>
-                  <span className="mt-3 text-xs font-black bg-white text-[#111111] px-4 py-1 rounded-full shadow-md">
+                  <span className="mt-3 text-xs font-black bg-white text-[#5E32EB] px-4 py-1 rounded-full shadow-md">
                     💎 AI 싱크로율 최상위 메이트
                   </span>
                 </div>
@@ -397,11 +399,11 @@ export const OnboardingTestFlow: React.FC = () => {
               <div className="w-full max-w-2xl mx-auto flex flex-col items-center pt-4 space-y-4 border-t border-slate-100">
                 <button
                   onClick={handleCompleteAndGoHome}
-                  className="w-full py-5 px-8 bg-[#111111] hover:bg-slate-800 text-white rounded-2xl font-black text-base sm:text-xl tracking-wide transition-all duration-200 flex items-center justify-center gap-3 shadow-xl hover:shadow-2xl cursor-pointer"
+                  className="w-full py-5 px-8 bg-gradient-to-r from-[#5E32EB] to-[#8054FC] hover:brightness-105 text-white rounded-2xl font-black text-base sm:text-xl tracking-wide transition-all duration-200 flex items-center justify-center gap-3 shadow-[0_12px_35px_rgba(94,50,235,0.35)] hover:shadow-[0_16px_45px_rgba(94,50,235,0.45)] cursor-pointer"
                 >
-                  <Award className="w-6 h-6 text-emerald-400 fill-emerald-400 flex-shrink-0" />
+                  <Award className="w-6 h-6 text-amber-300 fill-amber-300 flex-shrink-0" />
                   <span className="truncate">선택한 직업으로 ReadyCareer AI 시작하기</span>
-                  <ArrowRight className="w-6 h-6 text-emerald-400 flex-shrink-0" />
+                  <ArrowRight className="w-6 h-6 text-amber-300 flex-shrink-0" />
                 </button>
 
                 <button

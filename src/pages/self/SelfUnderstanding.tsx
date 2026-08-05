@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context";
 import { ARI_BLOB_URL } from "../../assets/mascotData";
+import { rewardXP } from "../../services/expService";
 import {
   Sparkles,
   Brain,
@@ -240,6 +241,7 @@ export const SelfUnderstanding: React.FC = () => {
       setQuickTestModal(null);
       setActiveReportTest(completedTest);
       showToast(`🎉 [${quickTestModal.title}] 진단이 성공적으로 완료되어 맞춤 리포트가 개방되었습니다!`);
+      rewardXP(75, `[${quickTestModal.title}] 커리어 진단 완수!`);
     }
   };
 

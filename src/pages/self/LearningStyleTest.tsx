@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ProgressBar, MascotAri, Card, Button } from "../../components";
 import { useSelfUnderstanding } from "../../context";
+import { rewardXP } from "../../services/expService";
 import { ArrowLeft, ArrowRight, CheckCircle, TrendingUp, Sparkles, Target } from "lucide-react";
 
 interface Question {
@@ -327,6 +328,7 @@ export const LearningStyleTest: React.FC = () => {
                   reflection: resultData.summary
                 };
                 localStorage.setItem("readycareer_student_activities_v1", JSON.stringify([newAct, ...existingActs]));
+                rewardXP(80, `[학습스타일 정밀 진단 완수] ${resultData.topStyle} 획득`);
               } catch (e) {
                 console.error("실천기록부 저장 오류", e);
               }

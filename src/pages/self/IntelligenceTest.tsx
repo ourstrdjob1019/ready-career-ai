@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ProgressBar, MascotAri, Card, Button } from "../../components";
 import { useSelfUnderstanding } from "../../context";
+import { rewardXP } from "../../services/expService";
 import { ArrowLeft, ArrowRight, CheckCircle, TrendingUp, Sparkles, Target } from "lucide-react";
 
 interface Question {
@@ -327,6 +328,7 @@ export const IntelligenceTest: React.FC = () => {
                   reflection: resultData.summary
                 };
                 localStorage.setItem("readycareer_student_activities_v1", JSON.stringify([newAct, ...existingActs]));
+                rewardXP(80, `[다중지능 정밀 진단 완수] ${resultData.topTrait} 획득`);
               } catch (e) {
                 console.error("실천기록부 저장 오류", e);
               }

@@ -1048,52 +1048,33 @@ export const StarRoadmap: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* 스티커 카드 그리드 */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                  {/* 스티커 카드 그리드 (Ultra-Compact Summary Stickers) */}
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
                     {displayNotes.map((note) => (
                       <div
                         key={note.id}
                         onClick={() => setSelectedDetailNote(note)}
-                        className="bg-white rounded-[20px] p-4.5 border border-slate-200 hover:border-slate-800 shadow-xs hover:shadow-md transition-all duration-200 flex flex-col justify-between h-48 group cursor-pointer relative overflow-hidden"
+                        title={`${note.topic} 상세 노트 열람 (클릭 시 확대 창 Open)`}
+                        className="bg-white rounded-[18px] p-3.5 border border-purple-150 hover:border-[#6A42ED] hover:bg-[#FAF8FF] shadow-2xs hover:shadow-md transition-all duration-200 flex flex-col justify-between cursor-pointer group relative min-h-[92px]"
                       >
-                        <div className="space-y-2">
-                          <div className="flex items-center justify-between gap-1.5">
-                            <span className="text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-teal-50 text-[#0D9488] border border-teal-200 truncate max-w-[130px]">
-                              • {note.subject}
+                        <div className="space-y-1.5 overflow-hidden w-full">
+                          <div className="flex items-center justify-between gap-1">
+                            <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-md bg-purple-50 text-[#6A42ED] border border-purple-200/80 truncate max-w-[90px]">
+                              {note.subject.split(/[-&(/]/)[0].trim()}
                             </span>
-                            <span className="text-[10px] font-bold text-slate-400 truncate shrink-0">
-                              {note.date}
+                            <span className="text-[9px] font-extrabold text-amber-600 shrink-0 bg-amber-50 px-1.5 py-0.5 rounded">
+                              💡 세특
                             </span>
                           </div>
 
-                          <div>
-                            <h4 className="text-sm font-black text-[#111] leading-tight group-hover:text-purple-600 transition-colors line-clamp-2">
-                              🎯 {note.topic}
-                            </h4>
-                            <p className="text-[11px] font-medium text-slate-500 line-clamp-1 mt-1">
-                              {note.mySummary || note.aiSummary}
-                            </p>
-                          </div>
-
-                          <div className="flex flex-wrap gap-1 pt-1">
-                            {note.keywords.split(',').slice(0, 2).map((kw, kIdx) => (
-                              <span key={kIdx} className="text-[10px] font-extrabold bg-slate-50 text-slate-600 px-2 py-0.5 rounded-md border border-slate-150">
-                                #{kw.trim()}
-                              </span>
-                            ))}
-                            {note.keywords.split(',').length > 2 && (
-                              <span className="text-[10px] font-bold text-slate-400 px-1 py-0.5">+{note.keywords.split(',').length - 2}</span>
-                            )}
-                          </div>
+                          <h4 className="text-xs font-extrabold text-[#1F193B] group-hover:text-[#6A42ED] transition-colors line-clamp-2 tracking-tight leading-snug">
+                            {note.topic}
+                          </h4>
                         </div>
 
-                        <div className="pt-2 mt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
-                          <span className="font-extrabold text-amber-600 flex items-center gap-1">
-                            💡 AI 세특 연계
-                          </span>
-                          <span className="font-bold text-slate-500 group-hover:text-purple-600 flex items-center gap-0.5">
-                            터치하여 보기 &rarr;
-                          </span>
+                        <div className="pt-2 mt-2 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-400 font-bold group-hover:text-[#6A42ED]">
+                          <span>{note.date.slice(-5)}</span>
+                          <span>확대 보기 ↗</span>
                         </div>
                       </div>
                     ))}
@@ -1176,51 +1157,32 @@ export const StarRoadmap: React.FC = () => {
                     </button>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
                     {unitNotes.map(note => (
                       <div
                         key={note.id}
                         onClick={() => setSelectedDetailNote(note)}
-                        className="bg-white rounded-[20px] p-4.5 border border-slate-200 hover:border-slate-800 shadow-xs hover:shadow-md transition-all duration-200 flex flex-col justify-between h-48 group cursor-pointer relative overflow-hidden"
+                        title={`${note.topic} 상세 노트 열람 (클릭 시 확대 창 Open)`}
+                        className="bg-white rounded-[18px] p-3.5 border border-purple-150 hover:border-[#6A42ED] hover:bg-[#FAF8FF] shadow-2xs hover:shadow-md transition-all duration-200 flex flex-col justify-between cursor-pointer group relative min-h-[92px]"
                       >
-                        <div className="space-y-2">
-                          <div className="flex items-center justify-between gap-1.5">
-                            <span className="text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-teal-50 text-[#0D9488] border border-teal-200 truncate max-w-[130px]">
-                              • {note.subject}
+                        <div className="space-y-1.5 overflow-hidden w-full">
+                          <div className="flex items-center justify-between gap-1">
+                            <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-md bg-purple-50 text-[#6A42ED] border border-purple-200/80 truncate max-w-[90px]">
+                              {note.subject.split(/[-&(/]/)[0].trim()}
                             </span>
-                            <span className="text-[10px] font-bold text-slate-400 truncate shrink-0">
-                              {note.date}
+                            <span className="text-[9px] font-extrabold text-amber-600 shrink-0 bg-amber-50 px-1.5 py-0.5 rounded">
+                              💡 세특
                             </span>
                           </div>
 
-                          <div>
-                            <h4 className="text-sm font-black text-[#111] leading-tight group-hover:text-purple-600 transition-colors line-clamp-2">
-                              🎯 {note.topic}
-                            </h4>
-                            <p className="text-[11px] font-medium text-slate-500 line-clamp-1 mt-1">
-                              {note.mySummary || note.aiSummary}
-                            </p>
-                          </div>
-
-                          <div className="flex flex-wrap gap-1 pt-1">
-                            {note.keywords.split(',').slice(0, 2).map((kw, kIdx) => (
-                              <span key={kIdx} className="text-[10px] font-extrabold bg-slate-50 text-slate-600 px-2 py-0.5 rounded-md border border-slate-150">
-                                #{kw.trim()}
-                              </span>
-                            ))}
-                            {note.keywords.split(',').length > 2 && (
-                              <span className="text-[10px] font-bold text-slate-400 px-1 py-0.5">+{note.keywords.split(',').length - 2}</span>
-                            )}
-                          </div>
+                          <h4 className="text-xs font-extrabold text-[#1F193B] group-hover:text-[#6A42ED] transition-colors line-clamp-2 tracking-tight leading-snug">
+                            {note.topic}
+                          </h4>
                         </div>
 
-                        <div className="pt-2 mt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
-                          <span className="font-extrabold text-amber-600 flex items-center gap-1">
-                            💡 AI 세특 연계
-                          </span>
-                          <span className="font-bold text-slate-500 group-hover:text-purple-600 flex items-center gap-0.5">
-                            터치하여 보기 &rarr;
-                          </span>
+                        <div className="pt-2 mt-2 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-400 font-bold group-hover:text-[#6A42ED]">
+                          <span>{note.date.slice(-5)}</span>
+                          <span>확대 보기 ↗</span>
                         </div>
                       </div>
                     ))}

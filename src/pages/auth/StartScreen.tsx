@@ -155,10 +155,10 @@ export const StartScreen: React.FC = () => {
             ReadyCareerAI
           </h1>
 
-          {/* Subtitle with Sleek Dark Contrast Badge on '꿈' */}
-          <h2 className="text-2xl sm:text-4xl md:text-5xl font-extrabold text-[#111111] tracking-tight flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 pt-1">
+          {/* Subtitle with Sleek Purple & Violet Contrast Badge on '꿈' */}
+          <h2 className="text-2xl sm:text-4xl md:text-5xl font-extrabold text-[#1F193B] tracking-tight flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 pt-1">
             <span>나의</span>
-            <span className="inline-flex items-center justify-center px-6 sm:px-8 py-1 sm:py-1.5 mx-1 rounded-[24px] bg-[#111111] text-emerald-400 font-black text-2xl sm:text-4xl md:text-5xl shadow-md border border-slate-700 transform -rotate-2 hover:rotate-0 transition-transform duration-200">
+            <span className="inline-flex items-center justify-center px-6 sm:px-8 py-1 sm:py-1.5 mx-1 rounded-[24px] bg-gradient-to-r from-[#5E32EB] to-[#8A63FF] text-amber-300 font-black text-2xl sm:text-4xl md:text-5xl shadow-[0_6px_20px_rgba(94,50,235,0.35)] border border-[#A582FF]/50 transform -rotate-2 hover:rotate-0 transition-transform duration-200">
               <span>꿈 ✨</span>
             </span>
             <span>설계하기</span>
@@ -224,16 +224,16 @@ export const StartScreen: React.FC = () => {
             </span>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
-            {/* 🎓 학생용 시작하기 버튼 - Main Dark Charcoal Hero Card */}
+            {/* 🎓 학생용 시작하기 버튼 - Balanced Purple Pastel & Rich Violet Hero Card */}
             <div
               onClick={handleStartExperience}
-              className="group cursor-pointer p-8 rounded-[32px] bg-[#111111] text-white border border-slate-800 shadow-xl hover:shadow-2xl hover:border-slate-600 transition-all duration-200 flex flex-col justify-between space-y-8 relative overflow-hidden"
+              className="group cursor-pointer p-8 rounded-[32px] bg-gradient-to-br from-[#5328E0] via-[#6537EA] to-[#8054FC] text-white border border-[#9A75FF]/40 shadow-[0_20px_60px_rgba(94,50,235,0.25)] hover:shadow-[0_25px_70px_rgba(94,50,235,0.38)] hover:border-[#B596FF] transition-all duration-300 flex flex-col justify-between space-y-8 relative overflow-hidden"
             >
-              <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-emerald-500/10 via-purple-500/5 to-transparent rounded-full blur-3xl pointer-events-none" />
+              <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-white/15 via-purple-300/10 to-transparent rounded-full blur-3xl pointer-events-none" />
               
-              <div className="space-y-3">
+              <div className="space-y-3 relative z-10">
                 <div className="flex items-center justify-between">
-                  <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 text-emerald-300 text-xs font-black border border-white/15">
+                  <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/15 text-amber-300 text-xs font-black border border-white/20 shadow-2xs">
                     <span>학생 전용 세션 🎓</span>
                   </span>
                   <span className="text-2xl sm:text-3xl group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform">
@@ -243,51 +243,51 @@ export const StartScreen: React.FC = () => {
                 <h3 className="text-3xl sm:text-4xl font-black tracking-tight pt-2 text-white">
                   학생용 시작하기
                 </h3>
-                <p className="text-sm text-slate-400 font-medium leading-relaxed">
+                <p className="text-sm text-purple-100 font-medium leading-relaxed">
                   AI 꿈 설계 &amp; 과목별 진학 로드맵 아키텍트로 맞춤 커버 스토리와 코넬노트 포트폴리오를 빠르게 구축하세요.
                 </p>
               </div>
 
-              <div className="pt-4 border-t border-slate-800/80 flex items-center justify-between">
-                <span className="text-xs font-bold text-slate-400 group-hover:text-white transition-colors">
+              <div className="pt-4 border-t border-white/20 flex items-center justify-between relative z-10">
+                <span className="text-xs font-bold text-purple-200 group-hover:text-white transition-colors">
                   박람회 간편 입장 · 즉각 레벨업 지원
                 </span>
-                <div className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-white text-[#111111] group-hover:bg-emerald-400 group-hover:text-[#111] text-xs font-black transition-all shadow-md">
+                <div className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-white text-[#5328E0] group-hover:bg-amber-300 group-hover:text-[#251263] text-xs font-black transition-all shadow-md">
                   <span>진로·학습 퀘스트 개설</span>
-                  <Play className="w-3.5 h-3.5 fill-[#111111] text-[#111111] group-hover:translate-x-0.5 transition-transform" />
+                  <Play className="w-3.5 h-3.5 fill-current text-current group-hover:translate-x-0.5 transition-transform" />
                 </div>
               </div>
             </div>
 
-            {/* 🏫 교사·관리자용 시작하기 버튼 - Clean White/Slate Bento Card */}
+            {/* 🏫 교사·관리자용 시작하기 버튼 - Clean White/Slate Bento Card with Soft Lavender Accents */}
             <div
               onClick={handleStartTeacher}
-              className="group cursor-pointer p-8 rounded-[32px] bg-white text-[#111111] border border-slate-200 hover:border-slate-800 shadow-sm hover:shadow-lg transition-all duration-200 flex flex-col justify-between space-y-8 relative overflow-hidden"
+              className="group cursor-pointer p-8 rounded-[32px] bg-white text-[#1F193B] border border-slate-200 hover:border-[#6A42ED] shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between space-y-8 relative overflow-hidden"
             >
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-black border border-slate-200">
+                  <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-purple-50 text-[#6A42ED] text-xs font-black border border-purple-100">
                     <span>교사·관리자 전용 🏫</span>
                   </span>
                   <span className="text-2xl sm:text-3xl opacity-75 group-hover:scale-110 transition-transform">
                     📋
                   </span>
                 </div>
-                <h3 className="text-3xl sm:text-4xl font-black tracking-tight pt-2 text-[#111111]">
+                <h3 className="text-3xl sm:text-4xl font-black tracking-tight pt-2 text-[#1F193B]">
                   교사·관리자용 시작하기
                 </h3>
-                <p className="text-sm text-slate-500 font-medium leading-relaxed">
+                <p className="text-sm text-slate-600 font-medium leading-relaxed">
                   학급 학생별 활동 통계 요약 관제 &amp; 2026학년도 기재 요령에 최적화된 AI 생기부 커스텀 초안 생성실.
                 </p>
               </div>
 
               <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
-                <span className="text-xs font-bold text-slate-500 group-hover:text-[#111] transition-colors">
+                <span className="text-xs font-bold text-slate-500 group-hover:text-[#6A42ED] transition-colors">
                   선택적 생기부 취합 &amp; 무이모지·무마크다운 출력
                 </span>
-                <div className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 text-[#111111] text-xs font-black transition-all">
+                <div className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-purple-50 hover:bg-[#6A42ED] text-[#6A42ED] hover:text-white text-xs font-black transition-all">
                   <span>교사 대시보드 직행</span>
-                  <Play className="w-3.5 h-3.5 fill-[#111111] text-[#111111] group-hover:translate-x-0.5 transition-transform" />
+                  <Play className="w-3.5 h-3.5 fill-current text-current group-hover:translate-x-0.5 transition-transform" />
                 </div>
               </div>
             </div>
