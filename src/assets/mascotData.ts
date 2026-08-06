@@ -88,6 +88,10 @@ export function getJobCharacterTitle(jobName?: string, level: number = 3, fallba
   if (!matched) return fallbackRankName;
   const validLevel = Math.max(1, Math.min(5, level));
   const levelObj = matched.levels.find(l => l.level === validLevel);
-  return levelObj?.name ? `${matched.jobName} — ${levelObj.name.replace(/^[0-9.]+\s*/, '')}` : fallbackRankName;
+  if (levelObj?.name) {
+    return levelObj.name.replace(/^[0-9.]+\s*/, '').trim();
+  }
+  return fallbackRankName;
 }
+
 

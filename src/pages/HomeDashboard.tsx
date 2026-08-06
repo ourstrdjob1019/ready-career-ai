@@ -312,24 +312,24 @@ export const HomeDashboard: React.FC = () => {
             </div>
 
             {/* Vision Statement Box */}
-            <div className="bg-black/30 backdrop-blur-md rounded-2xl p-4.5 border border-white/15 space-y-2 text-left shadow-inner">
-              <div className="flex items-center justify-between text-xs font-bold text-purple-200">
-                <span className="flex items-center gap-1.5">
-                  <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-                  <span>나만의 비전 선언문 (Vision Statement)</span>
+            <div className="bg-black/35 backdrop-blur-md rounded-2xl p-4 sm:p-5 border border-white/20 space-y-2.5 text-left shadow-inner w-full max-w-full overflow-hidden min-w-0">
+              <div className="flex flex-wrap items-center justify-between gap-2 text-xs font-bold text-purple-200 w-full">
+                <span className="flex items-center gap-1.5 truncate min-w-0">
+                  <Sparkles className="w-3.5 h-3.5 text-amber-300 flex-shrink-0" />
+                  <span className="truncate">나만의 비전 선언문 (Vision Statement)</span>
                 </span>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 flex-shrink-0">
                   <button
                     onClick={handleAiSuggestVision}
                     disabled={isAiLoading}
-                    className="px-2.5 py-1 rounded-lg bg-teal-600 hover:bg-teal-500 text-white font-black text-[11px] transition-all flex items-center gap-1 disabled:opacity-50"
+                    className="px-2.5 py-1 rounded-lg bg-teal-600 hover:bg-teal-500 text-white font-black text-[11px] transition-all flex items-center gap-1 disabled:opacity-50 cursor-pointer shadow-xs"
                   >
                     <RefreshCw className={`w-3 h-3 ${isAiLoading ? "animate-spin" : ""}`} />
                     <span>AI 추천</span>
                   </button>
                   <button
                     onClick={() => setIsEditingVision(!isEditingVision)}
-                    className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-white transition-colors"
+                    className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-white transition-colors cursor-pointer shadow-xs"
                     title="직접 수정"
                   >
                     <Edit2 className="w-3.5 h-3.5" />
@@ -338,19 +338,26 @@ export const HomeDashboard: React.FC = () => {
               </div>
               
               {isEditingVision ? (
-                <div className="flex gap-2 mt-1">
-                  <input
-                    type="text"
+                <div className="flex flex-col gap-2.5 mt-1.5 w-full min-w-0">
+                  <textarea
                     value={visionStatement}
                     onChange={(e) => setVisionStatement(e.target.value)}
-                    className="flex-grow px-3.5 py-1.5 rounded-xl border border-slate-700 bg-black/60 text-xs sm:text-sm font-medium text-white focus:outline-none"
+                    rows={2}
+                    className="w-full max-w-full px-3.5 py-2.5 rounded-xl border border-white/25 bg-black/70 text-xs sm:text-sm font-semibold text-white focus:outline-none focus:border-amber-300 break-words break-keep whitespace-pre-wrap resize-y leading-relaxed shadow-inner"
+                    placeholder="나만의 진로 비전을 자유롭게 서술해보세요!"
                   />
-                  <button onClick={handleSaveVision} className="px-4 py-1.5 bg-white text-[#111] rounded-xl text-xs font-black">
-                    저장
-                  </button>
+                  <div className="flex justify-end w-full">
+                    <button 
+                      onClick={handleSaveVision} 
+                      className="px-5 py-2 bg-gradient-to-r from-amber-300 via-teal-300 to-white text-[#111111] hover:brightness-105 rounded-xl text-xs font-black shadow-md cursor-pointer transition-transform active:scale-95 flex items-center gap-1"
+                    >
+                      <span>비전 저장하기</span>
+                      <strong className="text-sm leading-none">✓</strong>
+                    </button>
+                  </div>
                 </div>
               ) : (
-                <p className="text-sm sm:text-base font-black text-white italic leading-relaxed">
+                <p className="text-xs sm:text-sm md:text-base font-black text-white italic leading-relaxed break-words break-keep whitespace-pre-wrap w-full overflow-hidden">
                   "{visionStatement}"
                 </p>
               )}

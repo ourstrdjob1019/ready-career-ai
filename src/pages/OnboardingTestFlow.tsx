@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context";
-import { JOB_VENGERS_LIST, type JobVengerItem, ARI_BLOB_URL, ARI_BLOB_NEW_URL, getJobCharacterImage, getJobCharacterTitle } from "../assets/mascotData";
+import { JOB_VENGERS_LIST, type JobVengerItem, ARI_BLOB_URL, getJobCharacterImage, getJobCharacterTitle } from "../assets/mascotData";
 import { Sparkles, ArrowRight, ArrowLeft, CheckCircle2, RotateCcw, Award, Star, ChevronRight } from "lucide-react";
 
 interface DiagnosticQuestion {
@@ -84,8 +84,9 @@ export const OnboardingTestFlow: React.FC = () => {
   const currentQ = DIAGNOSTIC_QUESTIONS[qIndex];
   const progressPercent = Math.round(((qIndex + 1) / DIAGNOSTIC_QUESTIONS.length) * 100);
 
-  // 진단 추천으로 등장할 핵심 직벤져스 캐릭터 10종 (Supabase 실물 연계)
-  const recommendedHeroes = JOB_VENGERS_LIST.slice(0, 10);
+  // 진단 추천 및 16개 문항 진행 시 보여질 24개 실물 캐릭터 마스터 목록
+  const recommendedHeroes = JOB_VENGERS_LIST;
+  const currentQHero = JOB_VENGERS_LIST[qIndex % JOB_VENGERS_LIST.length] || JOB_VENGERS_LIST[0];
 
   return (
     <div className="min-h-[calc(100vh-70px)] bg-[#FAFAFC] text-[#111111] relative py-10 px-4 sm:px-6 lg:px-8 flex flex-col justify-center items-center selection:bg-[#111] selection:text-white font-sans">
@@ -126,14 +127,14 @@ export const OnboardingTestFlow: React.FC = () => {
                   </span>
                   <div className="w-full h-full flex items-center justify-center">
                     <img 
-                      src={qIndex % 2 === 0 ? ARI_BLOB_URL : ARI_BLOB_NEW_URL} 
-                      alt="Ari Mascot" 
-                      className="w-32 h-32 sm:w-40 sm:h-40 object-contain filter drop-shadow-sm" 
+                      src={currentQHero?.imageUrl || getJobCharacterImage(currentQHero?.title, 3)} 
+                      alt={currentQHero?.title || "Mascot"} 
+                      className="w-32 h-32 sm:w-40 sm:h-40 object-contain filter drop-shadow-sm transition-transform duration-300 transform group-hover:scale-105" 
                     />
                   </div>
                 </div>
-                <span className="text-xs sm:text-sm font-extrabold text-slate-700 bg-slate-100 px-4 py-1.5 rounded-full border border-slate-200/80 tracking-tight whitespace-nowrap">
-                  ⚡ 아리의 {currentQ.category} 미션
+                <span className="text-xs sm:text-sm font-extrabold text-slate-800 bg-slate-100 px-4 py-1.5 rounded-full border border-slate-200/80 tracking-tight whitespace-normal break-keep text-center max-w-full">
+                  ⚡ [{currentQHero?.title || "AI 멘토"}] {currentQ.category}
                 </span>
               </div>
 
@@ -243,12 +244,12 @@ export const OnboardingTestFlow: React.FC = () => {
                   🎯 분석 결과! 회원님은 <span className="underline decoration-emerald-500 decoration-4 underline-offset-4">창의 융합 개척</span> &amp; <span className="underline decoration-slate-900 decoration-4 underline-offset-4">최첨단 기술 비전</span>에 뛰어난 가능성을 품고 계십니다!
                 </h2>
                 <p className="text-sm sm:text-base text-slate-600 font-medium leading-relaxed bg-slate-50 p-5 rounded-2xl border border-slate-200/80">
-                  " 16개 문항 분석 끝에 도출된 회원님의 성격과 흥미는 미지의 AI 기술을 주도하고 세상을 무궁무진하게 변화시키는 <strong className="text-[#111]">이노베이터(Innovator)</strong> 유형입니다! 아래 추천해 드리는 5명의 직벤져스 중에서 나의 진로 메이트를 선택해 보세요! "
+                  " 16개 문항 분석 끝에 도출된 회원님의 성격과 흥미는 미지의 AI 기술을 주도하고 세상을 무궁무진하게 변화시키는 <strong className="text-[#111]">이노베이터(Innovator)</strong> 유형입니다! 아래 준비된 총 24인의 RIASEC 직벤져스 캐릭터 중에서 나만의 꿈과 공명을 일으키는 최고의 진로 메이트를 선택해 보세요! "
                 </p>
               </div>
             </div>
 
-            {/* 2) 직업 추천하기 (직벤져스 캐릭터 5개 ➜ 클릭 시 소개페이지로) */}
+            {/* 2) 직업 추천하기 (직벤져스 캐릭터 24개 ➜ 클릭 시 소개페이지로) */}
             <div className="space-y-6">
               <div className="text-center space-y-2">
                 <h3 className="text-2xl sm:text-3xl font-black text-[#111111]">
@@ -261,7 +262,7 @@ export const OnboardingTestFlow: React.FC = () => {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5 pt-3">
                 {recommendedHeroes.map((hero, index) => {
-                  const matchRates = [99.4, 97.8, 95.2, 92.9, 90.5, 89.1, 88.0, 86.5, 85.2, 84.0];
+                  const matchRate = Math.max(75.0, (99.5 - index * 0.7)).toFixed(1);
                   return (
                     <div
                       key={hero.id}
@@ -269,7 +270,7 @@ export const OnboardingTestFlow: React.FC = () => {
                       className="p-6 rounded-[28px] bg-white border border-slate-200 hover:border-slate-800 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer flex flex-col items-center justify-between group relative"
                     >
                       <span className="absolute -top-3 right-4 bg-[#111111] text-emerald-400 font-black text-[11px] px-3 py-1 rounded-full shadow-md border border-slate-800">
-                        싱크로율 {matchRates[index]}%
+                        싱크로율 {matchRate}%
                       </span>
 
                       <div className="w-full flex items-center justify-between text-[11px] font-extrabold text-slate-500 pt-1">
@@ -285,7 +286,7 @@ export const OnboardingTestFlow: React.FC = () => {
                         <span className="text-[10px] font-black text-slate-500 block w-fit mx-auto">
                           {hero.category}
                         </span>
-                        <strong className="text-sm font-black text-[#111111] block leading-tight truncate">
+                        <strong className="text-sm font-black text-[#111111] block leading-tight whitespace-normal break-keep">
                           {hero.title}
                         </strong>
                         <div className="pt-1 text-xs font-black text-slate-800 flex items-center justify-center gap-1 group-hover:text-emerald-600 transition-colors">
@@ -385,7 +386,7 @@ export const OnboardingTestFlow: React.FC = () => {
                       </div>
 
                       <div className="w-full text-center bg-white py-2 px-3 rounded-xl border border-slate-200/80 shadow-xs">
-                        <strong className="text-xs sm:text-sm font-black text-[#111111] block truncate">
+                        <strong className="text-xs sm:text-sm font-black text-[#111111] block whitespace-normal break-keep leading-tight">
                           {getJobCharacterTitle(selectedJob.title, idx + 1, item.name)}
                         </strong>
                       </div>
