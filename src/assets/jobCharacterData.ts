@@ -1,7 +1,7 @@
 /**
  * ReadyCareer AI — 24개 RIASEC 직업별 마스코트 캐릭터 레벨별 이미지 마스터 데이터
  * Supabase Storage ('character-assets') 실물 영문 ASCII 클린 매핑 완결판
- * 자동 생성일: 2026-08-06T02:56:20.625Z
+ * 자동 생성일: 2026-08-06T03:12:01.474Z
  */
 
 export interface JobCharacterLevel {
