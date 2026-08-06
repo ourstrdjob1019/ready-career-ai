@@ -41,6 +41,21 @@ export const OnboardingTestFlow: React.FC = () => {
   const [qIndex, setQIndex] = useState<number>(0);
   const [selectedJob, setSelectedJob] = useState<JobVengerItem | null>(null);
 
+  // 16개 진단 문항마다 새롭게 업로드된 24개 직업 캐릭터(Lv.1~5)가 완벽히 랜덤으로 표출되도록 멘토 배열 셔플 생성
+  const [randomMentors] = useState<Array<{ title: string; imageUrl: string; category: string; displayTitle: string }>>(() => {
+    const shuffled = [...JOB_VENGERS_LIST].sort(() => Math.random() - 0.5);
+    return DIAGNOSTIC_QUESTIONS.map((_, i) => {
+      const job = shuffled[i % shuffled.length];
+      const randomLv = Math.floor(Math.random() * 5) + 1; // 1~5레벨의 풍성한 마스코트를 무작위로 노출
+      return {
+        title: job.title,
+        imageUrl: getJobCharacterImage(job.title, randomLv) || job.imageUrl,
+        category: job.category,
+        displayTitle: getJobCharacterTitle(job.title, randomLv, job.title)
+      };
+    });
+  });
+
   // 16문항 박스 답변 시 진행
   const handleAnswerQuestion = () => {
     if (qIndex < DIAGNOSTIC_QUESTIONS.length - 1) {
@@ -86,7 +101,7 @@ export const OnboardingTestFlow: React.FC = () => {
 
   // 진단 추천 및 16개 문항 진행 시 보여질 24개 실물 캐릭터 마스터 목록
   const recommendedHeroes = JOB_VENGERS_LIST;
-  const currentQHero = JOB_VENGERS_LIST[qIndex % JOB_VENGERS_LIST.length] || JOB_VENGERS_LIST[0];
+  const currentQHero = randomMentors[qIndex] || JOB_VENGERS_LIST[0];
 
   return (
     <div className="min-h-[calc(100vh-70px)] bg-[#FAFAFC] text-[#111111] relative py-10 px-4 sm:px-6 lg:px-8 flex flex-col justify-center items-center selection:bg-[#111] selection:text-white font-sans">
@@ -134,7 +149,7 @@ export const OnboardingTestFlow: React.FC = () => {
                   </div>
                 </div>
                 <span className="text-xs sm:text-sm font-extrabold text-slate-800 bg-slate-100 px-4 py-1.5 rounded-full border border-slate-200/80 tracking-tight whitespace-normal break-keep text-center max-w-full">
-                  ⚡ [{currentQHero?.title || "AI 멘토"}] {currentQ.category}
+                  ⚡ [{(currentQHero as any).displayTitle || currentQHero?.title || "AI 멘토"}] {currentQ.category}
                 </span>
               </div>
 
