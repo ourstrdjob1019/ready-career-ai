@@ -550,7 +550,7 @@ export const JOB_AI_PROFILES: Record<string, JobAiProfile> = {
  * 매칭되는 것이 없을 경우 지능적인 동적 기본 템플릿(Fallback Generator)을 생성하여 반환합니다.
  */
 export function getJobAiProfile(targetJobName?: string, fallbackRiasec: string = "I (탐구형)"): JobAiProfile {
-  const job = (targetJobName || "AI 융합 미래 디렉터").trim();
+  const job = (targetJobName || "로봇공학자").trim();
   
   // 1. 직접 정확히 일치하거나 핵심 키워드를 포함할 경우 맵에서 반환
   for (const key of Object.keys(JOB_AI_PROFILES)) {

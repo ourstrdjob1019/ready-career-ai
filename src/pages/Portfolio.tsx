@@ -89,7 +89,7 @@ const RECOMMENDED_POOLS = [
 export const Portfolio: React.FC = () => {
   const { session } = useAuth();
 
-  const targetJobName = localStorage.getItem("readycareer_target_job_name") || session?.targetJob || "AI 융합 개척자";
+  const targetJobName = localStorage.getItem("readycareer_target_job_name") || session?.targetJob || "로봇공학자";
   const customAvatarUrl = localStorage.getItem("readycareer_custom_avatar_url") || ARI_BLOB_URL;
 
   const [items, setItems] = useState<PortfolioItem[]>([]);

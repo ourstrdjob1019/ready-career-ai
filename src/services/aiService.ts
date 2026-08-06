@@ -97,7 +97,7 @@ export const executeAiPrompt = async (payload: AiRequestPayload): Promise<AiResp
       } else if (payload.promptType === "generate_constellation") {
         isJson = true;
         systemPrompt = "당신은 학생의 꿈과 흥미유형(RIASEC)을 바탕으로 밤하늘 별자리 좌표와 퀘스트를 도출하는 AI 별자리 아키텍트입니다. 무조건 JSON으로 답하세요.";
-        promptText = `지망직업: ${payload.targetJob || "AI 분야"}\n흥미유형: ${payload.riasecCode || "SI"}\n5~6개 별(nodes)의 x, y 백분율 좌표(15~85 사이), label, desc와 한입 퀘스트 배열(quests), 그리고 별들을 연결하는 edges를 포함한 JSON을 출력하세요. 형식: { "constellationName": "...", "nodes": [{"id":"s1", "label":"...", "x":20, "y":70, "quests":[{"title":"...", "expReward":50, "status":"active"}]}], "edges":[{"from":"s1","to":"s2"}] }`;
+        promptText = `지망직업: ${payload.targetJob || "로봇공학자"}\n흥미유형: ${payload.riasecCode || "SI"}\n5~6개 별(nodes)의 x, y 백분율 좌표(15~85 사이), label, desc와 한입 퀘스트 배열(quests), 그리고 별들을 연결하는 edges를 포함한 JSON을 출력하세요. 형식: { "constellationName": "...", "nodes": [{"id":"s1", "label":"...", "x":20, "y":70, "quests":[{"title":"...", "expReward":50, "status":"active"}]}], "edges":[{"from":"s1","to":"s2"}] }`;
       }
 
       const bodyData: any = {
@@ -157,20 +157,20 @@ function buildPromptText(payload: AiRequestPayload): string {
 - 대상 학년: ${payload.gradeLevel || "고등학교 2학년"}
 - 활동 영역: ${payload.activityDomain || "진로활동 및 창의적체험활동"}
 - 활동 명칭 및 기간: ${payload.activityNameAndPeriod || "자기주도 진로 탐색 및 50일 알고리즘 습관 챌린지 (2026 1학기)"}
-- 학생 제출 자료(소감문/자기평가서): ${payload.studentSubmittedText || `${payload.targetJob || "AI 에듀테크 진로 멘토"}를 꿈꾸며 RIASEC ${payload.riasecCode || "SI"} 성향의 진단을 통해 포트폴리오를 작성함.`}
+- 학생 제출 자료(소감문/자기평가서): ${payload.studentSubmittedText || `${payload.targetJob || "소프트웨어개발자"}를 꿈꾸며 RIASEC ${payload.riasecCode || "SI"} 성향의 진단을 통해 포트폴리오를 작성함.`}
 - 교사 관찰 메모(평가 키워드): ${payload.teacherObservationMemo || "자기주도성, 뛰어난 분석력, 타인 배려 및 팀워크 역량, 학술적 탐구 의지 우수"}`;
   }
   if (payload.promptType === "portfolio_refine") {
     return `활동 초안: "${payload.userPrompt || "학교 수업시간에 AI 관련 도서를 읽고 코딩 실습을 진행했음"}" -> 대입 평가자가 감동할 명확한 학술적 표현과 STAR 기법으로 다듬어 주세요.`;
   }
   if (payload.promptType === "habit_design") {
-    return `지망 직업: ${payload.targetJob || "AI 로보틱스 연구원"}, 흥미유형: ${payload.riasecCode || "RC"}`;
+    return `지망 직업: ${payload.targetJob || "로봇공학자"}, 흥미유형: ${payload.riasecCode || "RC"}`;
   }
   return payload.userPrompt || "학생 진로에 대한 AI 멘토 코멘트를 생성해 주세요.";
 }
 
 function getExpoFallbackResult(payload: AiRequestPayload): AiResponseResult {
-  const job = payload.targetJob || payload.userPrompt || "AI 융합 미래 크리에이터";
+  const job = payload.targetJob || payload.userPrompt || "로봇공학자";
   const riasec = payload.riasecCode || "I (탐구형)";
   const profile = getJobAiProfile(job, riasec);
 

@@ -26,17 +26,17 @@ export const MyPage: React.FC = () => {
   const [jobToDelete, setJobToDelete] = useState<any | null>(null);
 
   // --- 멀티 커리어 직업 덱 (다중 직업 히스토리 및 스위칭) 상태 ---
-  const currentJobName = localStorage.getItem("readycareer_target_job_name") || (session?.targetJob || "AI 융합 미래 크리에이터");
+  const currentJobName = localStorage.getItem("readycareer_target_job_name") || (session?.targetJob || "로봇공학자");
   const currentAvatarUrl = localStorage.getItem("readycareer_custom_avatar_url") || "https://fea6nfqj9cdttjmk.public.blob.vercel-storage.com/%EC%BA%90%EB%A6%AD%ED%84%B0/Character%201.png";
 
   const [jobHistoryList, setJobHistoryList] = useState<any[]>(() => {
     try {
       const stored = JSON.parse(localStorage.getItem("readycareer_my_job_history_v1") || "[]");
       if (stored.length === 0) {
-        // 교사나 학생이 다중 직업 시스템을 바로 체감할 수 있도록 더미 초기화
+        // 교사나 학생이 다중 직업 시스템을 바로 체감할 수 있도록 실물 캐릭터 데이터로 초기화
         return [
-          { name: "바이오 신약 데이터 과학자", category: "생명공학 연구", imageUrl: "https://fea6nfqj9cdttjmk.public.blob.vercel-storage.com/%EC%BA%90%EB%A6%AD%ED%84%B0/Character%206-wOq9XfUeG2b7TIf9N0DkYjW5qP2B6k.png", lastActive: "2일 전 완료", recordsCount: 14, rank: "다이아 마스터", bgColor: "bg-emerald-50" },
-          { name: "글로벌 마케팅 기획 디렉터", category: "미래 경영전략", imageUrl: "https://fea6nfqj9cdttjmk.public.blob.vercel-storage.com/%EC%BA%90%EB%A6%AD%ED%84%B0/KakaoTalk_20260729_161916710.png", lastActive: "1주일 전 완료", recordsCount: 5, rank: "실버 챌린저", bgColor: "bg-orange-50" },
+          { name: "생명과학연구원", category: "탐구형(I)", imageUrl: "https://pydvuqjhzcrpauzpssxg.supabase.co/storage/v1/object/public/character-assets/I/bioscience_researcher/lv4.png", lastActive: "2일 전 완료", recordsCount: 14, rank: "다이아 마스터", bgColor: "bg-emerald-50" },
+          { name: "콘텐츠크리에이터 (토리)", category: "예술형(A)", imageUrl: "https://pydvuqjhzcrpauzpssxg.supabase.co/storage/v1/object/public/character-assets/A/content_creator_tori/lv2.png", lastActive: "1주일 전 완료", recordsCount: 5, rank: "실버 챌린저", bgColor: "bg-orange-50" },
         ];
       }
       return stored;

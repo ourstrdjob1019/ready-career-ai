@@ -37,7 +37,7 @@ interface DiagnosticTest {
 export const SelfUnderstanding: React.FC = () => {
   const navigate = useNavigate();
   const { session } = useAuth();
-  const targetJobName = localStorage.getItem("readycareer_target_job_name") || session?.targetJob || "AI 융합 소프트웨어 디렉터";
+  const targetJobName = localStorage.getItem("readycareer_target_job_name") || session?.targetJob || "소프트웨어개발자";
 
   const [tests, setTests] = useState<DiagnosticTest[]>([]);
   const [activeReportTest, setActiveReportTest] = useState<DiagnosticTest | null>(null);

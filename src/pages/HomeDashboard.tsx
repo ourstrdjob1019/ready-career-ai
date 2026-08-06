@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Button } from "../components";
 import { useAuth } from "../context";
 import { executeAiPrompt } from "../services/aiService";
-import { ARI_BLOB_URL, JOB_VENGERS_LIST } from "../assets/mascotData";
+import { ARI_BLOB_URL, JOB_VENGERS_LIST, getJobCharacterImage } from "../assets/mascotData";
 import { getCurrentXP, getRankFromXP } from "../services/expService";
 import {
   Sparkles,
@@ -56,9 +56,9 @@ export const HomeDashboard: React.FC = () => {
     if (savedJobs) {
       try { setInterestedJobs(JSON.parse(savedJobs)); } catch (e) {}
     } else {
-      // 처음에 온보딩에서 추천했던 직급군들이 먼저 보이게 세팅!
+      // 처음에 온보딩에서 추천했던 직무군들이 먼저 보이게 세팅!
       const storedSelectedJobJson = localStorage.getItem("readycareer_selected_job");
-      let primaryJob = { name: "AI 융합 미래 전문가", image: "🤖", category: "대표 선택 직업", imageUrl: ARI_BLOB_URL };
+      let primaryJob = { name: "로봇공학자", image: "🤖", category: "대표 선택 직업", imageUrl: getJobCharacterImage("로봇공학자", 3) };
       if (storedSelectedJobJson) {
         try {
           const parsed = JSON.parse(storedSelectedJobJson);
@@ -82,7 +82,7 @@ export const HomeDashboard: React.FC = () => {
 
   const handleAiSuggestVision = async () => {
     setIsAiLoading(true);
-    const currentTarget = interestedJobs[selectedJobIdx]?.name || "AI 융합 디렉터";
+    const currentTarget = interestedJobs[selectedJobIdx]?.name || "로봇공학자";
     try {
       const res = await executeAiPrompt({
         promptType: "vision_recommendation",
@@ -127,7 +127,7 @@ export const HomeDashboard: React.FC = () => {
     setIsGeneratingAnim(true);
     
     // 16개 진단 결과(흥미유형) 및 현재 선택 직무 값 추출
-    const currentJob = localStorage.getItem("readycareer_target_job_name") || session?.targetJob || "AI 융합 미래 전문가";
+    const currentJob = localStorage.getItem("readycareer_target_job_name") || session?.targetJob || "로봇공학자";
     const studentCluster = localStorage.getItem("readycareer_student_cluster") || "공간·첨단테크 계열";
     const riasecCode = localStorage.getItem("riasec_result_code") || session?.riasecCode || "AI-PRO";
 
@@ -189,7 +189,7 @@ export const HomeDashboard: React.FC = () => {
     const selected = interestedJobs[jobIntroModalIdx];
     
     // 이전 직업 히스토리에 현재 메인 직업 백업 보존
-    const prevJobName = localStorage.getItem("readycareer_target_job_name") || "AI 융합 미래 전문가";
+    const prevJobName = localStorage.getItem("readycareer_target_job_name") || "로봇공학자";
     const historyStored = JSON.parse(localStorage.getItem("readycareer_my_job_history_v1") || "[]");
     if (!historyStored.some((h: any) => h.name === prevJobName)) {
        historyStored.push({
