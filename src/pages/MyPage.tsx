@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Button, Card, ProgressBar, MascotAri } from "../components";
 import { useAuth } from "../context";
 import { getCurrentXP, getRankFromXP } from "../services/expService";
-import { ARI_BLOB_URL, ARI_BLOB_NEW_URL } from "../assets/mascotData";
+import { getJobCharacterImage, getJobCharacterTitle } from "../assets/mascotData";
 import {
   Award,
   Sparkles,
@@ -250,8 +250,8 @@ export const MyPage: React.FC = () => {
               <div className="bg-white/10 rounded-2xl p-4 sm:p-5 border border-amber-300/50 flex items-center gap-4 relative overflow-hidden group hover:bg-white/15 transition-all shadow-md">
                 <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-tr from-amber-400/20 via-purple-500/20 to-white/30 border-2 border-amber-300 flex items-center justify-center p-1.5 shadow-lg flex-shrink-0">
                   <img
-                    src={level % 2 === 1 ? ARI_BLOB_URL : ARI_BLOB_NEW_URL}
-                    alt="현재 등급 마스코트 아리"
+                    src={getJobCharacterImage(currentJobName, level)}
+                    alt={`현재 등급 마스코트: ${currentJobName}`}
                     className="w-full h-full object-contain filter drop-shadow-md transform group-hover:scale-110 transition-transform duration-300"
                   />
                 </div>
@@ -260,7 +260,7 @@ export const MyPage: React.FC = () => {
                     🏆 현재 달성 등급
                   </span>
                   <h4 className="text-base sm:text-lg font-black text-white tracking-tight truncate">
-                    {currentRank.lvTitle} {currentRank.title.replace(/👑|💎|🥇|🥈|🥉/g, "").trim()}
+                    {getJobCharacterTitle(currentJobName, level, `${currentRank.lvTitle} ${currentRank.title}`)}
                   </h4>
                   <p className="text-xs text-amber-200 font-semibold leading-relaxed break-keep">
                     현재 달성 완료한 영예의 탐험 캐릭터 모습입니다. 지속적인 활동으로 다음 단계에 도전하세요!
@@ -273,8 +273,8 @@ export const MyPage: React.FC = () => {
                 <div className="bg-white/5 rounded-2xl p-4 sm:p-5 border border-cyan-300/40 flex items-center gap-4 relative overflow-hidden group hover:bg-white/10 transition-all shadow-md">
                   <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-tr from-cyan-400/20 via-blue-500/20 to-white/20 border-2 border-cyan-300/70 flex items-center justify-center p-1.5 shadow-lg flex-shrink-0 relative">
                     <img
-                      src={level % 2 === 0 ? ARI_BLOB_URL : ARI_BLOB_NEW_URL}
-                      alt="다음 등급 마스코트 아리"
+                      src={getJobCharacterImage(currentJobName, level + 1)}
+                      alt={`다음 등급 마스코트: ${currentJobName}`}
                       className="w-full h-full object-contain filter drop-shadow-md opacity-85 group-hover:opacity-100 transform group-hover:scale-110 transition-all duration-300"
                     />
                     <div className="absolute -top-2 -right-2 bg-cyan-400 text-slate-950 text-[10px] font-black px-2 py-0.5 rounded-md shadow-sm border border-white">
@@ -286,7 +286,7 @@ export const MyPage: React.FC = () => {
                       🚀 다음 승급 목표 캐릭터
                     </span>
                     <h4 className="text-base sm:text-lg font-black text-cyan-200 tracking-tight truncate">
-                      {nextRank.lvTitle} {nextRank.title.replace(/👑|💎|🥇|🥈|🥉/g, "").trim()}
+                      {getJobCharacterTitle(currentJobName, level + 1, `${nextRank.lvTitle} ${nextRank.title}`)}
                     </h4>
                     <p className="text-xs text-slate-300 font-semibold leading-relaxed break-keep">
                       <strong className="text-amber-300 underline font-black">{remainingExp} XP</strong>를 추가로 획득하시면 새로운 마스코트 캐릭터가 공식 해금되어 뱃지가 진화합니다!

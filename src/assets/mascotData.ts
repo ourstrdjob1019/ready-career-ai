@@ -3,6 +3,9 @@
 export const ARI_BLOB_URL = "https://fea6nfqj9cdttjmk.public.blob.vercel-storage.com/%EC%BA%90%EB%A6%AD%ED%84%B0/KakaoTalk_20260713_090001607.png";
 export const ARI_BLOB_NEW_URL = "https://fea6nfqj9cdttjmk.public.blob.vercel-storage.com/%EC%BA%90%EB%A6%AD%ED%84%B0/KakaoTalk_20260729_161916710.png";
 
+import { JOB_CHARACTER_MASTER_LIST, type JobCharacterMaster } from "./jobCharacterData";
+export { JOB_CHARACTER_MASTER_LIST, type JobCharacterMaster };
+
 export const MASCOT_ASSETS = {
   avatar: ARI_BLOB_URL,
   sticker3D: ARI_BLOB_URL,
@@ -18,18 +21,73 @@ export interface JobVengerItem {
   imageUrl: string;
   bgGradient: string;
   badgeColor: string;
+  riasecCode?: string;
 }
 
-// 첫 화면(랜딩 페이지) 무한 롤링 애니메이션을 위한 '직벤져스(Job-vengers)' 3D 캐릭터 10종 마스터 명단
-export const JOB_VENGERS_LIST: JobVengerItem[] = [
-  { id: 1, title: "AI 진로 설계 아리", category: "진로·어드바이저", imageUrl: ARI_BLOB_URL, bgGradient: "from-[#F3EAFF] to-[#E2D4FF]", badgeColor: "text-[#7B5CF0] bg-[#7B5CF0]/15" },
-  { id: 2, title: "미래 퓨처 크리에이터 아리", category: "미디어·디지털콘텐츠", imageUrl: ARI_BLOB_NEW_URL, bgGradient: "from-[#E3F9FD] to-[#C1F1F8]", badgeColor: "text-[#006970] bg-[#006970]/15" },
-  { id: 3, title: "휴머노이드 로보틱스 아리", category: "차세대 공학·제어", imageUrl: ARI_BLOB_URL, bgGradient: "from-[#FFEBF2] to-[#FFD5E5]", badgeColor: "text-[#FF4081] bg-[#FF4081]/15" },
-  { id: 4, title: "양자 컴퓨팅 분석가 아리", category: "AI·데이터사이언스", imageUrl: ARI_BLOB_NEW_URL, bgGradient: "from-[#FFF8E7] to-[#FFECD0]", badgeColor: "text-[#D97706] bg-[#D97706]/15" },
-  { id: 5, title: "스마트 바이오 연구원 아리", category: "생명·의학공학", imageUrl: ARI_BLOB_URL, bgGradient: "from-[#EAFBEE] to-[#CFF7DA]", badgeColor: "text-[#10B981] bg-[#10B981]/15" },
-  { id: 6, title: "우주항공 네비게이터 아리", category: "우주·항공 공학", imageUrl: ARI_BLOB_NEW_URL, bgGradient: "from-[#E6EFFF] to-[#C7DBFF]", badgeColor: "text-[#3B82F6] bg-[#3B82F6]/15" },
-  { id: 7, title: "메타버스 그래픽 디렉터 아리", category: "3D AR/VR · 디자인", imageUrl: ARI_BLOB_URL, bgGradient: "from-[#F7EAFF] to-[#EACFFF]", badgeColor: "text-[#9333EA] bg-[#9333EA]/15" },
-  { id: 8, title: "그린 클린에너지 전문가 아리", category: "ESG · 친환경에너지", imageUrl: ARI_BLOB_NEW_URL, bgGradient: "from-[#EBFFF8] to-[#C6FFF0]", badgeColor: "text-[#059669] bg-[#059669]/15" },
-  { id: 9, title: "사이버 의료 데이터 아리", category: "AI 첨단 의료서비스", imageUrl: ARI_BLOB_URL, bgGradient: "from-[#FFEBEB] to-[#FFD1D1]", badgeColor: "text-[#E11D48] bg-[#E11D48]/15" },
-  { id: 10, title: "스마트시티 융합 아키텍트 아리", category: "미래건축·공간", imageUrl: ARI_BLOB_NEW_URL, bgGradient: "from-[#EFF1FF] to-[#D5D9FF]", badgeColor: "text-[#4F46E5] bg-[#4F46E5]/15" },
+const gradients = [
+  "from-[#F3EAFF] to-[#E2D4FF]",
+  "from-[#E3F9FD] to-[#C1F1F8]",
+  "from-[#FFEBF2] to-[#FFD5E5]",
+  "from-[#FFF8E7] to-[#FFECD0]",
+  "from-[#EAFBEE] to-[#CFF7DA]",
+  "from-[#E6EFFF] to-[#C7DBFF]",
+  "from-[#F7EAFF] to-[#EACFFF]",
+  "from-[#EBFFF8] to-[#C6FFF0]",
+  "from-[#FFEBEB] to-[#FFD1D1]",
+  "from-[#EFF1FF] to-[#D5D9FF]",
 ];
+
+const badges = [
+  "text-[#7B5CF0] bg-[#7B5CF0]/15",
+  "text-[#006970] bg-[#006970]/15",
+  "text-[#FF4081] bg-[#FF4081]/15",
+  "text-[#D97706] bg-[#D97706]/15",
+  "text-[#10B981] bg-[#10B981]/15",
+  "text-[#3B82F6] bg-[#3B82F6]/15",
+  "text-[#9333EA] bg-[#9333EA]/15",
+  "text-[#059669] bg-[#059669]/15",
+  "text-[#E11D48] bg-[#E11D48]/15",
+  "text-[#4F46E5] bg-[#4F46E5]/15",
+];
+
+// 첫 화면(랜딩 페이지) 및 탐험에 쓰이는 24개 실전 직업 마스터 명단 (Supabase 실물 스토리지 연결)
+export const JOB_VENGERS_LIST: JobVengerItem[] = JOB_CHARACTER_MASTER_LIST.map((item, index) => ({
+  id: index + 1,
+  title: item.jobName,
+  category: item.category,
+  imageUrl: item.defaultImageUrl || ARI_BLOB_URL,
+  bgGradient: gradients[index % gradients.length],
+  badgeColor: badges[index % badges.length],
+  riasecCode: item.riasecCode,
+}));
+
+/** 직업명과 레벨(1~5, 또는 XP 등급)에 근거하여 실제 Supabase 캐릭터 이미지 URL을 조회하는 Helper 함수 */
+export function getJobCharacterImage(jobName?: string, level: number = 3): string {
+  if (!jobName) return ARI_BLOB_URL;
+  const norm = jobName.replace(/\s+/g, '').toLowerCase();
+  const matched = JOB_CHARACTER_MASTER_LIST.find(
+    item => item.jobName.replace(/\s+/g, '').toLowerCase() === norm ||
+            norm.includes(item.jobName.replace(/\s+/g, '').toLowerCase()) ||
+            item.jobName.replace(/\s+/g, '').toLowerCase().includes(norm)
+  );
+  if (!matched) return ARI_BLOB_URL;
+  const validLevel = Math.max(1, Math.min(5, level));
+  const levelObj = matched.levels.find(l => l.level === validLevel);
+  return levelObj?.imageUrl || matched.defaultImageUrl || ARI_BLOB_URL;
+}
+
+/** 직업명과 레벨(1~5)에 대응하는 고유 캐릭터 칭호 (예: '1. 경찰_브론즈' 또는 '02 Lv.3 이제성우') 조회 */
+export function getJobCharacterTitle(jobName?: string, level: number = 3, fallbackRankName: string = "탐험가"): string {
+  if (!jobName) return fallbackRankName;
+  const norm = jobName.replace(/\s+/g, '').toLowerCase();
+  const matched = JOB_CHARACTER_MASTER_LIST.find(
+    item => item.jobName.replace(/\s+/g, '').toLowerCase() === norm ||
+            norm.includes(item.jobName.replace(/\s+/g, '').toLowerCase()) ||
+            item.jobName.replace(/\s+/g, '').toLowerCase().includes(norm)
+  );
+  if (!matched) return fallbackRankName;
+  const validLevel = Math.max(1, Math.min(5, level));
+  const levelObj = matched.levels.find(l => l.level === validLevel);
+  return levelObj?.name ? `${matched.jobName} — ${levelObj.name.replace(/^[0-9.]+\s*/, '')}` : fallbackRankName;
+}
+

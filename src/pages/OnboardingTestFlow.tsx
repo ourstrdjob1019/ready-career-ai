@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context";
-import { JOB_VENGERS_LIST, type JobVengerItem, ARI_BLOB_URL, ARI_BLOB_NEW_URL } from "../assets/mascotData";
+import { JOB_VENGERS_LIST, type JobVengerItem, ARI_BLOB_URL, ARI_BLOB_NEW_URL, getJobCharacterImage, getJobCharacterTitle } from "../assets/mascotData";
 import { Sparkles, ArrowRight, ArrowLeft, CheckCircle2, RotateCcw, Award, Star, ChevronRight } from "lucide-react";
 
 interface DiagnosticQuestion {
@@ -84,8 +84,8 @@ export const OnboardingTestFlow: React.FC = () => {
   const currentQ = DIAGNOSTIC_QUESTIONS[qIndex];
   const progressPercent = Math.round(((qIndex + 1) / DIAGNOSTIC_QUESTIONS.length) * 100);
 
-  // 진단 추천으로 등장할 핵심 직벤져스 캐릭터 5종
-  const recommendedHeroes = JOB_VENGERS_LIST.slice(0, 5);
+  // 진단 추천으로 등장할 핵심 직벤져스 캐릭터 10종 (Supabase 실물 연계)
+  const recommendedHeroes = JOB_VENGERS_LIST.slice(0, 10);
 
   return (
     <div className="min-h-[calc(100vh-70px)] bg-[#FAFAFC] text-[#111111] relative py-10 px-4 sm:px-6 lg:px-8 flex flex-col justify-center items-center selection:bg-[#111] selection:text-white font-sans">
@@ -261,7 +261,7 @@ export const OnboardingTestFlow: React.FC = () => {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5 pt-3">
                 {recommendedHeroes.map((hero, index) => {
-                  const matchRates = [99.4, 97.8, 95.2, 92.9, 90.5];
+                  const matchRates = [99.4, 97.8, 95.2, 92.9, 90.5, 89.1, 88.0, 86.5, 85.2, 84.0];
                   return (
                     <div
                       key={hero.id}
@@ -378,7 +378,7 @@ export const OnboardingTestFlow: React.FC = () => {
 
                       <div className="w-24 h-24 rounded-full bg-white p-3 border border-slate-100 flex items-center justify-center my-2 group-hover:scale-105 transition-transform duration-200 shadow-xs">
                         <img 
-                          src={selectedJob.imageUrl} 
+                          src={getJobCharacterImage(selectedJob.title, idx + 1)} 
                           alt={item.name} 
                           className="w-full h-full object-contain filter drop-shadow-xs" 
                         />
@@ -386,7 +386,7 @@ export const OnboardingTestFlow: React.FC = () => {
 
                       <div className="w-full text-center bg-white py-2 px-3 rounded-xl border border-slate-200/80 shadow-xs">
                         <strong className="text-xs sm:text-sm font-black text-[#111111] block truncate">
-                          {item.name}
+                          {getJobCharacterTitle(selectedJob.title, idx + 1, item.name)}
                         </strong>
                       </div>
                     </div>
