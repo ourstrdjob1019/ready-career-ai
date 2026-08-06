@@ -50,19 +50,22 @@ const badges = [
   "text-[#4F46E5] bg-[#4F46E5]/15",
 ];
 
-// 첫 화면(랜딩 페이지) 및 탐험에 쓰이는 24개 실전 직업 마스터 명단 (Supabase 실물 스토리지 연결)
-export const JOB_VENGERS_LIST: JobVengerItem[] = JOB_CHARACTER_MASTER_LIST.map((item, index) => ({
-  id: index + 1,
-  title: item.jobName,
-  category: item.category,
-  imageUrl: item.defaultImageUrl || ARI_BLOB_URL,
-  bgGradient: gradients[index % gradients.length],
-  badgeColor: badges[index % badges.length],
-  riasecCode: item.riasecCode,
-}));
+// 첫 화면(랜딩 페이지) 및 탐험에 쓰이는 24개 실전 직업 마스터 명단 (Supabase 실물 스토리지 연결, 레벨 1 기본 표출)
+export const JOB_VENGERS_LIST: JobVengerItem[] = JOB_CHARACTER_MASTER_LIST.map((item, index) => {
+  const lv1Image = item.levels.find(l => l.level === 1)?.imageUrl || item.defaultImageUrl;
+  return {
+    id: index + 1,
+    title: item.jobName,
+    category: item.category,
+    imageUrl: lv1Image || ARI_BLOB_URL,
+    bgGradient: gradients[index % gradients.length],
+    badgeColor: badges[index % badges.length],
+    riasecCode: item.riasecCode,
+  };
+});
 
 /** 직업명과 레벨(1~5, 또는 XP 등급)에 근거하여 실제 Supabase 캐릭터 이미지 URL을 조회하는 Helper 함수 */
-export function getJobCharacterImage(jobName?: string, level: number = 3): string {
+export function getJobCharacterImage(jobName?: string, level: number = 1): string {
   if (!jobName) return ARI_BLOB_URL;
   const norm = jobName.replace(/\s+/g, '').toLowerCase();
   const matched = JOB_CHARACTER_MASTER_LIST.find(
@@ -77,7 +80,7 @@ export function getJobCharacterImage(jobName?: string, level: number = 3): strin
 }
 
 /** 직업명과 레벨(1~5)에 대응하는 고유 캐릭터 칭호 (예: '1. 경찰_브론즈' 또는 '02 Lv.3 이제성우') 조회 */
-export function getJobCharacterTitle(jobName?: string, level: number = 3, fallbackRankName: string = "탐험가"): string {
+export function getJobCharacterTitle(jobName?: string, level: number = 1, fallbackRankName: string = "탐험가"): string {
   if (!jobName) return fallbackRankName;
   const norm = jobName.replace(/\s+/g, '').toLowerCase();
   const matched = JOB_CHARACTER_MASTER_LIST.find(

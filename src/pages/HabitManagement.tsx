@@ -53,9 +53,9 @@ export const HabitManagement: React.FC = () => {
   });
   const [newTitle, setNewTitle] = useState("");
   const [todayQuests, setTodayQuests] = useState([
-    { id: "q1", title: "전공 서적 30분 읽기", desc: "매일 꾸준한 지식 쌓기 및 진로 역량 강화", icon: "📚", exp: "+15 EXP", completed: !isNewClean && true },
-    { id: "q2", title: "최신 진로 산업 뉴스 1건 스크랩", desc: "AI 인프라 및 전공 관련 트렌드 파악하기", icon: "📰", exp: "+15 EXP", completed: false },
-    { id: "q3", title: "아리에게 진로 고민 1회 실시간 질문하기", desc: "AI 상담을 통한 세특 가이드 아이디어 탐색", icon: "🤖", exp: "+15 EXP", completed: false },
+    { id: "q1", title: "전공 서적 30분 읽기", desc: "매일 꾸준한 지식 쌓기 및 진로 역량 강화", icon: "📚", exp: "+10 EXP", completed: !isNewClean && true },
+    { id: "q2", title: "최신 진로 산업 뉴스 1건 스크랩", desc: "AI 인프라 및 전공 관련 트렌드 파악하기", icon: "📰", exp: "+10 EXP", completed: false },
+    { id: "q3", title: "아리에게 진로 고민 1회 실시간 질문하기", desc: "AI 상담을 통한 세특 가이드 아이디어 탐색", icon: "🤖", exp: "+10 EXP", completed: false },
   ]);
   const [flippedQuestId, setFlippedQuestId] = useState<string | null>(null);
 
@@ -63,7 +63,7 @@ export const HabitManagement: React.FC = () => {
     setTodayQuests((prev) =>
       prev.map((q) => {
         if (q.id === id) {
-          if (!q.completed) rewardXP(15, `[${q.title}] 일일 퀘스트 완수!`);
+          if (!q.completed) rewardXP(10, `[${q.title}] 일일 퀘스트 완수!`);
           return { ...q, completed: !q.completed };
         }
         return q;

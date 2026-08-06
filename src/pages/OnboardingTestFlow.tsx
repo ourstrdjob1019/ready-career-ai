@@ -127,7 +127,7 @@ export const OnboardingTestFlow: React.FC = () => {
                   </span>
                   <div className="w-full h-full flex items-center justify-center">
                     <img 
-                      src={currentQHero?.imageUrl || getJobCharacterImage(currentQHero?.title, 3)} 
+                      src={currentQHero?.imageUrl || getJobCharacterImage(currentQHero?.title, 1)} 
                       alt={currentQHero?.title || "Mascot"} 
                       className="w-32 h-32 sm:w-40 sm:h-40 object-contain filter drop-shadow-sm transition-transform duration-300 transform group-hover:scale-105" 
                     />

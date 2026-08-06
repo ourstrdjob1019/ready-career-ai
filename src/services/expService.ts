@@ -9,7 +9,7 @@ export interface RankLevel {
 }
 
 export const getRankFromXP = (xp: number): RankLevel => {
-  if (xp >= 400) {
+  if (xp >= 200) {
     return {
       levelNum: 5,
       lvTitle: "Lv.5",
@@ -19,7 +19,7 @@ export const getRankFromXP = (xp: number): RankLevel => {
       textColor: "text-emerald-500 font-black",
       border: "border-emerald-400"
     };
-  } else if (xp >= 300) {
+  } else if (xp >= 150) {
     return {
       levelNum: 4,
       lvTitle: "Lv.4",
@@ -29,7 +29,7 @@ export const getRankFromXP = (xp: number): RankLevel => {
       textColor: "text-cyan-600",
       border: "border-cyan-400"
     };
-  } else if (xp >= 200) {
+  } else if (xp >= 100) {
     return {
       levelNum: 3,
       lvTitle: "Lv.3",
@@ -39,7 +39,7 @@ export const getRankFromXP = (xp: number): RankLevel => {
       textColor: "text-amber-600",
       border: "border-amber-400"
     };
-  } else if (xp >= 100) {
+  } else if (xp >= 50) {
     return {
       levelNum: 2,
       lvTitle: "Lv.2",
@@ -65,13 +65,10 @@ export const getCurrentXP = (): number => {
   const stored = localStorage.getItem("readycareer_student_xp_v1");
   if (stored !== null) {
     const parsed = parseInt(stored, 10);
-    return isNaN(parsed) ? 0 : Math.min(500, Math.max(0, parsed));
+    return isNaN(parsed) ? 0 : Math.max(0, parsed);
   }
-  // 기본 초기 경험치 (기존 활동 기반 계산 백업)
-  const allActivities = JSON.parse(localStorage.getItem("readycareer_student_activities_v1") || "[]");
-  const practiceActivities = allActivities.filter((a: any) => !a.id?.startsWith("act-riasec-") && !a.id?.startsWith("act-star-"));
-  const isNewStudentClean = localStorage.getItem("is_new_student_clean_state") === "true";
-  const initialXP = isNewStudentClean ? (practiceActivities.length * 60) : Math.min(500, (practiceActivities.length * 60));
+  // 신규 입장 및 초기 세팅 시 무조건 레벨 1 (0 XP)로 시작하도록 확실한 설정
+  const initialXP = 0;
   localStorage.setItem("readycareer_student_xp_v1", String(initialXP));
   return initialXP;
 };
@@ -80,7 +77,7 @@ export const rewardXP = (amount: number, reason: string) => {
   const oldXp = getCurrentXP();
   const oldRank = getRankFromXP(oldXp);
 
-  const newXp = Math.min(500, oldXp + amount);
+  const newXp = Math.max(0, oldXp + amount);
   localStorage.setItem("readycareer_student_xp_v1", String(newXp));
   const newRank = getRankFromXP(newXp);
 

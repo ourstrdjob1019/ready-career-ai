@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Button } from "../components";
 import { useAuth } from "../context";
 import { executeAiPrompt } from "../services/aiService";
-import { ARI_BLOB_URL, JOB_VENGERS_LIST, getJobCharacterImage } from "../assets/mascotData";
+import { ARI_BLOB_URL, JOB_VENGERS_LIST, getJobCharacterImage, getJobCharacterTitle } from "../assets/mascotData";
 import { getCurrentXP, getRankFromXP } from "../services/expService";
 import {
   Sparkles,
@@ -58,7 +58,7 @@ export const HomeDashboard: React.FC = () => {
     } else {
       // 처음에 온보딩에서 추천했던 직무군들이 먼저 보이게 세팅!
       const storedSelectedJobJson = localStorage.getItem("readycareer_selected_job");
-      let primaryJob = { name: "로봇공학자", image: "🤖", category: "대표 선택 직업", imageUrl: getJobCharacterImage("로봇공학자", 3) };
+      let primaryJob = { name: "로봇공학자", image: "🤖", category: "대표 선택 직업", imageUrl: getJobCharacterImage("로봇공학자", 1) };
       if (storedSelectedJobJson) {
         try {
           const parsed = JSON.parse(storedSelectedJobJson);
@@ -231,22 +231,26 @@ export const HomeDashboard: React.FC = () => {
     window.scrollTo({ top: 0, behavior: "smooth" }); // 변경 후 위로 스크롤
   };
 
-  const currentJob = interestedJobs[selectedJobIdx] || { name: "AI 융합 개척자", image: "🤖", category: "탐색 중", imageUrl: ARI_BLOB_URL };
+  const currentJob = interestedJobs[selectedJobIdx] || { name: "로봇공학자", image: "🤖", category: "탐색 중", imageUrl: ARI_BLOB_URL };
   const userName = localStorage.getItem("readycareer_student_name") || (session?.name && session.name.trim() !== "" ? session.name : "신규 꿈 탐구어");
   const userSchool = localStorage.getItem("readycareer_student_school") || (session?.school && session.school.trim() !== "" ? session.school : "창의융합 인공지능 고교");
   const userGrade = parseInt(localStorage.getItem("readycareer_student_grade")?.replace(/[^0-9]/g, "") || "") || session?.grade || 1;
 
-  // 진단 결과 유형 및 캐릭터 아바타 URL 확인
+  // 계급 뱃지 및 동기부여 등급 산출 시스템 (전역 expService 싱크 - 50 XP 간격 레벨업)
+  const currentXP = getCurrentXP();
+  const rankInfo = getRankFromXP(currentXP);
+  const currentLevel = rankInfo.levelNum;
+
+  const nextLevelXP = currentLevel >= 5 ? currentXP : currentLevel * 50;
+  const currentLevelStartXP = (currentLevel - 1) * 50;
+  const progressPercent = currentLevel >= 5 ? 100 : Math.min(100, Math.max(0, Math.round(((currentXP - currentLevelStartXP) / 50) * 100)));
+
+  // 진단 결과 유형 및 캐릭터 아바타 URL 확인 (처음 진입한 유저는 실시간 레벨 1 캐릭터가 표출되도록 확실한 제어)
   const storedRiasec = localStorage.getItem("riasec_result_code") || localStorage.getItem("readycareer_interest_type");
   const displayRiasec = (storedRiasec && storedRiasec !== "미진단") ? storedRiasec : "INNOVATOR";
   const storedCustomAvatar = localStorage.getItem("readycareer_custom_avatar_url");
-  const displayAvatarUrl = storedCustomAvatar || currentJob.imageUrl || ARI_BLOB_URL;
-
-  // 계급 뱃지 및 동기부여 등급 산출 시스템 (전역 expService 싱크)
-  const currentXP = getCurrentXP();
-  const maxXP = 500;
-  const progressPercent = Math.min(100, Math.round((currentXP / maxXP) * 100));
-  const rankInfo = getRankFromXP(currentXP);
+  const dynamicLevelAvatar = getJobCharacterImage(currentJob.name, currentLevel);
+  const displayAvatarUrl = dynamicLevelAvatar !== ARI_BLOB_URL ? dynamicLevelAvatar : (storedCustomAvatar || currentJob.imageUrl || ARI_BLOB_URL);
 
   const rankIcon = rankInfo.levelNum === 5 ? "👑" : rankInfo.levelNum === 4 ? "💎" : rankInfo.levelNum === 3 ? "🥇" : rankInfo.levelNum === 2 ? "🥈" : "🥉";
   const rankBadge = {
@@ -311,66 +315,71 @@ export const HomeDashboard: React.FC = () => {
               </h3>
             </div>
 
-            {/* Vision Statement Box */}
-            <div className="bg-black/35 backdrop-blur-md rounded-2xl p-4 sm:p-5 border border-white/20 space-y-2.5 text-left shadow-inner w-full max-w-full overflow-hidden min-w-0">
-              <div className="flex flex-wrap items-center justify-between gap-2 text-xs font-bold text-purple-200 w-full">
-                <span className="flex items-center gap-1.5 truncate min-w-0">
-                  <Sparkles className="w-3.5 h-3.5 text-amber-300 flex-shrink-0" />
-                  <span className="truncate">나만의 비전 선언문 (Vision Statement)</span>
+            {/* Vision Statement Box (글과 박스 비율 및 품격 있는 프리미엄 쿼트 카드 개선) */}
+            <div className="bg-black/45 backdrop-blur-md rounded-[24px] p-6 sm:p-7 border border-white/25 border-l-[6px] border-l-[#FFB800] space-y-4 text-left shadow-2xl w-full max-w-full overflow-hidden min-w-0 flex flex-col justify-between">
+              <div className="flex flex-wrap items-center justify-between gap-2 text-xs sm:text-sm font-extrabold text-amber-200 w-full pb-2 border-b border-white/10">
+                <span className="flex items-center gap-2 truncate min-w-0">
+                  <Sparkles className="w-4 h-4 text-amber-300 flex-shrink-0 animate-pulse" />
+                  <span className="truncate tracking-wide">나만의 비전 선언문 (Vision Statement)</span>
                 </span>
                 <div className="flex items-center gap-2 flex-shrink-0">
                   <button
                     onClick={handleAiSuggestVision}
                     disabled={isAiLoading}
-                    className="px-2.5 py-1 rounded-lg bg-teal-600 hover:bg-teal-500 text-white font-black text-[11px] transition-all flex items-center gap-1 disabled:opacity-50 cursor-pointer shadow-xs"
+                    className="px-3 py-1.5 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-black text-xs transition-all flex items-center gap-1.5 disabled:opacity-50 cursor-pointer shadow-sm active:scale-95"
                   >
-                    <RefreshCw className={`w-3 h-3 ${isAiLoading ? "animate-spin" : ""}`} />
+                    <RefreshCw className={`w-3.5 h-3.5 ${isAiLoading ? "animate-spin" : ""}`} />
                     <span>AI 추천</span>
                   </button>
                   <button
                     onClick={() => setIsEditingVision(!isEditingVision)}
-                    className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-white transition-colors cursor-pointer shadow-xs"
+                    className="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs transition-colors flex items-center gap-1.5 cursor-pointer shadow-sm"
                     title="직접 수정"
                   >
-                    <Edit2 className="w-3.5 h-3.5" />
+                    <Edit2 className="w-3.5 h-3.5 text-amber-300" />
+                    <span>{isEditingVision ? "수정 취소" : "직접 수정"}</span>
                   </button>
                 </div>
               </div>
               
               {isEditingVision ? (
-                <div className="flex flex-col gap-2.5 mt-1.5 w-full min-w-0">
+                <div className="flex flex-col gap-3.5 mt-1.5 w-full min-w-0">
                   <textarea
                     value={visionStatement}
                     onChange={(e) => setVisionStatement(e.target.value)}
-                    rows={2}
-                    className="w-full max-w-full px-3.5 py-2.5 rounded-xl border border-white/25 bg-black/70 text-xs sm:text-sm font-semibold text-white focus:outline-none focus:border-amber-300 break-words break-keep whitespace-pre-wrap resize-y leading-relaxed shadow-inner"
+                    rows={3}
+                    className="w-full max-w-full p-4 rounded-xl border border-amber-300/50 bg-black/70 text-sm sm:text-base md:text-lg font-bold text-white focus:outline-none focus:border-amber-300 break-words break-keep whitespace-pre-wrap resize-y leading-relaxed shadow-inner"
                     placeholder="나만의 진로 비전을 자유롭게 서술해보세요!"
                   />
                   <div className="flex justify-end w-full">
                     <button 
                       onClick={handleSaveVision} 
-                      className="px-5 py-2 bg-gradient-to-r from-amber-300 via-teal-300 to-white text-[#111111] hover:brightness-105 rounded-xl text-xs font-black shadow-md cursor-pointer transition-transform active:scale-95 flex items-center gap-1"
+                      className="px-6 py-2.5 bg-gradient-to-r from-amber-300 via-teal-300 to-white text-[#111111] hover:brightness-105 rounded-xl text-xs sm:text-sm font-black shadow-lg cursor-pointer transition-transform active:scale-95 flex items-center gap-1.5"
                     >
-                      <span>비전 저장하기</span>
-                      <strong className="text-sm leading-none">✓</strong>
+                      <span>비전 저장 및 장착하기</span>
+                      <strong className="text-base leading-none">✓</strong>
                     </button>
                   </div>
                 </div>
               ) : (
-                <p className="text-xs sm:text-sm md:text-base font-black text-white italic leading-relaxed break-words break-keep whitespace-pre-wrap w-full overflow-hidden">
-                  "{visionStatement}"
-                </p>
+                <div className="py-2.5 px-1">
+                  <p className="text-base sm:text-lg md:text-xl font-extrabold text-white leading-relaxed sm:leading-9 break-words break-keep whitespace-pre-wrap w-full overflow-hidden tracking-wide">
+                    "{visionStatement}"
+                  </p>
+                </div>
               )}
             </div>
 
             {/* XP Bar */}
-            <div className="space-y-1.5 pt-1">
-              <div className="flex justify-between text-xs font-extrabold text-purple-100">
-                <span>성장 마일리지 ({rankBadge.title})</span>
-                <span className="text-amber-300 font-black">{currentXP} / {maxXP} XP ({progressPercent}%)</span>
+            <div className="space-y-2 pt-2">
+              <div className="flex justify-between text-xs sm:text-sm font-black text-purple-100">
+                <span>⚡ 성장 마일리지 ({rankBadge.title})</span>
+                <span className="text-amber-300 font-black">
+                  {currentLevel >= 5 ? `${currentXP} XP (최상위 마스터 달성!)` : `${currentXP} / ${nextLevelXP} XP (다음 레벨까지 ${nextLevelXP - currentXP} XP)`} ({progressPercent}%)
+                </span>
               </div>
-              <div className="h-2.5 w-full bg-black/40 rounded-full overflow-hidden border border-white/20">
-                <div className="h-full bg-gradient-to-r from-amber-300 via-teal-300 to-white rounded-full transition-all duration-700" style={{ width: `${progressPercent}%` }} />
+              <div className="h-3 w-full bg-black/40 rounded-full overflow-hidden border border-white/20 p-0.5">
+                <div className="h-full bg-gradient-to-r from-amber-300 via-teal-300 to-white rounded-full transition-all duration-700 shadow-sm" style={{ width: `${progressPercent}%` }} />
               </div>
             </div>
           </div>
@@ -711,9 +720,9 @@ export const HomeDashboard: React.FC = () => {
                         <span className="text-xs font-bold text-slate-600">{item.badge}</span>
                       </div>
                       <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-white p-3 border border-slate-100 flex items-center justify-center my-2 group-hover:scale-105 transition-transform shadow-xs">
-                        <img src={interestedJobs[jobIntroModalIdx].imageUrl || ARI_BLOB_URL} alt="Ari" className="w-full h-full object-contain filter drop-shadow-xs" />
+                        <img src={getJobCharacterImage(interestedJobs[jobIntroModalIdx].name, i + 1)} alt="Ari Stage" className="w-full h-full object-contain filter drop-shadow-xs" />
                       </div>
-                      <strong className="text-xs font-black text-[#1F193B] text-center w-full bg-white rounded-xl py-2 border border-slate-200/80 shadow-xs truncate">{item.name}</strong>
+                      <strong className="text-xs font-black text-[#1F193B] text-center w-full bg-white rounded-xl py-2 px-1 border border-slate-200/80 shadow-xs truncate">{getJobCharacterTitle(interestedJobs[jobIntroModalIdx].name, i + 1, item.name)}</strong>
                     </div>
                   ))}
                 </div>
