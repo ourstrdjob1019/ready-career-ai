@@ -271,7 +271,7 @@ export const HomeDashboard: React.FC = () => {
         <div className="flex flex-wrap items-center gap-2 mb-1">
           <span className="text-xs font-extrabold bg-slate-100 text-slate-800 px-3.5 py-1 rounded-full border border-slate-200 flex items-center gap-1.5">
             <Star className="w-3.5 h-3.5 text-purple-600 fill-purple-600" />
-            <span>선택 직업: {currentJob.name}</span>
+            <span>선택 직업: {getJobCharacterTitle(currentJob.name, currentLevel)}</span>
           </span>
           <span className="text-xs font-black px-3.5 py-1 rounded-full border border-purple-300 bg-[#5328E0] text-amber-300 shadow-2xs">
             {rankBadge.classBadge}
@@ -311,7 +311,7 @@ export const HomeDashboard: React.FC = () => {
                 🎯 MY PRIMARY TARGET JOB
               </span>
               <h3 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-none">
-                {currentJob.name}
+                {getJobCharacterTitle(currentJob.name, currentLevel)}
               </h3>
             </div>
 
@@ -683,7 +683,7 @@ export const HomeDashboard: React.FC = () => {
                     ⚡ 2026 맞춤 진로 탐험 스위칭
                   </span>
                   <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
-                    <span className="text-amber-300">{interestedJobs[jobIntroModalIdx].name}</span> <br className="hidden sm:block"/>
+                    <span className="text-amber-300">{getJobCharacterTitle(interestedJobs[jobIntroModalIdx].name, currentLevel)}</span> <br className="hidden sm:block"/>
                     진화 레벨업 로드맵
                   </h2>
                   <p className="text-xs sm:text-sm font-medium text-purple-100">

@@ -55,7 +55,7 @@ export const JOB_VENGERS_LIST: JobVengerItem[] = JOB_CHARACTER_MASTER_LIST.map((
   const lv1Image = item.levels.find(l => l.level === 1)?.imageUrl || item.defaultImageUrl;
   return {
     id: index + 1,
-    title: item.jobName,
+    title: item.jobName.replace(/\s*\(.*\)/, '').replace(/\s+/g, ''),
     category: item.category,
     imageUrl: lv1Image || ARI_BLOB_URL,
     bgGradient: gradients[index % gradients.length],

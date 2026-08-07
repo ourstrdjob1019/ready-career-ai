@@ -339,7 +339,7 @@ export const OnboardingTestFlow: React.FC = () => {
                     ✨ AI 맞춤 추천 랭크 캐릭터 · {selectedJob.category}
                   </span>
                   <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
-                    <span className="text-amber-300">{selectedJob.title}</span> <br className="hidden sm:block"/>
+                    <span className="text-amber-300">{getJobCharacterTitle(selectedJob.title, 1)}</span> <br className="hidden sm:block"/>
                     5단계 진화 로드맵
                   </h2>
                 </div>
