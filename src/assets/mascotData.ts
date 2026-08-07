@@ -89,12 +89,23 @@ export function getJobCharacterTitle(jobName?: string, level: number = 1, fallba
             item.jobName.replace(/\s+/g, '').toLowerCase().includes(norm)
   );
   if (!matched) return fallbackRankName;
+  
   const validLevel = Math.max(1, Math.min(5, level));
-  const levelObj = matched.levels.find(l => l.level === validLevel);
-  if (levelObj?.name) {
-    return levelObj.name.replace(/^[0-9.]+\s*/, '').trim();
-  }
-  return fallbackRankName;
+  
+  // 등급 매핑 (1~5레벨)
+  const rankMap: Record<number, string> = {
+    1: "브론즈",
+    2: "실버",
+    3: "골드",
+    4: "다이아",
+    5: "마스터"
+  };
+  const rankPrefix = rankMap[validLevel] || "브론즈";
+  
+  // 직업명 정제: 괄호 안의 이름(예: (아리), (토리))과 공백을 모두 제거하여 순수 직업명만 추출
+  const cleanJobName = matched.jobName.replace(/\s*\(.*\)/, '').replace(/\s+/g, '');
+  
+  return `${rankPrefix}${cleanJobName}`;
 }
 
 
