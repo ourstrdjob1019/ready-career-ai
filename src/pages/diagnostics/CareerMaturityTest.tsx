@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { rewardXP } from "../../services/expService";
 import { JOB_CHARACTER_MASTER_LIST } from "../../assets/jobCharacterData";
 import { CAREER_QUESTIONS, CAREER_DOMAINS, CAREER_LEVELS, CAREER_ORDER, CAREER_GROUPS } from "../../data/careerMaturityData";
 
@@ -114,6 +115,7 @@ export const CareerMaturityTest: React.FC = () => {
             return t;
           });
           localStorage.setItem("readycareer_6_diagnostics_v1", JSON.stringify(tests));
+          rewardXP(50, "[진로성숙도 프로파일] 진단 완료!");
         } catch (e) {}
       }
     }, 1500);

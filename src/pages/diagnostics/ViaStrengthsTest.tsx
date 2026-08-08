@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { rewardXP } from "../../services/expService";
 import { JOB_CHARACTER_MASTER_LIST } from "../../assets/jobCharacterData";
 import { VIA_QUESTIONS, VIA_VDESC, VIA_VORDER } from "../../data/viaStrengthsData";
 
@@ -112,6 +113,7 @@ export const ViaStrengthsTest: React.FC = () => {
             return t;
           });
           localStorage.setItem("readycareer_6_diagnostics_v1", JSON.stringify(tests));
+          rewardXP(50, "[VIA 성격강점] 진단 완료!");
         } catch (e) {}
       }
     }, 1500);

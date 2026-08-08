@@ -210,7 +210,7 @@ export const SelfUnderstanding: React.FC = () => {
       {/* =========================================================================
           SECTION 1: HERO TITLE (6대 자기이해 진단 센터)
          ========================================================================= */}
-      <div className="rounded-[36px] bg-gradient-to-r from-[#2B0E68] via-[#5A24CA] to-[#008A90] text-white p-8 sm:p-12 shadow-[0_20px_60px_rgba(90,36,202,0.3)] border-4 border-white/30 flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden">
+      <div className="rounded-[36px] bg-gradient-to-r from-[#2B0E68] via-[#5A24CA] to-[#008A90] text-white p-8 sm:p-12 shadow-[0_20px_60px_rgba(90,36,202,0.3)] border-4 border-white/30 flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden print:hidden">
         <div className="space-y-4 max-w-2xl z-10 text-center sm:text-left">
           <span className="text-xs font-black bg-[#FF3B7C] text-white px-4 py-1.5 rounded-full inline-flex items-center gap-1.5 shadow-md">
             <Brain className="w-4 h-4 text-amber-200" />
@@ -243,7 +243,7 @@ export const SelfUnderstanding: React.FC = () => {
       {/* =========================================================================
           SECTION 2: 6대 진단검사 모음 그리드 카드
          ========================================================================= */}
-      <div className="space-y-6">
+      <div className="space-y-6 print:hidden">
         <div className="border-b-2 border-purple-150 pb-4 pl-2">
           <h2 className="text-2xl sm:text-3xl font-headline font-black text-[#1A1626] flex items-center gap-2.5">
             <Sparkles className="w-7 h-7 text-[#7B5CF0]" />
@@ -351,7 +351,7 @@ export const SelfUnderstanding: React.FC = () => {
          ========================================================================= */}
       {activeReportTest && (
         <div className="fixed inset-0 z-50 bg-black/65 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 animate-fadeIn">
-          <div className="bg-white w-full max-w-4xl rounded-[44px] p-8 sm:p-14 shadow-[0_30px_90px_rgba(0,0,0,0.6)] border-4 border-purple-200 relative max-h-[92vh] overflow-y-auto space-y-9 selection:bg-[#008A90]/20">
+          <div className="bg-white w-full max-w-4xl rounded-[44px] p-8 sm:p-14 shadow-[0_30px_90px_rgba(0,0,0,0.6)] border-4 border-purple-200 relative max-h-[92vh] overflow-y-auto space-y-9 selection:bg-[#008A90]/20 modal-print-area">
             
             {/* 상단 모달 닫기 */}
             <button

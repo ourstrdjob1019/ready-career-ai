@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { rewardXP } from "../../services/expService";
 import { JOB_CHARACTER_MASTER_LIST } from "../../assets/jobCharacterData";
 import { RESILIENCE_QUESTIONS, RESILIENCE_DOMAINS, RESILIENCE_LEVELS, RESILIENCE_ORDER } from "../../data/resilienceData";
 
@@ -106,6 +107,7 @@ export const ResilienceTest: React.FC = () => {
             return t;
           });
           localStorage.setItem("readycareer_6_diagnostics_v1", JSON.stringify(tests));
+          rewardXP(50, "[회복탄력성 프로파일] 진단 완료!");
         } catch (e) {}
       }
     }, 1500);

@@ -5,3 +5,36 @@
   margin: 0;
   padding: 0;
 }
+
+@media print {
+  /* Hide unnecessary elements during print */
+  nav, header, footer, button, .print\:hidden {
+    display: none !important;
+  }
+  
+  /* Reset background and remove shadows */
+  body, .modal-print-area, .bg-white {
+    background: transparent !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+  
+  /* Modal area takes up full page */
+  .modal-print-area {
+    position: absolute;
+    left: 0;
+    top: 0;
+    margin: 0;
+    padding: 0;
+    min-width: 100%;
+    min-height: 100%;
+    overflow: visible;
+  }
+
+  /* Force background colors and gradients to print */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}

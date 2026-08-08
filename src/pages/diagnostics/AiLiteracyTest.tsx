@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { rewardXP } from "../../services/expService";
 import { JOB_CHARACTER_MASTER_LIST } from "../../assets/jobCharacterData";
 import { AI_QUESTIONS, AI_DOMAINS, AI_PAIRS, AI_ORDER } from "../../data/aiLiteracyData";
 
@@ -132,6 +133,7 @@ export const AiLiteracyTest: React.FC = () => {
             return t;
           });
           localStorage.setItem("readycareer_6_diagnostics_v1", JSON.stringify(tests));
+          rewardXP(50, "[AI 디지털 리터러시 진단] 진단 완료!");
         } catch (e) {}
       }
     }, 1500);

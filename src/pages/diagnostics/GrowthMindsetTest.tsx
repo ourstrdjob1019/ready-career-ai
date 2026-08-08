@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { rewardXP } from "../../services/expService";
 import { JOB_CHARACTER_MASTER_LIST } from "../../assets/jobCharacterData";
 import { GM_QUESTIONS, GM_DOMAINS, GM_LEVELS, GM_ORDER } from "../../data/growthMindsetData";
 
@@ -107,6 +108,7 @@ export const GrowthMindsetTest: React.FC = () => {
             return t;
           });
           localStorage.setItem("readycareer_6_diagnostics_v1", JSON.stringify(tests));
+          rewardXP(50, "[성장 마인드셋 프로파일] 진단 완료!");
         } catch (e) {}
       }
     }, 1500);

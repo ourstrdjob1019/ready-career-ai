@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { rewardXP } from "../../services/expService";
 import { JOB_CHARACTER_MASTER_LIST } from "../../assets/jobCharacterData";
 import { MI_QUESTIONS, MI_TYPES, MI_COMBOS, MI_ORDER } from "../../data/multipleIntelligencesData";
 
@@ -108,6 +109,7 @@ export const MultipleIntelligencesTest: React.FC = () => {
             return t;
           });
           localStorage.setItem("readycareer_6_diagnostics_v1", JSON.stringify(tests));
+          rewardXP(50, "[다중지능 강점 프로파일] 진단 완료!");
         } catch (e) {}
       }
     }, 1500);
