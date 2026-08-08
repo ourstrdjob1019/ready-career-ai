@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>레디커리어 AI 다중지능 강점 프로파일</title>
+<style>
+:root{
+  --primary:#6355D6; --primary-dark:#4e43b9; --primary-soft:#F1EFFF;
+  --ink:#22252b; --muted:#6b7280; --line:#e8e8ee; --bg:#f5f6f8; --card:#fff;
+  --shadow:0 12px 34px rgba(35,36,50,.08);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:Pretendard,-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans KR",Arial,sans-serif}
+body{min-height:100vh}
+button,input{font:inherit} button{cursor:pointer}
+.app{min-height:100vh;display:flex;flex-direction:column}
+.header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.96);border-bottom:1px solid #efeff4;backdrop-filter:blur(8px)}
+.header-inner{width:min(100%,560px);margin:0 auto;padding:13px 18px;display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;gap:10px;align-items:center;font-weight:850;font-size:18px}
+.brand-mark{width:34px;height:34px;border-radius:12px;background:var(--primary-soft);display:grid;place-items:center;color:var(--primary);font-size:18px}
+.progress-wrap{font-size:12px;color:var(--muted);font-weight:750;min-width:54px;text-align:right}
+.progress-line{height:3px;background:#ececf2}.progress-bar{height:100%;width:0;background:var(--primary);transition:.25s}
+.main{width:min(100%,560px);margin:0 auto;padding:18px 16px 44px;flex:1}
+.screen{display:none}.screen.active{display:block}.center{min-height:calc(100vh - 110px);display:none;align-items:center;justify-content:center}.center.active{display:flex}
+.hero{background:#fff;border:1px solid #eceafa;border-radius:28px;padding:32px 25px;box-shadow:var(--shadow);text-align:center}
+.hero-icon{width:74px;height:74px;margin:0 auto 20px;border-radius:24px;background:var(--primary-soft);display:grid;place-items:center;font-size:35px}
+.eyebrow{font-size:12px;letter-spacing:.06em;color:var(--primary);font-weight:900;margin-bottom:9px}
+h1,h2,h3,p{margin:0}.hero h1{font-size:29px;letter-spacing:-.04em;line-height:1.22;margin-bottom:13px}.hero p{font-size:15px;color:#61646e;line-height:1.75}
+.hero-note{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:24px 0 22px}
+.mini{padding:11px 6px;border-radius:15px;background:#fafafe;border:1px solid #efeff6;font-size:12px;color:#60636c}.mini b{display:block;font-size:15px;color:#343640;margin-bottom:3px}
+.primary-btn{width:100%;border:0;border-radius:16px;background:var(--primary);color:#fff;padding:16px 18px;font-size:15px;font-weight:850;box-shadow:0 10px 22px rgba(99,85,214,.23)}
+.primary-btn:hover{background:var(--primary-dark)}
+.info{margin-top:14px;font-size:11px!important;line-height:1.55!important;color:#9699a3!important}
+.quiz-head{display:flex;justify-content:space-between;align-items:end;margin:4px 2px 14px}.quiz-head h2{font-size:21px}.quiz-head p{font-size:12px;color:var(--muted)}
+.questions{display:grid;gap:12px}
+.question-card{background:#fff;border:1px solid #ececf1;border-radius:21px;padding:19px;box-shadow:0 4px 14px rgba(40,42,55,.035)}
+.q-no{font-size:11px;color:var(--primary);font-weight:900;margin-bottom:8px}.q-text{font-size:15px;font-weight:700;line-height:1.55;letter-spacing:-.015em}
+.scale{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin-top:16px}.scale label{display:block}.scale input{position:absolute;opacity:0;pointer-events:none}.scale-box{height:43px;border:1px solid #dddde6;border-radius:11px;display:grid;place-items:center;font-size:13px;font-weight:850;color:#72757e;transition:.15s}
+.scale input:checked + .scale-box{background:var(--primary);border-color:var(--primary);color:#fff;box-shadow:0 5px 13px rgba(99,85,214,.2)}
+.scale-caption{display:flex;justify-content:space-between;margin-top:7px;color:#a0a2aa;font-size:10px}
+.nav{display:flex;gap:10px;margin-top:17px}.nav button{border:0;border-radius:14px;padding:13px 18px;font-weight:800}.prev{background:#e9e9ee;color:#585b64}.next{background:var(--primary);color:#fff;margin-left:auto;min-width:94px}
+.loader{text-align:center;padding:34px 20px}.loader-icon{font-size:42px;margin-bottom:16px}.loader h2{font-size:22px;margin-bottom:9px}.loader p{font-size:14px;color:var(--muted);line-height:1.65}.dots{display:flex;justify-content:center;gap:7px;margin-top:25px}.dots i{width:8px;height:8px;border-radius:50%;background:var(--primary);animation:blink 1s infinite alternate}.dots i:nth-child(2){animation-delay:.2s}.dots i:nth-child(3){animation-delay:.4s}@keyframes blink{to{opacity:.18;transform:translateY(-3px)}}
+.result{display:grid;gap:14px}
+.result-hero{background:#fff;border:1px solid #e8e5ff;border-radius:26px;padding:25px;box-shadow:var(--shadow)}
+.result-code{display:inline-flex;background:var(--primary-soft);color:var(--primary);border-radius:999px;padding:7px 11px;font-size:12px;font-weight:900;margin-bottom:13px}
+.result-hero h2{font-size:28px;letter-spacing:-.045em;margin-bottom:10px}.result-summary{font-size:15px;color:#5e616b;line-height:1.72}
+.top3{display:grid;grid-template-columns:1.12fr 1fr 1fr;gap:9px;margin-top:20px;align-items:stretch}
+.rank-card{border:1px solid #ececf4;border-radius:18px;padding:14px 12px;background:#fbfbfd}.rank-card.first{background:var(--primary-soft);border-color:#ddd8ff}.medal{font-size:19px}.rank-title{font-size:13px;font-weight:900;margin-top:7px}.rank-score{font-size:25px;font-weight:950;color:var(--primary);margin-top:4px}.rank-desc{font-size:10px;color:#747781;line-height:1.45;margin-top:5px}
+.card{background:#fff;border:1px solid #ececf1;border-radius:22px;padding:21px;box-shadow:0 4px 14px rgba(40,42,55,.035)}
+.card.highlight{border-color:#ded9ff;background:#fcfbff}.card-title{font-size:15px;font-weight:900;margin-bottom:15px;display:flex;align-items:center;gap:8px}.dot{width:8px;height:8px;border-radius:50%;background:var(--primary)}
+.score-note{font-size:11px;color:#92949d;line-height:1.5;margin:-6px 0 13px}.score-row{display:grid;grid-template-columns:108px 1fr 42px;gap:9px;align-items:center;margin:11px 0}.score-name{font-size:12px;font-weight:800}.track{height:9px;background:#f0f0f4;border-radius:99px;overflow:hidden}.fill{height:100%;background:linear-gradient(90deg,#8e82eb,var(--primary));border-radius:99px}.score-num{text-align:right;font-size:11px;color:#666a74;font-weight:800}
+.combo-box{display:grid;grid-template-columns:1fr auto 1fr;gap:9px;align-items:center;margin-bottom:15px}.combo-one{padding:14px;border-radius:17px;background:#fafafe;border:1px solid #eeeef5}.combo-icon{font-size:22px}.combo-name{font-size:13px;font-weight:900;margin-top:6px}.combo-small{font-size:10px;color:#7a7d86;margin-top:3px;line-height:1.4}.plus{font-size:18px;color:#aaa}
+.body-copy{font-size:14px;color:#565962;line-height:1.75}.bullets{display:grid;gap:10px}.bullet{display:flex;gap:9px;align-items:flex-start;background:#fafafe;border-radius:14px;padding:12px 13px;font-size:13px;line-height:1.55}.bullet b{color:var(--primary)}
+.third-box{display:flex;gap:13px;align-items:flex-start;background:#f8f8fb;border-radius:17px;padding:15px}.third-icon{font-size:28px}.third-title{font-size:14px;font-weight:900;margin-bottom:5px}.third-copy{font-size:12px;color:#63666f;line-height:1.6}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px}.chip{background:var(--primary-soft);color:#5146bb;border-radius:999px;padding:7px 10px;font-size:11px;font-weight:850}
+.career-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.career{border:1px solid #ececf2;border-radius:13px;padding:11px;font-size:12px;font-weight:750;background:#fafafa}
+.mission{background:linear-gradient(135deg,#6256d7,#7a6ee2);color:#fff;border:0}.mission .card-title{margin-bottom:8px}.mission p{font-size:14px;line-height:1.65}
+.disclaimer{font-size:10px;color:#9699a3;line-height:1.65;padding:3px 5px 0}
+.restart{border:0;background:#e9e9ee;color:#5b5e67;padding:14px;border-radius:15px;font-size:13px;font-weight:850}
+.toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,15px);background:#292b31;color:#fff;padding:11px 15px;border-radius:12px;font-size:12px;opacity:0;pointer-events:none;transition:.2s;z-index:40}.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:430px){.main{padding-left:12px;padding-right:12px}.hero{padding:28px 20px}.hero h1{font-size:26px}.top3{grid-template-columns:1fr}.rank-card{display:grid;grid-template-columns:32px 1fr auto;column-gap:8px;align-items:center}.rank-title,.rank-score,.rank-desc{margin-top:0}.rank-desc{grid-column:2/4}.score-row{grid-template-columns:94px 1fr 38px}.result-hero h2{font-size:25px}.career-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="header">
+    <div class="header-inner">
+      <div class="brand"><div class="brand-mark">✦</div><span>레디커리어</span></div>
+      <div id="progressText" class="progress-wrap"></div>
+    </div>
+    <div class="progress-line"><div id="progressBar" class="progress-bar"></div></div>
+  </header>
+
+  <main class="main">
+    <section id="intro" class="screen center active">
+      <div class="hero">
+        <div class="hero-icon">🧠</div>
+        <div class="eyebrow">AI MULTIPLE INTELLIGENCES PROFILE</div>
+        <h1>나에게 잘 드러나는<br>강점은 무엇일까?</h1>
+        <p>사람마다 강점이 나타나는 방식은 달라요.<br>8가지 영역을 살펴보고 나만의 강점 조합을 찾아보세요.</p>
+        <div class="hero-note">
+          <div class="mini"><b>32문항</b>간단한 자기보고</div>
+          <div class="mini"><b>TOP 3</b>대표 강점 확인</div>
+          <div class="mini"><b>8가지</b>전체 프로파일</div>
+        </div>
+        <button class="primary-btn" onclick="startQuiz()">강점 프로파일 시작하기</button>
+        <p class="info">약 3~4분 · 정답은 없습니다. 평소 내 모습과 가장 가까운 정도를 골라주세요.</p>
+      </div>
+    </section>
+
+    <section id="quiz" class="screen">
+      <div class="quiz-head"><div><div class="eyebrow">MY STRENGTH PROFILE</div><h2>평소 내 모습은?</h2></div><p>1 전혀 아니다 · 5 매우 그렇다</p></div>
+      <div id="questions" class="questions"></div>
+      <div class="nav"><button id="prevBtn" class="prev" onclick="prevPage()">이전</button><button id="nextBtn" class="next" onclick="nextPage()">다음</button></div>
+    </section>
+
+    <section id="loading" class="screen center">
+      <div class="loader">
+        <div class="loader-icon">✨</div>
+        <h2>나의 강점 조합을 찾고 있어요</h2>
+        <p>32개의 응답을 비교해<br>8개 영역의 프로파일과 TOP3를 정리하고 있습니다.</p>
+        <div class="dots"><i></i><i></i><i></i></div>
+      </div>
+    </section>
+
+    <section id="result" class="screen">
+      <div id="resultContent" class="result"></div>
+    </section>
+  </main>
+</div>
+<div id="toast" class="toast">현재 페이지의 모든 문항에 답해주세요.</div>
+
+<script>
+const TYPES = {
+ LIN:{name:'언어',icon:'💬',desc:'말과 글로 생각을 이해하고 표현하기',extra:'읽고 쓰고 설명하면서 생각을 정리하는 힘',use:'배운 내용을 내 말로 3문장으로 설명해보세요.'},
+ LOG:{name:'논리·수학',icon:'🧩',desc:'규칙과 원인을 찾아 문제를 해결하기',extra:'패턴과 관계를 찾아 단계적으로 문제를 풀어가는 힘',use:'복잡한 문제를 원인 → 과정 → 결과로 나눠보세요.'},
+ SPA:{name:'공간',icon:'🗺️',desc:'이미지와 공간 관계를 떠올리고 구성하기',extra:'모양·위치·구조를 머릿속으로 그려보는 힘',use:'내용을 그림, 도식, 마인드맵으로 바꿔보세요.'},
+ MUS:{name:'음악',icon:'🎵',desc:'소리와 리듬의 패턴을 알아차리고 표현하기',extra:'리듬·음색·멜로디의 차이를 민감하게 느끼는 힘',use:'외워야 할 내용을 짧은 리듬이나 말장단으로 만들어보세요.'},
+ BOD:{name:'신체·운동',icon:'🏃',desc:'몸과 손을 활용해 익히고 표현하기',extra:'움직임과 손의 조절을 통해 실제 행동으로 옮기는 힘',use:'설명만 보지 말고 직접 움직이거나 만들어보는 활동을 해보세요.'},
+ PER:{name:'대인관계',icon:'🤝',desc:'사람의 반응을 읽고 관계 속에서 협력하기',extra:'사람의 감정과 분위기를 이해하고 함께 움직이는 힘',use:'친구에게 설명하거나 함께 의견을 나누며 이해를 확인해보세요.'},
+ INTRA:{name:'자기이해',icon:'🪞',desc:'내 감정과 생각을 알아차리고 방향을 정하기',extra:'내 상태와 목표를 돌아보고 스스로 조절하는 힘',use:'오늘 잘된 점 1개와 바꿔볼 점 1개를 짧게 기록해보세요.'},
+ NAT:{name:'자연탐구',icon:'🌿',desc:'주변의 특징을 관찰하고 분류하며 패턴 찾기',extra:'생물·환경·사물의 차이와 공통점을 세밀하게 보는 힘',use:'배운 내용을 종류별로 분류하고 공통점과 차이점을 찾아보세요.'}
+};
+const ORDER=['LIN','LOG','SPA','MUS','BOD','PER','INTRA','NAT'];
+
+const QUESTIONS = [
+ {t:'LIN',q:'내 생각을 말이나 글로 설명하면 머릿속이 더 잘 정리되는 편이다.'},
+ {t:'LOG',q:'복잡한 문제가 나오면 규칙이나 원인을 하나씩 찾아보는 과정이 재미있다.'},
+ {t:'SPA',q:'길이나 장소를 설명할 때 말보다 위치나 그림을 떠올리는 편이다.'},
+ {t:'MUS',q:'노래를 들으면 멜로디나 리듬의 변화가 비교적 잘 들리는 편이다.'},
+ {t:'BOD',q:'설명만 듣는 것보다 직접 해보거나 움직이면서 익히는 것이 편하다.'},
+ {t:'PER',q:'친구들의 표정이나 말투를 보면 분위기가 어떤지 비교적 빨리 알아차린다.'},
+ {t:'INTRA',q:'내가 지금 왜 기분이 좋은지 또는 불편한지 생각해보는 편이다.'},
+ {t:'NAT',q:'동물, 식물, 날씨, 환경처럼 자연에서 일어나는 변화에 관심이 있는 편이다.'},
+
+ {t:'LIN',q:'책, 기사, 영상 등을 본 뒤 핵심 내용을 내 말로 요약하는 편이다.'},
+ {t:'LOG',q:'숫자나 자료를 보면 어떤 패턴이나 관계가 있는지 살펴보는 편이다.'},
+ {t:'SPA',q:'방이나 물건을 배치할 때 전체 모양과 균형을 머릿속으로 그려보는 편이다.'},
+ {t:'MUS',q:'한 번 들은 노래의 리듬이나 후렴구를 비교적 잘 기억하는 편이다.'},
+ {t:'BOD',q:'운동이나 새로운 동작을 직접 따라 해보면서 빠르게 익히는 편이다.'},
+ {t:'PER',q:'모둠활동에서 서로 의견이 다를 때 중간에서 정리하거나 맞춰주는 편이다.'},
+ {t:'INTRA',q:'내가 잘하는 것과 어려워하는 것이 무엇인지 비교적 잘 알고 있다.'},
+ {t:'NAT',q:'비슷해 보이는 동식물이나 사물도 특징을 비교해 구분하는 것이 재미있다.'},
+
+ {t:'LIN',q:'새로운 단어나 표현을 배우고 적절한 말로 바꿔 표현하는 일이 재미있다.'},
+ {t:'LOG',q:'어떤 일이 벌어지면 “왜 이런 결과가 나왔지?”라고 원인을 생각하는 편이다.'},
+ {t:'SPA',q:'글로만 된 설명보다 그림, 도표, 지도 같은 시각 자료가 있으면 구조가 잘 보인다.'},
+ {t:'MUS',q:'박자나 음정이 어긋나면 비교적 쉽게 알아차리는 편이다.'},
+ {t:'BOD',q:'손으로 조립하거나 만들거나 도구를 다루는 활동에 집중이 잘 되는 편이다.'},
+ {t:'PER',q:'친구가 힘들어 보이면 어떤 도움이 필요할지 생각하게 되는 편이다.'},
+ {t:'INTRA',q:'목표를 세울 때 남들이 원하는 것보다 내가 원하는 이유를 생각하는 편이다.'},
+ {t:'NAT',q:'주변 환경이나 계절이 바뀌면서 달라지는 작은 변화를 잘 발견하는 편이다.'},
+
+ {t:'LIN',q:'발표나 대화를 준비할 때 어떤 순서로 말할지 구성하는 것이 어렵지 않다.'},
+ {t:'LOG',q:'여러 선택지가 있으면 장단점을 비교해 가장 합리적인 방법을 찾으려 한다.'},
+ {t:'SPA',q:'머릿속으로 모양을 돌려보거나 완성된 모습을 상상하는 것이 어렵지 않다.'},
+ {t:'MUS',q:'소리나 리듬을 이용해 분위기나 감정을 표현해보는 활동이 재미있다.'},
+ {t:'BOD',q:'오랫동안 가만히 듣기보다 직접 참여하는 활동에서 집중력이 더 잘 살아난다.'},
+ {t:'PER',q:'사람마다 말하는 방식이 다르면 그 사람에게 맞춰 설명하는 편이다.'},
+ {t:'INTRA',q:'일이 잘 안 됐을 때 내 행동을 돌아보고 다음에는 어떻게 할지 생각하는 편이다.'},
+ {t:'NAT',q:'여러 정보를 비슷한 것끼리 묶고 종류를 나누는 활동이 잘 맞는 편이다.'}
+];
+
+const COMBOS = {
+ 'LIN|LOG':{title:'말로 푸는 전략가',summary:'생각을 언어로 정리하는 힘과 논리적으로 구조를 잡는 힘이 함께 두드러지는 조합이에요.',traits:['복잡한 내용을 이해하면 다른 사람에게 순서대로 설명하고 싶어요.','토론할 때 감으로 말하기보다 이유와 근거를 붙이는 편이에요.','글이나 발표를 만들 때 내용의 흐름과 논리가 중요하게 느껴져요.'],strength:'어려운 내용을 구조화해서 이해하고, 그 생각을 다른 사람이 알아들을 수 있게 표현하는 힘이 강점이에요.',caution:'논리가 맞는지에 집중하다 보면 상대의 감정이나 자유로운 아이디어를 빠르게 판단할 수 있어요. 정답을 말하기 전에 다른 관점도 한 번 들어보세요.',use:'공부할 때 개념을 “왜 그런지” 먼저 정리한 뒤 친구에게 설명하듯 말해보세요.',scenes:['설명하기','토론하기','분석하기','글쓰기','발표하기'],fields:['교육','법·정책','기획','데이터','콘텐츠'],careers:['교사','변호사','정책기획자','데이터 스토리텔러','콘텐츠 기획자','연구원'],mission:'관심 주제 하나를 골라 “결론 1문장 + 이유 2개”로 설명해보세요.'},
+ 'LIN|SPA':{title:'스토리 비주얼라이저',summary:'말과 글로 표현하는 힘에 이미지와 공간을 떠올리는 힘이 더해진 조합이에요.',traits:['설명할 때 예시나 그림이 있으면 표현이 더 잘 되는 편이에요.','이야기를 들으면 장면이 머릿속에 떠오르는 편이에요.','자료를 만들 때 내용뿐 아니라 배치와 보이는 방식도 중요해요.'],strength:'추상적인 생각을 이야기와 이미지로 바꾸어 사람들에게 쉽게 전달할 수 있는 힘이 있어요.',caution:'표현을 예쁘게 만드는 데 집중하다 보면 핵심 메시지가 흐려질 수 있어요. 가장 먼저 전달할 한 문장을 정하고 시각화를 붙여보세요.',use:'배운 내용을 한 장짜리 인포그래픽이나 그림 요약으로 바꿔보세요.',scenes:['스토리텔링','시각화','발표자료','영상구성','브랜딩'],fields:['미디어','디자인','콘텐츠','광고','교육'],careers:['영상기획자','UX라이터','광고기획자','콘텐츠 디자이너','교사','브랜드 기획자'],mission:'오늘 배운 내용을 그림 3개와 문장 3개로 요약해보세요.'},
+ 'LIN|MUS':{title:'리듬 스토리텔러',summary:'언어 표현과 소리·리듬 감각이 함께 살아나는 조합이에요.',traits:['가사나 말의 리듬이 어색하면 눈에 띄는 편이에요.','노래나 소리에 메시지를 담는 활동이 재미있어요.','말할 때 분위기와 톤을 자연스럽게 조절하는 편이에요.'],strength:'단어의 의미와 소리의 느낌을 함께 활용해 메시지를 기억에 남게 만드는 힘이 있어요.',caution:'느낌이 좋은 표현에 집중하면 내용의 정확성이 약해질 수 있어요. 표현을 만든 뒤 핵심 사실이 빠지지 않았는지 한 번 확인해보세요.',use:'외워야 할 내용을 짧은 문장이나 리듬으로 만들어 반복해보세요.',scenes:['가사쓰기','낭독','방송','작곡','콘텐츠제작'],fields:['음악','미디어','공연','광고','언어'],careers:['작사가','방송작가','성우','음악 콘텐츠 기획자','광고 카피라이터','공연기획자'],mission:'오늘 기억하고 싶은 문장을 15초짜리 리듬이나 짧은 가사로 만들어보세요.'},
+ 'LIN|BOD':{title:'표현형 퍼포머',summary:'말로 표현하는 힘과 몸으로 직접 보여주는 힘이 함께 두드러지는 조합이에요.',traits:['말만 하기보다 표정이나 몸짓을 함께 쓰면 표현이 잘 되는 편이에요.','직접 시범을 보이면서 설명하는 것이 편해요.','사람 앞에서 활동적으로 참여할 때 에너지가 살아나요.'],strength:'설명과 행동을 동시에 사용할 수 있어서 발표, 공연, 교육처럼 현장감 있는 표현에 강점을 보일 수 있어요.',caution:'즉흥적으로 표현이 잘 되는 만큼 세부 내용을 놓칠 수 있어요. 중요한 발표 전에는 핵심 단어만이라도 미리 정리해두세요.',use:'개념을 몸짓이나 역할극으로 설명해보거나 걸으면서 말로 복습해보세요.',scenes:['시범보이기','발표하기','연기하기','가르치기','체험진행'],fields:['공연','교육','스포츠','방송','서비스'],careers:['배우','강사','스포츠 지도자','아나운서','MC','체험교육 기획자'],mission:'좋아하는 주제 하나를 30초 동안 말과 몸짓을 함께 써서 설명해보세요.'},
+ 'LIN|PER':{title:'사람을 잇는 커뮤니케이터',summary:'사람의 반응을 읽는 힘과 생각을 말·글로 전달하는 힘이 함께 강하게 나타나는 조합이에요.',traits:['상대가 이해했는지 보면서 설명 방식을 바꾸는 편이에요.','친구들의 의견을 듣고 핵심을 정리해주는 역할을 종종 해요.','대화할 때 어떤 말을 쓰느냐가 관계에 영향을 준다고 느껴요.'],strength:'상대방의 반응을 살피면서 내 생각을 적절한 방식으로 전달하는 힘이 있어요. 사람과 정보가 동시에 오가는 상황에서 강점이 잘 드러납니다.',caution:'사람들의 반응을 많이 신경 쓰면 내 의견을 뒤로 미룰 수 있어요. 다른 사람의 생각을 들은 뒤 마지막에는 내 생각도 한 문장으로 정리해보세요.',use:'친구에게 오늘 배운 내용을 설명하고, 상대가 이해한 내용을 다시 들어보세요.',scenes:['설명하기','상담하기','설득하기','팀조율','발표하기'],fields:['교육','상담','미디어','마케팅','HR'],careers:['교사','상담사','마케터','HR 담당자','아나운서','콘텐츠 기획자'],mission:'친구 한 명에게 관심 주제를 1분 설명하고 “어떤 부분이 가장 이해됐는지” 물어보세요.'},
+ 'LIN|INTRA':{title:'생각을 언어로 정리하는 기록가',summary:'내 생각과 감정을 알아차리는 힘을 말과 글로 구체화하는 데 강점이 있는 조합이에요.',traits:['마음이 복잡할 때 글로 적으면 생각이 정리되는 편이에요.','내 경험에서 느낀 점을 말로 설명하는 것이 어렵지 않아요.','혼자 생각한 내용을 문장으로 다듬는 과정이 편해요.'],strength:'자기 경험을 깊이 돌아보고 그것을 언어로 의미 있게 정리할 수 있어요. 글쓰기, 자기표현, 기획처럼 내면과 언어를 함께 쓰는 활동에 강점이 있습니다.',caution:'혼자 생각을 깊게 하다 보면 다른 관점을 충분히 접하지 못할 수 있어요. 기록한 생각을 믿을 만한 사람과 나눠보는 것도 도움이 됩니다.',use:'공부가 끝난 뒤 “오늘 알게 된 것 / 헷갈린 것 / 다음 행동”을 한 줄씩 적어보세요.',scenes:['기록하기','에세이','자기성찰','기획하기','인터뷰'],fields:['글쓰기','심리','콘텐츠','기획','인문'],careers:['작가','기자','콘텐츠 에디터','상담 관련 직업','기획자','인터뷰어'],mission:'오늘 가장 기억에 남은 일을 “사실-느낌-배운점” 세 문장으로 써보세요.'},
+ 'LIN|NAT':{title:'세상을 설명하는 관찰자',summary:'주변의 특징을 세밀하게 관찰하고 그것을 말과 글로 설명하는 힘이 함께 나타나는 조합이에요.',traits:['새롭게 발견한 사실을 다른 사람에게 알려주는 게 재미있어요.','관찰한 내용을 이름이나 특징으로 정리하는 편이에요.','자연·환경·동물 같은 주제의 정보를 읽거나 설명하는 활동이 끌려요.'],strength:'관찰한 사실을 정확한 언어로 전달할 수 있어 과학·환경·교육 콘텐츠처럼 사실과 설명이 함께 필요한 활동에 강점이 있습니다.',caution:'정보를 자세히 설명하다 보면 듣는 사람에게 중요한 핵심이 무엇인지 흐려질 수 있어요. 가장 놀라운 사실 하나를 먼저 골라보세요.',use:'관찰한 내용을 “특징 3개 + 궁금한 점 1개”로 기록해보세요.',scenes:['관찰기록','과학글쓰기','설명하기','분류하기','취재하기'],fields:['과학커뮤니케이션','환경','교육','미디어','생명'],careers:['과학기자','환경교육가','생태해설사','과학 콘텐츠 제작자','연구원','다큐멘터리 작가'],mission:'주변 생물이나 환경 하나를 5분 관찰하고 처음 발견한 특징 3개를 적어보세요.'},
+
+ 'LOG|SPA':{title:'구조를 보는 설계자',summary:'논리적으로 문제를 풀면서 전체 구조와 공간 관계를 함께 보는 힘이 두드러지는 조합이에요.',traits:['복잡한 문제를 그림이나 도식으로 바꾸면 잘 보이는 편이에요.','무언가를 만들 때 구조가 어떻게 연결되는지 궁금해요.','공간이나 시스템을 효율적으로 배치하는 문제에 흥미가 있어요.'],strength:'보이지 않는 구조를 시각적으로 정리하고 논리적으로 설계하는 힘이 있어요. 공학, 건축, 데이터 시각화처럼 구조 설계가 중요한 영역과 잘 연결됩니다.',caution:'구조적으로 완벽한 답을 찾는 데 집중하면 실제 사용자의 느낌을 놓칠 수 있어요. 설계 후 “사람이 실제로 쓰면 어떨까?”도 확인해보세요.',use:'복잡한 내용을 흐름도나 개념도로 바꾼 뒤 관계를 설명해보세요.',scenes:['설계하기','시각화','모델링','문제해결','분석하기'],fields:['공학','건축','데이터','UX','IT'],careers:['건축가','엔지니어','데이터 시각화 전문가','UX디자이너','게임 레벨디자이너','CAD 설계자'],mission:'자주 쓰는 공간 하나를 더 효율적으로 바꾼다면 어떻게 배치할지 그려보세요.'},
+ 'LOG|MUS':{title:'패턴 감지 분석가',summary:'규칙을 찾아내는 힘과 소리·리듬의 패턴을 감지하는 힘이 함께 나타나는 조합이에요.',traits:['노래의 반복 구조나 패턴을 빨리 알아차리는 편이에요.','음악을 들을 때 느낌뿐 아니라 구성이나 변화도 궁금해요.','규칙이 있는 소리나 반복을 만들어보는 활동이 재미있어요.'],strength:'시간에 따라 반복되고 변하는 패턴을 분석하고 구성하는 힘이 있어요. 음악기술, 음향, 코딩처럼 구조와 소리가 만나는 분야에서 흥미가 살아날 수 있습니다.',caution:'패턴과 정확성에 집중하다 보면 감정이나 자유로운 표현을 답답하게 느낄 수 있어요. 규칙을 만든 뒤 일부러 한 부분을 바꿔보는 실험도 해보세요.',use:'외워야 할 순서를 일정한 리듬으로 만들거나 규칙을 찾아 묶어보세요.',scenes:['패턴찾기','작곡구조','음향분석','코딩','리듬구성'],fields:['음악기술','음향','AI·데이터','공학','콘텐츠'],careers:['음향엔지니어','음악 프로듀서','AI 연구자','게임 사운드 디자이너','데이터분석가','작곡가'],mission:'좋아하는 노래 한 곡을 듣고 반복되는 구조를 3구간으로 나눠보세요.'},
+ 'LOG|BOD':{title:'실전형 문제해결가',summary:'문제를 논리적으로 판단하면서 몸과 손을 활용해 실제로 해결하는 힘이 함께 나타나는 조합이에요.',traits:['설명서를 보는 것보다 직접 해보며 원리를 확인하는 편이에요.','동작이나 기술에도 더 효율적인 방법이 있는지 생각해요.','문제가 생기면 원인을 찾고 바로 수정해보는 편이에요.'],strength:'생각을 실제 행동과 연결하는 힘이 있어요. 기술, 스포츠, 실험처럼 판단과 실행이 빠르게 오가는 상황에서 강점이 잘 드러납니다.',caution:'해결에 집중하면 과정을 다른 사람에게 설명하는 걸 생략할 수 있어요. 잘된 방법을 찾았다면 이유를 한 문장으로 남겨보세요.',use:'문제를 풀 때 손으로 직접 모형을 만들거나 단계별로 행동을 붙여보세요.',scenes:['실험하기','기술훈련','수리하기','전략실행','시뮬레이션'],fields:['공학','스포츠과학','의료기술','로봇','현장기술'],careers:['로봇엔지니어','스포츠과학자','물리치료사','정비기술자','응급구조사','실험기술자'],mission:'생활 속 불편 하나를 골라 원인 1개와 직접 시험해볼 해결법 1개를 정해보세요.'},
+ 'LOG|PER':{title:'논리로 돕는 조율가',summary:'사람의 상황을 이해하면서 합리적인 해결책을 찾는 힘이 함께 나타나는 조합이에요.',traits:['친구들 의견이 다르면 각자의 이유를 정리해보는 편이에요.','감정만 달래기보다 실제 해결방법도 같이 찾고 싶어요.','팀에서 역할이나 기준을 정하면 일이 더 잘 풀린다고 느껴요.'],strength:'사람과 문제를 동시에 볼 수 있어요. 협업, 상담, 조직운영처럼 관계를 고려하면서 해결책을 만들어야 하는 상황에서 강점이 있습니다.',caution:'좋은 해결책을 빨리 제시하려다 상대가 충분히 말할 시간을 놓칠 수 있어요. 해결 전에 “어떤 점이 제일 힘든지”를 먼저 물어보세요.',use:'모둠활동에서 의견을 사람별로 정리한 뒤 공통점을 찾아보세요.',scenes:['팀조율','상담','의사결정','협업설계','문제해결'],fields:['HR','교육','상담','조직관리','서비스기획'],careers:['HR 담당자','교사','상담사','서비스기획자','프로젝트 매니저','조직개발 담당자'],mission:'두 사람이 의견이 다른 상황을 떠올리고 각자의 이유를 한 줄씩 적어보세요.'},
+ 'LOG|INTRA':{title:'자기전략 설계자',summary:'논리적으로 상황을 분석하는 힘을 자신의 목표와 행동 조절에 활용하는 조합이에요.',traits:['계획이 잘 안 됐을 때 원인을 분석해보는 편이에요.','내가 효율적으로 할 수 있는 방법을 비교해보는 편이에요.','목표를 정하면 단계나 기준을 세우는 것이 편해요.'],strength:'자신의 행동을 객관적으로 돌아보고 더 나은 방법을 설계하는 힘이 있어요. 자기관리, 전략기획, 연구처럼 스스로 방향을 잡아야 하는 활동과 잘 연결됩니다.',caution:'스스로를 분석하다 보면 작은 실수도 지나치게 평가할 수 있어요. 분석의 목적은 자책이 아니라 다음 행동을 찾는 것이라는 점을 기억하세요.',use:'공부가 끝난 뒤 시간보다 “잘된 전략 1개 / 바꿀 전략 1개”를 기록해보세요.',scenes:['계획하기','자기점검','전략수정','분석하기','목표관리'],fields:['기획','연구','데이터','자기관리','경영'],careers:['전략기획자','연구원','데이터분석가','프로덕트 매니저','경영컨설턴트','재무분석가'],mission:'최근 실패한 일 하나를 “원인-바꿀 점-다음 행동”으로 정리해보세요.'},
+ 'LOG|NAT':{title:'패턴 탐구가',summary:'규칙과 원인을 찾는 힘에 자연과 주변 환경을 세밀하게 관찰하는 힘이 더해진 조합이에요.',traits:['자연 현상을 보면 왜 그런지 원리가 궁금해요.','비슷한 대상의 차이를 비교하고 분류하는 일이 재미있어요.','관찰한 사실에서 반복되는 규칙을 찾는 편이에요.'],strength:'현상을 관찰하고 그 안의 원리와 패턴을 발견하는 힘이 있어요. 생명과학, 환경, 데이터 기반 연구처럼 관찰과 분석이 함께 필요한 영역과 잘 맞습니다.',caution:'관찰 결과를 정확히 설명하려다 새로운 가설을 조심스러워할 수 있어요. 근거와 함께 “혹시 이런 이유일까?”라는 가설도 세워보세요.',use:'과학 개념을 종류별로 분류한 뒤 각 그룹의 공통 규칙을 찾아보세요.',scenes:['관찰하기','분류하기','실험하기','데이터분석','원인찾기'],fields:['생명과학','환경','의학','농생명','데이터'],careers:['생명과학자','환경연구원','수의사','의학연구원','기상연구원','생태데이터 분석가'],mission:'자연 현상 하나를 골라 “관찰한 사실 2개 + 가능한 이유 1개”를 적어보세요.'},
+
+ 'SPA|MUS':{title:'감각형 크리에이터',summary:'이미지와 공간 감각에 소리와 리듬 감각이 함께 살아나는 조합이에요.',traits:['영상이나 공연을 볼 때 화면과 음악의 어울림이 눈에 들어와요.','분위기를 만들 때 색과 소리를 함께 떠올리는 편이에요.','감각적인 결과물을 구성하는 활동이 재미있어요.'],strength:'시각과 청각을 함께 사용해 분위기와 경험을 설계하는 힘이 있어요. 영상, 게임, 공연처럼 여러 감각을 결합하는 창작에서 강점이 드러날 수 있습니다.',caution:'분위기와 감각에 집중하면 메시지나 목적이 흐려질 수 있어요. 만들기 전에 “사람에게 어떤 느낌을 남길까?”를 한 문장으로 정해보세요.',use:'공부 내용을 그림이나 도식으로 만들고 핵심 단어에 리듬을 붙여보세요.',scenes:['영상편집','공연구성','게임연출','브랜딩','공간연출'],fields:['영상','게임','공연','디자인','음악'],careers:['영상감독','게임연출가','무대디자이너','모션그래픽 디자이너','음악감독','공연기획자'],mission:'좋아하는 영상 30초를 보고 화면·색·음악이 어떤 느낌을 만드는지 적어보세요.'},
+ 'SPA|BOD':{title:'공간 감각 메이커',summary:'공간과 형태를 머릿속으로 그리는 힘을 몸과 손으로 바로 구현하는 데 강점이 있는 조합이에요.',traits:['머릿속으로 떠올린 모양을 직접 만들어보는 활동이 재미있어요.','공간 속에서 몸이나 물건의 위치를 빠르게 파악하는 편이에요.','도면이나 그림을 보고 실제 움직임으로 옮기는 게 어렵지 않아요.'],strength:'시각적으로 상상한 것을 실제 움직임이나 제작으로 바꾸는 힘이 있어요. 건축, 스포츠, 제작처럼 공간과 행동이 함께 필요한 분야와 잘 연결됩니다.',caution:'직접 해보는 데 몰입하면 작업 전 안전이나 절차 확인을 건너뛸 수 있어요. 시작 전에 위험요소와 필요한 도구를 먼저 확인하세요.',use:'도형·과학 개념을 종이나 블록으로 직접 만들어보세요.',scenes:['제작하기','공간활동','설계구현','스포츠','모형제작'],fields:['건축','산업디자인','스포츠','로봇','제작'],careers:['건축가','산업디자이너','로봇공학자','스포츠 코치','공간디자이너','무대기술자'],mission:'책상 위 물건을 더 편하게 쓰도록 새롭게 배치하고 이유를 설명해보세요.'},
+ 'SPA|PER':{title:'경험 설계자',summary:'사람의 반응을 이해하는 힘과 공간·이미지를 구성하는 힘이 함께 나타나는 조합이에요.',traits:['사람들이 어떤 화면이나 공간을 편하게 느낄지 생각하는 편이에요.','설명할 때 시각 자료를 사용하면 상대가 더 잘 이해할 것 같아요.','사람의 행동을 보고 배치나 디자인을 바꾸는 아이디어가 떠올라요.'],strength:'사람이 어떻게 느끼고 움직이는지를 고려해 화면, 공간, 경험을 설계할 수 있는 힘이 있어요.',caution:'모든 사람을 만족시키려다 디자인의 중심이 약해질 수 있어요. 가장 중요한 사용자를 한 명 정하고 그 사람의 경험부터 설계해보세요.',use:'친구가 이해하기 어려워하는 내용을 그림 한 장으로 다시 설명해보세요.',scenes:['UX','공간기획','서비스디자인','전시','교육자료'],fields:['UX·UI','공간','서비스','전시','교육'],careers:['UX디자이너','서비스디자이너','전시기획자','공간기획자','교육콘텐츠 디자이너','제품기획자'],mission:'자주 쓰는 앱 화면 하나를 골라 친구가 더 쉽게 쓰게 바꿀 점 1개를 찾아보세요.'},
+ 'SPA|INTRA':{title:'이미지로 생각하는 기획자',summary:'내 생각을 깊이 돌아보면서 이미지와 구조로 정리하는 힘이 함께 나타나는 조합이에요.',traits:['생각을 정리할 때 글보다 그림이나 배치가 도움이 돼요.','내가 원하는 모습을 머릿속으로 구체적으로 그려보는 편이에요.','혼자 조용히 구상하고 결과물을 만드는 시간이 필요해요.'],strength:'내면의 생각과 목표를 시각적으로 구체화할 수 있어요. 디자인, 기획, 창작처럼 개인의 관점과 구조화가 중요한 활동에서 강점이 있습니다.',caution:'머릿속 이미지가 분명하면 다른 사람의 설명을 답답하게 느낄 수 있어요. 내 아이디어를 실제로 보여주고 피드백을 받아보는 과정이 필요합니다.',use:'목표나 개념을 글 대신 마인드맵이나 비주얼 보드로 만들어보세요.',scenes:['기획하기','시각화','디자인','목표설계','창작'],fields:['디자인','기획','건축','콘텐츠','브랜딩'],careers:['디자이너','브랜드 기획자','건축가','일러스트레이터','콘텐츠 기획자','UX디자이너'],mission:'한 달 뒤 원하는 내 모습을 그림, 사진, 키워드 5개로 구성해보세요.'},
+ 'SPA|NAT':{title:'환경 관찰 디자이너',summary:'주변 환경을 세밀하게 관찰하는 힘과 공간·형태를 구성하는 힘이 함께 나타나는 조합이에요.',traits:['자연의 모양이나 색, 구조가 눈에 잘 들어오는 편이에요.','공간을 볼 때 주변 환경과 어떻게 어울리는지 생각해요.','관찰한 형태를 그림이나 구조로 표현하는 활동이 재미있어요.'],strength:'환경의 특징을 시각적으로 파악하고 더 나은 공간이나 결과물로 연결할 수 있어요. 환경디자인, 조경, 건축처럼 자연과 공간이 만나는 분야와 잘 맞습니다.',caution:'보이는 형태에 집중하면 사람이나 생태계에 미치는 영향을 놓칠 수 있어요. 디자인을 바꿀 때 “누구에게 어떤 변화가 생길까?”도 확인해보세요.',use:'과학이나 지리 내용을 지도, 그림, 분포도로 바꿔보세요.',scenes:['환경관찰','공간설계','조경','지도화','생태디자인'],fields:['조경','건축','환경','지리','도시'],careers:['조경가','도시계획가','환경디자이너','건축가','GIS 전문가','생태전시 기획자'],mission:'학교 주변 한 곳을 골라 더 쾌적하게 바꾸고 싶은 점을 그림으로 표시해보세요.'},
+
+ 'MUS|BOD':{title:'리듬 퍼포머',summary:'소리와 리듬을 느끼는 힘과 몸으로 표현하는 힘이 함께 강하게 나타나는 조합이에요.',traits:['음악이 나오면 몸으로 박자를 타는 것이 자연스러워요.','동작을 외울 때 리듬이 있으면 더 기억하기 쉬워요.','공연이나 운동처럼 타이밍이 중요한 활동에 몰입이 잘 돼요.'],strength:'소리의 흐름을 몸의 움직임과 연결하는 힘이 있어요. 무용, 공연, 스포츠처럼 리듬과 타이밍이 중요한 활동에서 강점이 잘 드러납니다.',caution:'감각적으로 바로 따라가는 데 익숙하면 동작의 원리나 안전을 놓칠 수 있어요. 잘되는 동작도 이유와 자세를 함께 확인해보세요.',use:'외워야 할 순서에 박수나 동작을 붙여 반복해보세요.',scenes:['댄스','공연','스포츠','퍼포먼스','리듬훈련'],fields:['무용','공연','스포츠','음악','체육교육'],careers:['댄서','안무가','스포츠 지도자','뮤지컬 배우','퍼포먼스 디렉터','체육교사'],mission:'좋아하는 음악 20초에 맞춰 간단한 동작 4개를 연결해보세요.'},
+ 'MUS|PER':{title:'분위기를 읽는 표현가',summary:'사람의 감정과 분위기를 읽는 힘에 소리와 음악으로 표현하는 힘이 더해진 조합이에요.',traits:['분위기에 따라 듣고 싶은 음악이 달라지는 편이에요.','사람들의 반응을 보면서 표현의 강도나 분위기를 바꿔요.','음악이나 소리가 사람의 감정에 영향을 준다고 느껴요.'],strength:'사람의 감정을 이해하고 소리나 음악으로 분위기를 만들 수 있어요. 공연, 치료, 콘텐츠처럼 감정과 소리가 만나는 활동에 흥미가 살아날 수 있습니다.',caution:'상대의 분위기에 맞추다 보면 내 취향이나 표현이 뒤로 밀릴 수 있어요. 다른 사람의 반응과 내가 표현하고 싶은 감정을 함께 확인하세요.',use:'공부 분위기를 바꾸고 싶다면 무조건 음악을 듣기보다 어떤 소리가 집중을 방해하거나 돕는지 관찰해보세요.',scenes:['공연','음악교육','감정표현','콘텐츠','협업'],fields:['음악','공연','교육','상담','미디어'],careers:['음악교사','음악치료 관련 직업','공연기획자','음악 프로듀서','콘텐츠 제작자','방송음향 담당자'],mission:'오늘 기분을 가장 잘 표현하는 음악 한 곡을 고르고 그 이유를 한 문장으로 적어보세요.'},
+ 'MUS|INTRA':{title:'감정 사운드 메이커',summary:'내 감정과 생각을 깊이 느끼는 힘을 소리와 음악으로 표현하는 조합이에요.',traits:['기분에 따라 듣는 음악이 꽤 달라지는 편이에요.','음악을 들으면 내 감정이 더 분명하게 느껴질 때가 있어요.','혼자 음악을 듣거나 만들어보는 시간이 편해요.'],strength:'내면의 감정과 분위기를 섬세하게 알아차리고 소리로 표현할 수 있어요. 음악창작, 사운드 디자인처럼 개인의 감정과 표현이 중요한 활동에서 강점이 있습니다.',caution:'감정에 깊게 몰입하면 생각이 한 방향으로 흐를 수 있어요. 음악으로 감정을 표현한 뒤 지금 필요한 행동도 하나 정해보세요.',use:'공부 전후 내 상태를 짧게 기록하고 소리가 집중에 어떤 영향을 주는지 직접 확인해보세요.',scenes:['작곡','사운드디자인','감정표현','창작','기록'],fields:['음악','영상','게임','공연','창작'],careers:['작곡가','싱어송라이터','사운드 디자이너','음악 프로듀서','영상음악가','게임 사운드 디자이너'],mission:'지금 기분을 세 가지 소리나 음악 키워드로 표현해보세요.'},
+ 'MUS|NAT':{title:'소리 패턴 탐험가',summary:'소리의 미세한 차이를 느끼는 힘과 자연·환경의 변화를 관찰하는 힘이 함께 나타나는 조합이에요.',traits:['비, 바람, 새소리처럼 자연의 소리에 귀가 가는 편이에요.','주변 소리를 듣고 장소나 상황의 차이를 느끼는 것이 재미있어요.','반복되는 소리나 환경의 리듬을 발견하는 편이에요.'],strength:'환경 속 소리의 특징과 패턴을 섬세하게 알아차릴 수 있어요. 생태음향, 콘텐츠, 환경기록처럼 소리와 자연을 함께 다루는 독특한 분야로 확장할 수 있습니다.',caution:'특정 감각에 집중하면 다른 정보가 덜 보일 수 있어요. 소리를 관찰할 때 위치, 시간, 날씨 같은 조건도 함께 기록해보세요.',use:'암기보다는 관찰 활동에서 소리·모양·변화를 함께 기록해보세요.',scenes:['환경녹음','생태관찰','사운드스케이프','다큐','음향기록'],fields:['생태','음향','환경','다큐멘터리','콘텐츠'],careers:['생태연구원','음향기록가','다큐멘터리 제작자','사운드 아티스트','환경교육가','자연음 콘텐츠 제작자'],mission:'밖에서 2분 동안 눈을 감고 들리는 소리를 종류별로 적어보세요.'},
+
+ 'BOD|PER':{title:'현장형 팀플레이어',summary:'몸으로 직접 행동하는 힘과 사람들과 함께 움직이는 힘이 함께 강하게 나타나는 조합이에요.',traits:['여럿이 같이 움직이는 활동에서 에너지가 살아나요.','누군가 도움이 필요하면 직접 행동으로 돕는 편이에요.','팀 활동에서 분위기와 움직임을 동시에 보는 편이에요.'],strength:'사람과 현장을 동시에 살피면서 즉시 행동으로 옮길 수 있어요. 스포츠, 보건, 안전, 체험교육처럼 협력과 실행이 중요한 분야와 잘 맞습니다.',caution:'먼저 움직이다 보면 상대가 원하는 방식을 확인하지 못할 수 있어요. 도와주기 전에 “어떤 도움이 필요해?”를 먼저 물어보세요.',use:'친구와 함께 문제를 설명하거나 실습하면서 역할을 바꿔가며 배워보세요.',scenes:['팀스포츠','현장지원','체험교육','보건','안전'],fields:['스포츠','보건','교육','재활','안전'],careers:['스포츠 지도자','물리치료사','응급구조사','체육교사','소방관','체험교육 강사'],mission:'친구와 10분 동안 함께 할 수 있는 활동 하나를 정하고 역할을 나눠 진행해보세요.'},
+ 'BOD|INTRA':{title:'몸으로 배우는 자기관리러',summary:'몸의 상태를 알아차리는 힘과 자신의 감정·목표를 돌아보는 힘이 함께 나타나는 조합이에요.',traits:['몸이 피곤하거나 긴장했을 때 그 상태를 비교적 빨리 알아차려요.','운동이나 활동 목표를 스스로 정해 관리하는 편이에요.','직접 해본 경험을 돌아보며 다음 방법을 바꾸는 편이에요.'],strength:'몸과 마음의 상태를 연결해서 이해하고 스스로 조절하는 힘이 있어요. 스포츠, 건강, 자기관리처럼 꾸준한 훈련이 필요한 영역에서 강점이 있습니다.',caution:'내 상태를 잘 느끼는 만큼 컨디션이 좋지 않을 때 시작 자체를 미룰 수 있어요. 완벽한 컨디션보다 가능한 최소 행동을 정해두세요.',use:'공부 중 집중이 떨어질 때 몸 상태와 시간대를 기록해 나에게 맞는 패턴을 찾아보세요.',scenes:['자기관리','스포츠훈련','건강관리','실습','루틴설계'],fields:['스포츠','건강','재활','코칭','자기관리'],careers:['운동선수','퍼스널트레이너','물리치료사','스포츠심리 관련 직업','코치','작업치료사'],mission:'오늘 내 컨디션을 10점 만점으로 적고 좋아지게 할 행동 하나를 정해보세요.'},
+ 'BOD|NAT':{title:'현장 탐험가',summary:'몸으로 직접 경험하는 힘과 자연·환경을 관찰하는 힘이 함께 나타나는 조합이에요.',traits:['교실보다 밖에서 직접 관찰하는 활동이 더 생생하게 느껴져요.','자연 속에서 움직이거나 탐험하는 활동을 좋아하는 편이에요.','사진이나 글보다 실제 대상을 직접 보는 것이 이해가 빨라요.'],strength:'환경을 직접 경험하며 특징과 변화를 발견하는 힘이 있어요. 생태, 농업, 환경, 야외활동처럼 현장성이 중요한 분야에서 강점이 드러납니다.',caution:'현장 경험에 집중하면 관찰한 내용을 기록하지 않고 지나칠 수 있어요. 경험 뒤에 사진·메모·측정값 중 하나는 꼭 남겨보세요.',use:'과학이나 지리 내용을 가능한 경우 직접 관찰·측정하는 작은 활동으로 연결해보세요.',scenes:['야외탐사','생태조사','농업','환경활동','현장실습'],fields:['환경','농생명','생태','산림','레저'],careers:['생태연구원','산림전문가','농업기술자','환경조사원','수의 관련 직업','야외활동 지도자'],mission:'학교 주변을 10분 걸으며 평소 보지 못한 자연 변화 3개를 찾아보세요.'},
+
+ 'PER|INTRA':{title:'공감형 셀프리더',summary:'다른 사람을 이해하는 힘과 나 자신을 돌아보는 힘이 함께 강하게 나타나는 조합이에요.',traits:['상대의 감정도 보지만 내 감정이 어떤지도 함께 생각해요.','친구에게 조언하기 전에 내 경험을 떠올려보는 편이에요.','관계에서 불편한 일이 생기면 왜 그랬는지 돌아보는 편이에요.'],strength:'타인과 자신을 동시에 이해할 수 있어요. 관계를 맺으면서도 자신의 기준을 세울 수 있어 상담, 교육, 리더십 같은 영역에서 강점이 잘 드러납니다.',caution:'사람의 감정을 많이 생각하다 보면 관계 문제를 혼자 오래 고민할 수 있어요. 내가 바꿀 수 있는 것과 상대가 결정할 것을 나눠보세요.',use:'모둠활동 뒤 “팀에서 잘된 점 / 내가 잘한 점 / 다음에 바꿀 점”을 하나씩 적어보세요.',scenes:['상담','코칭','교육','리더십','팀워크'],fields:['상담','교육','HR','리더십','복지'],careers:['상담사','교사','코치','HR 담당자','사회복지사','조직개발 담당자'],mission:'최근 사람과 있었던 일을 “상대 입장 / 내 입장” 두 줄로 나눠 적어보세요.'},
+ 'PER|NAT':{title:'사람과 환경을 잇는 활동가',summary:'사람을 이해하고 함께 움직이는 힘에 자연·환경을 관찰하는 힘이 더해진 조합이에요.',traits:['환경 문제를 보면 사람들의 생활과도 연결해서 생각해요.','자연이나 동물에 대해 다른 사람에게 알려주는 활동이 재미있어요.','여럿이 함께 환경을 바꾸는 활동에 참여하고 싶을 때가 있어요.'],strength:'환경의 가치를 사람에게 전달하고 함께 행동을 이끌어낼 수 있어요. 환경교육, 캠페인, 공공활동처럼 사람과 자연을 연결하는 역할과 잘 맞습니다.',caution:'좋은 목적이 분명하면 다른 사람도 당연히 동의할 거라고 생각하기 쉬워요. 행동을 제안하기 전에 사람들이 왜 망설이는지도 들어보세요.',use:'환경·과학 내용을 혼자 외우기보다 다른 사람에게 설명하거나 작은 캠페인으로 연결해보세요.',scenes:['환경교육','캠페인','생태해설','봉사','지역활동'],fields:['환경교육','공공정책','사회적기업','생태','지역사회'],careers:['환경교육가','생태해설사','환경캠페이너','사회적기업가','공공정책 담당자','지역활동가'],mission:'학교에서 바꾸고 싶은 환경 문제 하나를 골라 친구에게 제안할 한 문장을 만들어보세요.'},
+ 'INTRA|NAT':{title:'차분한 관찰자',summary:'내면을 돌아보는 힘과 주변 환경의 작은 변화를 관찰하는 힘이 함께 나타나는 조합이에요.',traits:['혼자 조용한 곳에서 생각을 정리하는 시간이 필요한 편이에요.','자연이나 주변 환경을 보면 마음이 차분해질 때가 있어요.','작은 변화나 반복되는 패턴을 오래 관찰하는 것이 크게 지루하지 않아요.'],strength:'서두르지 않고 자신과 주변을 세밀하게 관찰할 수 있어요. 연구, 환경, 기록, 치유처럼 깊은 관찰이 중요한 활동에서 강점이 드러납니다.',caution:'혼자 관찰하고 생각하는 시간이 편하면 새로운 사람이나 빠른 환경을 피하게 될 수 있어요. 안전한 범위에서 낯선 경험도 조금씩 추가해보세요.',use:'집중이 잘되는 장소와 시간, 주변 환경을 기록해 나에게 맞는 학습 조건을 찾아보세요.',scenes:['관찰기록','연구','환경탐색','자기성찰','치유활동'],fields:['환경','심리','연구','생명','기록'],careers:['환경연구원','심리 관련 직업','생태연구원','작가','원예·치유 관련 직업','과학연구원'],mission:'조용한 장소에서 5분 머물며 주변 변화 2개와 내 상태 1개를 기록해보세요.'}
+};
+
+let answers=Array(QUESTIONS.length).fill(null);
+let page=0;
+const PER_PAGE=6;
+const PAGE_COUNT=Math.ceil(QUESTIONS.length/PER_PAGE);
+let lastScores=null;
+
+function show(id){
+ document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+function updateProgress(){
+ const text=document.getElementById('progressText'),bar=document.getElementById('progressBar');
+ if(document.getElementById('quiz').classList.contains('active')){
+   text.textContent=`${page+1} / ${PAGE_COUNT}`;
+   bar.style.width=`${((page+1)/PAGE_COUNT)*100}%`;
+ } else {text.textContent='';bar.style.width='0%';}
+}
+function startQuiz(){show('quiz');renderPage()}
+function renderPage(){
+ const wrap=document.getElementById('questions');wrap.innerHTML='';
+ const start=page*PER_PAGE,end=Math.min(start+PER_PAGE,QUESTIONS.length);
+ for(let i=start;i<end;i++){
+   const q=QUESTIONS[i];
+   const opts=[1,2,3,4,5].map(v=>`<label><input type="radio" name="q${i}" value="${v}" ${answers[i]===v?'checked':''} onchange="saveAnswer(${i},${v})"><span class="scale-box">${v}</span></label>`).join('');
+   const card=document.createElement('div');card.className='question-card';
+   card.innerHTML=`<div class="q-no">Q${i+1}</div><div class="q-text">${q.q}</div><div class="scale">${opts}</div><div class="scale-caption"><span>전혀 아니다</span><span>매우 그렇다</span></div>`;
+   wrap.appendChild(card);
+ }
+ document.getElementById('prevBtn').style.visibility=page===0?'hidden':'visible';
+ document.getElementById('nextBtn').textContent=page===PAGE_COUNT-1?'결과 보기':'다음';
+ updateProgress();
+}
+function saveAnswer(i,v){answers[i]=v}
+function toast(){const el=document.getElementById('toast');el.classList.add('show');setTimeout(()=>el.classList.remove('show'),1500)}
+function nextPage(){
+ const s=page*PER_PAGE,e=Math.min(s+PER_PAGE,QUESTIONS.length);
+ if(answers.slice(s,e).some(v=>v===null)){toast();return}
+ if(page<PAGE_COUNT-1){page++;renderPage();window.scrollTo({top:0,behavior:'smooth'})}else processResults();
+}
+function prevPage(){if(page>0){page--;renderPage();window.scrollTo({top:0,behavior:'smooth'})}}
+function computeScores(){
+ const x={};ORDER.forEach(k=>x[k]={sum:0,count:0,five:0,four:0});
+ QUESTIONS.forEach((q,i)=>{const v=answers[i];x[q.t].sum+=v;x[q.t].count++;if(v===5)x[q.t].five++;if(v>=4)x[q.t].four++});
+ ORDER.forEach(k=>x[k].avg=x[k].sum/x[k].count);
+ return x;
+}
+function rankScores(scores){
+ return [...ORDER].sort((a,b)=>scores[b].sum-scores[a].sum || scores[b].five-scores[a].five || scores[b].four-scores[a].four || ORDER.indexOf(a)-ORDER.indexOf(b));
+}
+function percent(avg){return Math.round((avg/5)*100)}
+function comboKey(a,b){return [a,b].sort((x,y)=>ORDER.indexOf(x)-ORDER.indexOf(y)).join('|')}
+function processResults(){
+ show('loading');updateProgress();
+ setTimeout(()=>{lastScores=computeScores();const rank=rankScores(lastScores);renderResult(rank)},650);
+}
+function renderResult(rank){
+ const p1=rank[0],p2=rank[1],p3=rank[2], combo=COMBOS[comboKey(p1,p2)];
+ const topCards=[p1,p2,p3].map((k,i)=>`<div class="rank-card ${i===0?'first':''}">
+   <div class="medal">${['🥇','🥈','🥉'][i]}</div>
+   <div class="rank-title">${TYPES[k].icon} ${TYPES[k].name}</div>
+   <div class="rank-score">${percent(lastScores[k].avg)}</div>
+   <div class="rank-desc">${TYPES[k].desc}</div>
+ </div>`).join('');
+ const rows=rank.map(k=>`<div class="score-row"><div class="score-name">${TYPES[k].icon} ${TYPES[k].name}</div><div class="track"><div class="fill" style="width:${percent(lastScores[k].avg)}%"></div></div><div class="score-num">${percent(lastScores[k].avg)}</div></div>`).join('');
+ const traits=combo.traits.map(x=>`<div class="bullet"><b>✓</b><span>${x}</span></div>`).join('');
+ const scenes=combo.scenes.map(x=>`<span class="chip">${x}</span>`).join('');
+ const fields=combo.fields.map(x=>`<span class="chip">${x}</span>`).join('');
+ const careers=combo.careers.map(x=>`<div class="career">${x}</div>`).join('');
+ const third=TYPES[p3];
+ const topTie = Math.abs(lastScores[p1].sum-lastScores[p2].sum)<0.001 || Math.abs(lastScores[p2].sum-lastScores[p3].sum)<0.001;
+ document.getElementById('resultContent').innerHTML=`
+  <div class="result-hero">
+    <div class="result-code">나의 다중지능 강점 프로파일</div>
+    <h2>${combo.title}</h2>
+    <p class="result-summary">${combo.summary}</p>
+    <div class="top3">${topCards}</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="dot"></span>나의 8가지 강점 프로파일</div>
+    <div class="score-note">강점지수는 다른 학생과 비교한 순위나 백분위가 아니라, 내가 응답한 정도를 100점 기준으로 환산한 값입니다.${topTie?' 상위 영역의 점수가 비슷하게 나타나 강점이 여러 방향으로 고르게 드러났어요.':''}</div>
+    ${rows}
+  </div>
+
+  <div class="card highlight">
+    <div class="card-title"><span class="dot"></span>대표 강점 조합</div>
+    <div class="combo-box">
+      <div class="combo-one"><div class="combo-icon">${TYPES[p1].icon}</div><div class="combo-name">1위 · ${TYPES[p1].name}</div><div class="combo-small">${TYPES[p1].desc}</div></div>
+      <div class="plus">+</div>
+      <div class="combo-one"><div class="combo-icon">${TYPES[p2].icon}</div><div class="combo-name">2위 · ${TYPES[p2].name}</div><div class="combo-small">${TYPES[p2].desc}</div></div>
+    </div>
+    <p class="body-copy">${combo.strength}</p>
+  </div>
+
+  <div class="card"><div class="card-title"><span class="dot"></span>너 이런 편이지?</div><div class="bullets">${traits}</div></div>
+  <div class="card"><div class="card-title"><span class="dot"></span>이것만 신경 써보기</div><p class="body-copy">${combo.caution}</p></div>
+
+  <div class="card">
+    <div class="card-title"><span class="dot"></span>그리고 하나 더 👀</div>
+    <div class="third-box"><div class="third-icon">${third.icon}</div><div><div class="third-title">3위 · ${third.name} 지능도 꽤 잘 드러났어요.</div><div class="third-copy">${third.extra}<br><br><b>활용 아이디어:</b> ${third.use}</div></div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="dot"></span>강점을 써먹는 방법</div>
+    <p class="body-copy" style="margin-bottom:13px">${combo.use}</p>
+    <div class="chips">${scenes}</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="dot"></span>진로 탐색 힌트</div>
+    <p class="score-note" style="margin-top:-5px">아래 직업은 결과로 진로를 정해주는 추천 목록이 아니라, 이 강점 조합이 활용될 수 있는 분야를 탐색하기 위한 예시입니다.</p>
+    <div class="chips">${fields}</div>
+    <div class="career-grid">${careers}</div>
+  </div>
+
+  <div class="card mission"><div class="card-title">🎯 오늘의 작은 미션</div><p>${combo.mission}</p></div>
+
+  <div class="disclaimer">본 결과는 가드너의 다중지능 이론을 바탕으로 자신의 강점과 활용 경험을 탐색하는 체험형 자기보고 프로파일입니다. 지능의 절대적 수준, 학업 능력, 직업 적합성을 판정하지 않으며 특정 학습방식만이 더 효과적이라는 의미도 아닙니다.</div>
+  <button class="restart" onclick="restart()">처음부터 다시 검사하기</button>
+ `;
+ show('result');updateProgress();
+}
+function restart(){answers=Array(QUESTIONS.length).fill(null);page=0;lastScores=null;show('intro');updateProgress()}
+updateProgress();
+</script>
+</body>
+</html>

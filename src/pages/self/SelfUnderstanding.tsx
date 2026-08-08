@@ -55,142 +55,83 @@ export const SelfUnderstanding: React.FC = () => {
     } else {
       const defaultTests: DiagnosticTest[] = [
         {
-          id: "test-interest",
-          title: "K-RIASEC 진로 흥미 및 성향 진단",
-          category: "흥미/성격",
+          id: "test-riasec",
+          title: "K-RIASEC 진로흥미검사",
+          category: "흥미/성향",
           timeEst: "약 3분 소요",
-          desc: "홀랜드(Holland) 6대 성형 이론을 현대 인공지능 산업 역량과 결합하여 나에게 꼭 맞는 최적 진로 무드와 업무 특성을 진단합니다.",
+          desc: "가입 시 완료한 진단입니다. 홀랜드 6대 성형 이론을 현대 인공지능 산업 역량과 결합하여 나의 최적 진로 무드를 분석합니다.",
           status: "completed",
-          resultType: "EI (Enterprising + Investigative) 탐구 리더형",
-          scoreSummary: "탐구적 독창성 96점 / 주도적 비즈니스 기획 92점",
+          resultType: "나의 진로 흥미 유형",
+          scoreSummary: "내 프로필 결과 보기",
           reportDetails: {
-            summary: "회원님은 복잡한 데이터 사이버네틱스를 논리적으로 해부하는 학구열과 이를 세상에 출시하는 주도적인 리더십을 동시에 품고 있습니다.",
-            scores: [
-              { label: "I (탐구연구형)", val: 96 },
-              { label: "E (기업진취형)", val: 92 },
-              { label: "A (예술창의형)", val: 88 },
-              { label: "R (현실실용형)", val: 82 }
-            ],
-            recommendedActivities: [
-              "교내 AI/SW 프로그래밍 동아리 리더 및 학술제 메인 발표자 참여",
-              "빅데이터 기반의 사회문제 해결 스타트업 아이디에이션 공모전 도전"
-            ],
-            aiCareerComment: `희망 직직인 **'${targetJobName}'** 분야에서 프로젝트 팀 전체를 리딩하며 기술 논리를 명쾌하게 프레젠테이션하는 핵심 설계 책임자로 대성할 수 있습니다!`
+            summary: "가입 시 진행한 진로흥미검사 결과가 반영되어 있습니다. 메인 대시보드와 로드맵에서 나만의 추천 직업을 훈련 중입니다.",
+            scores: [],
+            recommendedActivities: [],
+            aiCareerComment: `입사관이 가장 먼저 확인하는 기본 성향으로, **'${targetJobName}'** 성장에 훌륭한 밑거름이 됩니다.`
           }
         },
         {
-          id: "test-intelligence",
-          title: "AI 다중지능 및 최적 강점 역량 검사",
-          category: "적성/재능",
-          timeEst: "약 4분 소요",
-          desc: "가상공간, 논리수학, 대인관계, 언어 직관 등 하워드 가드너 8대 다중지능 중 나의 가장 뛰어난 타고난 마스터 역량을 발굴합니다.",
-          status: "completed",
-          resultType: "논리수학 지능 & 공간 감각 지능 극대화",
-          scoreSummary: "수리 알고리즘 직관 98% / 시스템 구조 3D 조망 95%",
-          reportDetails: {
-            summary: "수치와 통계, 복잡한 인과관계 고리(Loop)를 시각화하여 파파악하는 공간 수학적 통찰력이 전국 최상위 상위권 레벨에 위치해 있습니다.",
-            scores: [
-              { label: "논리/수리 지능", val: 98 },
-              { label: "공간/시각 지능", val: 95 },
-              { label: "대인/공유 지능", val: 89 },
-              { label: "언어/논술 지능", val: 85 }
-            ],
-            recommendedActivities: [
-              "Python, C++, TensorFlow를 활용한 3D 가상 시뮬레이션 알고리즘 제작",
-              "차세대 신경망 모형 혹은 첨단 바이오 물리 현상의 수학적 수식 시각화"
-            ],
-            aiCareerComment: `이공계열 학업 역량 중 가장 난이도가 높은 수리 및 시스템 조망 재능을 증명하며 **'${targetJobName}'** 진입을 위한 완벽한 엔진을 보유하고 있습니다.`
-          }
-        },
-        {
-          id: "test-learning",
-          title: "SRL 자기주도 학습 루틴 및 인지 스타일 진단",
-          category: "학술/학업",
-          timeEst: "약 3분 소요",
-          desc: "나의 주의 몰입 집중력 패턴, 복습 방식, 멘탈 무너짐 극복 방식을 평가하여 성격을 올려줄 최적의 학습 타이머 전략을 수립합니다.",
-          status: "completed",
-          resultType: "고몰입 주도형 & 코넬 학습 요약 특화",
-          scoreSummary: "스스로 시간 통제 94점 / 심화 메타인지 복습 91점",
-          reportDetails: {
-            summary: "단순 수동적인 암기보다 가설을 스스로 던지고 인과를 코넬 노트로 필기하며 메타인지를 키우는 능동적 공부 습관을 가졌습니다.",
-            scores: [
-              { label: "메타인지 자기제어", val: 94 },
-              { label: "목표 시간 타임아 아비지", val: 91 },
-              { label: "시험 불안 통제력", val: 86 },
-              { label: "교사/멘토 피드백 활용", val: 92 }
-            ],
-            recommendedActivities: [
-              "레디커리어 AI 학습포트폴리오(코넬노트)를 통한 과목별 심화 보고서 도출",
-              "매일 50일 연속 '한입 퀘스트' 루틴 달성을 통한 꾸준한 학업 지표 획득"
-            ],
-            aiCareerComment: `입사관이 생기부 세특 및 행특에서 가장 눈여겨보는 '스스로 탐구를 무한 팽창시키는 열정'을 입증해 주는 훌륭한 진단입니다.`
-          }
-        },
-        {
-          id: "test-digital",
-          title: "AI 디지털 리터러시 & 차세대 신기술 마인드셋 진단",
-          category: "AI/신기술",
-          timeEst: "약 3분 소요",
-          desc: "생성형 AI (ChatGPT/Gemini 등), 파이썬 기초 도구, 3D 프롬프트 제어, 테크 윤리 의식에 대한 현대 IT 수용도와 친밀도를 측정합니다.",
+          id: "test-multiple-intelligences",
+          title: "다중지능 강점 프로파일",
+          category: "지능/강점",
+          timeEst: "약 4분 소요 (32문항)",
+          desc: "하워드 가드너의 다중지능 이론을 기반으로, 내가 타고난 8가지 지능 중 가장 뛰어난 마스터 역량을 발굴합니다.",
           status: "pending",
-          reportDetails: {
-            summary: "최신의 신기술을 장벽 없이 습득하며, 텍스트와 프롬프트를 넘나들며 창의적인 실무 산출물을 찍어내는 AI 네이티브 인재입니다!",
-            scores: [
-              { label: "AI 도구 수용도", val: 95 },
-              { label: "프롬프트 제어 역량", val: 93 },
-              { label: "디지털 정보 문해력", val: 89 },
-              { label: "AI 사회윤리 의식", val: 97 }
-            ],
-            recommendedActivities: [
-              "국가공인 빅데이터 준전문가(ADsP) 또는 AI 활용 자격증 시험 도전",
-              "인공지능 윤리 강령을 주제로 한 교내 인문사회 논술 공모전 수상"
-            ],
-            aiCareerComment: `미래 산업을 혁신할 디지털 리터러시 지수가 90점대를 상회하며 **'${targetJobName}'**의 전문 역량과 100% 매칭됩니다.`
-          }
+          reportDetails: { summary: "", scores: [], recommendedActivities: [], aiCareerComment: "" }
         },
         {
-          id: "test-vision",
-          title: "K-SLCA 생애 진로 비전 및 커리어 성향 검사",
-          category: "비전/가치",
-          timeEst: "약 2분 소요",
-          desc: "사회적 공헌, 명예와 전문성, 자유와 창조, 경제적 보상 중 내가 평생의 꿈을 선택할 때 가장 가치 있게 이끌어주는 인생 침판을 밝힙니다.",
+          id: "test-growth-mindset",
+          title: "성장 마인드셋 프로파일",
+          category: "심리/태도",
+          timeEst: "약 3분 소요 (32문항)",
+          desc: "어려운 문제에 직면했을 때 나의 뇌가 어떻게 반응하는지, 도전을 성장의 기회로 삼는 마인드셋 지수를 진단합니다.",
           status: "pending",
-          reportDetails: {
-            summary: "본인만의 고유한 기술력으로 인류의 삶을 이롭게 만들고자 하는 숭고한 보람과 전문적 장인 정신을 최선위에 두는 진실된 꿈 탐구어입니다.",
-            scores: [
-              { label: "전문적 권위성", val: 96 },
-              { label: "사회적 공인/이타심", val: 92 },
-              { label: "창조적 독창성", val: 88 },
-              { label: "자율 및 안정 균형", val: 82 }
-            ],
-            recommendedActivities: [
-              "소외 계층 및 초중등 동생들을 위한 교육 재능기부 멘토링 봉사",
-              "ESG 친환경 및 첨단 보조공학 로보틱스 관련 자율 탐구 과제 제출"
-            ],
-            aiCareerComment: `따뜻한 공감 능력과 뛰어난 이학 실무 능력을 겸비한 인재로서 최고의 리스펙트를 받을 자격이 있습니다.`
-          }
+          reportDetails: { summary: "", scores: [], recommendedActivities: [], aiCareerComment: "" }
         },
         {
-          id: "test-grit",
-          title: "GRIT 과제 집념 및 도전 회복탄력성 (Resilience) 진단",
-          category: "그릿/끈기",
-          timeEst: "약 2분 소요",
-          desc: "실패와 난관을 마주했을 때 좌절하지 않고 집요한 끈기와 강인한 회복탄력성으로 끝내 목표와 장려상을 쟁취하는 근성 지수를 판별합니다.",
+          id: "test-via-strengths",
+          title: "VIA 성격강점 자기이해",
+          category: "인성/성격",
+          timeEst: "약 4분 소요 (36문항)",
+          desc: "긍정심리학 기반 24개 핵심 강점 중, 나를 가장 나답고 빛나게 만드는 대표 성격 강점 5가지를 도출합니다.",
           status: "pending",
-          reportDetails: {
-            summary: "한 번 맡은 과제는 역경이 찾아와도 반드시 돌파 방안을 모색하여 해결해 내는 강인한 불굴의 마라토너형 마인드를 소유했습니다.",
-            scores: [
-              { label: "불굴의 과제 집념", val: 95 },
-              { label: "실패 복구 회복탄력성", val: 91 },
-              { label: "장기 비전 유지력", val: 94 },
-              { label: "정서적 냉정 균형", val: 88 }
-            ],
-            recommendedActivities: [
-              "1년 단위 장기 융합 프로젝트(논문 탐구 혹은 대회) 도전 및 출품",
-              "학교 대표 학술제에서 팀의 멘탈을 든든하게 지켜내는 PM 총괄 리딩"
-            ],
-            aiCareerComment: `아무리 고난이도의 연구과제라 해도 결코 포기하지 않고 돌파하는 근성 역량을 입체적으로 돋보이게 합니다!`
-          }
+          reportDetails: { summary: "", scores: [], recommendedActivities: [], aiCareerComment: "" }
+        },
+        {
+          id: "test-time-management",
+          title: "시간관리 역량 프로파일",
+          category: "학업/역량",
+          timeEst: "약 3분 소요 (32문항)",
+          desc: "목표 설정부터 우선순위 파악, 실행 및 통제까지 나의 시간을 주도적으로 지배하고 있는지를 평가합니다.",
+          status: "pending",
+          reportDetails: { summary: "", scores: [], recommendedActivities: [], aiCareerComment: "" }
+        },
+        {
+          id: "test-ai-literacy",
+          title: "AI 디지털 리터러시 진단",
+          category: "미래/기술",
+          timeEst: "약 3분 소요 (30문항)",
+          desc: "인공지능 도구를 얼마나 친숙하게 다루고 기술의 한계와 윤리를 올바르게 이해하고 있는지 현대적 AI 수용도를 측정합니다.",
+          status: "pending",
+          reportDetails: { summary: "", scores: [], recommendedActivities: [], aiCareerComment: "" }
+        },
+        {
+          id: "test-resilience",
+          title: "회복탄력성 프로파일",
+          category: "심리/태도",
+          timeEst: "약 3분 소요 (30문항)",
+          desc: "스트레스 상황이나 역경을 마주했을 때 꺾이지 않고 다시 튀어오르는 내면의 멘탈 방어력과 긍정성을 측정합니다.",
+          status: "pending",
+          reportDetails: { summary: "", scores: [], recommendedActivities: [], aiCareerComment: "" }
+        },
+        {
+          id: "test-career-maturity",
+          title: "진로성숙도 프로파일",
+          category: "진로/탐색",
+          timeEst: "약 3분 소요 (32문항)",
+          desc: "자신의 미래 직업에 대해 얼마나 확신을 갖고 주도적으로 탐색 및 준비하고 있는지 종합적인 성숙도를 진단합니다.",
+          status: "pending",
+          reportDetails: { summary: "", scores: [], recommendedActivities: [], aiCareerComment: "" }
         }
       ];
       setTests(defaultTests);
@@ -203,23 +144,23 @@ export const SelfUnderstanding: React.FC = () => {
     setTimeout(() => setToastMsg(""), 3200);
   };
 
-  // 검사 진행하기 or 재검사하기 라우팅/모달 트리거
+  const handleTakeTest = (test: DiagnosticTest) => {
+    if (test.status === "completed") {
+      alert("이미 완료한 검사입니다!");
+      return;
+    }
+    navigate(`/diagnostics/${test.id.replace('test-', '')}`);
+  };
+
   const handleStartOrRetakeTest = (test: DiagnosticTest, isRetake = false) => {
     if (isRetake && !window.confirm(`'${test.title}' 검사를 초기화하고 다시 재검사를 진행하시겠습니까?`)) {
       return;
     }
-
-    if (test.id === "test-interest") {
-      navigate("/interest-test");
-    } else if (test.id === "test-intelligence") {
-      navigate("/intelligence-test");
-    } else if (test.id === "test-learning") {
-      navigate("/learning-test");
-    } else {
-      // 4~6번 신규 추가 검사는 인터랙티브 AI 즉석 진단 모달 띄우기!
-      setCurrentQuestionIdx(0);
-      setQuickTestModal(test);
+    if (test.status === "completed" && !isRetake) {
+      alert("이미 완료된 검사입니다. 리포트를 확인해주세요!");
+      return;
     }
+    handleTakeTest(test);
   };
 
   // 쾌속 즉석 진단 답변 선택 및 완료 처리

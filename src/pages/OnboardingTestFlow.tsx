@@ -1,443 +1,352 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context";
-import { JOB_VENGERS_LIST, type JobVengerItem, ARI_BLOB_URL, getJobCharacterImage, getJobCharacterTitle } from "../assets/mascotData";
-import { Sparkles, ArrowRight, ArrowLeft, CheckCircle2, RotateCcw, Award, Star, ChevronRight } from "lucide-react";
+import { JOB_CHARACTER_MASTER_LIST } from "../assets/jobCharacterData";
+import { RIASEC_QUESTIONS, RIASEC_TYPES, RIASEC_PROFILES } from "../data/riasecData";
 
-interface DiagnosticQuestion {
-  id: number;
-  category: string;
-  icon: string;
-  title: string;
-  prompt: string;
-  bgGlow: string;
-}
+// 랜덤 캐릭터 셔플 함수 (멘토용)
+const shuffleArray = (array: any[]) => {
+  let shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+};
 
-const DIAGNOSTIC_QUESTIONS: DiagnosticQuestion[] = [
-  { id: 1, category: "AI 인공지능 & 로보틱스", icon: "🤖", title: "차세대 자율 로봇 및 신경망 코딩", prompt: "안녕! 아리야~ 첫 번째 질문이야! 최첨단 AI 인공지능 로봇을 프로그래밍하고 자율주행 알고리즘을 개발하는 일에 매력을 느끼니?", bgGlow: "from-[#E0ECFF] via-[#EFEAFE] to-[#E3FBF5]" },
-  { id: 2, category: "미디어·디지털 크리에이팅", icon: "🎨", title: "메타버스 & 3D AR/VR 크리에이터", prompt: "전 세계인이 환호할 메타버스 가상 세계 공간이나 차세대 3D AR/VR 융합 미디어 콘텐츠를 직접 디자인하고 이끌어가고 싶어?", bgGlow: "from-[#FEEBF7] via-[#F7EAFD] to-[#E2FBFE]" },
-  { id: 3, category: "스마트 바이오 & 생명공학", icon: "🧬", title: "유전체 분석 및 차세대 AI 신약 연구", prompt: "인간의 생명을 구하는 혁신적 신약 물질이나 첨단 AI 의학 데이터를 정밀 분석하여 질병 극복과 유전자 연구에 도전해볼래?", bgGlow: "from-[#E2FDEC] via-[#E8FBFE] to-[#F1F6FF]" },
-  { id: 4, category: "ESG & 클린 에너지 솔루션", icon: "🌿", title: "탄소중립 신재생 친환경 에너지", prompt: "지구를 위협하는 기후 문제를 스마트하게 해결할 클린 수소 에너지나 친환경 탄소 자원 순환 시스템을 개발하고 싶어?", bgGlow: "from-[#EAFBF0] via-[#E7FAFD] to-[#EEEFFE]" },
-  { id: 5, category: "우주항공 & 궤도 네비게이션", icon: "🛰️", title: "화성 탐사와 초고속 우주 위성 설계", prompt: "우주 저편으로 향하는 초고속 항공 탐사 위성 궤도를 정밀 렌더링하고 우주 로켓 네비게이션 시스템을 지휘해보고 싶어?", bgGlow: "from-[#E6F0FF] via-[#E2E2FF] to-[#F5EAFE]" },
-  { id: 6, category: "첨단 보건 & 스마트 시티 의료", icon: "🏥", title: "원격 스마트 헬스케어 및 바이오 기기", prompt: "스마트 웨어러블 센서를 통해 시민들의 건강과 생명을 24시간 돌보는 차세대 첨단 의료 플랫폼을 설계하는 일에 흥미가 가?", bgGlow: "from-[#FFEDE6] via-[#FFF2E2] to-[#ECFAFE]" },
-  { id: 7, category: "양자 데이터 & 핀테크", icon: "📊", title: "양자 컴퓨팅 기반 미래 경제 트렌드", prompt: "상상을 초월하는 속도의 양자 컴퓨터와 빅데이터를 가공하여 미래 글로벌 경제 시장의 금융 흐름과 트렌드를 꿰뚫어 볼래?", bgGlow: "from-[#FFF9E6] via-[#FCEFFE] to-[#E5FAFD]" },
-  { id: 8, category: "미래 스마트시티 아키텍처", icon: "🏙️", title: "IoT 사물인터넷 융합 친환경 도시공간", prompt: "하늘을 나는 도심 항공 모빌리티(UAM)와 인텔리전트 IoT 건물들이 공존하는 미래 친환경 초거대 인공지능 도시를 설계해볼래?", bgGlow: "from-[#E9F5FF] via-[#F0EAFF] to-[#EBFCFA]" },
-  { id: 9, category: "글로벌 게임 메가아키텍트", icon: "🎮", title: "수억 명이 진입할 초대형 게임 엔진", prompt: "한계가 없는 자유도를 자랑하는 글로벌 최고 3D 메가 오픈월드 게임의 거대한 세계관을 집필하고 물리학 엔진을 기획하고 싶어?", bgGlow: "from-[#EFE4FE] via-[#FFDFEE] to-[#E3FBFE]" },
-  { id: 10, category: "차세대 첨단 신소재 공학", icon: "⚗️", title: "초전도 배터리와 극고열 신소재 개발", prompt: "우주선 본체와 미래형 전기차의 뼈대가 될 초경량 고부하 신소재 물질이나 영구 초전도 에너지 체계를 실험해보고 싶니?", bgGlow: "from-[#FFF5E6] via-[#FFE7EA] to-[#F1EEFE]" },
-  { id: 11, category: "사이버 보안 & 화이트해커", icon: "🛡️", title: "국가 및 인공지능 네트워크 방어 작전", prompt: "악질적인 사이버 해킹으로부터 전 세계 데이터망을 철통같이 보호하고 AI 암호 방어벽을 통제하는 화이트해커에 끌리니?", bgGlow: "from-[#E5EFFF] via-[#EFF2FA] to-[#EBFBFA]" },
-  { id: 12, category: "에듀테크 & 지식 혁신", icon: "📚", title: "AI 어시스턴트 기반 차세대 미래 교육", prompt: "배움에 목마른 전 세계 청소년들에게 나만의 혁신적인 AI 학습 플랫폼과 차별화된 에듀테크 기술을 통해 따뜻한 희망을 전하고 싶어?", bgGlow: "from-[#FAEEFE] via-[#FFE9EC] to-[#EAFBFA]" },
-  { id: 13, category: "뉴럴 네트워크 & 뇌 심리 연구", icon: "🧠", title: "인간의 감성과 뇌 기계 인터페이스(BMI)", prompt: "인간 뇌의 감성과 메커니즘을 정밀히 이해하여, 생각만으로 기계와 통신하고 공감하는 차세대 뉴럴 뇌 인터페이스 분야를 연구할래?", bgGlow: "from-[#F0EAFF] via-[#FFE8FA] to-[#EAFFFD]" },
-  { id: 14, category: "첨단 해양 자원 융합 탐색", icon: "🌊", title: "심해 생태계 보존 및 로보틱 해양 개발", prompt: "신비로운 깊은 대양 밑 심해 생태계를 보존하면서, 무한한 친환경 수자원을 발굴하는 자율 해양 로보틱스 잠수함을 지휘해볼래?", bgGlow: "from-[#E5FCFF] via-[#E2F1FF] to-[#F1ECFF]" },
-  { id: 15, category: "글로벌 테크 윤리 정책", icon: "🤝", title: "인류와 첨단 기술의 공생 법적 거버넌스", prompt: "급변하는 AI와 신기술 속에서 인간성 상실을 막고 전 세계인이 공생할 수 있는 따뜻하고 공정한 글로벌 법령 체계를 만들고 싶어?", bgGlow: "from-[#F7EEFC] via-[#FFF7E8] to-[#E8FCFB]" },
-  { id: 16, category: "초광역 양자 우주 통신", icon: "📡", title: "행성 간 광역 레이저 양자 데이터망", prompt: "드디어 마지막! 지구와 인공 위성, 미래 은하 기지 간에 단 0.001초의 끊김도 없이 통신하는 초고속 양자 광선 데이터망을 뚫어볼래?", bgGlow: "from-[#EFEAFF] via-[#F9E6FF] to-[#E3FBFF]" },
+// 5점 척도 답변
+const LIKERT_OPTIONS = [
+  { value: 1, label: "전혀 아니다" },
+  { value: 2, label: "아니다" },
+  { value: 3, label: "보통이다" },
+  { value: 4, label: "그렇다" },
+  { value: 5, label: "매우 그렇다" },
 ];
 
 export const OnboardingTestFlow: React.FC = () => {
   const navigate = useNavigate();
-  const { session, startExpoDemo } = useAuth();
+  const [qIndex, setQIndex] = useState(0);
+  const [answers, setAnswers] = useState<number[]>(Array(RIASEC_QUESTIONS.length).fill(0));
+  const [currentView, setCurrentView] = useState<"questions" | "calculating" | "tie" | "result">("questions");
 
-  // 화면 뷰 상태: 'questions' (16문항) -> 'recommendations' (5대 추천 매칭 + 팝업 모달)
-  const [currentView, setCurrentView] = useState<"questions" | "recommendations" | "character_intro">("questions");
-  const [qIndex, setQIndex] = useState<number>(0);
-  const [selectedJob, setSelectedJob] = useState<JobVengerItem | null>(null);
+  // 멘토 리스트 (질문마다 바뀜)
+  const [randomMentors, setRandomMentors] = useState<any[]>([]);
 
-  // 16개 진단 문항마다 새롭게 업로드된 24개 직업 캐릭터(Lv.1~5)가 완벽히 랜덤으로 표출되도록 멘토 배열 셔플 생성
-  const [randomMentors] = useState<Array<{ title: string; imageUrl: string; category: string; displayTitle: string }>>(() => {
-    const shuffled = [...JOB_VENGERS_LIST].sort(() => Math.random() - 0.5);
-    return DIAGNOSTIC_QUESTIONS.map((_, i) => {
-      const job = shuffled[i % shuffled.length];
-      const randomLv = Math.floor(Math.random() * 5) + 1; // 1~5레벨의 풍성한 마스코트를 무작위로 노출
-      return {
-        title: job.title,
-        imageUrl: getJobCharacterImage(job.title, randomLv) || job.imageUrl,
-        category: job.category,
-        displayTitle: getJobCharacterTitle(job.title, randomLv, job.title)
-      };
-    });
-  });
+  // 점수 상태
+  const [lastScores, setLastScores] = useState<any>(null);
+  const [tieState, setTieState] = useState<any>(null);
+  const [finalCode, setFinalCode] = useState<string>("");
 
-  // 16문항 박스 답변 시 진행
-  const handleAnswerQuestion = () => {
-    if (qIndex < DIAGNOSTIC_QUESTIONS.length - 1) {
-      setQIndex(qIndex + 1);
-    } else {
-      setCurrentView("recommendations");
+  useEffect(() => {
+    // 마스터 리스트에서 멘토 풀(pool) 30개 만들기
+    let pool = [...JOB_CHARACTER_MASTER_LIST];
+    while (pool.length < RIASEC_QUESTIONS.length) {
+      pool = [...pool, ...JOB_CHARACTER_MASTER_LIST]; // 문항 수보다 적으면 복제해서 채움
     }
-  };
+    setRandomMentors(shuffleArray(pool).slice(0, RIASEC_QUESTIONS.length));
+  }, []);
 
-  const handlePrevQuestion = () => {
-    if (qIndex > 0) setQIndex(qIndex - 1);
-  };
+  const handleSelectAnswer = (val: number) => {
+    const newAnswers = [...answers];
+    newAnswers[qIndex] = val;
+    setAnswers(newAnswers);
 
-  const handleSelectCharacter = (item: JobVengerItem) => {
-    setSelectedJob(item);
-    // 페이지 전환 없이 직업 매칭 추천 화면 위에 팝업 모달로 띄움!
-  };
-
-  // 선택한 직업으로 ReadyCareer AI 홈화면 직행
-  const handleCompleteAndGoHome = () => {
-    if (selectedJob) {
-      localStorage.setItem("readycareer_selected_job", JSON.stringify(selectedJob));
-      localStorage.setItem("readycareer_target_job_name", selectedJob.title);
-      localStorage.setItem("readycareer_custom_avatar_url", selectedJob.imageUrl);
-      
-      if (session) {
-        startExpoDemo("student", {
-          ...session,
-          targetJob: selectedJob.title,
-          riasecCode: "AI-PRO",
-        });
+    setTimeout(() => {
+      if (qIndex < RIASEC_QUESTIONS.length - 1) {
+        setQIndex(qIndex + 1);
+      } else {
+        processResults(newAnswers);
       }
-    }
-    // 16개 진단을 마친 직후, 홈화면 입장 시 4대 모듈은 비어있어야 하고 AI 맞춤 활동 버튼을 가동하도록 숨김 초기화!
-    localStorage.removeItem("readycareer_roadmap_generated");
-    // 초기 경험치는 팝업 없이 깔끔하게 20 XP (Lv.1 브론즈)로 기본 설정
-    localStorage.setItem("readycareer_student_xp_v1", "20");
-    navigate("/");
+    }, 400); // 딜레이를 주어 버튼 애니메이션 후 넘어감
   };
 
-  const currentQ = DIAGNOSTIC_QUESTIONS[qIndex];
-  const progressPercent = Math.round(((qIndex + 1) / DIAGNOSTIC_QUESTIONS.length) * 100);
+  const processResults = (finalAnswers: number[]) => {
+    setCurrentView("calculating");
+    const totals: any = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 };
+    const counts: any = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 };
+    const high5: any = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 };
+    const high4: any = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 };
 
-  // 진단 추천 및 16개 문항 진행 시 보여질 24개 실물 캐릭터 마스터 목록
-  const recommendedHeroes = JOB_VENGERS_LIST;
-  const currentQHero = randomMentors[qIndex] || JOB_VENGERS_LIST[0];
+    RIASEC_QUESTIONS.forEach((q, i) => {
+      const v = finalAnswers[i];
+      totals[q.t] += v;
+      counts[q.t]++;
+      if (v === 5) high5[q.t]++;
+      if (v >= 4) high4[q.t]++;
+    });
+
+    const scores: any = {};
+    Object.keys(totals).forEach((k) => {
+      scores[k] = { sum: totals[k], avg: totals[k] / counts[k], five: high5[k], four: high4[k] };
+    });
+
+    setLastScores(scores);
+
+    setTimeout(() => {
+      const rank = Object.keys(scores).sort(
+        (a, b) => scores[b].sum - scores[a].sum || scores[b].five - scores[a].five || scores[b].four - scores[a].four
+      );
+
+      const top = rank[0];
+      const second = rank[1];
+      const sameTop = Object.keys(scores).filter(
+        (k) => scores[k].sum === scores[top].sum && scores[k].five === scores[top].five && scores[k].four === scores[top].four
+      );
+
+      if (sameTop.length > 1) {
+        setTieState({ position: 0, candidates: sameTop, chosen: [] });
+        setCurrentView("tie");
+        return;
+      }
+
+      const sameSecond = Object.keys(scores).filter(
+        (k) =>
+          k !== top &&
+          scores[k].sum === scores[second].sum &&
+          scores[k].five === scores[second].five &&
+          scores[k].four === scores[second].four
+      );
+
+      if (sameSecond.length > 1) {
+        setTieState({ position: 1, candidates: sameSecond, chosen: [top] });
+        setCurrentView("tie");
+        return;
+      }
+
+      setFinalCode(top + second);
+      setCurrentView("result");
+    }, 1500);
+  };
+
+  const resolveTie = (selected: string) => {
+    const scores = lastScores;
+    const rank = Object.keys(scores).sort(
+      (a, b) => scores[b].sum - scores[a].sum || scores[b].five - scores[a].five || scores[b].four - scores[a].four
+    );
+
+    if (tieState.position === 0) {
+      const rest = tieState.candidates.filter((x: string) => x !== selected);
+      const newRank = [selected, ...rank.filter((x) => x !== selected)];
+      const second = newRank[1];
+      const sameSecond = rest.filter(
+        (k: string) =>
+          scores[k].sum === scores[second].sum &&
+          scores[k].five === scores[second].five &&
+          scores[k].four === scores[second].four
+      );
+      if (sameSecond.length > 1) {
+        setTieState({ position: 1, candidates: sameSecond, chosen: [selected] });
+        return;
+      }
+      setFinalCode(selected + second);
+      setCurrentView("result");
+    } else {
+      setFinalCode(tieState.chosen[0] + selected);
+      setCurrentView("result");
+    }
+  };
+
+  const selectFinalJob = (jobName: string) => {
+    localStorage.setItem("readycareer_selected_job", jobName);
+    localStorage.setItem("readycareer_student_xp_v1", "0");
+    navigate("/home");
+  };
+
+  const progress = Math.round(((qIndex + 1) / RIASEC_QUESTIONS.length) * 100);
+
+  if (currentView === "calculating") {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6">
+        <div className="bg-white rounded-3xl p-10 max-w-sm w-full text-center shadow-xl border border-slate-100">
+          <div className="w-20 h-20 bg-indigo-50 rounded-2xl mx-auto flex items-center justify-center mb-6 animate-pulse">
+            <span className="text-4xl">🤖</span>
+          </div>
+          <h2 className="text-2xl font-black text-slate-800 mb-3 tracking-tight">AI 멘토가<br/>결과를 분석중이에요!</h2>
+          <p className="text-sm text-slate-500 font-medium leading-relaxed">수만 개의 직업 데이터를<br/>조합하고 있습니다...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (currentView === "tie" && tieState) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex flex-col pt-12 p-6">
+        <div className="max-w-md w-full mx-auto">
+          <div className="text-center mb-10">
+            <span className="inline-block py-1.5 px-3 rounded-full bg-indigo-100 text-indigo-700 font-black text-xs mb-3">
+              동점자 타이브레이커
+            </span>
+            <h1 className="text-2xl font-black text-slate-800 tracking-tight leading-snug">
+              둘 다 비슷하게 끌리네요.<br />지금 당장 딱 하나만 고른다면?
+            </h1>
+          </div>
+          <div className="space-y-4">
+            {tieState.candidates.map((code: string) => {
+              const typeInfo = (RIASEC_TYPES as any)[code];
+              return (
+                <button
+                  key={code}
+                  onClick={() => resolveTie(code)}
+                  className="w-full text-left bg-white border-2 border-indigo-50 p-5 rounded-2xl shadow-sm hover:border-indigo-400 hover:shadow-md transition-all group"
+                >
+                  <div className="flex items-center gap-3 mb-2">
+                    <span className="text-xl font-black text-indigo-600">{code}</span>
+                    <span className="font-bold text-slate-800">{typeInfo.name}</span>
+                  </div>
+                  <p className="text-sm font-bold text-slate-700 mb-1">{typeInfo.prompt}</p>
+                  <p className="text-xs text-slate-500">{typeInfo.desc}</p>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (currentView === "result") {
+    const profile = (RIASEC_PROFILES as any)[finalCode] || {
+      title: "융합형 크리에이터",
+      summary: "두 가지 성향이 조화롭게 섞여 새로운 가능성을 만들어내는 타입입니다.",
+      traits: ["새로운 시도를 즐깁니다.", "나만의 방식을 중요하게 생각합니다."],
+      strength: "예측 불가능한 융합적 상황에서 창의적인 해결책을 제시합니다.",
+      caution: "때로는 한 가지 방향을 정하는 결단력이 필요합니다.",
+      fields: ["융합기술", "창작기획", "미래산업"],
+    };
+
+    const primary = finalCode[0];
+    const secondary = finalCode[1];
+    const pInfo = (RIASEC_TYPES as any)[primary];
+    const sInfo = (RIASEC_TYPES as any)[secondary];
+
+    // 내 성향에 맞는 직업 찾기 (1순위 또는 2순위 코드가 매칭되는 직업)
+    const matchingJobs = JOB_CHARACTER_MASTER_LIST.filter(
+      (job) => job.riasecCode === primary || job.riasecCode === secondary
+    );
+
+    return (
+      <div className="min-h-screen bg-slate-50 pt-10 pb-20 px-5">
+        <div className="max-w-md mx-auto space-y-6">
+          <div className="bg-white rounded-3xl p-7 shadow-sm border border-slate-200/60">
+            <div className="inline-block px-3 py-1 bg-indigo-50 text-indigo-600 font-black text-xs rounded-full mb-4">
+              나의 진로흥미 코드 · {finalCode}
+            </div>
+            <h1 className="text-2xl font-black text-slate-800 mb-2">{profile.title}</h1>
+            <p className="text-sm text-slate-600 leading-relaxed mb-6">{profile.summary}</p>
+            
+            <div className="flex items-center justify-between gap-3 bg-slate-50 p-4 rounded-2xl border border-slate-100">
+              <div className="text-center flex-1">
+                <div className="text-2xl font-black text-indigo-600 mb-1">{primary}</div>
+                <div className="text-xs font-bold text-slate-700">{pInfo.name}</div>
+              </div>
+              <div className="text-slate-300 font-black">+</div>
+              <div className="text-center flex-1">
+                <div className="text-2xl font-black text-blue-500 mb-1">{secondary}</div>
+                <div className="text-xs font-bold text-slate-700">{sInfo.name}</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-3xl p-7 shadow-sm border border-slate-200/60">
+            <h3 className="font-black text-slate-800 mb-4 flex items-center gap-2">
+              <span className="w-1.5 h-1.5 bg-indigo-500 rounded-full"></span>
+              너 이런 편이지?
+            </h3>
+            <ul className="space-y-3">
+              {profile.traits.map((t: string, i: number) => (
+                <li key={i} className="flex gap-2 text-sm text-slate-600 leading-relaxed">
+                  <span className="text-indigo-500 font-bold">✓</span> {t}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="bg-white rounded-3xl p-7 shadow-sm border border-slate-200/60">
+            <h3 className="font-black text-slate-800 mb-2 flex items-center gap-2">
+              <span className="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
+              잘 쓰면 이런 강점
+            </h3>
+            <p className="text-sm text-slate-600 leading-relaxed">{profile.strength}</p>
+          </div>
+
+          <div className="bg-indigo-600 rounded-3xl p-7 shadow-lg">
+            <h2 className="text-lg font-black text-white mb-4 text-center">
+              내 성향에 딱 맞는 직업 선택하기
+            </h2>
+            <p className="text-indigo-100 text-xs text-center mb-6 opacity-90">
+              추천된 {matchingJobs.length}개의 캐릭터 중 가장 끌리는 하나를 골라 여정을 시작하세요!
+            </p>
+            <div className="grid grid-cols-2 gap-3">
+              {matchingJobs.slice(0, 6).map((job) => (
+                <button
+                  key={job.jobName}
+                  onClick={() => selectFinalJob(job.jobName)}
+                  className="bg-white/10 hover:bg-white/20 border border-white/20 rounded-2xl p-4 flex flex-col items-center transition-all"
+                >
+                  <img src={job.defaultImageUrl} alt={job.jobName} className="w-16 h-16 object-contain mb-3 drop-shadow-md" />
+                  <span className="text-xs font-black text-white">{job.jobName}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // 문항 풀이 화면
+  const currentQ = RIASEC_QUESTIONS[qIndex];
+  const typeInfo = (RIASEC_TYPES as any)[currentQ.t];
+  const hero = randomMentors[qIndex] || JOB_CHARACTER_MASTER_LIST[0];
 
   return (
-    <div className="min-h-[calc(100vh-70px)] bg-[#FAFAFC] text-[#111111] relative py-10 px-4 sm:px-6 lg:px-8 flex flex-col justify-center items-center selection:bg-[#111] selection:text-white font-sans">
-      
-      <div className="max-w-5xl w-full mx-auto relative z-10">
-
-        {/* VIEW 1: 16문항 진단검사 (상단 문항&캐릭터 / 하단 2개 박스형 선택지) */}
-        {currentView === "questions" && (
-          <div className="space-y-8 animate-fadeIn flex flex-col items-center w-full">
-            
-            {/* 상단 진행률 바 - Klyro Bento Module */}
-            <div className="w-full bg-white p-5 sm:p-6 rounded-[28px] border border-slate-200 shadow-sm space-y-3">
-              <div className="flex items-center justify-between font-extrabold text-xs sm:text-sm text-slate-600">
-                <span className="flex items-center gap-2 text-[#111111]">
-                  <Sparkles className="w-4 h-4 text-emerald-500" />
-                  3D 직업 아리 '직벤져스' AI 진로 흥미 밸런스 검사
-                </span>
-                <span className="bg-[#111111] text-emerald-400 px-3.5 py-1 rounded-full text-xs font-black">
-                  Q.{qIndex + 1} / {DIAGNOSTIC_QUESTIONS.length} ({progressPercent}%)
-                </span>
-              </div>
-              <div className="w-full h-2.5 rounded-full bg-slate-100 overflow-hidden">
-                <div 
-                  className="h-full rounded-full bg-[#111111] transition-all duration-300" 
-                  style={{ width: `${progressPercent}%` }} 
-                />
-              </div>
-            </div>
-
-            {/* 상단(Above): 문항과 마스코트 캐릭터 배치 - High Contrast Dark & White Bento */}
-            <div className="w-full rounded-[32px] bg-white p-6 sm:p-10 border border-slate-200 shadow-md flex flex-col sm:flex-row items-center justify-between gap-6 sm:gap-8 relative overflow-hidden group">
-              
-              {/* 캐릭터 & 아이콘 영역 */}
-              <div className="flex-shrink-0 flex flex-col items-center text-center space-y-3 z-10">
-                <div className="w-40 h-40 sm:w-48 sm:h-48 rounded-[32px] bg-slate-50 p-4 border border-slate-200 flex items-center justify-center relative transform group-hover:scale-102 transition-all duration-300 shadow-xs">
-                  <span className="text-4xl sm:text-5xl absolute -top-3 -right-3 bg-white p-2.5 rounded-2xl shadow-md border border-slate-100">
-                    {currentQ.icon}
-                  </span>
-                  <div className="w-full h-full flex items-center justify-center">
-                    <img 
-                      src={currentQHero?.imageUrl || getJobCharacterImage(currentQHero?.title, 1)} 
-                      alt={currentQHero?.title || "Mascot"} 
-                      className="w-32 h-32 sm:w-40 sm:h-40 object-contain filter drop-shadow-sm transition-transform duration-300 transform group-hover:scale-105" 
-                    />
-                  </div>
-                </div>
-                <span className="text-xs sm:text-sm font-extrabold text-slate-800 bg-slate-100 px-4 py-1.5 rounded-full border border-slate-200/80 tracking-tight whitespace-normal break-keep text-center max-w-full">
-                  ⚡ [{(currentQHero as any).displayTitle || currentQHero?.title || "AI 멘토"}] {currentQ.category}
-                </span>
-              </div>
-
-              {/* 질문 문항 말풍선 - Balanced Purple Pastel & Rich Violet */}
-              <div className="flex-grow text-center sm:text-left space-y-4 w-full bg-gradient-to-r from-[#5E32EB] via-[#6F42F5] to-[#8C62FF] text-white p-8 sm:p-10 rounded-[28px] shadow-[0_15px_40px_rgba(94,50,235,0.25)] border border-[#A17CFF]/30 relative z-10">
-                <span className="text-xs font-black text-amber-300 uppercase tracking-widest bg-white/15 px-3.5 py-1 rounded-full inline-flex items-center gap-1.5 border border-white/20 shadow-xs">
-                  <span className="w-1.5 h-1.5 rounded-full bg-amber-300 animate-pulse" />
-                  <span>QUESTION 0{currentQ.id}</span>
-                </span>
-                <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-white leading-snug tracking-tight break-keep">
-                  "{currentQ.prompt}"
-                </h2>
-              </div>
-            </div>
-
-            {/* 하단(Below): 2개 선택 박스 - Klyro Minimalist Bento Action Tiles */}
-            <div className="w-full space-y-4 pt-2">
-              {/* 아리 가이던스 말풍선 */}
-              <div className="flex items-center justify-center gap-3 sm:gap-4 my-4 w-full max-w-4xl mx-auto px-2">
-                <div className="relative flex-shrink-0">
-                  <img 
-                    src={ARI_BLOB_URL} 
-                    alt="Ari" 
-                    className="w-12 h-12 sm:w-14 sm:h-14 object-contain flex-shrink-0" 
-                  />
-                </div>
-                <div className="flex-grow bg-white px-6 py-4 rounded-[24px] rounded-tl-none border border-slate-200 shadow-xs text-[#111111] text-sm sm:text-base font-extrabold tracking-tight flex items-center justify-between gap-3">
-                  <span className="flex items-center gap-2">
-                    <span>✨</span>
-                    <span>
-                      <strong className="text-emerald-600 mr-1.5">아리의 귀띔:</strong> 
-                      "👇 내 마음에 쏙 드는 선택지를 터치해줘!"
-                    </span>
-                  </span>
-                  <span className="hidden sm:inline-flex bg-slate-100 text-slate-700 text-xs font-black px-3.5 py-1 rounded-full border border-slate-200">
-                    선택 즉시 반영
-                  </span>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
-                {/* 선택지 A (Positive / 긍정 반응) */}
-                <div
-                  onClick={handleAnswerQuestion}
-                  className="group cursor-pointer p-8 rounded-[28px] bg-white border-2 border-slate-200 hover:border-[#6A42ED] hover:bg-[#F9F6FF] shadow-sm hover:shadow-md transition-all duration-200 flex flex-col items-center justify-center space-y-4 text-center"
-                >
-                  <span className="text-5xl sm:text-6xl group-hover:scale-110 transition-transform duration-200">
-                    💖
-                  </span>
-                  <span className="text-xl sm:text-2xl font-black tracking-tight text-[#1F193B] break-keep">
-                    😍 완전 설레고 꼭 해볼래요!
-                  </span>
-                  <div className="inline-flex items-center text-xs font-black bg-purple-50 group-hover:bg-[#6A42ED] group-hover:text-white text-[#6A42ED] px-4 py-1.5 rounded-full transition-colors border border-purple-100">
-                    <span>이 직무 성향 선택 &rarr;</span>
-                  </div>
-                </div>
-
-                {/* 선택지 B (Alternative / 탐색 반응) */}
-                <div
-                  onClick={handleAnswerQuestion}
-                  className="group cursor-pointer p-8 rounded-[28px] bg-white border-2 border-slate-200 hover:border-slate-400 hover:bg-slate-50/50 shadow-sm hover:shadow-md transition-all duration-200 flex flex-col items-center justify-center space-y-4 text-center"
-                >
-                  <span className="text-5xl sm:text-6xl group-hover:scale-110 transition-transform duration-200">
-                    🔍
-                  </span>
-                  <span className="text-xl sm:text-2xl font-black tracking-tight text-slate-700 break-keep">
-                    🤔 다른 멋진 분야도 궁금해요!
-                  </span>
-                  <div className="inline-flex items-center text-xs font-black bg-slate-100 group-hover:bg-slate-700 group-hover:text-white text-slate-600 px-4 py-1.5 rounded-full transition-colors">
-                    <span>다른 가능성 탐험 &rarr;</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* 이전 버튼 */}
-              {qIndex > 0 && (
-                <div className="text-center pt-4">
-                  <button
-                    onClick={handlePrevQuestion}
-                    className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-extrabold text-slate-500 hover:text-[#111111] px-4 py-2 rounded-xl transition-colors"
-                  >
-                    <ArrowLeft className="w-4 h-4" />
-                    <span>이전 질문으로 다시 가기</span>
-                  </button>
-                </div>
-              )}
-            </div>
-
+    <div className="min-h-screen bg-[#F5F6F8] flex flex-col">
+      {/* 헤더 & 진행바 */}
+      <header className="sticky top-0 z-20 bg-white/90 backdrop-blur-md border-b border-slate-100 px-5 py-4">
+        <div className="max-w-md mx-auto flex items-center justify-between">
+          <div className="text-base font-black text-slate-800 tracking-tight">K-RIASEC 진로흥미검사</div>
+          <div className="text-xs font-black text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full">
+            {qIndex + 1} / {RIASEC_QUESTIONS.length}
           </div>
-        )}
+        </div>
+        <div className="max-w-md mx-auto h-1.5 bg-slate-100 rounded-full mt-4 overflow-hidden">
+          <div className="h-full bg-indigo-600 rounded-full transition-all duration-300" style={{ width: `${progress}%` }} />
+        </div>
+      </header>
 
-        {/* VIEW 2: 간략한 진단 피드백 네모박스 + 직업 추천 5개 */}
-        {currentView === "recommendations" && (
-          <div className="space-y-10 animate-fadeIn w-full">
-            
-            {/* 1) 아주 간단한 진단 검사 피드백 (클린 벤토 네모 박스) */}
-            <div className="rounded-[32px] bg-white p-8 sm:p-12 border border-slate-200 shadow-sm flex flex-col sm:flex-row items-center gap-8 relative overflow-hidden">
-              <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-full bg-slate-50 p-3 flex-shrink-0 flex items-center justify-center border border-slate-200">
-                <img src={ARI_BLOB_URL} alt="Ari Feedback" className="w-full h-full object-contain" />
-              </div>
-              <div className="space-y-3 text-center sm:text-left flex-grow">
-                <div className="inline-flex items-center gap-1.5 bg-[#111111] text-emerald-400 px-4 py-1.5 rounded-full text-xs font-black shadow-xs">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                  <span>진단 완료 · AI 아리의 10초 핵심 피드백</span>
-                </div>
-                <h2 className="text-2xl sm:text-3xl font-black text-[#111111] tracking-tight leading-tight">
-                  🎯 분석 결과! 회원님은 <span className="underline decoration-emerald-500 decoration-4 underline-offset-4">창의 융합 개척</span> &amp; <span className="underline decoration-slate-900 decoration-4 underline-offset-4">최첨단 기술 비전</span>에 뛰어난 가능성을 품고 계십니다!
-                </h2>
-                <p className="text-sm sm:text-base text-slate-600 font-medium leading-relaxed bg-slate-50 p-5 rounded-2xl border border-slate-200/80">
-                  " 16개 문항 분석 끝에 도출된 회원님의 성격과 흥미는 미지의 AI 기술을 주도하고 세상을 무궁무진하게 변화시키는 <strong className="text-[#111]">이노베이터(Innovator)</strong> 유형입니다! 아래 준비된 총 24인의 RIASEC 직벤져스 캐릭터 중에서 나만의 꿈과 공명을 일으키는 최고의 진로 메이트를 선택해 보세요! "
-                </p>
-              </div>
-            </div>
-
-            {/* 2) 직업 추천하기 (직벤져스 캐릭터 24개 ➜ 클릭 시 소개페이지로) */}
-            <div className="space-y-6">
-              <div className="text-center space-y-2">
-                <h3 className="text-2xl sm:text-3xl font-black text-[#111111]">
-                  🚀 내 꿈의 여정을 함께할 추천 '직벤져스' 마스코트
-                </h3>
-                <p className="text-xs sm:text-sm text-slate-500 font-medium">
-                  원하는 직업 마스코트를 클릭하시면 즉시 <strong>Lv.1 ~ Lv.5 레벨업 순차 진화 팝업 스토리</strong>를 확인하실 수 있습니다!
-                </p>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5 pt-3">
-                {recommendedHeroes.map((hero, index) => {
-                  const matchRate = Math.max(75.0, (99.5 - index * 0.7)).toFixed(1);
-                  return (
-                    <div
-                      key={hero.id}
-                      onClick={() => handleSelectCharacter(hero)}
-                      className="p-6 rounded-[28px] bg-white border border-slate-200 hover:border-slate-800 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer flex flex-col items-center justify-between group relative"
-                    >
-                      <span className="absolute -top-3 right-4 bg-[#111111] text-emerald-400 font-black text-[11px] px-3 py-1 rounded-full shadow-md border border-slate-800">
-                        싱크로율 {matchRate}%
-                      </span>
-
-                      <div className="w-full flex items-center justify-between text-[11px] font-extrabold text-slate-500 pt-1">
-                        <span className="bg-slate-100 px-2.5 py-0.5 rounded-full">#{index + 1} 순위</span>
-                        <Star className="w-4 h-4 text-amber-400 fill-amber-400" />
-                      </div>
-
-                      <div className="w-32 h-32 rounded-full bg-slate-50 p-3 border border-slate-100 flex items-center justify-center my-4 group-hover:scale-105 transition-transform duration-200">
-                        <img src={hero.imageUrl} alt={hero.title} className="w-full h-full object-contain filter drop-shadow-xs" />
-                      </div>
-
-                      <div className="w-full text-center space-y-1.5 pt-3 border-t border-slate-100">
-                        <span className="text-[10px] font-black text-slate-500 block w-fit mx-auto">
-                          {hero.category}
-                        </span>
-                        <strong className="text-sm font-black text-[#111111] block leading-tight whitespace-normal break-keep">
-                          {hero.title}
-                        </strong>
-                        <div className="pt-1 text-xs font-black text-slate-800 flex items-center justify-center gap-1 group-hover:text-emerald-600 transition-colors">
-                          <span>레벨업 과정 보기</span>
-                          <ArrowRight className="w-3.5 h-3.5" />
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
+      {/* 메인 뷰 */}
+      <main className="flex-1 max-w-md w-full mx-auto p-5 pb-32 flex flex-col justify-center">
+        {/* 캐릭터 멘토 말풍선 */}
+        <div className="mb-8 relative flex flex-col items-center">
+          <img src={hero.defaultImageUrl} alt="mentor" className="w-32 h-32 object-contain drop-shadow-xl z-10" />
+          <div className="bg-white border border-slate-200/60 p-5 rounded-2xl shadow-sm relative -mt-4 w-full text-center">
+            <span className="text-[10px] font-black text-indigo-500 bg-indigo-50 px-2 py-0.5 rounded-full mb-2 inline-block">
+              {typeInfo.name} 질문
+            </span>
+            <p className="text-base font-bold text-slate-800 leading-snug break-keep">"{currentQ.q}"</p>
           </div>
-        )}
+        </div>
 
-        {/* 팝업 모달: 직업 선택 시 나타나는 캐릭터 직업 소개 & Lv.1~Lv.5 진화 스토리 - Klyro Clean Modal */}
-        {selectedJob && (
-          <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 sm:p-6 lg:p-8 animate-fadeIn">
-            <div className="bg-white w-full max-w-5xl rounded-[36px] shadow-2xl border border-slate-200 max-h-[92vh] overflow-y-auto relative p-6 sm:p-10 lg:p-12 space-y-8 text-left">
-              
-              {/* 우측 상단 닫기 X 버튼 */}
-              <button 
-                onClick={() => setSelectedJob(null)}
-                className="absolute top-6 right-6 p-3 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 transition-all z-50 shadow-xs flex items-center justify-center cursor-pointer"
-                title="닫기"
+        {/* 5점 척도 선택 버튼 */}
+        <div className="space-y-2.5">
+          {LIKERT_OPTIONS.map((opt) => {
+            const isSelected = answers[qIndex] === opt.value;
+            return (
+              <button
+                key={opt.value}
+                onClick={() => handleSelectAnswer(opt.value)}
+                className={`w-full p-4 rounded-2xl border-2 font-bold text-sm transition-all flex items-center justify-between ${
+                  isSelected 
+                    ? "bg-indigo-50 border-indigo-500 text-indigo-700 shadow-md transform scale-[1.02]" 
+                    : "bg-white border-slate-100 text-slate-600 hover:border-indigo-200 hover:bg-slate-50"
+                }`}
               >
-                <span className="text-lg font-black block px-1">✕</span>
+                <span>{opt.label}</span>
+                {isSelected && <span className="text-indigo-500 font-black">✓</span>}
               </button>
-
-              {/* 상단 선택 캐릭터 히어로 뱃지 헤더 - Balanced Purple & Violet Theme */}
-              <div className="rounded-[32px] bg-gradient-to-r from-[#5328E0] via-[#6537EA] to-[#8054FC] text-white p-8 sm:p-10 border border-[#9A75FF]/40 shadow-xl flex flex-col sm:flex-row items-center justify-between gap-6 relative overflow-hidden">
-                <div className="space-y-3 max-w-2xl text-center sm:text-left z-10">
-                  <span className="text-xs font-black px-4 py-1.5 rounded-full bg-white/15 text-amber-300 border border-white/20 inline-block shadow-xs">
-                    ✨ AI 맞춤 추천 랭크 캐릭터 · {selectedJob.category}
-                  </span>
-                  <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
-                    <span className="text-amber-300">{getJobCharacterTitle(selectedJob.title, 1)}</span> <br className="hidden sm:block"/>
-                    5단계 진화 로드맵
-                  </h2>
-                </div>
-
-                <div className="flex-shrink-0 z-10 flex flex-col items-center">
-                  <div className="w-40 h-40 sm:w-48 sm:h-48 rounded-[32px] bg-white p-4 shadow-2xl border border-purple-100 flex items-center justify-center">
-                    <img src={selectedJob.imageUrl} alt={selectedJob.title} className="w-full h-full object-contain filter drop-shadow-md" />
-                  </div>
-                  <span className="mt-3 text-xs font-black bg-white text-[#5E32EB] px-4 py-1 rounded-full shadow-md">
-                    💎 AI 싱크로율 최상위 메이트
-                  </span>
-                </div>
-              </div>
-
-              {/* Lv.1 ~ Lv.5 순차적 레벨업 진화 화면 - Clean White/Slate Modular Bento */}
-              <div className="space-y-5 pt-2">
-                <div className="flex items-center justify-between px-2">
-                  <span className="text-xs font-black text-slate-500 uppercase tracking-wider block">
-                    🏅 5-STAGE CAREER EVOLUTION TREE
-                  </span>
-                  <span className="text-xs font-extrabold text-[#111] bg-slate-100 px-3 py-1 rounded-full border border-slate-200">
-                    Lv.1부터 Lv.5 마스터까지 역량 해금
-                  </span>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5 relative items-stretch pt-1">
-                  {[
-                    { lv: "Lv.1", badge: "📖 지식 융합", name: "호기심 장착 아리" },
-                    { lv: "Lv.2", badge: "⚡ 실전 챌린지", name: "프로젝트 리더" },
-                    { lv: "Lv.3", badge: "🏆 생기부 마스터", name: "포트폴리오 왕" },
-                    { lv: "Lv.4", badge: "🚀 차세대 엑스퍼트", name: "미래 엑스퍼트" },
-                    { lv: "Lv.5", badge: "👑 마스터 아키텍트", name: "최상위 비전 아리" },
-                  ].map((item, idx) => (
-                    <div 
-                      key={idx} 
-                      className="rounded-[24px] bg-slate-50 p-5 border border-slate-200 hover:border-slate-800 transition-all duration-200 flex flex-col items-center justify-between space-y-4 group relative"
-                    >
-                      {idx < 4 && (
-                        <div className="hidden lg:flex absolute -right-4 top-1/2 -translate-y-1/2 z-20 w-7 h-7 rounded-full bg-white border border-slate-300 shadow-xs items-center justify-center text-slate-600 font-black text-xs">
-                          <ChevronRight className="w-4 h-4 stroke-[3]" />
-                        </div>
-                      )}
-
-                      <div className="w-full flex flex-col items-center space-y-2 pt-1">
-                        <span className="text-xs font-black px-3 py-1 rounded-full bg-white text-[#111] border border-slate-200 shadow-xs">
-                          {item.lv}
-                        </span>
-                        <span className="text-xs font-bold text-slate-600">
-                          {item.badge}
-                        </span>
-                      </div>
-
-                      <div className="w-24 h-24 rounded-full bg-white p-3 border border-slate-100 flex items-center justify-center my-2 group-hover:scale-105 transition-transform duration-200 shadow-xs">
-                        <img 
-                          src={getJobCharacterImage(selectedJob.title, idx + 1)} 
-                          alt={item.name} 
-                          className="w-full h-full object-contain filter drop-shadow-xs" 
-                        />
-                      </div>
-
-                      <div className="w-full text-center bg-white py-2 px-3 rounded-xl border border-slate-200/80 shadow-xs">
-                        <strong className="text-xs sm:text-sm font-black text-[#111111] block whitespace-normal break-keep leading-tight">
-                          {getJobCharacterTitle(selectedJob.title, idx + 1, item.name)}
-                        </strong>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* ACTION START BUTTON & RESELECT BUTTON */}
-              <div className="w-full max-w-2xl mx-auto flex flex-col items-center pt-4 space-y-4 border-t border-slate-100">
-                <button
-                  onClick={handleCompleteAndGoHome}
-                  className="w-full py-5 px-8 bg-gradient-to-r from-[#5E32EB] to-[#8054FC] hover:brightness-105 text-white rounded-2xl font-black text-base sm:text-xl tracking-wide transition-all duration-200 flex items-center justify-center gap-3 shadow-[0_12px_35px_rgba(94,50,235,0.35)] hover:shadow-[0_16px_45px_rgba(94,50,235,0.45)] cursor-pointer"
-                >
-                  <Award className="w-6 h-6 text-amber-300 fill-amber-300 flex-shrink-0" />
-                  <span className="truncate">선택한 직업으로 ReadyCareer AI 시작하기</span>
-                  <ArrowRight className="w-6 h-6 text-amber-300 flex-shrink-0" />
-                </button>
-
-                <button
-                  onClick={() => setSelectedJob(null)}
-                  className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-slate-500 hover:text-[#111] transition-colors py-2 px-4 rounded-xl hover:bg-slate-100 cursor-pointer"
-                >
-                  <RotateCcw className="w-4 h-4" />
-                  <span>창을 닫고 매칭 화면의 다른 직업도 구경하기</span>
-                </button>
-              </div>
-
-            </div>
-          </div>
-        )}
-
-      </div>
+            );
+          })}
+        </div>
+      </main>
     </div>
   );
 };
-
-export default OnboardingTestFlow;
-
