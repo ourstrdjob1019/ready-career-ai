@@ -264,9 +264,9 @@ export const JOB_AI_PROFILES: Record<string, JobAiProfile> = {
     ]
   },
 
-  // --- [A_예술형] 파티시에 (토리) ---
-  "파티시에 (토리)": {
-    jobName: "파티시에 (토리)",
+  // --- [A_예술형] 파티시에 ---
+  "파티시에": {
+    jobName: "파티시에",
     riasec: "A (예술형)",
     constellationName: "[A_예술형 감성 미학] 파티시에 토리의 슈가 라이온 별자리",
     nodes: [
@@ -409,9 +409,9 @@ export const JOB_AI_PROFILES: Record<string, JobAiProfile> = {
     ]
   },
 
-  // --- [S_사회형] 간호사 (아리) ---
-  "간호사 (아리)": {
-    jobName: "간호사 (아리)",
+  // --- [S_사회형] 간호사 ---
+  "간호사": {
+    jobName: "간호사",
     riasec: "S (사회형)",
     constellationName: "[S_사회형 치유와 헌신] 간호사 아리의 나이팅게일 별자리",
     nodes: [

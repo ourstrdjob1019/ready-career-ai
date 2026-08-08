@@ -36,7 +36,7 @@ export const MyPage: React.FC = () => {
         // 교사나 학생이 다중 직업 시스템을 바로 체감할 수 있도록 실물 캐릭터 데이터로 초기화
         return [
           { name: "생명과학연구원", category: "탐구형(I)", imageUrl: "https://pydvuqjhzcrpauzpssxg.supabase.co/storage/v1/object/public/character-assets/I/bioscience_researcher/lv4.png", lastActive: "2일 전 완료", recordsCount: 14, rank: "다이아 마스터", bgColor: "bg-emerald-50" },
-          { name: "콘텐츠크리에이터 (토리)", category: "예술형(A)", imageUrl: "https://pydvuqjhzcrpauzpssxg.supabase.co/storage/v1/object/public/character-assets/A/content_creator_tori/lv2.png", lastActive: "1주일 전 완료", recordsCount: 5, rank: "실버 챌린저", bgColor: "bg-orange-50" },
+          { name: "콘텐츠크리에이터", category: "예술형(A)", imageUrl: "https://pydvuqjhzcrpauzpssxg.supabase.co/storage/v1/object/public/character-assets/A/content_creator_tori/lv2.png", lastActive: "1주일 전 완료", recordsCount: 5, rank: "실버 챌린저", bgColor: "bg-orange-50" },
         ];
       }
       return stored;
