@@ -59,7 +59,7 @@ export const StartScreen: React.FC = () => {
       
       <div className="relative z-10 flex flex-col items-center text-center max-w-4xl px-4 w-full">
         {/* 메인 캐릭터 (크게 배치) */}
-        <div className="relative w-full max-w-[450px] aspect-square flex items-center justify-center mb-8 drop-shadow-2xl">
+        <div className="relative w-full max-w-[650px] aspect-square flex items-center justify-center mb-8 drop-shadow-2xl">
            <img 
              src="/landing_character.png" 
              alt="랜딩페이지 캐릭터" 
@@ -69,10 +69,10 @@ export const StartScreen: React.FC = () => {
         
         {/* 심플한 안내 문구 */}
         <h1 className="text-4xl md:text-5xl font-black text-slate-900 mb-5 tracking-tight break-keep">
-          나만의 커리어 별자리 만들기
+          학생부 AI 커리어 네비게이터
         </h1>
         <p className="text-base md:text-lg text-slate-600 mb-10 max-w-lg break-keep font-medium">
-          AI 파트너 아리와 나의 흥미와 재능을 살펴보고, 나에게 맞는 커리어 별자리를 만들어보세요.
+          진로 탐색부터 생기부 맞춤형 포트폴리오까지, AI 파트너 아리가 여러분의 진학 여정을 안내합니다.
         </p>
 
         {/* 시작하기 버튼 */}

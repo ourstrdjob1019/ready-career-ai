@@ -32,6 +32,7 @@ export const OnboardingTestFlow: React.FC = () => {
   const [lastScores, setLastScores] = useState<any>(null);
   const [tieState, setTieState] = useState<any>(null);
   const [finalCode, setFinalCode] = useState<string>("");
+  const [selectedJob, setSelectedJob] = useState<any>(null);
 
   useEffect(() => {
     // 마스터 리스트에서 멘토 풀(pool) 30개 만들기
@@ -145,7 +146,7 @@ export const OnboardingTestFlow: React.FC = () => {
   const selectFinalJob = (jobName: string) => {
     localStorage.setItem("readycareer_selected_job", jobName);
     localStorage.setItem("readycareer_student_xp_v1", "0");
-    navigate("/home");
+    navigate("/");
   };
 
   const progress = Math.round(((qIndex + 1) / RIASEC_QUESTIONS.length) * 100);
@@ -265,27 +266,54 @@ export const OnboardingTestFlow: React.FC = () => {
             <p className="text-sm text-slate-600 leading-relaxed">{profile.strength}</p>
           </div>
 
-          <div className="bg-indigo-600 rounded-3xl p-7 shadow-lg">
-            <h2 className="text-lg font-black text-white mb-4 text-center">
+          <div className="bg-white rounded-3xl p-7 shadow-sm border border-slate-200/60">
+            <h2 className="text-lg font-black text-slate-800 mb-4 text-center">
               내 성향에 딱 맞는 직업 선택하기
             </h2>
-            <p className="text-indigo-100 text-xs text-center mb-6 opacity-90">
+            <p className="text-slate-500 text-xs text-center mb-6 font-medium break-keep">
               추천된 {matchingJobs.length}개의 캐릭터 중 가장 끌리는 하나를 골라 여정을 시작하세요!
             </p>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-4">
               {matchingJobs.slice(0, 6).map((job) => (
                 <button
                   key={job.jobName}
-                  onClick={() => selectFinalJob(job.jobName)}
-                  className="bg-white/10 hover:bg-white/20 border border-white/20 rounded-2xl p-4 flex flex-col items-center transition-all"
+                  onClick={() => setSelectedJob(job)}
+                  className="bg-slate-50 hover:bg-slate-100 border border-slate-100 rounded-2xl p-4 flex flex-col items-center transition-all group shadow-sm hover:shadow-md"
                 >
-                  <img src={job.defaultImageUrl} alt={job.jobName} className="w-16 h-16 object-contain mb-3 drop-shadow-md" />
-                  <span className="text-xs font-black text-white">{job.jobName}</span>
+                  <img src={job.defaultImageUrl} alt={job.jobName} className="w-24 h-24 object-contain mb-3 drop-shadow-sm group-hover:scale-110 transition-transform" />
+                  <span className="text-sm font-black text-slate-700">{job.jobName}</span>
                 </button>
               ))}
             </div>
           </div>
         </div>
+
+        {/* Job Selection Popup */}
+        {selectedJob && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 animate-fadeIn">
+            <div className="bg-white rounded-[32px] p-8 max-w-sm w-full shadow-2xl relative text-center">
+              <button 
+                onClick={() => setSelectedJob(null)}
+                className="absolute top-4 right-5 text-slate-400 hover:text-slate-700 font-bold text-xl"
+              >
+                ✕
+              </button>
+              <div className="w-32 h-32 mx-auto mb-4 relative">
+                <div className="absolute inset-0 bg-indigo-100 rounded-full blur-xl opacity-50" />
+                <img src={selectedJob.defaultImageUrl} alt={selectedJob.jobName} className="w-full h-full object-contain relative z-10 drop-shadow-xl" />
+              </div>
+              <h2 className="text-2xl font-black text-slate-900 mb-2">{selectedJob.jobName}</h2>
+              <p className="text-sm text-slate-600 mb-8 break-keep">{selectedJob.description || "이 직업과 함께 나의 커리어 여정을 시작해보세요!"}</p>
+              
+              <button
+                onClick={() => selectFinalJob(selectedJob.jobName)}
+                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all"
+              >
+                이 직업 선택하기
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     );
   }
@@ -315,16 +343,16 @@ export const OnboardingTestFlow: React.FC = () => {
         {/* 캐릭터 멘토 말풍선 */}
         <div className="mb-8 relative flex flex-col items-center">
           <img src={hero.defaultImageUrl} alt="mentor" className="w-32 h-32 object-contain drop-shadow-xl z-10" />
-          <div className="bg-white border border-slate-200/60 p-5 rounded-2xl shadow-sm relative -mt-4 w-full text-center">
-            <span className="text-[10px] font-black text-indigo-500 bg-indigo-50 px-2 py-0.5 rounded-full mb-2 inline-block">
+          <div className="bg-white border border-slate-200/60 p-6 md:p-8 rounded-2xl shadow-sm relative -mt-4 w-full text-center">
+            <span className="text-[11px] font-black text-indigo-500 bg-indigo-50 px-3 py-1 rounded-full mb-3 inline-block">
               {typeInfo.name} 질문
             </span>
-            <p className="text-base font-bold text-slate-800 leading-snug break-keep">"{currentQ.q}"</p>
+            <p className="text-xl md:text-2xl font-bold text-slate-800 leading-snug break-keep">"{currentQ.q}"</p>
           </div>
         </div>
 
-        {/* 2가지 선택 버튼 */}
-        <div className="space-y-3">
+        {/* 2가지 선택 버튼 (가로 배치) */}
+        <div className="grid grid-cols-2 gap-3">
           {LIKERT_OPTIONS.map((opt) => {
             const isSelected = answers[qIndex] === opt.value;
             const colorClass = opt.color === "indigo" 
@@ -339,11 +367,11 @@ export const OnboardingTestFlow: React.FC = () => {
               <button
                 key={opt.value}
                 onClick={() => handleSelectAnswer(opt.value)}
-                className={`w-full p-5 rounded-2xl border-2 font-black text-base transition-all flex items-center justify-center ${
+                className={`w-full py-8 px-4 rounded-2xl border-2 font-black text-lg md:text-xl transition-all flex flex-col items-center justify-center gap-2 ${
                   isSelected ? selectedClass : colorClass
                 }`}
               >
-                <span>{opt.label}</span>
+                <span>{opt.label.split(' ')[0]} {opt.label.split(' ').slice(1).join(' ')}</span>
               </button>
             );
           })}

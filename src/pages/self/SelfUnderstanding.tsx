@@ -49,27 +49,11 @@ export const SelfUnderstanding: React.FC = () => {
 
   // 6대 검사 초기화 및 로컬 스토리지 보존
   useEffect(() => {
-    const saved = localStorage.getItem("readycareer_6_diagnostics_v1");
+    const saved = localStorage.getItem("readycareer_7_diagnostics_v2");
     if (saved) {
       try { setTests(JSON.parse(saved)); } catch (e) {}
     } else {
       const defaultTests: DiagnosticTest[] = [
-        {
-          id: "test-riasec",
-          title: "K-RIASEC 진로흥미검사",
-          category: "흥미/성향",
-          timeEst: "약 3분 소요",
-          desc: "가입 시 완료한 진단입니다. 홀랜드 6대 성형 이론을 현대 인공지능 산업 역량과 결합하여 나의 최적 진로 무드를 분석합니다.",
-          status: "completed",
-          resultType: "나의 진로 흥미 유형",
-          scoreSummary: "내 프로필 결과 보기",
-          reportDetails: {
-            summary: "가입 시 진행한 진로흥미검사 결과가 반영되어 있습니다. 메인 대시보드와 로드맵에서 나만의 추천 직업을 훈련 중입니다.",
-            scores: [],
-            recommendedActivities: [],
-            aiCareerComment: `입사관이 가장 먼저 확인하는 기본 성향으로, **'${targetJobName}'** 성장에 훌륭한 밑거름이 됩니다.`
-          }
-        },
         {
           id: "test-multiple-intelligences",
           title: "다중지능 강점 프로파일",
@@ -135,7 +119,7 @@ export const SelfUnderstanding: React.FC = () => {
         }
       ];
       setTests(defaultTests);
-      localStorage.setItem("readycareer_6_diagnostics_v1", JSON.stringify(defaultTests));
+      localStorage.setItem("readycareer_7_diagnostics_v2", JSON.stringify(defaultTests));
     }
   }, [targetJobName]);
 
