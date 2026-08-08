@@ -139,7 +139,7 @@ export const StarRoadmap: React.FC = () => {
   const [showNoteForm, setShowNoteForm] = useState<boolean>(false);
   const [selectedDetailNote, setSelectedDetailNote] = useState<CornellNote | null>(null);
 
-  // 신규 코넬 노트 작성 폼 상태
+  // 신규 학습 노트 작성 폼 상태
   const [selectedSchoolLevel, setSelectedSchoolLevel] = useState<"high" | "middle">("high");
   const [categoryInput, setCategoryInput] = useState("🔬 과학");
   const [subjectInput, setSubjectInput] = useState("");
@@ -210,7 +210,7 @@ export const StarRoadmap: React.FC = () => {
         topic: "생물학적 뉴런 메커니즘과 퍼셉트론 알고리즘 융합",
         keywords: "퍼셉트론, 활성화 함수, 가중치, 역전파, 시냅스 전달, 융합탐구",
         mySummary: "인체 뇌 세포의 뉴런이 전기 신호 역치 이상을 전달하는 물리적 메커니즘을 파이썬 배열 및 신경망 수식으로 대입하여, 자율 학습의 정확도를 올리는 실험 노트를 정리함.",
-        aiSummary: `💡 [AI 코넬 스마트 심화 정리본]: 제출된 학습 내용과 키워드는 '${targetJobName}' 직무군으로 진입하기 위한 최상위 논리적 융합 역량을 보여줍니다! 뉴런의 생물학적 구조를 인공지능 코딩의 가중치 조절 기법으로 연결시킨 점을 정보 및 AI 교과 세특 활동으로 부각할 것을 적극 추천합니다!`,
+        aiSummary: `💡 [AI AI 학습 심화 정리본]: 제출된 학습 내용과 키워드는 '${targetJobName}' 직무군으로 진입하기 위한 최상위 논리적 융합 역량을 보여줍니다! 뉴런의 생물학적 구조를 인공지능 코딩의 가중치 조절 기법으로 연결시킨 점을 정보 및 AI 교과 세특 활동으로 부각할 것을 적극 추천합니다!`,
         date: "2026.07.28",
         schoolLevel: "high"
       },
@@ -221,7 +221,7 @@ export const StarRoadmap: React.FC = () => {
         topic: "극한 가공 가혹 환경에서의 초전도 저항 방어 설계",
         keywords: "초전도체, 열역학, 엔트로피 통제, 격변 신소재, 물리학심화",
         mySummary: "우주 로켓 본체나 미래 모빌리티가 초고속 운행 시 발생하는 고에너지 열변형 저항을 줄이기 위한 양자화 구조 배열 및 차분 가이드 실험.",
-        aiSummary: `💡 [AI 코넬 스마트 심화 정리본]: 고교학점제 진로선택 과목인 물리학 I·II 이론을 미래형 신소재 및 첨단 모빌리티 기술에 접목시킨 탁월한 탐구 요약입니다. 이를 '학문 간 융합 사고력을 바탕으로 기술적 난제를 해결하려는 열정' 항목으로 도출할 수 있습니다!`,
+        aiSummary: `💡 [AI AI 학습 심화 정리본]: 고교학점제 진로선택 과목인 물리학 I·II 이론을 미래형 신소재 및 첨단 모빌리티 기술에 접목시킨 탁월한 탐구 요약입니다. 이를 '학문 간 융합 사고력을 바탕으로 기술적 난제를 해결하려는 열정' 항목으로 도출할 수 있습니다!`,
         date: "2026.07.29",
         schoolLevel: "high"
       },
@@ -232,7 +232,7 @@ export const StarRoadmap: React.FC = () => {
         topic: "행렬 연산을 이용한 최적경로 및 네트워크 모델링",
         keywords: "행렬, 선형대수학, 최적화 알고리즘, 손실함수, 고교학점제",
         mySummary: "복잡한 네트워크 내에서 최단 경로 및 데이터 전달 속도를 계산하기 위해 고교학점제 선택과목인 인공지능 수학에서 다루는 행렬 변환 수식을 모델링함.",
-        aiSummary: `💡 [AI 코넬 스마트 심화 정리본]: 대수 및 인공지능 수학 교과 역량을 논리적 문제 해결 모델과 연계한 최고 수준의 융합 포트폴리오입니다. 수학적 수식 모델링 능력을 생기부 학업역량의 차별화된 강점으로 제시해 보세요!`,
+        aiSummary: `💡 [AI AI 학습 심화 정리본]: 대수 및 인공지능 수학 교과 역량을 논리적 문제 해결 모델과 연계한 최고 수준의 융합 포트폴리오입니다. 수학적 수식 모델링 능력을 생기부 학업역량의 차별화된 강점으로 제시해 보세요!`,
         date: "2026.08.01",
         schoolLevel: "high"
       }
@@ -278,7 +278,7 @@ export const StarRoadmap: React.FC = () => {
   localStorage.setItem("readycareer_study_goals_v1", JSON.stringify(updated));
 };
 
-// AI 코넬 스마트 정리본 자동 생성 및 누적 등록 핸들러
+// AI AI 학습 정리본 자동 생성 및 누적 등록 핸들러
   const handleCreateCornellNote = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!subjectInput.trim() || !topicInput.trim() || !summaryInput.trim()) {
@@ -287,7 +287,7 @@ export const StarRoadmap: React.FC = () => {
     }
 
     setIsAiGenerating(true);
-    let aiGeneratedSummary = `💡 [AI 코넬 스마트 심화 정리본]: 작성해주신 학습 요약은 회원님의 희망 직무('${targetJobName}')와 98% 융합되는 아주 우수한 학업 성장 기록입니다. [${selectedSchoolLevel === 'high' ? '고교학점제' : '중등'} 교과과정: ${subjectInput}] - '${topicInput}' 탐구를 통해 기입한 핵심 키워드('${keywordsInput}')를 기반으로 생기부 학업 역량 및 교과 세특 보고서의 깊이를 극대화할 수 있습니다!`;
+    let aiGeneratedSummary = `💡 [AI AI 학습 심화 정리본]: 작성해주신 학습 요약은 회원님의 희망 직무('${targetJobName}')와 98% 융합되는 아주 우수한 학업 성장 기록입니다. [${selectedSchoolLevel === 'high' ? '고교학점제' : '중등'} 교과과정: ${subjectInput}] - '${topicInput}' 탐구를 통해 기입한 핵심 키워드('${keywordsInput}')를 기반으로 생기부 학업 역량 및 교과 세특 보고서의 깊이를 극대화할 수 있습니다!`;
 
     try {
       const aiRes = await executeAiPrompt({
@@ -299,7 +299,7 @@ export const StarRoadmap: React.FC = () => {
         targetJob: targetJobName,
       } as any);
       if (aiRes.content && aiRes.provider !== "expo-demo-fallback") {
-        aiGeneratedSummary = `💡 [AI 코넬 스마트 심화 정리본]: ${aiRes.content.replace(/^["']|["']$/g, "").trim()}`;
+        aiGeneratedSummary = `💡 [AI AI 학습 심화 정리본]: ${aiRes.content.replace(/^["']|["']$/g, "").trim()}`;
       }
     } catch (err) {
       console.warn("AI 요약 통신 불완전, 시연 맞춤 하이퀄리티 AI 템플릿 적용", err);
@@ -320,14 +320,14 @@ export const StarRoadmap: React.FC = () => {
     const updated = [newNote, ...notes];
     setNotes(updated);
     localStorage.setItem("readycareer_cornell_notes_v1", JSON.stringify(updated));
-    rewardXP(60, "AI 학습포트폴리오(코넬노트) 등록!");
+    rewardXP(60, "AI AI 학습 노트(코넬노트) 등록!");
     setSubjectInput("");
     setTopicInput("");
     setKeywordsInput("");
     setSummaryInput("");
     setIsAiGenerating(false);
     setShowNoteForm(false);
-    alert("🎉 새로운 학습 코넬 노트가 보관함에 안전하게 저장되었습니다!");
+    alert("🎉 새로운 학습 학습 노트가 보관함에 안전하게 저장되었습니다!");
   };
 
   // 퀴즈 생성 핸들러 (단독 또는 다중 노트 취합 지원)
@@ -365,7 +365,7 @@ export const StarRoadmap: React.FC = () => {
             explanation: "정답! 핵심 키워드들을 연결고리로 삼아 교과 탐구와 진로 역량의 깊이를 극대화할 수 있습니다."
           },
           {
-            question: "Q3. 다음 중 코넬 노트 작성법과 AI 심화 정리본을 토대로 세특 역량을 성장시키는 최고의 향후 행동은?",
+            question: "Q3. 다음 중 학습 노트 작성법과 AI 심화 정리본을 토대로 세특 역량을 성장시키는 최고의 향후 행동은?",
             options: [
               "노트를 한 번 작성한 후 폴더에 보관하고 잊어버린다.",
               `정리된 [AI 스마트 심화 정리본]을 확장하여 담당 과목 선생님께 교과 심화 탐구 보고서로 제출하고 세특 상담을 나눈다!`,
@@ -445,7 +445,7 @@ export const StarRoadmap: React.FC = () => {
       {/* =========================================================================
           SECTION 1: HERO TITLE (학습 스터디 랩 & 청명 에메랄드/네이비 테마)
          ========================================================================= */}
-      <div className="rounded-[36px] bg-gradient-to-r from-[#0F172A] via-[#1E293B] to-[#0D9488] text-white p-8 sm:p-12 shadow-[0_18px_48px_rgba(13,148,136,0.22)] border-4 border-white/20 flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden">
+      <div className="rounded-[36px] bg-[#1E293B] text-white p-8 sm:p-12 shadow-[0_18px_48px_rgba(13,148,136,0.22)] border-4 border-white/20 flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden">
         <div className="space-y-4 max-w-2xl z-10 text-center sm:text-left">
           <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
             <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-md px-4 py-1.5 rounded-full font-extrabold text-xs sm:text-sm tracking-wide border border-white/30 shadow-sm">
@@ -453,12 +453,12 @@ export const StarRoadmap: React.FC = () => {
               <span>★ 지망 직무 학업 연계: <strong>{targetJobName}</strong></span>
             </div>
             <span className="bg-[#10B981] text-white text-xs sm:text-sm font-black px-3.5 py-1.5 rounded-full shadow-md">
-              ⚡ 학습 성과 &amp; 코넬 랩(Lab)
+              ⚡ 학습 성과 &amp; 학습 랩(Lab)
             </span>
           </div>
           
           <h1 className="text-3xl sm:text-5xl font-headline font-black text-white tracking-tight leading-tight">
-            📘 AI 스마트 학습 포트폴리오 <br className="hidden sm:block"/> &amp; 학업 성취 스터디 랩
+            📘 AI 나만의 AI 학습 튜터 <br className="hidden sm:block"/> &amp; AI 학습 노트
           </h1>
           <p className="text-sm sm:text-base font-semibold text-[#CCFBF1] leading-relaxed">
             이번 학기 <strong>정량적 목표 점수</strong>를 도약시키고, 중·고등 과목별 요약 스티커로 나의 공부 현황을 한눈에 점검하세요! AI가 <strong>"{targetJobName}"</strong> 세특 연계 요약을 도출하며 <strong>다중 취합 실전 퀴즈</strong>를 제공합니다.
@@ -473,7 +473,7 @@ export const StarRoadmap: React.FC = () => {
       {/* =========================================================================
           [신규 탑재] SECTION 0: 이번 학기 나의 정량적 학습 목표 & 성취 대시보드 (KPI Board)
          ========================================================================= */}
-      <div className="bg-gradient-to-br from-[#F0FDFA] via-white to-[#F8FAFC] rounded-[36px] p-7 sm:p-10 border-2 border-[#A7F3D0] shadow-[0_15px_40px_rgba(13,148,136,0.12)] space-y-8 relative overflow-hidden">
+      <div className="bg-white rounded-[36px] p-7 sm:p-10 border-2 border-[#A7F3D0] shadow-[0_15px_40px_rgba(13,148,136,0.12)] space-y-8 relative overflow-hidden">
         
         {/* 상단 타이틀 & 소개 */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-2 border-teal-100 pb-5">
@@ -483,10 +483,10 @@ export const StarRoadmap: React.FC = () => {
               <span>Quantitative Academic Goal Dashboard</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-headline font-black text-[#0F172A] flex items-center gap-2">
-              <span>📈 이번 학기 나의 정량적 학습 목표 (KPI)</span>
+              <span>📈 이번 학기 나의 목표 점수 만들기</span>
             </h2>
             <p className="text-xs sm:text-sm font-semibold text-[#475569]">
-              구체적인 성적 도약 수치와 과목별 핀포인트 목표를 설정해 강력한 학업 동기부여를 받으세요!
+              목표 점수를 정하고 과목별로 열심히 공부해서 목표를 달성해보자!
             </p>
           </div>
 
@@ -719,16 +719,16 @@ export const StarRoadmap: React.FC = () => {
             )}
 
             {/* 실시간 아리 멘토링 바 */}
-            <div className="p-5 rounded-3xl bg-gradient-to-r from-[#0F172A] to-[#1E293B] text-white shadow-md flex items-center gap-4">
+            <div className="p-5 rounded-3xl bg-[#1E293B] text-white shadow-md flex items-center gap-4">
               <div className="w-12 h-12 rounded-2xl bg-teal-500/20 p-1 shrink-0 border border-teal-400/30 flex items-center justify-center">
                 <img src={ARI_BLOB_URL} alt="Ari Mascot" className="w-full h-full object-contain filter drop-shadow-md" />
               </div>
               <div className="space-y-0.5">
                 <span className="text-[11px] font-black bg-amber-400 text-slate-950 px-2 py-0.5 rounded-md uppercase tracking-wide inline-block">
-                  🤖 아리의 실시간 동기부여 코칭
+                  🤖 AI 튜터의 실시간 응원
                 </span>
                 <p className="text-xs sm:text-sm font-extrabold text-teal-100 leading-snug">
-                  "이번 학기 평균 <strong>{targetAvg}점</strong> 도전을 응원해! 이번 주 <strong>[{(pendingGoals[0] || studyGoals[0])?.subject?.split(' ')[1] || (pendingGoals[0] || studyGoals[0])?.subject || '주요 약점 과목'}]</strong> 코넬 노트를 1건 더 정리하고 취합 퀴즈를 돌려보자!"
+                  "이번 학기 평균 <strong>{targetAvg}점</strong> 도전을 응원해! 이번 주 <strong>[{(pendingGoals[0] || studyGoals[0])?.subject?.split(' ')[1] || (pendingGoals[0] || studyGoals[0])?.subject || '주요 약점 과목'}]</strong> 학습 노트를 1건 더 정리하고 취합 퀴즈를 돌려보자!"
                 </p>
               </div>
             </div>
@@ -742,14 +742,14 @@ export const StarRoadmap: React.FC = () => {
       {/* =========================================================================
           SECTION 2: 화면 깔끔한 정리를 위한 메인 컨트롤 바 (버튼 토글)
          ========================================================================= */}
-      <div className="bg-gradient-to-r from-[#F1F5F9] via-[#E2E8F0] to-[#E0F2FE] rounded-[32px] p-6 sm:p-8 border-2 border-[#CBD5E1] shadow-sm flex flex-col lg:flex-row items-center justify-between gap-6 relative overflow-hidden">
+      <div className="bg-white rounded-[32px] p-6 sm:p-8 border-2 border-[#CBD5E1] shadow-sm flex flex-col lg:flex-row items-center justify-between gap-6 relative overflow-hidden">
         <div className="space-y-1.5 text-center lg:text-left">
           <div className="inline-flex items-center gap-1.5 bg-[#0D9488]/15 text-[#0D9488] px-3 py-1 rounded-full text-xs font-black">
             <Layers className="w-4 h-4 text-[#0D9488]" />
             <span>Smart Study Portfolio Control Center</span>
           </div>
           <h2 className="text-2xl sm:text-3xl font-headline font-black text-[#0F172A]">
-            📚 총 <span className="text-[#0D9488] underline underline-offset-4">{notes.length}</span>건의 학습 코넬 노트가 보관 중입니다
+            📚 총 <span className="text-[#0D9488] underline underline-offset-4">{notes.length}</span>건의 학습 학습 노트가 보관 중입니다
           </h2>
           <p className="text-xs sm:text-sm font-semibold text-[#475569] break-keep">
             화면 상단의 버튼을 눌러 새 학습을 간편히 기록하거나, 누적된 노트들을 조합해 실전 AI 퀴즈에 도전하세요!
@@ -759,7 +759,7 @@ export const StarRoadmap: React.FC = () => {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 w-full lg:w-auto shrink-0">
           <button
             onClick={() => setShowNoteForm(true)}
-            className="w-full sm:w-auto px-6 py-4 rounded-2xl bg-gradient-to-r from-[#0D9488] to-[#0F766E] hover:brightness-110 text-white font-black text-sm sm:text-base shadow-[0_10px_25px_rgba(13,148,136,0.3)] transition-all flex items-center justify-center gap-2.5 transform hover:-translate-y-1 active:scale-95 cursor-pointer border-2 border-white/60"
+            className="w-full sm:w-auto px-6 py-4 rounded-2xl bg-[#0D9488] hover:brightness-110 text-white font-black text-sm sm:text-base shadow-[0_10px_25px_rgba(13,148,136,0.3)] transition-all flex items-center justify-center gap-2.5 transform hover:-translate-y-1 active:scale-95 cursor-pointer border-2 border-white/60"
           >
             <Plus className="w-5 h-5 text-amber-300 stroke-[3]" />
             <span>✨ 새로운 학습 기록하기 (노트 작성)</span>
@@ -770,7 +770,7 @@ export const StarRoadmap: React.FC = () => {
               setSelectedQuizNoteIds([]);
               setShowQuizStudioModal(true);
             }}
-            className="w-full sm:w-auto px-6 py-4 rounded-2xl bg-gradient-to-r from-[#FF3B7C] via-[#FF6247] to-[#0D9488] hover:brightness-110 text-white font-black text-sm sm:text-base shadow-[0_10px_25px_rgba(255,59,124,0.35)] transition-all flex items-center justify-center gap-2.5 transform hover:-translate-y-1 active:scale-95 cursor-pointer border-2 border-white/60"
+            className="w-full sm:w-auto px-6 py-4 rounded-2xl bg-[#0D9488] hover:brightness-110 text-white font-black text-sm sm:text-base shadow-[0_10px_25px_rgba(255,59,124,0.35)] transition-all flex items-center justify-center gap-2.5 transform hover:-translate-y-1 active:scale-95 cursor-pointer border-2 border-white/60"
           >
             <Brain className="w-5 h-5 text-amber-300 animate-bounce-short" />
             <span>🤖 아리와 함께 퀴즈 만들기 (AI 스튜디오)</span>
@@ -779,7 +779,7 @@ export const StarRoadmap: React.FC = () => {
       </div>
 
       {/* =========================================================================
-          SECTION 3 (MODAL / TOGGLE PANEL): 신규 코넬 노트 작성 및 AI 심화 요약 폼
+          SECTION 3 (MODAL / TOGGLE PANEL): 신규 학습 노트 작성 및 AI 심화 요약 폼
          ========================================================================= */}
       {showNoteForm && (
         <div className="bg-white rounded-[36px] p-7 sm:p-12 shadow-[0_20px_60px_rgba(13,148,136,0.18)] border-4 border-[#0D9488] space-y-8 animate-fadeIn relative">
@@ -962,7 +962,7 @@ export const StarRoadmap: React.FC = () => {
           <div>
             <h3 className="text-2xl font-headline font-black text-[#0F172A] flex items-center gap-2.5">
               <FolderCheck className="w-8 h-8 text-[#0D9488]" />
-              <span>🗂️ 과목별 학습 요약 보드 &amp; 코넬 노트 보관함</span>
+              <span>🗂️ 과목별 학습 요약 보드 &amp; 학습 노트 보관함</span>
             </h3>
             <p className="text-xs sm:text-sm text-[#475569] font-semibold mt-1">
               학습 노트가 과목별 <strong>요약 스티커 형태</strong>로 제공되어 전체 현황이 한눈에 보입니다! 카드를 눌러 <strong>[아코디언 세부 고찰]</strong>을 확인하세요.
@@ -1046,7 +1046,7 @@ export const StarRoadmap: React.FC = () => {
                           {note.topic}
                         </h4>
                         <p className="text-xs font-semibold text-slate-500 line-clamp-2 leading-relaxed break-keep">
-                          {note.mySummary || "작성된 코넬 노트 요약 내용이 없습니다."}
+                          {note.mySummary || "작성된 학습 노트 요약 내용이 없습니다."}
                         </p>
                       </div>
 
@@ -1066,7 +1066,7 @@ export const StarRoadmap: React.FC = () => {
                     {/* 하단 스티커 액션바 */}
                     <div className="pt-3.5 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-extrabold">
                       <span className="text-amber-600 flex items-center gap-1">
-                        💡 {note.aiSummary ? "AI 세특 분석 완료" : "코넬 노트 완성"}
+                        💡 {note.aiSummary ? "AI 세특 분석 완료" : "학습 노트 완성"}
                       </span>
                       <span className="text-slate-500 group-hover:text-[#0D9488] transition-colors flex items-center gap-1">
                         터치하여 확장 &rarr;
@@ -1109,7 +1109,7 @@ export const StarRoadmap: React.FC = () => {
                 🧠 [{activeQuizNotes.length === 1 ? activeQuizNotes[0].subject : `${activeQuizNotes.map(n => n.subject.split('-')[0].trim()).slice(0, 2).join(", ")} 등 ${activeQuizNotes.length}과목 종합`}] 실전 점검!
               </h3>
               <p className="text-xs sm:text-sm font-extrabold text-[#475569] break-keep">
-                {activeQuizNotes.length === 1 ? "해당 단일 코넬 노트" : `선택하신 ${activeQuizNotes.length}개의 노트를 통합 취합`}하여 AI가 생성한 <strong>맞춤 문제</strong>입니다. 터치하여 해설과 마일리지를 획득하세요!
+                {activeQuizNotes.length === 1 ? "해당 단일 학습 노트" : `선택하신 ${activeQuizNotes.length}개의 노트를 통합 취합`}하여 AI가 생성한 <strong>맞춤 문제</strong>입니다. 터치하여 해설과 마일리지를 획득하세요!
               </p>
             </div>
 
@@ -1364,7 +1364,7 @@ export const StarRoadmap: React.FC = () => {
                     setShowQuizStudioModal(false);
                     handleStartQuiz(selectedNotes);
                   }}
-                  className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-[#FF3B7C] via-[#FF6247] to-[#0D9488] hover:brightness-110 text-white font-black text-base shadow-xl transition-all transform hover:scale-105 active:scale-95 cursor-pointer flex items-center justify-center gap-2"
+                  className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-[#0D9488] hover:brightness-110 text-white font-black text-base shadow-xl transition-all transform hover:scale-105 active:scale-95 cursor-pointer flex items-center justify-center gap-2"
                 >
                   <Sparkles className="w-5 h-5 text-amber-300 animate-bounce-short" />
                   <span>🚀 선택한 {selectedQuizNoteIds.length}개 노트 통합 퀴즈 출제!</span>
@@ -1377,7 +1377,7 @@ export const StarRoadmap: React.FC = () => {
       )}
 
       {/* =========================================================================
-          MODAL 3: 코넬 노트 스티커 터치 상세 팝업 모달
+          MODAL 3: 학습 노트 스티커 터치 상세 팝업 모달
           ========================================================================= */}
       {selectedDetailNote && (
         <div className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-fadeIn" onClick={() => setSelectedDetailNote(null)}>

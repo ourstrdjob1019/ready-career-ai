@@ -23,7 +23,7 @@ export const HabitManagement: React.FC = () => {
         if (Array.isArray(parsed) && parsed.length > 0) {
           return parsed.map((item: any, idx: number) => ({
             id: String(item.id || `h-${idx}-${Date.now()}`),
-            title: String(item.title || item.text || "AI 커스텀 진로 챌린지 루틴"),
+            title: String(item.title || item.text || "AI 커스텀 진로 챌린지 챌린지"),
             targetDays: typeof item.targetDays === "number" && item.targetDays > 0 ? item.targetDays : 50,
             completedDays: Array.isArray(item.completedDays) ? item.completedDays : (item.completed ? [1, 2, 3] : [1]),
             category: String(item.category || "AI 추천")
@@ -86,7 +86,7 @@ export const HabitManagement: React.FC = () => {
           ? curDays.filter((d) => d !== dayNo)
           : [...curDays, dayNo].sort((a, b) => a - b);
         if (!exists) {
-          rewardXP(10, `[${h.title}] 50일 챌린지 ${dayNo}일차 루틴 체크 완수!`);
+          rewardXP(10, `[${h.title}] 50일 챌린지 ${dayNo}일차 챌린지 체크 완수!`);
         }
         return { ...h, completedDays: nextDays };
       });
@@ -141,7 +141,7 @@ export const HabitManagement: React.FC = () => {
             습관 &amp; <span className="text-[#6A42ED]">목표 관리</span>
           </h1>
           <p className="text-sm text-text-muted mt-2 font-body-md max-w-2xl leading-relaxed">
-            매일 작은 루틴을 달성하며 1~50일 그리드를 채워나가세요! 연속 성공 수치가 오를 때마다 진로 퀘스트 EXP가 누적되어 상위 캐릭터 외형을 해금합니다.
+            매일 작은 챌린지를 달성하며 1~50일 그리드를 채워나가세요! 연속 성공 수치가 오를 때마다 진로 퀘스트 EXP가 누적되어 상위 캐릭터 외형을 해금합니다.
           </p>
         </div>
 

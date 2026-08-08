@@ -639,7 +639,7 @@ export const HomeDashboard: React.FC = () => {
                     : "bg-white text-[#1F193B] border-purple-150 hover:border-[#6A42ED] hover:bg-purple-50/60 shadow-xs hover:shadow-md"
                 }`}
               >
-                <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-3xl bg-white p-3 border border-purple-100 shrink-0 flex items-center justify-center my-2 shadow-sm group-hover:scale-105 transition-transform">
+                <div className="w-36 h-36 sm:w-48 sm:h-48 rounded-3xl bg-white p-4 border border-purple-100 shrink-0 flex items-center justify-center my-3 shadow-sm group-hover:scale-105 transition-transform">
                   {job.imageUrl ? (
                     <img src={job.imageUrl} alt={job.name} className="w-full h-full object-contain" />
                   ) : (
