@@ -24,6 +24,13 @@ import {
   LearningStyleTest,
   MyPage,
   OnboardingTestFlow,
+  MultipleIntelligencesTest,
+  GrowthMindsetTest,
+  ViaStrengthsTest,
+  TimeManagementTest,
+  AiLiteracyTest,
+  ResilienceTest,
+  CareerMaturityTest,
 } from "./pages";
 import { AuthProvider, SelfUnderstandingProvider, useAuth } from "./context";
 import "./App.css";
@@ -110,6 +117,15 @@ const AppContent: React.FC = () => {
 
           {/* Teacher Guide 3D Pro Dashboard */}
           <Route path="/teacher" element={<PrivateRoute requiredRole="teacher"><TeacherGuide /></PrivateRoute>} />
+          
+          {/* Diagnostics Center Routes */}
+          <Route path="/diagnostics/multiple-intelligences" element={<PrivateRoute><MultipleIntelligencesTest /></PrivateRoute>} />
+          <Route path="/diagnostics/growth-mindset" element={<PrivateRoute><GrowthMindsetTest /></PrivateRoute>} />
+          <Route path="/diagnostics/via-strengths" element={<PrivateRoute><ViaStrengthsTest /></PrivateRoute>} />
+          <Route path="/diagnostics/time-management" element={<PrivateRoute><TimeManagementTest /></PrivateRoute>} />
+          <Route path="/diagnostics/ai-literacy" element={<PrivateRoute><AiLiteracyTest /></PrivateRoute>} />
+          <Route path="/diagnostics/resilience" element={<PrivateRoute><ResilienceTest /></PrivateRoute>} />
+          <Route path="/diagnostics/career-maturity" element={<PrivateRoute><CareerMaturityTest /></PrivateRoute>} />
 
           {/* Fallback Catch-all: send to /start */}
           <Route path="*" element={<Navigate to="/start" replace />} />
