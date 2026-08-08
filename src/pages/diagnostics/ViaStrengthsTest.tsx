@@ -107,7 +107,7 @@ export const ViaStrengthsTest: React.FC = () => {
                 ...t,
                 status: "completed",
                 resultType: "대표 성격강점 도출 완료",
-                scoreSummary: \`1위: \${scored[0].name}\`,
+                scoreSummary: `1위: ${scored[0].name}`,
               };
             }
             return t;
@@ -139,7 +139,7 @@ export const ViaStrengthsTest: React.FC = () => {
     const top = scoredStrengths.slice(0, 5);
     const top3 = top.slice(0, 3);
     const low = scoredStrengths[scoredStrengths.length - 1];
-    const sentence = \`\${top[0].name}과(와) \${top[1].name}이(가) 특히 자연스럽게 드러나고, \${top[2].name}도 함께 자주 사용하는 사람\`;
+    const sentence = `${top[0].name}과(와) ${top[1].name}이(가) 특히 자연스럽게 드러나고, ${top[2].name}도 함께 자주 사용하는 사람`;
 
     return (
       <div className="min-h-screen bg-slate-50 pt-10 pb-20 px-5">
@@ -153,7 +153,7 @@ export const ViaStrengthsTest: React.FC = () => {
             
             <div className="flex flex-wrap gap-2 justify-center">
               {top.map((s, i) => (
-                <span key={s.id} className={\`px-3 py-1.5 rounded-full text-xs font-black \${i === 0 ? 'bg-rose-500 text-white shadow-md' : 'bg-slate-100 text-slate-700'}\`}>
+                <span key={s.id} className={`px-3 py-1.5 rounded-full text-xs font-black ${i === 0 ? 'bg-rose-500 text-white shadow-md' : 'bg-slate-100 text-slate-700'}`}>
                   {s.icon} {s.name}
                 </span>
               ))}
@@ -167,7 +167,7 @@ export const ViaStrengthsTest: React.FC = () => {
             </h3>
             <div className="space-y-3">
               {top3.map((s, i) => (
-                <div key={s.id} className={\`rounded-2xl p-4 border \${i === 0 ? 'bg-rose-50/50 border-rose-200' : 'bg-slate-50 border-slate-100'}\`}>
+                <div key={s.id} className={`rounded-2xl p-4 border ${i === 0 ? 'bg-rose-50/50 border-rose-200' : 'bg-slate-50 border-slate-100'}`}>
                   <div className="flex justify-between items-center mb-2">
                     <div className="text-sm font-black text-slate-800">{i + 1}. {s.icon} {s.name}</div>
                     <div className="text-xs font-black text-slate-400">{s.score}</div>
@@ -199,7 +199,7 @@ export const ViaStrengthsTest: React.FC = () => {
                 <div key={v} className="flex items-center gap-3">
                   <div className="w-16 text-xs font-black text-slate-700 shrink-0">{v}</div>
                   <div className="flex-1 h-2.5 bg-slate-100 rounded-full overflow-hidden">
-                    <div className="h-full bg-gradient-to-r from-rose-300 to-rose-500 rounded-full" style={{ width: \`\${virtueScores[v]}%\` }} />
+                    <div className="h-full bg-gradient-to-r from-rose-300 to-rose-500 rounded-full" style={{ width: `${virtueScores[v]}%` }} />
                   </div>
                   <div className="w-8 text-right text-xs font-black text-slate-500">{virtueScores[v]}</div>
                 </div>
@@ -263,7 +263,7 @@ export const ViaStrengthsTest: React.FC = () => {
           </div>
         </div>
         <div className="max-w-md mx-auto h-1.5 bg-slate-100 rounded-full mt-4 overflow-hidden">
-          <div className="h-full bg-rose-500 rounded-full transition-all duration-300" style={{ width: \`\${progress}%\` }} />
+          <div className="h-full bg-rose-500 rounded-full transition-all duration-300" style={{ width: `${progress}%` }} />
         </div>
       </header>
 
@@ -285,11 +285,11 @@ export const ViaStrengthsTest: React.FC = () => {
               <button
                 key={opt.value}
                 onClick={() => handleSelectAnswer(opt.value)}
-                className={\`w-full p-4 rounded-2xl border-2 font-bold text-sm transition-all flex items-center justify-between \${
+                className={`w-full p-4 rounded-2xl border-2 font-bold text-sm transition-all flex items-center justify-between ${
                   isSelected 
                     ? "bg-rose-50 border-rose-500 text-rose-700 shadow-md transform scale-[1.02]" 
                     : "bg-white border-slate-100 text-slate-600 hover:border-rose-200 hover:bg-slate-50"
-                }\`}
+                }`}
               >
                 <span>{opt.label}</span>
                 {isSelected && <span className="text-rose-500 font-black">✓</span>}

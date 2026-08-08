@@ -101,7 +101,7 @@ export const ResilienceTest: React.FC = () => {
                 ...t,
                 status: "completed",
                 resultType: lv.title,
-                scoreSummary: \`회복탄력성 지수: \${avg}점\`,
+                scoreSummary: `회복탄력성 지수: ${avg}점`,
               };
             }
             return t;
@@ -165,7 +165,7 @@ export const ResilienceTest: React.FC = () => {
                   <div key={k} className="flex items-center gap-3">
                     <div className="w-24 text-xs font-black text-slate-700 shrink-0">{d.icon} {d.name}</div>
                     <div className="flex-1 h-2.5 bg-slate-100 rounded-full overflow-hidden">
-                      <div className="h-full bg-gradient-to-r from-green-300 to-green-500 rounded-full" style={{ width: \`\${lastScores[k]}%\` }} />
+                      <div className="h-full bg-gradient-to-r from-green-300 to-green-500 rounded-full" style={{ width: `${lastScores[k]}%` }} />
                     </div>
                     <div className="w-8 text-right text-xs font-black text-slate-500">{lastScores[k]}</div>
                   </div>
@@ -259,7 +259,7 @@ export const ResilienceTest: React.FC = () => {
           </div>
         </div>
         <div className="max-w-md mx-auto h-1.5 bg-slate-100 rounded-full mt-4 overflow-hidden">
-          <div className="h-full bg-green-500 rounded-full transition-all duration-300" style={{ width: \`\${progress}%\` }} />
+          <div className="h-full bg-green-500 rounded-full transition-all duration-300" style={{ width: `${progress}%` }} />
         </div>
       </header>
 
@@ -281,11 +281,11 @@ export const ResilienceTest: React.FC = () => {
               <button
                 key={opt.value}
                 onClick={() => handleSelectAnswer(opt.value)}
-                className={\`w-full p-4 rounded-2xl border-2 font-bold text-sm transition-all flex items-center justify-between \${
+                className={`w-full p-4 rounded-2xl border-2 font-bold text-sm transition-all flex items-center justify-between ${
                   isSelected 
                     ? "bg-green-50 border-green-500 text-green-700 shadow-md transform scale-[1.02]" 
                     : "bg-white border-slate-100 text-slate-600 hover:border-green-200 hover:bg-slate-50"
-                }\`}
+                }`}
               >
                 <span>{opt.label}</span>
                 {isSelected && <span className="text-green-500 font-black">✓</span>}

@@ -109,7 +109,7 @@ export const CareerMaturityTest: React.FC = () => {
                 ...t,
                 status: "completed",
                 resultType: lv.title,
-                scoreSummary: \`진로성숙도 지수: \${avg}점\`,
+                scoreSummary: `진로성숙도 지수: ${avg}점`,
               };
             }
             return t;
@@ -191,7 +191,7 @@ export const CareerMaturityTest: React.FC = () => {
                   <div key={k} className="flex items-center gap-3">
                     <div className="w-28 text-xs font-black text-slate-700 shrink-0">{d.icon} {d.name}</div>
                     <div className="flex-1 h-2.5 bg-slate-100 rounded-full overflow-hidden">
-                      <div className="h-full bg-gradient-to-r from-blue-300 to-blue-500 rounded-full" style={{ width: \`\${lastScores[k]}%\` }} />
+                      <div className="h-full bg-gradient-to-r from-blue-300 to-blue-500 rounded-full" style={{ width: `${lastScores[k]}%` }} />
                     </div>
                     <div className="w-8 text-right text-xs font-black text-slate-500">{lastScores[k]}</div>
                   </div>
@@ -289,7 +289,7 @@ export const CareerMaturityTest: React.FC = () => {
           </div>
         </div>
         <div className="max-w-md mx-auto h-1.5 bg-slate-100 rounded-full mt-4 overflow-hidden">
-          <div className="h-full bg-blue-500 rounded-full transition-all duration-300" style={{ width: \`\${progress}%\` }} />
+          <div className="h-full bg-blue-500 rounded-full transition-all duration-300" style={{ width: `${progress}%` }} />
         </div>
       </header>
 
@@ -311,11 +311,11 @@ export const CareerMaturityTest: React.FC = () => {
               <button
                 key={opt.value}
                 onClick={() => handleSelectAnswer(opt.value)}
-                className={\`w-full p-4 rounded-2xl border-2 font-bold text-sm transition-all flex items-center justify-between \${
+                className={`w-full p-4 rounded-2xl border-2 font-bold text-sm transition-all flex items-center justify-between ${
                   isSelected 
                     ? "bg-blue-50 border-blue-500 text-blue-700 shadow-md transform scale-[1.02]" 
                     : "bg-white border-slate-100 text-slate-600 hover:border-blue-200 hover:bg-slate-50"
-                }\`}
+                }`}
               >
                 <span>{opt.label}</span>
                 {isSelected && <span className="text-blue-500 font-black">✓</span>}

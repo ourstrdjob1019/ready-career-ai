@@ -103,7 +103,7 @@ export const MultipleIntelligencesTest: React.FC = () => {
                 ...t,
                 status: "completed",
                 resultType: combo?.title || "강점 프로파일 도출 완료",
-                scoreSummary: \`1위: \${(MI_TYPES as any)[p1].name}\`,
+                scoreSummary: `1위: ${(MI_TYPES as any)[p1].name}`,
               };
             }
             return t;
@@ -160,7 +160,7 @@ export const MultipleIntelligencesTest: React.FC = () => {
               {[p1, p2, p3].map((k, idx) => {
                 const t = (MI_TYPES as any)[k];
                 return (
-                  <div key={k} className={\`flex-1 p-3 rounded-2xl border \${idx === 0 ? 'bg-indigo-50 border-indigo-200 shadow-sm transform scale-105' : 'bg-white border-slate-100'}\`}>
+                  <div key={k} className={`flex-1 p-3 rounded-2xl border ${idx === 0 ? 'bg-indigo-50 border-indigo-200 shadow-sm transform scale-105' : 'bg-white border-slate-100'}`}>
                     <div className="text-2xl mb-1">{['🥇', '🥈', '🥉'][idx]}</div>
                     <div className="text-[10px] font-black text-slate-700">{t.icon} {t.name}</div>
                     <div className="text-lg font-black text-indigo-600">{percent(lastScores[k].avg)}</div>
@@ -256,7 +256,7 @@ export const MultipleIntelligencesTest: React.FC = () => {
           </div>
         </div>
         <div className="max-w-md mx-auto h-1.5 bg-slate-100 rounded-full mt-4 overflow-hidden">
-          <div className="h-full bg-indigo-600 rounded-full transition-all duration-300" style={{ width: \`\${progress}%\` }} />
+          <div className="h-full bg-indigo-600 rounded-full transition-all duration-300" style={{ width: `${progress}%` }} />
         </div>
       </header>
 
@@ -278,11 +278,11 @@ export const MultipleIntelligencesTest: React.FC = () => {
               <button
                 key={opt.value}
                 onClick={() => handleSelectAnswer(opt.value)}
-                className={\`w-full p-4 rounded-2xl border-2 font-bold text-sm transition-all flex items-center justify-between \${
+                className={`w-full p-4 rounded-2xl border-2 font-bold text-sm transition-all flex items-center justify-between ${
                   isSelected 
                     ? "bg-indigo-50 border-indigo-500 text-indigo-700 shadow-md transform scale-[1.02]" 
                     : "bg-white border-slate-100 text-slate-600 hover:border-indigo-200 hover:bg-slate-50"
-                }\`}
+                }`}
               >
                 <span>{opt.label}</span>
                 {isSelected && <span className="text-indigo-500 font-black">✓</span>}

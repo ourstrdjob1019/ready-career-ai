@@ -99,10 +99,10 @@ export const AiLiteracyTest: React.FC = () => {
     const b = rank[1];
     
     // Sort pair alphabetically to match PAIRS keys or try both orders
-    let pairKey = \`\${a}|\${b}\`;
+    let pairKey = `${a}|${b}`;
     let pair = (AI_PAIRS as any)[pairKey];
     if (!pair) {
-      pairKey = \`\${b}|\${a}\`;
+      pairKey = `${b}|${a}`;
       pair = (AI_PAIRS as any)[pairKey];
     }
     if (!pair) {
@@ -127,7 +127,7 @@ export const AiLiteracyTest: React.FC = () => {
                 ...t,
                 status: "completed",
                 resultType: pair[0],
-                scoreSummary: \`강점: \${(AI_DOMAINS as any)[a].name}\`,
+                scoreSummary: `강점: ${(AI_DOMAINS as any)[a].name}`,
               };
             }
             return t;
@@ -205,7 +205,7 @@ export const AiLiteracyTest: React.FC = () => {
                   <div key={k} className="flex items-center gap-3">
                     <div className="w-24 text-xs font-black text-slate-700 shrink-0">{d.icon} {d.name}</div>
                     <div className="flex-1 h-2.5 bg-slate-100 rounded-full overflow-hidden">
-                      <div className="h-full bg-gradient-to-r from-indigo-300 to-indigo-500 rounded-full" style={{ width: \`\${lastScores[k]}%\` }} />
+                      <div className="h-full bg-gradient-to-r from-indigo-300 to-indigo-500 rounded-full" style={{ width: `${lastScores[k]}%` }} />
                     </div>
                     <div className="w-8 text-right text-xs font-black text-slate-500">{lastScores[k]}</div>
                   </div>
@@ -291,7 +291,7 @@ export const AiLiteracyTest: React.FC = () => {
           </div>
         </div>
         <div className="max-w-md mx-auto h-1.5 bg-slate-100 rounded-full mt-4 overflow-hidden">
-          <div className="h-full bg-indigo-500 rounded-full transition-all duration-300" style={{ width: \`\${progress}%\` }} />
+          <div className="h-full bg-indigo-500 rounded-full transition-all duration-300" style={{ width: `${progress}%` }} />
         </div>
       </header>
 
@@ -313,13 +313,13 @@ export const AiLiteracyTest: React.FC = () => {
               <button
                 key={origIndex}
                 onClick={() => handleSelectAnswer(origIndex)}
-                className={\`w-full p-4 rounded-2xl border font-bold text-sm transition-all flex items-center gap-3 text-left \${
+                className={`w-full p-4 rounded-2xl border font-bold text-sm transition-all flex items-center gap-3 text-left ${
                   isSelected 
                     ? "bg-indigo-50 border-indigo-500 text-indigo-900 shadow-md transform scale-[1.02]" 
                     : "bg-white border-slate-200 text-slate-600 hover:border-indigo-200 hover:bg-slate-50"
-                }\`}
+                }`}
               >
-                <div className={\`w-6 h-6 rounded-full flex items-center justify-center text-[10px] shrink-0 border \${isSelected ? 'bg-indigo-500 border-indigo-500 text-white' : 'bg-slate-50 border-slate-200 text-slate-400'}\`}>
+                <div className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] shrink-0 border ${isSelected ? 'bg-indigo-500 border-indigo-500 text-white' : 'bg-slate-50 border-slate-200 text-slate-400'}`}>
                   {String.fromCharCode(65 + idx)}
                 </div>
                 <span className="flex-1 leading-snug">{currentQ.o[origIndex][0]}</span>
