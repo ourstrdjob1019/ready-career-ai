@@ -102,11 +102,11 @@ export const Header: React.FC = () => {
                 >
                   <IconComponent className="w-3.5 h-3.5 flex-shrink-0" />
                   <span>{item.label}</span>
-                  {item.badge && (
+                  {(item as any).badge && (
                     <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-black ml-0.5 ${
                       isActive ? "bg-white/20 text-white" : "bg-secondary/15 text-secondary"
                     }`}>
-                      {item.badge}
+                      {(item as any).badge}
                     </span>
                   )}
                 </Link>

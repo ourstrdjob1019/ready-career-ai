@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { rewardXP } from "../../services/expService";
 import { JOB_CHARACTER_MASTER_LIST } from "../../assets/jobCharacterData";
-import { VIA_QUESTIONS, VIA_VDESC, VIA_VORDER } from "../../data/viaStrengthsData";
+import { VIA_QUESTIONS, VIA_VORDER } from "../../data/viaStrengthsData";
 
 // 랜덤 캐릭터 멘토 셔플
 const shuffleArray = (array: any[]) => {

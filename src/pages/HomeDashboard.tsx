@@ -68,7 +68,7 @@ export const HomeDashboard: React.FC = () => {
 
       setInterestedJobs([
         primaryJob,
-        ...JOB_VENGERS_LIST.slice(0, 9).map(v => ({ name: v.title, image: v.id, category: v.category, imageUrl: v.imageUrl }))
+        ...JOB_VENGERS_LIST.slice(0, 9).map(v => ({ name: v.title, image: String(v.id), category: v.category, imageUrl: v.imageUrl }))
       ]);
     }
   }, []);
