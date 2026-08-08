@@ -15,11 +15,8 @@ const shuffleArray = (array: any[]) => {
 };
 
 const LIKERT_OPTIONS = [
-  { value: 1, label: "전혀 아니다" },
-  { value: 2, label: "아니다" },
-  { value: 3, label: "보통이다" },
-  { value: 4, label: "그렇다" },
-  { value: 5, label: "매우 그렇다" },
+  { value: 5, label: "네, 완전 공감해요! 👍", color: "indigo" },
+  { value: 1, label: "아니요, 저랑은 안 맞아요 🙅", color: "rose" },
 ];
 
 export const TimeManagementTest: React.FC = () => {
@@ -278,21 +275,26 @@ export const TimeManagementTest: React.FC = () => {
           </div>
         </div>
 
-        <div className="space-y-2.5">
+                <div className="space-y-3">
           {LIKERT_OPTIONS.map((opt) => {
             const isSelected = answers[qIndex] === opt.value;
+            const colorClass = opt.color === "indigo" 
+              ? "bg-indigo-50 border-indigo-200 text-indigo-700 hover:bg-indigo-100 hover:border-indigo-400" 
+              : "bg-rose-50 border-rose-200 text-rose-700 hover:bg-rose-100 hover:border-rose-400";
+            
+            const selectedClass = opt.color === "indigo"
+              ? "bg-indigo-500 border-indigo-600 text-white shadow-lg transform scale-[1.02]"
+              : "bg-rose-500 border-rose-600 text-white shadow-lg transform scale-[1.02]";
+
             return (
               <button
                 key={opt.value}
                 onClick={() => handleSelectAnswer(opt.value)}
-                className={`w-full p-4 rounded-2xl border-2 font-bold text-sm transition-all flex items-center justify-between ${
-                  isSelected 
-                    ? "bg-amber-50 border-amber-500 text-amber-700 shadow-md transform scale-[1.02]" 
-                    : "bg-white border-slate-100 text-slate-600 hover:border-amber-200 hover:bg-slate-50"
+                className={`w-full p-5 rounded-2xl border-2 font-black text-base transition-all flex items-center justify-center ${
+                  isSelected ? selectedClass : colorClass
                 }`}
               >
                 <span>{opt.label}</span>
-                {isSelected && <span className="text-amber-500 font-black">✓</span>}
               </button>
             );
           })}
