@@ -198,13 +198,13 @@ export const SelfUnderstanding: React.FC = () => {
         <div className="space-y-4 max-w-2xl z-10 text-center sm:text-left">
           <span className="text-xs font-black bg-[#FF3B7C] text-white px-4 py-1.5 rounded-full inline-flex items-center gap-1.5 shadow-md">
             <Brain className="w-4 h-4 text-amber-200" />
-            <span>AI 맞춤 커리어·학술 종합 자기이해 진단 센터</span>
+            <span>자기이해 진단 검사</span>
           </span>
           <h1 className="text-3xl sm:text-5xl font-headline font-black tracking-tight leading-tight text-white">
-            🧪 AI 진로·학업 6대 <br className="hidden sm:block"/> 자기이해 진단검사 모음
+            🧪 자기이해 진단 검사 7종
           </h1>
           <p className="text-sm sm:text-base font-semibold text-[#DFD7FF] leading-relaxed">
-            나의 흥미, 강점 다중지능, 학습 루틴, 디지털 리터러시, 비전, GRIT 끈기를 진단받으세요! 완료된 검사는 <strong>[맞춤 리포트 PDF 다운로드]</strong> 및 언제든 <strong>[재검사하기]</strong>가 가능합니다.
+            나의 흥미, 강점, 학습 특성, 디지털 역량, 시간 관리능력 등을 진단받아보세요! 증료된 검사는 언제든 <strong>[재검사하기]</strong>가 가능합니다.
           </p>
           
           <div className="pt-2 flex flex-wrap items-center gap-3 justify-center sm:justify-start">
@@ -213,7 +213,7 @@ export const SelfUnderstanding: React.FC = () => {
             </span>
             {completedCount === 6 && (
               <span className="text-xs font-black px-4 py-2 rounded-2xl bg-gradient-to-r from-amber-400 to-amber-500 text-[#1A1626] shadow-lg animate-pulse">
-                👑 6대 전수 진단 그랜드 마스터 달성!
+                부석 6종 전부 완료!
               </span>
             )}
           </div>
@@ -231,10 +231,10 @@ export const SelfUnderstanding: React.FC = () => {
         <div className="border-b-2 border-purple-150 pb-4 pl-2">
           <h2 className="text-2xl sm:text-3xl font-headline font-black text-[#1A1626] flex items-center gap-2.5">
             <Sparkles className="w-7 h-7 text-[#7B5CF0]" />
-            <span>📋 2026 레디커리어 공식 6대 맞춤 진단검사 라인업</span>
+            <span>📋 나의 자기이해 진단 목록</span>
           </h2>
           <p className="text-xs sm:text-sm font-extrabold text-[#5C5672] mt-1">
-            원하는 진단 카드를 선택해 검사를 받거나, 이미 완료된 검사의 <strong>고품격 AI 리포트</strong>를 조회해보세요.
+            원하는 진단을 골라 검사를 시작하거나, 왜료된 검사의 AI 리포트를 확인해보세요.
           </p>
         </div>
 

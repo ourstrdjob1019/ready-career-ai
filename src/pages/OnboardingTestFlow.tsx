@@ -274,7 +274,7 @@ export const OnboardingTestFlow: React.FC = () => {
               추천된 {matchingJobs.length}개의 캐릭터 중 가장 끌리는 하나를 골라 여정을 시작하세요!
             </p>
             <div className="grid grid-cols-2 gap-4">
-              {matchingJobs.slice(0, 6).map((job) => (
+              {matchingJobs.slice(0, 10).map((job) => (
                 <button
                   key={job.jobName}
                   onClick={() => setSelectedJob(job)}

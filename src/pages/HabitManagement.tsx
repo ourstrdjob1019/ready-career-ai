@@ -135,7 +135,7 @@ export const HabitManagement: React.FC = () => {
         <div>
           <div className="inline-flex items-center gap-1.5 bg-secondary/15 text-secondary px-3 py-1 rounded-full text-xs font-headline font-black mb-3">
             <Flame className="w-4 h-4 text-secondary-spot animate-bounce" />
-            <span>50-Day Career Challenge &amp; Routine Tracker</span>
+            <span>50일 진로 찼린지</span>
           </div>
           <h1 className="text-4xl md:text-5xl font-headline font-black text-text-primary tracking-tight">
             습관 &amp; <span className="text-[#6A42ED]">목표 관리</span>
@@ -163,13 +163,12 @@ export const HabitManagement: React.FC = () => {
       <section className="space-y-4">
         <div className="flex items-center justify-between">
           <div>
-            <span className="text-xs font-extrabold text-[#7B5CF0] uppercase tracking-widest block">AI QUEST LOG &middot; CUSTOM UI</span>
             <h2 className="text-2xl font-extrabold text-[#1A1626] tracking-tight flex items-center gap-2">
-              <span>🚀 오늘의 맞춤 진로 퀘스트</span>
+              <span>📌 오늘 할 일</span>
             </h2>
           </div>
           <span className="text-xs font-bold bg-[#e6deff] text-[#6240d5] px-3.5 py-1 rounded-full border border-[#cbbeff] whitespace-nowrap">
-            완료 시 캐릭터 오오라 EXP 부여 ✨
+            완료 시 경험치 10점 획득 ✨
           </span>
         </div>
 
@@ -296,7 +295,7 @@ export const HabitManagement: React.FC = () => {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-surface-variant/30 pb-4">
             <div>
               <span className="text-xs font-headline font-black text-secondary uppercase tracking-wider block mb-1">
-                📅 50-Day Grid Checker
+                📅 나의 50일 찼린지
               </span>
               <h2 className="text-2xl font-headline font-black text-text-primary leading-tight">
                 {activeHabit.title}
@@ -340,10 +339,10 @@ export const HabitManagement: React.FC = () => {
               <MascotAri pose="celebrate" size="sm" rotate={false} />
               <div className="space-y-1">
                 <strong className="text-sm font-headline font-extrabold text-text-primary block">
-                  🎉 아리(Ari)의 힘이 되는 칭찬 코멘트
+                  👊 화이팅! 계속 해요
                 </strong>
                 <p className="text-xs text-text-muted leading-relaxed font-body-md">
-                  "{activeHabit.title}" 도전을 하루도 빠짐없이 훌륭하게 수행하고 계시군요! 하루 1개의 체크가 쌓일 때마다 학교관리자(교사) 뷰에서 학생 역량 지수가 상승하여 차질없는 세특 자산이 됩니다.
+                  "{activeHabit.title}" 찼린지를 매일 꼬준히 노력하고 있어요! 작은 하루하루의 노력이 큰 성장을 만들어요.
                 </p>
               </div>
             </div>

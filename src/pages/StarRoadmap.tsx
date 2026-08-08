@@ -16,9 +16,7 @@ import {
   Filter,
   Bookmark,
   Target,
-  TrendingUp,
   Award,
-  Edit,
   Trash2,
   Check
 } from "lucide-react";
@@ -450,15 +448,15 @@ export const StarRoadmap: React.FC = () => {
           <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
             <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-md px-4 py-1.5 rounded-full font-extrabold text-xs sm:text-sm tracking-wide border border-white/30 shadow-sm">
               <Sparkles className="w-4 h-4 text-amber-300 animate-spin-slow" />
-              <span>★ 지망 직무 학업 연계: <strong>{targetJobName}</strong></span>
+              <span>★ 나의 희망 진로: <strong>{targetJobName}</strong></span>
             </div>
             <span className="bg-[#10B981] text-white text-xs sm:text-sm font-black px-3.5 py-1.5 rounded-full shadow-md">
-              ⚡ 학습 성과 &amp; 학습 랩(Lab)
+              ⚡ 학습 노트 &amp; AI 학습 튜터
             </span>
           </div>
           
           <h1 className="text-3xl sm:text-5xl font-headline font-black text-white tracking-tight leading-tight">
-            📘 AI 나만의 AI 학습 튜터 <br className="hidden sm:block"/> &amp; AI 학습 노트
+            📘 AI 스마트 학습 노트 <br className="hidden sm:block"/> &amp; AI 학습 튜터
           </h1>
           <p className="text-sm sm:text-base font-semibold text-[#CCFBF1] leading-relaxed">
             이번 학기 <strong>정량적 목표 점수</strong>를 도약시키고, 중·고등 과목별 요약 스티커로 나의 공부 현황을 한눈에 점검하세요! AI가 <strong>"{targetJobName}"</strong> 세특 연계 요약을 도출하며 <strong>다중 취합 실전 퀴즈</strong>를 제공합니다.
@@ -483,7 +481,7 @@ export const StarRoadmap: React.FC = () => {
               <span>Quantitative Academic Goal Dashboard</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-headline font-black text-[#0F172A] flex items-center gap-2">
-              <span>📈 이번 학기 나의 목표 점수 만들기</span>
+              <span>📈 나의 이번 학기 학습 목표</span>
             </h2>
             <p className="text-xs sm:text-sm font-semibold text-[#475569]">
               목표 점수를 정하고 과목별로 열심히 공부해서 목표를 달성해보자!
@@ -495,7 +493,7 @@ export const StarRoadmap: React.FC = () => {
             className="px-5 py-3 rounded-2xl bg-[#0D9488] hover:bg-[#0F766E] text-white font-black text-xs sm:text-sm shadow-md transition-all flex items-center gap-1.5 shrink-0 transform hover:-translate-y-0.5 active:scale-95 cursor-pointer"
           >
             <Plus className="w-4 h-4 text-amber-300 stroke-[3]" />
-            <span>{showGoalInput ? "목표 입력창 닫기 ▲" : "+ 과목별 핀포인트 목표 추가"}</span>
+            <span>{showGoalInput ? "목표 입력창 닫기 ▲" : "+ 이번 학기 학습 목표 추가"}</span>
           </button>
         </div>
 
@@ -574,19 +572,6 @@ export const StarRoadmap: React.FC = () => {
           
           {/* 좌측: 전체 평균 도약 게이지 (5열) */}
           <div className="lg:col-span-5 bg-white p-7 rounded-[32px] border-2 border-[#CCFBF1] shadow-sm space-y-5 relative">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-black text-[#0D9488] uppercase tracking-wider flex items-center gap-1">
-                <TrendingUp className="w-4 h-4" /> 전체 평균 점수 도약 타겟
-              </span>
-              <button
-                onClick={() => setIsEditingAvg(!isEditingAvg)}
-                className="text-[11px] font-extrabold text-slate-500 hover:text-[#0D9488] bg-slate-100 px-2.5 py-1 rounded-lg flex items-center gap-1 transition-colors"
-              >
-                <Edit className="w-3 h-3" />
-                <span>{isEditingAvg ? "완료" : "점수 설정"}</span>
-              </button>
-            </div>
-
             {/* 점수 설정 모드 */}
             {isEditingAvg ? (
               <div className="space-y-3 p-4 rounded-2xl bg-slate-50 border border-slate-200">
@@ -619,7 +604,7 @@ export const StarRoadmap: React.FC = () => {
               <div className="space-y-4">
                 <div className="flex items-baseline justify-between pt-1">
                   <div>
-                    <span className="text-xs font-extrabold text-slate-400 block">CURRENT</span>
+                    <span className="text-xs font-extrabold text-slate-400 block">현재</span>
                     <span className="text-3xl font-black text-[#475569]">{currentAvg}</span>
                     <span className="text-sm font-bold text-slate-400">점</span>
                   </div>
@@ -629,7 +614,7 @@ export const StarRoadmap: React.FC = () => {
                     </div>
                   </div>
                   <div className="text-right">
-                    <span className="text-xs font-extrabold text-[#0D9488] block">TARGET KPI</span>
+                    <span className="text-xs font-extrabold text-[#0D9488] block">목표</span>
                     <span className="text-4xl font-black text-[#0D9488]">{targetAvg}</span>
                     <span className="text-sm font-bold text-[#0D9488]">점</span>
                   </div>
@@ -653,7 +638,7 @@ export const StarRoadmap: React.FC = () => {
             )}
 
             <div className="p-3 rounded-2xl bg-teal-50/70 border border-teal-100 flex items-center justify-between text-xs font-extrabold text-[#0F766E]">
-              <span>🎓 현재 <strong>{notes.length}건</strong>의 교목 노트가 평균 상승을 받치고 있습니다!</span>
+              <span>🎓 나의 미래를 향한 노력이 차곡차곡 쌓이고 있어요. (현재 {notes.length}건)</span>
               <Sparkles className="w-4 h-4 text-amber-500 shrink-0" />
             </div>
           </div>
@@ -773,7 +758,7 @@ export const StarRoadmap: React.FC = () => {
             className="w-full sm:w-auto px-6 py-4 rounded-2xl bg-[#0D9488] hover:brightness-110 text-white font-black text-sm sm:text-base shadow-[0_10px_25px_rgba(255,59,124,0.35)] transition-all flex items-center justify-center gap-2.5 transform hover:-translate-y-1 active:scale-95 cursor-pointer border-2 border-white/60"
           >
             <Brain className="w-5 h-5 text-amber-300 animate-bounce-short" />
-            <span>🤖 아리와 함께 퀴즈 만들기 (AI 스튜디오)</span>
+            <span>🤖 나만의 AI 학습 퀴즈 만들기 (AI 스튜디오)</span>
           </button>
         </div>
       </div>
@@ -962,7 +947,7 @@ export const StarRoadmap: React.FC = () => {
           <div>
             <h3 className="text-2xl font-headline font-black text-[#0F172A] flex items-center gap-2.5">
               <FolderCheck className="w-8 h-8 text-[#0D9488]" />
-              <span>🗂️ 과목별 학습 요약 보드 &amp; 학습 노트 보관함</span>
+              <span>🗂️ 나의 학습 노트</span>
             </h3>
             <p className="text-xs sm:text-sm text-[#475569] font-semibold mt-1">
               학습 노트가 과목별 <strong>요약 스티커 형태</strong>로 제공되어 전체 현황이 한눈에 보입니다! 카드를 눌러 <strong>[아코디언 세부 고찰]</strong>을 확인하세요.
@@ -1218,7 +1203,7 @@ export const StarRoadmap: React.FC = () => {
                 <img src={ARI_BLOB_URL} alt="Ari Mascot" className="w-full h-full object-contain filter drop-shadow-md" />
               </div>
               <h3 className="text-2xl sm:text-3xl font-black text-[#0F172A] tracking-tight">
-                🤖 아리와 함께 문제 만들기 <span className="text-[#0D9488]">(AI 퀴즈 스튜디오)</span>
+                🤖 나만의 AI 학습 퀴즈 만들기 <span className="text-[#0D9488]">(AI 퀴즈 스튜디오)</span>
               </h3>
               <p className="text-xs sm:text-sm font-extrabold text-[#475569] break-keep leading-relaxed">
                 한 과목을 집중 점검하는 <strong>[단독 퀴즈]</strong>는 물론, 여러 노트를 묶어 융합 역량을 시험하는 <strong>[취합 종합 퀴즈]</strong>를 자유롭게 선택해 보세요!

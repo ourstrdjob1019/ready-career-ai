@@ -291,10 +291,7 @@ export const HomeDashboard: React.FC = () => {
           SECTION 2 & 3 COMBINED: Master Hero Board & Primary CTA
           (가장 눈에 잘 띄는 밸런스드 퍼플 파스텔 히어로 영역 + 아리 커리어 가이던스 트리거)
          ========================================================================= */}
-      <section className="rounded-[36px] overflow-hidden bg-gradient-to-br from-[#5328E0] via-[#6537EA] to-[#7E51FA] text-white p-8 sm:p-12 shadow-[0_25px_80px_rgba(83,40,224,0.32)] border-2 border-[#9F7FFF]/40 space-y-10 relative">
-        {/* Subtle background gradient halo */}
-        <div className="absolute -top-24 -right-24 w-96 h-96 bg-white/10 rounded-full blur-[90px] pointer-events-none" />
-        <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-purple-900/30 rounded-full blur-[90px] pointer-events-none" />
+      <section className="rounded-[36px] overflow-hidden bg-[#6A42ED] text-white p-8 sm:p-12 shadow-[0_25px_80px_rgba(106,66,237,0.32)] border-2 border-[#9F7FFF]/40 space-y-10 relative">
 
         <div className="flex flex-col md:flex-row items-center justify-between gap-8 relative z-10">
           
@@ -306,8 +303,8 @@ export const HomeDashboard: React.FC = () => {
             </div>
             
             <div className="space-y-1">
-              <span className="text-xs font-extrabold text-purple-200 uppercase tracking-widest block">
-                🎯 MY PRIMARY TARGET JOB
+              <span className="text-xs font-extrabold text-purple-200 tracking-widest block">
+                🎯 나의 목표 직업
               </span>
               <h3 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-none">
                 {getJobCharacterTitle(currentJob.name, currentLevel)}
@@ -319,7 +316,7 @@ export const HomeDashboard: React.FC = () => {
               <div className="flex flex-wrap items-center justify-between gap-2 text-xs sm:text-sm font-extrabold text-amber-200 w-full pb-2 border-b border-white/10">
                 <span className="flex items-center gap-2 truncate min-w-0">
                   <Sparkles className="w-4 h-4 text-amber-300 flex-shrink-0 animate-pulse" />
-                  <span className="truncate tracking-wide">나만의 비전 선언문 (Vision Statement)</span>
+                  <span className="truncate tracking-wide">나만의 비전 선언문</span>
                 </span>
                 <div className="flex items-center gap-2 flex-shrink-0">
                   <button
@@ -385,8 +382,8 @@ export const HomeDashboard: React.FC = () => {
 
           {/* Right Mascot Showcase */}
           <div className="flex flex-col items-center justify-center relative w-full md:w-2/5 shrink-0">
-            <div className="w-56 h-56 sm:w-64 sm:h-64 rounded-full bg-gradient-to-b from-white/20 to-black/20 p-5 border-2 border-white/30 flex items-center justify-center relative group shadow-2xl">
-              <span className="absolute -top-4 left-1/2 -translate-x-1/2 bg-slate-900 text-2xl p-2.5 rounded-2xl border border-slate-700 shadow-md">
+            <div className="w-64 h-64 sm:w-80 sm:h-80 rounded-full bg-gradient-to-b from-white/20 to-black/20 p-5 border-2 border-white/30 flex items-center justify-center relative group shadow-2xl">
+              <span className="absolute -top-4 left-1/2 -translate-x-1/2 bg-slate-900 text-3xl p-3 rounded-2xl border border-slate-700 shadow-md">
                 {rankBadge.icon}
               </span>
               <img
@@ -394,10 +391,6 @@ export const HomeDashboard: React.FC = () => {
                 alt="3D Character Avatar"
                 className="w-full h-full object-contain drop-shadow-[0_12px_24px_rgba(0,0,0,0.6)] group-hover:scale-105 transition-transform duration-300"
               />
-            </div>
-            <div className="mt-3.5 bg-black/40 text-purple-100 px-4 py-1.5 rounded-full font-bold text-xs border border-white/20 flex items-center gap-2 shadow-md">
-              <span className="w-2 h-2 rounded-full bg-amber-300 animate-ping" />
-              <span>장착 어시스턴트 아리</span>
             </div>
           </div>
         </div>
@@ -407,13 +400,13 @@ export const HomeDashboard: React.FC = () => {
           <div className="bg-white/15 backdrop-blur-md rounded-[32px] p-6 sm:p-8 border-2 border-white/30 shadow-[0_20px_60px_rgba(0,0,0,0.35)] flex flex-col items-center justify-between gap-6 text-center">
             <div className="space-y-2 max-w-2xl mx-auto">
               <span className="text-[12px] sm:text-xs font-black text-[#20104E] bg-gradient-to-r from-amber-300 to-amber-200 px-4 py-1 rounded-full mb-1 inline-block shadow-md">
-                🔥 MAJOR TARGET ACTION · 2026 핵심 역량 큐레이션
+                🔥 핵심 진로 활동
               </span>
               <h4 className="text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-tight leading-tight">
-                나만의 실전 맞춤 진로 활동 &amp; AI 로드맵 즉시 오픈하기
+                나만의 맞춤 진로 활동 시작하기
               </h4>
               <p className="text-xs sm:text-sm font-semibold text-purple-100 leading-relaxed">
-                16개 온보딩 진단 검사 및 목표 직군을 완벽 연계하여, 4대 핵심 역량 모듈과 50일 루틴을 1초 만에 개방합니다.
+                진단 결과를 바탕으로 나에게 딱 맞는 4가지 핵심 진로 활동을 추천받으세요.
               </p>
             </div>
 
@@ -425,8 +418,8 @@ export const HomeDashboard: React.FC = () => {
                   className="w-full py-5 px-6 sm:px-12 rounded-[26px] bg-gradient-to-r from-[#FFB800] via-[#FFCA3A] to-[#FFE07D] hover:brightness-105 text-[#201150] font-black text-lg sm:text-2xl lg:text-3xl shadow-[0_15px_45px_rgba(255,184,0,0.5)] hover:shadow-[0_20px_60px_rgba(255,184,0,0.65)] transition-all transform hover:scale-[1.01] active:scale-98 cursor-pointer border-2 border-amber-100/70 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-center break-keep"
                 >
                   <div className="flex items-center gap-2">
-                    <span className="text-2xl sm:text-3xl animate-bounce-short shrink-0">🚀</span>
-                    <span className="tracking-tight drop-shadow-xs leading-tight">&lt;아리와 함께 실전 맞춤 진로 활동 찾아보기&gt; ✨</span>
+                    <span className="text-2xl sm:text-3xl animate-bounce-short shrink-0">✨</span>
+                    <span className="tracking-tight drop-shadow-xs leading-tight">&lt;나의 진로 활동 시작하기&gt;</span>
                   </div>
                 </button>
               ) : (
@@ -466,16 +459,17 @@ export const HomeDashboard: React.FC = () => {
             </div>
           </div>
         )}
+      </section>
 
         {/* 실전 맞춤 진로 활동 4대 모듈 (클린 화이트 & 다크 블랙 텍스트 레퍼런스 적용) */}
         {isRoadmapGenerated && !isGeneratingAnim && (
-          <div className="pt-6 border-t border-slate-800/80 space-y-4 animate-fadeIn">
+          <div className="py-6 space-y-4 animate-fadeIn">
             <div className="flex items-center justify-between">
-              <h4 className="text-lg sm:text-xl font-black text-white flex items-center gap-2">
+              <h4 className="text-lg sm:text-xl font-black text-[#1F193B] flex items-center gap-2">
                 <span>🌌 실전 맞춤 진로 활동 4대 모듈</span>
-                <span className="text-xs bg-teal-500/20 text-teal-300 px-3 py-0.5 rounded-full border border-teal-500/40">Active</span>
+                <span className="text-xs bg-teal-50 text-teal-600 px-3 py-0.5 rounded-full border border-teal-200">Active</span>
               </h4>
-              <span className="text-xs font-bold text-slate-400">원하는 카드를 터치하여 바로 진입하세요 ↗</span>
+              <span className="text-xs font-bold text-slate-500">원하는 카드를 터치하여 바로 진입하세요 ↗</span>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -502,8 +496,7 @@ export const HomeDashboard: React.FC = () => {
                     </div>
                   </div>
                   <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-[#1F193B] group-hover:text-amber-600">
-                    <span>확인하기</span>
-                    <span>&gt;</span>
+                    <span>확인하기 &gt;</span>
                   </div>
                 </div>
               </Link>
@@ -530,8 +523,7 @@ export const HomeDashboard: React.FC = () => {
                     </div>
                   </div>
                   <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-[#1F193B] group-hover:text-rose-600">
-                    <span>확인하기</span>
-                    <span>&gt;</span>
+                    <span>진로 보관함 확인 &gt;</span>
                   </div>
                 </div>
               </Link>
@@ -558,8 +550,7 @@ export const HomeDashboard: React.FC = () => {
                     </div>
                   </div>
                   <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-[#1F193B] group-hover:text-indigo-600">
-                    <span>확인하기</span>
-                    <span>&gt;</span>
+                    <span>확인하기 &gt;</span>
                   </div>
                 </div>
               </Link>
@@ -586,8 +577,7 @@ export const HomeDashboard: React.FC = () => {
                     </div>
                   </div>
                   <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-[#1F193B] group-hover:text-teal-600">
-                    <span>확인하기</span>
-                    <span>&gt;</span>
+                    <span>확인하기 &gt;</span>
                   </div>
                 </div>
               </Link>
@@ -595,7 +585,6 @@ export const HomeDashboard: React.FC = () => {
             </div>
           </div>
         )}
-      </section>
 
       {/* =========================================================================
           SECTION 4: 진로 탐험 직군 변경 (COMPACT & SLEEK AUXILIARY STRIP)
@@ -678,40 +667,27 @@ export const HomeDashboard: React.FC = () => {
               {/* Balanced Purple & Violet Theme Header */}
               <div className="rounded-[32px] bg-gradient-to-r from-[#5328E0] via-[#6537EA] to-[#8054FC] text-white p-8 sm:p-10 border border-[#9F7FFF]/40 shadow-xl flex flex-col sm:flex-row items-center justify-between gap-6 relative overflow-hidden">
                 <div className="space-y-3 max-w-2xl text-center sm:text-left z-10">
-                  <span className="text-xs font-black px-4 py-1.5 rounded-full bg-white/15 text-amber-300 border border-white/20 inline-block shadow-xs">
-                    ⚡ 2026 맞춤 진로 탐험 스위칭
-                  </span>
                   <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
                     <span className="text-amber-300">{getJobCharacterTitle(interestedJobs[jobIntroModalIdx].name, currentLevel)}</span> <br className="hidden sm:block"/>
-                    진화 레벨업 로드맵
                   </h2>
-                  <p className="text-xs sm:text-sm font-medium text-purple-100">
-                    선택 즉시 홈 화면의 어시스턴트 마스코트와 AI 맞춤 루틴 큐레이션이 신규 직업으로 개통됩니다.
+                  <p className="text-sm sm:text-base font-bold text-purple-100">
+                    이 직업을 선택하면 새로운 캐릭터와 함께 맞춤 활동이 시작됩니다!
                   </p>
                 </div>
-                <div className="w-48 h-48 sm:w-64 sm:h-64 rounded-[36px] bg-white p-6 shadow-2xl border border-purple-100 shrink-0 flex items-center justify-center">
+                <div className="w-56 h-56 sm:w-72 sm:h-72 rounded-[36px] bg-white p-6 shadow-2xl border border-purple-100 shrink-0 flex items-center justify-center">
                   <img src={interestedJobs[jobIntroModalIdx].imageUrl || ARI_BLOB_URL} alt="Mascot" className="w-full h-full object-contain filter drop-shadow-md" />
                 </div>
               </div>
 
               {/* Lv.1 ~ Lv.5 순차적 레벨업 진화 화면 (Clean White/Slate Modular Bento) */}
               <div className="space-y-4">
-                <div className="flex items-center justify-between px-2">
-                  <span className="text-xs font-black text-slate-500 uppercase tracking-wider block">
-                    🏅 5-STAGE CAREER EVOLUTION TREE
-                  </span>
-                  <span className="text-xs font-extrabold text-[#1F193B] bg-purple-50 px-3 py-1 rounded-full border border-purple-150">
-                    Lv.1부터 Lv.5 마스터까지 순차 진화
-                  </span>
-                </div>
-
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 relative items-stretch">
                   {[
-                    { lv: "Lv.1", badge: "📖 지식 융합", name: "호기심 장착 아리" },
-                    { lv: "Lv.2", badge: "⚡ 챌린지", name: "프로젝트 리더" },
-                    { lv: "Lv.3", badge: "🏆 포폴 왕", name: "포트폴리오 왕" },
-                    { lv: "Lv.4", badge: "🚀 차세대 고수", name: "미래 엑스퍼트" },
-                    { lv: "Lv.5", badge: "👑 마스터", name: "최상위 마스터" },
+                    { lv: "Lv.1", badge: "지식 융합", name: "초보" },
+                    { lv: "Lv.2", badge: "챌린지", name: "리더" },
+                    { lv: "Lv.3", badge: "포폴 왕", name: "전문가" },
+                    { lv: "Lv.4", badge: "차세대 고수", name: "엑스퍼트" },
+                    { lv: "Lv.5", badge: "마스터", name: "마스터" },
                   ].map((item, i) => (
                     <div key={i} className="rounded-[24px] bg-slate-50 p-5 border border-slate-200 hover:border-[#6A42ED] transition-all flex flex-col items-center justify-between space-y-3.5 group">
                       <div className="w-full flex flex-col items-center space-y-1.5">

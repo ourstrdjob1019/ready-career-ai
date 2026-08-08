@@ -14,7 +14,6 @@ import {
   Image as ImageIcon,
   X,
   Save,
-  Trophy,
   Filter
 } from "lucide-react";
 
@@ -333,20 +332,16 @@ export const Portfolio: React.FC = () => {
       <div className="rounded-[36px] bg-gradient-to-r from-[#1E114D] via-[#4A20D2] to-[#D946EF] text-white p-8 sm:p-12 shadow-[0_20px_60px_rgba(217,70,239,0.25)] border-4 border-white/25 flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden">
         <div className="space-y-4 max-w-2xl z-10 text-center sm:text-left">
           <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
-            <span className="text-xs font-black bg-[#FF3B7C] text-white px-4 py-1.5 rounded-full inline-flex items-center gap-1.5 shadow-md animate-pulse">
-              <Trophy className="w-4 h-4 text-amber-300" />
-              <span>대학·기업 제출 스펙 장식장 (Showroom)</span>
-            </span>
             <span className="text-xs font-black bg-[#7AF1FC] text-[#006970] px-3.5 py-1.5 rounded-full shadow-md">
               🎯 목표 직업: {targetJobName}
             </span>
           </div>
           
           <h1 className="text-3xl sm:text-5xl font-headline font-black tracking-tight leading-tight">
-            💼 진로 커리어 성과 장식장 &amp; <br className="hidden sm:block"/> 3D 스펙 아카이빙
+            💼 나의 꿈 보관함
           </h1>
           <p className="text-sm sm:text-base font-semibold text-[#F0E6FF] leading-relaxed">
-            나의 진로 활동과 자격증, 인증 사진(88% 압축 최적화)을 세미 갤러리 형태로 전시하세요! AI 세특 교정과 함께 <strong>입학사정관 및 채용관을 매료시킬 포트폴리오</strong>가 완성됩니다.
+            진로 활동을 쌓아가며 내 꿈을 설계해보세요!
           </p>
         </div>
 
@@ -363,12 +358,8 @@ export const Portfolio: React.FC = () => {
       <div className="bg-gradient-to-br from-[#F8F5FF] via-white to-[#FAF0FF] rounded-[36px] p-7 sm:p-10 border-2 border-[#E9D5FF] shadow-sm space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-purple-150 pb-4">
           <div>
-            <div className="inline-flex items-center gap-1.5 bg-[#7B5CF0]/15 text-[#7B5CF0] px-3 py-1 rounded-full text-xs font-black mb-1">
-              <Trophy className="w-3.5 h-3.5 text-[#7B5CF0]" />
-              <span>Career Spec Scoreboard & Trophy Case</span>
-            </div>
             <h2 className="text-2xl sm:text-3xl font-headline font-black text-[#1A1626]">
-              🏆 나의 누적 커리어 성과 훈장 장식장
+              🏆 나의 진로활동 발자취
             </h2>
             <p className="text-xs sm:text-sm font-semibold text-[#6E6A80]">
               현재까지 누적된 역량 지표가 실시간 집계됩니다. 다양한 스펙을 채워 황금 훈장을 늘려가세요!
@@ -380,7 +371,7 @@ export const Portfolio: React.FC = () => {
             className="w-full sm:w-auto py-4 px-8 rounded-2xl bg-gradient-to-r from-[#FF3B7C] via-[#FF5C8A] to-[#7B5CF0] hover:brightness-110 text-white font-black text-sm sm:text-base shadow-[0_10px_25px_rgba(255,59,124,0.35)] transition-transform transform hover:-translate-y-1 active:scale-95 cursor-pointer border-2 border-white flex items-center justify-center gap-2"
           >
             <Plus className="w-5 h-5 stroke-[3]" />
-            <span>{showInputForm ? "입력창 닫기 ▲" : "✍️ 내 진로 스펙 직접 추가하기"}</span>
+            <span>{showInputForm ? "입력창 닫기 ▲" : "✍️ 내 진로 활동 직접 추가하기"}</span>
           </button>
         </div>
 
@@ -483,7 +474,7 @@ export const Portfolio: React.FC = () => {
 
               <div className="space-y-2 md:col-span-2">
                 <label className="text-xs sm:text-sm font-black text-[#3B364C] block">
-                  📌 활동 및 경험 제목 (또는 자격증명)
+                  📌 활동 이름
                 </label>
                 <input
                   type="text"
@@ -527,7 +518,7 @@ export const Portfolio: React.FC = () => {
             <div className="space-y-3">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                 <label className="text-xs sm:text-sm font-black text-[#3B364C] block">
-                  📝 수행 내용 및 나의 고찰 (또는 자격 취득 과정)
+                  📝 활동 내용과 배운 점
                 </label>
                 <button
                   type="button"
@@ -536,12 +527,12 @@ export const Portfolio: React.FC = () => {
                   className="px-5 py-2 rounded-xl bg-gradient-to-r from-[#008A90] to-[#00A3A8] hover:brightness-110 text-white font-black text-xs sm:text-sm shadow-md transition-all flex items-center gap-2 cursor-pointer w-fit"
                 >
                   <Sparkles className={`w-4 h-4 text-amber-300 ${isAiRefining ? "animate-spin" : ""}`} />
-                  <span>{isAiRefining ? "AI 문구 다듬고 교정 중..." : "✨ AI 세특 문구 자동 교정 및 최적화 받기!"}</span>
+                  <span>{isAiRefining ? "문장을 다듬는 중..." : "✨ 문장을 다듬어 드려요. 결과는 꼭 직접 확인하세요."}</span>
                 </button>
               </div>
               <textarea
                 rows={5}
-                placeholder="어떤 계기로 시작했고 어떤 실험/공부/프로젝트를 하였는지 자율적으로 적어보세요! 위의 'AI 세특 문구 자동 교정 및 최적화' 버튼을 누르시면 교사용 기재 지침에 맞춘 완벽한 버전으로 즉시 교정됩니다."
+                placeholder="어떤 계기로 시작했고 어떤 활동을 했는지 적어보세요!"
                 value={formContent}
                 onChange={(e) => setFormContent(e.target.value)}
                 className="w-full p-5 rounded-2xl bg-[#F9F7FF] border-2 border-[#DED4FF] font-semibold text-sm text-[#1A1626] placeholder:text-[#8D88A0] focus:border-[#7B5CF0] focus:outline-none shadow-inner leading-relaxed"
@@ -631,7 +622,7 @@ export const Portfolio: React.FC = () => {
             <div>
               <span className="text-xs font-black text-[#008A90] block uppercase tracking-wide">AI Career Activity Explorer</span>
               <h3 className="text-lg sm:text-xl font-headline font-black text-[#1A1626]">
-                🚀 내 꿈("{targetJobName}")을 빛낼 활동 추천 풀
+                🚀 나의 꿈을 향한 진로 활동 추천받기
               </h3>
               <p className="text-xs sm:text-sm text-[#5C5672] font-semibold">
                 어떤 활동을 할지 막막할 때 클릭해 보세요! 마음에 드는 활동을 터치 한 번에 내 포트폴리오로 가져올 수 있습니다.
@@ -709,7 +700,7 @@ export const Portfolio: React.FC = () => {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-2 border-purple-150 pb-5 pl-2">
           <div>
             <h3 className="text-2xl font-headline font-black text-[#1A1626] flex items-center gap-2">
-              <span>🗃️ 내 진로 스펙 갤러리 쇼룸 (총 {filteredItems.length}건)</span>
+              <span>🗃️ 나의 진로 활동 (총 {filteredItems.length}건)</span>
             </h3>
             <p className="text-xs text-slate-500 font-semibold mt-0.5">
               카드를 터치하거나 [상세보기]를 눌러 고해상도 인증 사진과 AI 세특 평가를 확인하세요!
@@ -798,7 +789,7 @@ export const Portfolio: React.FC = () => {
                   {/* 하단 스티커 액션바 */}
                   <div className="pt-3.5 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-extrabold">
                     <span className="text-[#0D9488] flex items-center gap-1">
-                      {it.photoUrl ? "📷 인증사진 포함" : "✨ AI 평가 완료"}
+                      {it.photoUrl ? "📷 인증사진 포함" : "📄 활동 기록 완료"}
                     </span>
                     <span className="text-slate-500 group-hover:text-[#6A42ED] transition-colors flex items-center gap-1">
                       터치하여 확장 &rarr;
@@ -852,7 +843,7 @@ export const Portfolio: React.FC = () => {
 
             {/* 본문 내용 */}
             <div className="space-y-2">
-              <span className="text-xs font-black text-slate-400 uppercase tracking-wide">📝 활동 상세 고찰 및 수행 과정</span>
+              <span className="text-xs font-black text-slate-400 uppercase tracking-wide">📝 활동 내용과 배운 점</span>
               <div className="bg-[#F9F8FD] p-7 rounded-[32px] border border-purple-200 shadow-inner text-base font-bold text-[#2E2840] leading-relaxed whitespace-pre-wrap">
                 {viewingItem.content}
               </div>
