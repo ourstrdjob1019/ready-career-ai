@@ -16,6 +16,7 @@ export const BottomNav: React.FC = () => {
     { label: "자기이해", path: "/self-understanding", icon: Sparkles, isSpot: true },
     { label: "진로포트폴리오", path: "/portfolio", icon: Award },
     { label: "학습포트폴리오", path: "/roadmap", icon: Compass },
+    { label: "습관목표", path: "/habits", icon: Award },
   ];
 
   const teacherItems = [

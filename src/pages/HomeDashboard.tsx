@@ -68,9 +68,7 @@ export const HomeDashboard: React.FC = () => {
 
       setInterestedJobs([
         primaryJob,
-        { name: JOB_VENGERS_LIST[0].title, image: "👨‍🏫", category: JOB_VENGERS_LIST[0].category, imageUrl: JOB_VENGERS_LIST[0].imageUrl },
-        { name: JOB_VENGERS_LIST[1].title, image: "🎨", category: JOB_VENGERS_LIST[1].category, imageUrl: JOB_VENGERS_LIST[1].imageUrl },
-        { name: JOB_VENGERS_LIST[2].title, image: "🛰️", category: JOB_VENGERS_LIST[2].category, imageUrl: JOB_VENGERS_LIST[2].imageUrl },
+        ...JOB_VENGERS_LIST.slice(0, 9).map(v => ({ name: v.title, image: v.id, category: v.category, imageUrl: v.imageUrl }))
       ]);
     }
   }, []);
@@ -281,7 +279,8 @@ export const HomeDashboard: React.FC = () => {
           </span>
         </div>
         <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-[#1F193B]">
-          {userName}님, 안녕하세요! 🚀
+          {userName}님, 안녕하세요!<br />
+          나만의 진로 별자리를 찾아볼까요?
         </h2>
         <p className="text-xs sm:text-sm font-bold text-slate-500">
           {userSchool} ({userGrade}학년) · {rankBadge.title} 단계에서 맞춤 진로 활동 마주하기
@@ -481,71 +480,43 @@ export const HomeDashboard: React.FC = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               
-              {/* Card 1: AI 학습포트폴리오 */}
-              <Link to="/roadmap" className="block h-full group">
-                <div className="bg-white rounded-[24px] p-6 border border-slate-200 hover:border-[#6A42ED] shadow-xs hover:shadow-lg transition-all duration-200 flex flex-col justify-between h-full min-h-[200px] text-[#1F193B]">
+              {/* Card 1: 자기이해 검사 */}
+              <Link to="/self-understanding" className="block h-full group">
+                <div className="bg-white rounded-[24px] p-6 border border-slate-200 hover:border-amber-400 shadow-sm hover:shadow-lg transition-all duration-200 flex flex-col justify-between h-full min-h-[200px] text-[#1F193B]">
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-purple-50 text-purple-700 border border-purple-200">
-                        • STEP 1. 심화 학습
+                      <span className="text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-600 border border-amber-200">
+                        • STEP 1
                       </span>
-                      <div className="w-9 h-9 rounded-xl bg-[#6A42ED] text-white flex items-center justify-center group-hover:scale-110 transition-transform">
-                        <Route className="w-4 h-4" />
+                      <div className="w-9 h-9 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <Compass className="w-4 h-4" />
                       </div>
                     </div>
                     <div>
-                      <h5 className="text-base font-black text-[#1F193B] group-hover:text-purple-700 transition-colors">
-                        AI 학습포트폴리오 (코넬노트)
+                      <h5 className="text-base font-black text-[#1F193B] group-hover:text-amber-600 transition-colors">
+                        자기이해 진로검사
                       </h5>
                       <p className="text-xs font-medium text-slate-500 mt-1.5 leading-relaxed">
-                        교과 핵심 키워드 정리 및 AI가 추출하는 세특 연계 요약과 셀프 퀴즈 도전
+                        나의 잠재된 흥미와 역량을 확인해 보세요.
                       </p>
                     </div>
                   </div>
-                  <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-[#1F193B] group-hover:text-purple-600">
-                    <span>학습 노트 입장</span>
-                    <span>↗</span>
+                  <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-[#1F193B] group-hover:text-amber-600">
+                    <span>확인하기</span>
+                    <span>&gt;</span>
                   </div>
                 </div>
               </Link>
 
-              {/* Card 2: 습관 & 목표 */}
-              <Link to="/habits" className="block h-full group">
-                <div className="bg-white rounded-[24px] p-6 border border-slate-200 hover:border-[#6A42ED] shadow-xs hover:shadow-lg transition-all duration-200 flex flex-col justify-between h-full min-h-[200px] text-[#1F193B]">
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span className="text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-teal-50 text-[#0D9488] border border-teal-200">
-                        • STEP 2. 실천 루틴
-                      </span>
-                      <div className="w-9 h-9 rounded-xl bg-teal-600 text-white flex items-center justify-center group-hover:scale-110 transition-transform">
-                        <ListCheck className="w-4 h-4" />
-                      </div>
-                    </div>
-                    <div>
-                      <h5 className="text-base font-black text-[#1F193B] group-hover:text-teal-700 transition-colors">
-                        습관 &amp; 목표 관리
-                      </h5>
-                      <p className="text-xs font-medium text-slate-500 mt-1.5 leading-relaxed">
-                        매일 수행하는 커스텀 진로 루틴 및 1일 체크 달성 시 즉시 EXP 마일리지 획득
-                      </p>
-                    </div>
-                  </div>
-                  <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-[#1F193B] group-hover:text-teal-600">
-                    <span>습관 대시보드 입장</span>
-                    <span>↗</span>
-                  </div>
-                </div>
-              </Link>
-
-              {/* Card 3: 진로 포트폴리오 */}
+              {/* Card 2: 진로 포트폴리오 */}
               <Link to="/portfolio" className="block h-full group">
-                <div className="bg-white rounded-[24px] p-6 border border-slate-200 hover:border-[#6A42ED] shadow-xs hover:shadow-lg transition-all duration-200 flex flex-col justify-between h-full min-h-[200px] text-[#1F193B]">
+                <div className="bg-white rounded-[24px] p-6 border border-slate-200 hover:border-rose-400 shadow-sm hover:shadow-lg transition-all duration-200 flex flex-col justify-between h-full min-h-[200px] text-[#1F193B]">
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
                       <span className="text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-rose-50 text-rose-600 border border-rose-200">
-                        • STEP 3. 누적 성과
+                        • STEP 2
                       </span>
-                      <div className="w-9 h-9 rounded-xl bg-rose-500 text-white flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <div className="w-9 h-9 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center group-hover:scale-110 transition-transform">
                         <FolderCheck className="w-4 h-4" />
                       </div>
                     </div>
@@ -554,41 +525,69 @@ export const HomeDashboard: React.FC = () => {
                         진로 포트폴리오
                       </h5>
                       <p className="text-xs font-medium text-slate-500 mt-1.5 leading-relaxed">
-                        고교 3개년 누적 성과 및 항목을 선택하여 NEIS 제출용 생기부 초안 즉시 변환
+                        진로 활동을 모아보고 정리할 수 있어요.
                       </p>
                     </div>
                   </div>
                   <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-[#1F193B] group-hover:text-rose-600">
-                    <span>포폴 보관함 확인</span>
-                    <span>↗</span>
+                    <span>확인하기</span>
+                    <span>&gt;</span>
                   </div>
                 </div>
               </Link>
 
-              {/* Card 4: 자기이해 검사 */}
-              <Link to="/self-understanding" className="block h-full group">
-                <div className="bg-gradient-to-br from-[#361685] to-[#5124BA] rounded-[24px] p-6 border-2 border-[#8C64FF]/60 hover:border-amber-300 shadow-md hover:shadow-xl transition-all duration-200 flex flex-col justify-between h-full min-h-[200px] text-white">
+              {/* Card 3: 학습포트폴리오 */}
+              <Link to="/roadmap" className="block h-full group">
+                <div className="bg-white rounded-[24px] p-6 border border-slate-200 hover:border-indigo-400 shadow-sm hover:shadow-lg transition-all duration-200 flex flex-col justify-between h-full min-h-[200px] text-[#1F193B]">
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-amber-300 text-[#20104E] border border-amber-400 shadow-2xs">
-                        • STEP 4. 흥미 진단
+                      <span className="text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-600 border border-indigo-200">
+                        • STEP 3
                       </span>
-                      <div className="w-9 h-9 rounded-xl bg-amber-300 text-[#20104E] flex items-center justify-center group-hover:scale-110 transition-transform shadow-xs">
-                        <Compass className="w-4 h-4" />
+                      <div className="w-9 h-9 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <Route className="w-4 h-4" />
                       </div>
                     </div>
                     <div>
-                      <h5 className="text-base font-black text-white group-hover:text-amber-300 transition-colors">
-                        자기이해 진로검사
+                      <h5 className="text-base font-black text-[#1F193B] group-hover:text-indigo-600 transition-colors">
+                        학습포트폴리오
                       </h5>
-                      <p className="text-xs font-medium text-purple-100 mt-1.5 leading-relaxed">
-                        6유형 RIASEC 진단 설문 및 AI 매핑을 통해 내 잠재 흥미와 역량을 재확인!
+                      <p className="text-xs font-medium text-slate-500 mt-1.5 leading-relaxed">
+                        교과 핵심 키워드를 정리하고 퀴즈에 도전해 보세요.
                       </p>
                     </div>
                   </div>
-                  <div className="pt-4 mt-4 border-t border-purple-500/50 flex items-center justify-between text-xs font-extrabold text-amber-300">
-                    <span>검사 결과 보러가기</span>
-                    <span>↗</span>
+                  <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-[#1F193B] group-hover:text-indigo-600">
+                    <span>확인하기</span>
+                    <span>&gt;</span>
+                  </div>
+                </div>
+              </Link>
+
+              {/* Card 4: 습관목표 */}
+              <Link to="/habits" className="block h-full group">
+                <div className="bg-white rounded-[24px] p-6 border border-slate-200 hover:border-teal-400 shadow-sm hover:shadow-lg transition-all duration-200 flex flex-col justify-between h-full min-h-[200px] text-[#1F193B]">
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-teal-50 text-teal-600 border border-teal-200">
+                        • STEP 4
+                      </span>
+                      <div className="w-9 h-9 rounded-xl bg-teal-100 text-teal-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <ListCheck className="w-4 h-4" />
+                      </div>
+                    </div>
+                    <div>
+                      <h5 className="text-base font-black text-[#1F193B] group-hover:text-teal-600 transition-colors">
+                        습관목표
+                      </h5>
+                      <p className="text-xs font-medium text-slate-500 mt-1.5 leading-relaxed">
+                        매일 진로 루틴을 달성하며 성장해 보세요.
+                      </p>
+                    </div>
+                  </div>
+                  <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-[#1F193B] group-hover:text-teal-600">
+                    <span>확인하기</span>
+                    <span>&gt;</span>
                   </div>
                 </div>
               </Link>
@@ -640,14 +639,14 @@ export const HomeDashboard: React.FC = () => {
                     : "bg-white text-[#1F193B] border-purple-150 hover:border-[#6A42ED] hover:bg-purple-50/60 shadow-xs hover:shadow-md"
                 }`}
               >
-                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-white p-2 border border-purple-100 shrink-0 flex items-center justify-center my-1.5 shadow-sm group-hover:scale-105 transition-transform">
+                <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-3xl bg-white p-3 border border-purple-100 shrink-0 flex items-center justify-center my-2 shadow-sm group-hover:scale-105 transition-transform">
                   {job.imageUrl ? (
                     <img src={job.imageUrl} alt={job.name} className="w-full h-full object-contain" />
                   ) : (
-                    <span className="text-2xl">{job.image}</span>
+                    <span className="text-4xl">{job.image}</span>
                   )}
                 </div>
-                <div className="w-full overflow-hidden space-y-1 mt-1">
+                <div className="w-full overflow-hidden space-y-1 mt-3">
                   <strong className={`text-sm sm:text-base font-black block line-clamp-2 leading-snug break-keep ${isSelected ? "text-white" : "text-[#1F193B] group-hover:text-[#6A42ED]"}`}>
                     {job.name}
                   </strong>
@@ -690,7 +689,7 @@ export const HomeDashboard: React.FC = () => {
                     선택 즉시 홈 화면의 어시스턴트 마스코트와 AI 맞춤 루틴 큐레이션이 신규 직업으로 개통됩니다.
                   </p>
                 </div>
-                <div className="w-36 h-36 sm:w-44 sm:h-44 rounded-[28px] bg-white p-4 shadow-2xl border border-purple-100 shrink-0 flex items-center justify-center">
+                <div className="w-48 h-48 sm:w-64 sm:h-64 rounded-[36px] bg-white p-6 shadow-2xl border border-purple-100 shrink-0 flex items-center justify-center">
                   <img src={interestedJobs[jobIntroModalIdx].imageUrl || ARI_BLOB_URL} alt="Mascot" className="w-full h-full object-contain filter drop-shadow-md" />
                 </div>
               </div>
