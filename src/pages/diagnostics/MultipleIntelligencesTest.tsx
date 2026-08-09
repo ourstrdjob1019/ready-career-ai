@@ -15,8 +15,8 @@ const shuffleArray = (array: any[]) => {
 };
 
 const LIKERT_OPTIONS = [
-  { value: 5, label: "완전 공감해! 👍", bg: "bg-gradient-to-br from-violet-500 to-fuchsia-500", text: "text-black", border: "border-transparent", hover: "hover:scale-[1.02] shadow-xl shadow-fuchsia-200" },
-  { value: 1, label: "나랑은 안 맞아 🙅", bg: "bg-white", text: "text-black", border: "border-slate-200", hover: "hover:border-slate-400 hover:bg-white shadow-sm" },
+  { value: 5, label: "완전 공감해! 👍", bg: "bg-white", text: "text-gray-600", border: "border-gray-200", hover: "hover:border-gray-300 shadow-sm", point: "bg-gray-200 ring-4 ring-gray-50" },
+  { value: 1, label: "나랑은 안 맞아 🙅", bg: "bg-white", text: "text-gray-600", border: "border-gray-200", hover: "hover:border-gray-300 shadow-sm", point: "bg-gray-200 ring-4 ring-gray-50" },
 ];
 
 export const MultipleIntelligencesTest: React.FC = () => {

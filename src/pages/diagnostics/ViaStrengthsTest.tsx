@@ -15,8 +15,8 @@ const shuffleArray = (array: any[]) => {
 };
 
 const LIKERT_OPTIONS = [
-  { value: 5, label: "완전 딱 제 모습이에요 ✨", icon: "👑", bg: "bg-gradient-to-r from-purple-800 to-indigo-900", text: "text-amber-300", border: "border-purple-400/50", hover: "hover:scale-[1.02] shadow-xl shadow-purple-900/30" },
-  { value: 1, label: "저랑은 좀 거리가 멀어요 😅", icon: "🤔", bg: "bg-white", text: "text-gray-600", border: "border-slate-200", hover: "hover:bg-slate-100 hover:border-slate-300 shadow-sm" },
+  { value: 5, label: "완전 딱 제 모습이에요 ✨", bg: "bg-white", text: "text-gray-600", border: "border-gray-200", hover: "hover:border-gray-300 shadow-sm", point: "bg-gray-200 ring-4 ring-gray-50" },
+  { value: 1, label: "저랑은 좀 거리가 멀어요 😅", bg: "bg-white", text: "text-gray-600", border: "border-gray-200", hover: "hover:border-gray-300 shadow-sm", point: "bg-gray-200 ring-4 ring-gray-50" },
 ];
 
 export const ViaStrengthsTest: React.FC = () => {
@@ -279,17 +279,19 @@ export const ViaStrengthsTest: React.FC = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-4">
+        <div className="space-y-4 relative">
+          {/* Path Line connecting options */}
+          <div className="absolute left-6 top-6 bottom-6 w-1 bg-gray-200 rounded-2xl z-0"></div>
           {LIKERT_OPTIONS.map((opt) => {
             const isSelected = answers[qIndex] === opt.value;
             return (
               <button
                 key={opt.value}
                 onClick={() => handleSelectAnswer(opt.value)}
-                className={`w-full p-6 rounded-[24px] border-2 font-semibold tracking-tighter transition-all flex items-center justify-between ${opt.bg} ${opt.text} ${opt.border} ${opt.hover} ${isSelected ? 'ring-4 ring-amber-400 ring-offset-2 scale-[1.02]' : ''}`}
+                className={`w-full p-5 rounded-2xl border-2 font-semibold tracking-tighter text-lg transition-all flex items-center justify-start gap-5 relative z-10 ${opt.bg} ${opt.text} ${opt.border} ${opt.hover} ${isSelected ? 'ring-2 ring-blue-400 ring-offset-2 border-blue-400' : ''}`}
               >
-                <span className="text-2xl drop-shadow-sm">{opt.icon}</span>
-                <span className="flex-1 text-center text-lg">{opt.label}</span>
+                <div className={`w-3 h-3 rounded-full flex-shrink-0 ${isSelected ? 'bg-blue-600 ring-4 ring-blue-200' : opt.point}`}></div>
+                <span className="text-left text-gray-800 break-keep">{opt.label}</span>
               </button>
             );
           })}

@@ -15,8 +15,8 @@ const shuffleArray = (array: any[]) => {
 };
 
 const LIKERT_OPTIONS = [
-  { value: 5, label: "항상 그렇게 하고 있어요 ⏰", bg: "bg-amber-100", border: "border-amber-400", text: "text-amber-900", hover: "hover:bg-amber-200 shadow-md", icon: "✓" },
-  { value: 1, label: "거의 그러지 못해요 ⏳", bg: "bg-white", border: "border-slate-300", text: "text-gray-600", hover: "hover:bg-slate-100 shadow-sm", icon: "✕" },
+  { value: 5, label: "항상 그렇게 하고 있어요 ⏰", bg: "bg-white", text: "text-gray-600", border: "border-gray-200", hover: "hover:border-gray-300 shadow-sm", point: "bg-gray-200 ring-4 ring-gray-50" },
+  { value: 1, label: "거의 그러지 못해요 ⏳", bg: "bg-white", text: "text-gray-600", border: "border-gray-200", hover: "hover:border-gray-300 shadow-sm", point: "bg-gray-200 ring-4 ring-gray-50" },
 ];
 
 export const TimeManagementTest: React.FC = () => {
@@ -275,19 +275,19 @@ export const TimeManagementTest: React.FC = () => {
           </div>
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-4 relative">
+          {/* Path Line connecting options */}
+          <div className="absolute left-6 top-6 bottom-6 w-1 bg-gray-200 rounded-2xl z-0"></div>
           {LIKERT_OPTIONS.map((opt) => {
             const isSelected = answers[qIndex] === opt.value;
             return (
               <button
                 key={opt.value}
                 onClick={() => handleSelectAnswer(opt.value)}
-                className={`w-full p-4 rounded-2xl border-l-8 font-semibold tracking-tighter transition-all flex items-center gap-4 ${opt.bg} ${opt.text} ${opt.border} ${opt.hover} ${isSelected ? 'ring-2 ring-amber-500 ring-offset-2' : ''}`}
+                className={`w-full p-5 rounded-2xl border-2 font-semibold tracking-tighter text-lg transition-all flex items-center justify-start gap-5 relative z-10 ${opt.bg} ${opt.text} ${opt.border} ${opt.hover} ${isSelected ? 'ring-2 ring-blue-400 ring-offset-2 border-blue-400' : ''}`}
               >
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm ${isSelected ? 'bg-amber-500 text-black' : 'bg-white text-[#707070] border border-slate-200'}`}>
-                  {opt.icon}
-                </div>
-                <span className="flex-1 text-left text-lg">{opt.label}</span>
+                <div className={`w-3 h-3 rounded-full flex-shrink-0 ${isSelected ? 'bg-blue-600 ring-4 ring-blue-200' : opt.point}`}></div>
+                <span className="text-left text-gray-800 break-keep">{opt.label}</span>
               </button>
             );
           })}

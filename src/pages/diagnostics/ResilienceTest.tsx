@@ -15,8 +15,8 @@ const shuffleArray = (array: any[]) => {
 };
 
 const LIKERT_OPTIONS = [
-  { value: 5, label: "맞아, 나도 그래! 😊", bg: "bg-gradient-to-r from-orange-100 to-amber-100", text: "text-orange-900", border: "border-orange-200", hover: "hover:scale-[1.02] shadow-md shadow-orange-100" },
-  { value: 1, label: "아직은 잘 안 돼 🥲", bg: "bg-white", text: "text-gray-600", border: "border-slate-100", hover: "hover:bg-white shadow-sm" },
+  { value: 5, label: "맞아, 나도 그래! 😊", bg: "bg-white", text: "text-gray-600", border: "border-gray-200", hover: "hover:border-gray-300 shadow-sm", point: "bg-gray-200 ring-4 ring-gray-50" },
+  { value: 1, label: "아직은 잘 안 돼 🥲", bg: "bg-white", text: "text-gray-600", border: "border-gray-200", hover: "hover:border-gray-300 shadow-sm", point: "bg-gray-200 ring-4 ring-gray-50" },
 ];
 
 export const ResilienceTest: React.FC = () => {

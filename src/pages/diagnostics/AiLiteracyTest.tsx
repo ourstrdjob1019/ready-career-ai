@@ -307,27 +307,25 @@ export const AiLiteracyTest: React.FC = () => {
           </div>
         </div>
 
-        <div className="space-y-3">
-          {currentOrders.map((origIndex: number, idx: number) => {
+        <div className="space-y-4 relative">
+          {/* Path Line connecting options */}
+          <div className="absolute left-6 top-6 bottom-6 w-1 bg-gray-200 rounded-2xl z-0"></div>
+          {currentOrders.map((origIndex: number) => {
             const isSelected = answers[qIndex] === origIndex;
+            const optLabel = currentQ.o[origIndex];
             return (
               <button
                 key={origIndex}
                 onClick={() => handleSelectAnswer(origIndex)}
-                className={`w-full p-4 rounded-2xl border font-medium tracking-tight text-sm transition-all flex items-center gap-4 text-left ${
-                  isSelected 
-                    ? "bg-white border-cyan-400 text-cyan-50 shadow-sm transform scale-[1.02]" 
-                    : "bg-white border-slate-200 text-gray-600 hover:border-cyan-300 hover:bg-cyan-50/30 hover:shadow-sm"
-                }`}
+                className={`w-full p-5 rounded-2xl border-2 font-semibold tracking-tighter text-lg transition-all flex items-center justify-start gap-5 relative z-10 bg-white text-gray-600 border-gray-200 hover:border-gray-300 shadow-sm ${isSelected ? 'ring-2 ring-blue-400 ring-offset-2 border-blue-400' : ''}`}
               >
-                <div className={`w-8 h-8 rounded-2xl flex items-center justify-center text-xs font-mono shrink-0 border ${isSelected ? 'bg-black border-cyan-400 text-slate-900' : 'bg-white border-slate-200 text-[#707070]'}`}>
-                  0{idx + 1}
-                </div>
-                <span className="flex-1 leading-snug">{currentQ.o[origIndex][0]}</span>
+                <div className={`w-3 h-3 rounded-full flex-shrink-0 ${isSelected ? 'bg-blue-600 ring-4 ring-blue-200' : 'bg-gray-200 ring-4 ring-gray-50'}`}></div>
+                <span className="text-left text-gray-800 break-keep">{optLabel}</span>
               </button>
             );
           })}
         </div>
+
       </main>
     </div>
   );

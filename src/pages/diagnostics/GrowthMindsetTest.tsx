@@ -15,8 +15,8 @@ const shuffleArray = (array: any[]) => {
 };
 
 const LIKERT_OPTIONS = [
-  { value: 5, label: "이거 완전 내 얘기야! 🚀", bg: "bg-emerald-500", text: "text-black", border: "border-transparent", hover: "hover:bg-emerald-600 shadow-lg shadow-emerald-200", width: "w-full" },
-  { value: 1, label: "아직은 좀 어려워 😅", bg: "bg-white", text: "text-gray-600", border: "border-slate-200", hover: "hover:bg-white hover:border-slate-400 shadow-sm", width: "w-[90%]" },
+  { value: 5, label: "이거 완전 내 얘기야! 🚀", bg: "bg-white", text: "text-gray-600", border: "border-gray-200", hover: "hover:border-gray-300 shadow-sm", point: "bg-gray-200 ring-4 ring-gray-50" },
+  { value: 1, label: "아직은 좀 어려워 😅", bg: "bg-white", text: "text-gray-600", border: "border-gray-200", hover: "hover:border-gray-300 shadow-sm", point: "bg-gray-200 ring-4 ring-gray-50" },
 ];
 
 export const GrowthMindsetTest: React.FC = () => {
@@ -259,17 +259,19 @@ export const GrowthMindsetTest: React.FC = () => {
           </div>
         </div>
 
-        <div className="flex flex-col items-end space-y-3 w-full">
+        <div className="space-y-4 relative">
+          {/* Path Line connecting options */}
+          <div className="absolute left-6 top-6 bottom-6 w-1 bg-gray-200 rounded-2xl z-0"></div>
           {LIKERT_OPTIONS.map((opt) => {
             const isSelected = answers[qIndex] === opt.value;
             return (
               <button
                 key={opt.value}
                 onClick={() => handleSelectAnswer(opt.value)}
-                className={`${opt.width} p-5 rounded-full border-2 font-semibold tracking-tighter text-base transition-all flex items-center justify-between px-6 ${opt.bg} ${opt.text} ${opt.border} ${opt.hover} ${isSelected ? 'ring-4 ring-emerald-300 ring-offset-2 scale-[1.02]' : ''}`}
+                className={`w-full p-5 rounded-2xl border-2 font-semibold tracking-tighter text-lg transition-all flex items-center justify-start gap-5 relative z-10 ${opt.bg} ${opt.text} ${opt.border} ${opt.hover} ${isSelected ? 'ring-2 ring-blue-400 ring-offset-2 border-blue-400' : ''}`}
               >
-                <span>{opt.label}</span>
-                <span className="text-xl opacity-50">›</span>
+                <div className={`w-3 h-3 rounded-full flex-shrink-0 ${isSelected ? 'bg-blue-600 ring-4 ring-blue-200' : opt.point}`}></div>
+                <span className="text-left text-gray-800 break-keep">{opt.label}</span>
               </button>
             );
           })}
