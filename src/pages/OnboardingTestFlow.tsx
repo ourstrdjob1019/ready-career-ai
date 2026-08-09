@@ -173,7 +173,7 @@ export const OnboardingTestFlow: React.FC = () => {
               추천된 {matchingJobs.length}개의 캐릭터 중 가장 끌리는 하나를 골라 여정을 시작하세요!
             </p>
             <div className="grid grid-cols-2 gap-4">
-              {matchingJobs.slice(0, 10).map((job) => (
+              {matchingJobs.slice(0, 6).map((job) => (
                 <button
                   key={job.jobName}
                   onClick={() => setSelectedJob(job)}
@@ -224,15 +224,15 @@ export const OnboardingTestFlow: React.FC = () => {
                     { lv: "Lv.4", badge: "차세대 고수", name: "엑스퍼트" },
                     { lv: "Lv.5", badge: "마스터", name: "마스터" },
                   ].map((item, i) => (
-                    <div key={i} className="rounded-[24px] bg-white p-4 border border-slate-200 hover:border-indigo-400 transition-all flex flex-col items-center justify-between space-y-3 group">
-                      <div className="w-full flex flex-col items-center space-y-1">
-                        <span className="text-xs font-semibold tracking-tighter bg-white px-3 py-0.5 rounded-full shadow-xs border border-slate-200">{item.lv}</span>
-                        <span className="text-[11px] font-medium tracking-tight text-slate-500">{item.badge}</span>
+                    <div key={i} className="rounded-[24px] bg-white p-4 border border-slate-200 hover:border-indigo-400 transition-all flex flex-col items-center justify-between space-y-4 group">
+                      <div className="w-full flex flex-col items-center space-y-2">
+                        <span className="text-base sm:text-lg font-bold tracking-tighter bg-slate-50 px-4 py-1 rounded-full shadow-sm border border-slate-200 text-indigo-700">{item.lv}</span>
+                        <span className="text-sm sm:text-base font-semibold tracking-tight text-slate-500">{item.badge}</span>
                       </div>
-                      <div className="w-32 h-32 sm:w-36 sm:h-36 rounded-full bg-white p-2 border border-slate-100 flex items-center justify-center my-2 group-hover:scale-105 transition-transform shadow-xs">
+                      <div className="w-32 h-32 sm:w-40 sm:h-40 rounded-full bg-white p-2 border border-slate-100 flex items-center justify-center my-2 group-hover:scale-110 transition-transform shadow-sm">
                         <img src={getJobCharacterImage(selectedJob.jobName, i + 1)} alt="stage" className="w-full h-full object-contain filter drop-shadow-sm" />
                       </div>
-                      <strong className="text-[11px] font-semibold tracking-tighter text-slate-800 text-center w-full bg-white rounded-2xl py-2 px-1 border border-slate-200/80 shadow-xs truncate">
+                      <strong className="text-sm sm:text-base font-bold tracking-tighter text-slate-800 text-center w-full bg-slate-50 rounded-2xl py-3 px-2 border border-slate-200/80 shadow-sm break-keep leading-snug">
                         {getJobCharacterTitle(selectedJob.jobName, i + 1, item.name)}
                       </strong>
                     </div>

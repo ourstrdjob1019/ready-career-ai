@@ -682,15 +682,15 @@ export const HomeDashboard: React.FC = () => {
                     { lv: "Lv.4", badge: "차세대 고수", name: "엑스퍼트" },
                     { lv: "Lv.5", badge: "마스터", name: "마스터" },
                   ].map((item, i) => (
-                    <div key={i} className="rounded-[24px] bg-white p-5 border border-slate-200 hover:border-[#6A42ED] transition-all flex flex-col items-center justify-between space-y-3.5 group">
-                      <div className="w-full flex flex-col items-center space-y-1.5">
-                        <span className="text-xs font-semibold tracking-tighter bg-white px-3 py-0.5 rounded-full shadow-xs border border-slate-200">{item.lv}</span>
-                        <span className="text-xs font-medium tracking-tight text-slate-600">{item.badge}</span>
+                    <div key={i} className="rounded-[24px] bg-white p-4 border border-slate-200 hover:border-[#6A42ED] transition-all flex flex-col items-center justify-between space-y-4 group">
+                      <div className="w-full flex flex-col items-center space-y-2">
+                        <span className="text-base sm:text-lg font-bold tracking-tighter bg-slate-50 px-4 py-1 rounded-full shadow-sm border border-slate-200 text-[#6A42ED]">{item.lv}</span>
+                        <span className="text-sm sm:text-base font-semibold tracking-tight text-slate-500">{item.badge}</span>
                       </div>
-                      <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-white p-3 border border-slate-100 flex items-center justify-center my-2 group-hover:scale-105 transition-transform shadow-xs">
-                        <img src={getJobCharacterImage(interestedJobs[jobIntroModalIdx].name, i + 1)} alt="Ari Stage" className="w-full h-full object-contain filter drop-shadow-xs" />
+                      <div className="w-32 h-32 sm:w-40 sm:h-40 rounded-full bg-white p-2 border border-slate-100 flex items-center justify-center my-2 group-hover:scale-110 transition-transform shadow-sm">
+                        <img src={getJobCharacterImage(interestedJobs[jobIntroModalIdx].name, i + 1)} alt="Ari Stage" className="w-full h-full object-contain filter drop-shadow-sm" />
                       </div>
-                      <strong className="text-xs font-semibold tracking-tighter text-[#1F193B] text-center w-full bg-white rounded-2xl py-2 px-1 border border-slate-200/80 shadow-xs truncate">{getJobCharacterTitle(interestedJobs[jobIntroModalIdx].name, i + 1, item.name)}</strong>
+                      <strong className="text-sm sm:text-base font-bold tracking-tighter text-[#1F193B] text-center w-full bg-slate-50 rounded-2xl py-3 px-2 border border-slate-200/80 shadow-sm break-keep leading-snug">{getJobCharacterTitle(interestedJobs[jobIntroModalIdx].name, i + 1, item.name)}</strong>
                     </div>
                   ))}
                 </div>
