@@ -633,7 +633,7 @@ export const HomeDashboard: React.FC = () => {
                     {job.name}
                   </strong>
                   <span className={`text-xs font-extrabold block pt-1 ${isSelected ? "text-amber-300" : "text-slate-400 group-hover:text-purple-600"}`}>
-                    {isSelected ? "★ 현재 맞춤 적용 중" : "클릭하여 즉시 변경 &rarr;"}
+                    {isSelected ? "★ 현재 맞춤 적용 중" : "클릭하여 즉시 변경"}
                   </span>
                 </div>
               </div>

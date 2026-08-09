@@ -16,7 +16,7 @@ const shuffleArray = (array: any[]) => {
 
 const LIKERT_OPTIONS = [
   { value: 5, label: "항상 그렇게 하고 있어요 ⏰", bg: "bg-amber-100", border: "border-amber-400", text: "text-amber-900", hover: "hover:bg-amber-200 shadow-md", icon: "✓" },
-  { value: 1, label: "거의 그러지 못해요 ⏳", bg: "bg-slate-50", border: "border-slate-300", text: "text-slate-600", hover: "hover:bg-slate-100 shadow-sm", icon: "✕" },
+  { value: 1, label: "거의 그러지 못해요 ⏳", bg: "bg-slate-50", border: "border-slate-300", text: "text-[#555555]", hover: "hover:bg-slate-100 shadow-sm", icon: "✕" },
 ];
 
 export const TimeManagementTest: React.FC = () => {
@@ -114,13 +114,13 @@ export const TimeManagementTest: React.FC = () => {
 
   if (currentView === "calculating") {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6">
-        <div className="bg-white rounded-3xl p-10 max-w-sm w-full text-center shadow-xl border border-slate-100">
-          <div className="w-20 h-20 bg-amber-50 rounded-2xl mx-auto flex items-center justify-center mb-6 animate-pulse">
+      <div className="min-h-screen bg-[#102135] flex items-center justify-center p-6">
+        <div className="bg-white rounded-none p-10 max-w-sm w-full text-center shadow-[0_0_12px_rgba(35,48,59,0.25)] border border-[#dddddd]">
+          <div className="w-20 h-20 bg-[#f8f8f8] rounded-none mx-auto flex items-center justify-center mb-6 animate-pulse">
             <span className="text-4xl">⏳</span>
           </div>
-          <h2 className="text-2xl font-black text-slate-800 mb-3 tracking-tight">시간관리 역량<br/>분석 중!</h2>
-          <p className="text-sm text-slate-500 font-medium leading-relaxed">시간이 어디에서 새고 있는지<br/>우선순위부터 점검까지 분석합니다...</p>
+          <h2 className="text-2xl font-black text-[#000000] mb-3 tracking-tight">시간관리 역량<br/>분석 중!</h2>
+          <p className="text-sm text-[#707070] font-medium leading-relaxed">시간이 어디에서 새고 있는지<br/>우선순위부터 점검까지 분석합니다...</p>
         </div>
       </div>
     );
@@ -134,101 +134,101 @@ export const TimeManagementTest: React.FC = () => {
     const lowDomain = (TM_DOMAINS as any)[low];
 
     return (
-      <div className="min-h-screen bg-slate-50 pt-10 pb-20 px-5">
+      <div className="min-h-screen bg-[#102135] pt-10 pb-20 px-5">
         <div className="max-w-md mx-auto space-y-6">
-          <div className="bg-white rounded-3xl p-7 shadow-sm border border-amber-200/60 text-center">
+          <div className="bg-white rounded-none p-7 shadow-sm border border-amber-200/60 text-center">
             <div className="inline-block px-3 py-1 bg-amber-50 text-amber-600 font-black text-xs rounded-full mb-4">
               나의 시간관리 상태
             </div>
-            <h1 className="text-2xl font-black text-slate-800 mb-3">{currentLevel?.title}</h1>
-            <p className="text-sm text-slate-600 leading-relaxed mb-6">{currentLevel?.summary}</p>
+            <h1 className="text-2xl font-black text-[#000000] mb-3">{currentLevel?.title}</h1>
+            <p className="text-sm text-[#555555] leading-relaxed mb-6">{currentLevel?.summary}</p>
             
             <div className="flex items-end justify-center gap-2 mt-4">
               <div className="text-5xl font-black text-amber-600 leading-none">{overallAvg}</div>
-              <div className="text-sm font-bold text-slate-400 pb-1">/ 100 · 시간관리 지수</div>
+              <div className="text-sm font-bold text-[#707070] pb-1">/ 100 · 시간관리 지수</div>
             </div>
           </div>
 
-          <div className="bg-white rounded-3xl p-7 shadow-sm border border-slate-200/60">
-            <h3 className="font-black text-slate-800 mb-2 flex items-center gap-2">
+          <div className="bg-white rounded-none p-7 shadow-[0_0_12px_rgba(35,48,59,0.25)] border border-[#dddddd]">
+            <h3 className="font-black text-[#000000] mb-2 flex items-center gap-2">
               <span className="w-1.5 h-1.5 bg-amber-500 rounded-full"></span>
               나의 4가지 시간관리 역량
             </h3>
-            <p className="text-xs text-slate-400 mb-5 leading-relaxed">점수는 또래 백분위가 아니라 이번 응답을 100점 기준으로 환산한 자기보고형 프로파일입니다.</p>
+            <p className="text-xs text-[#707070] mb-5 leading-relaxed">점수는 또래 백분위가 아니라 이번 응답을 100점 기준으로 환산한 자기보고형 프로파일입니다.</p>
             <div className="space-y-4">
               {finalRank.map((k) => {
                 const d = (TM_DOMAINS as any)[k];
                 return (
                   <div key={k} className="flex items-center gap-3">
-                    <div className="w-24 text-xs font-black text-slate-700 shrink-0">{d.icon} {d.name}</div>
-                    <div className="flex-1 h-2.5 bg-slate-100 rounded-full overflow-hidden">
+                    <div className="w-24 text-xs font-black text-[#000000] shrink-0">{d.icon} {d.name}</div>
+                    <div className="flex-1 h-2 bg-[#12273d] rounded-full overflow-hidden">
                       <div className="h-full bg-gradient-to-r from-amber-300 to-amber-500 rounded-full" style={{ width: `${lastScores[k]}%` }} />
                     </div>
-                    <div className="w-8 text-right text-xs font-black text-slate-500">{lastScores[k]}</div>
+                    <div className="w-8 text-right text-xs font-black text-[#707070]">{lastScores[k]}</div>
                   </div>
                 );
               })}
             </div>
           </div>
 
-          <div className="bg-white rounded-3xl p-7 shadow-sm border border-slate-200/60">
-            <h3 className="font-black text-slate-800 mb-4 flex items-center gap-2">
+          <div className="bg-white rounded-none p-7 shadow-[0_0_12px_rgba(35,48,59,0.25)] border border-[#dddddd]">
+            <h3 className="font-black text-[#000000] mb-4 flex items-center gap-2">
               <span className="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
               잘 쓰는 힘과 가장 먼저 바꿀 것
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div className="bg-amber-50/70 border border-amber-100 rounded-2xl p-4">
+              <div className="bg-[#f8f8f8] rounded-none border border-[#dddddd] p-4">
                 <div className="text-2xl mb-1">{strongDomain.icon}</div>
                 <div className="text-xs font-black text-amber-800 mb-2">강점 · {strongDomain.name}</div>
                 <div className="text-[11px] leading-relaxed text-amber-700">{strongDomain.strong}</div>
               </div>
-              <div className="bg-slate-50 border border-slate-100 rounded-2xl p-4">
+              <div className="bg-[#f8f8f8] rounded-none border border-[#dddddd] p-4">
                 <div className="text-2xl mb-1">{lowDomain.icon}</div>
-                <div className="text-xs font-black text-slate-700 mb-2">NEXT · {lowDomain.name}</div>
-                <div className="text-[11px] leading-relaxed text-slate-500">{lowDomain.change}</div>
+                <div className="text-xs font-black text-[#000000] mb-2">NEXT · {lowDomain.name}</div>
+                <div className="text-[11px] leading-relaxed text-[#707070]">{lowDomain.change}</div>
               </div>
             </div>
           </div>
           
-          <div className="bg-orange-50/50 rounded-3xl p-7 shadow-sm border border-orange-100/60">
-            <h3 className="font-black text-slate-800 mb-4 flex items-center gap-2">
+          <div className="bg-[#f8f8f8] rounded-none p-7 shadow-[0_0_12px_rgba(35,48,59,0.25)] border border-[#dddddd]">
+            <h3 className="font-black text-[#000000] mb-4 flex items-center gap-2">
               <span className="w-1.5 h-1.5 bg-orange-500 rounded-full"></span>
               내 시간이 가장 많이 새는 지점
             </h3>
-            <div className="bg-white rounded-2xl p-5 border border-orange-200 shadow-sm">
+            <div className="bg-white rounded-none p-5 border border-orange-200 shadow-sm">
               <div className="text-[10px] font-black text-orange-600 mb-2">{lowDomain.icon} {lowDomain.name}</div>
-              <h4 className="text-base font-black text-slate-800 mb-2">{lowDomain.leak}</h4>
-              <p className="text-xs text-slate-600 leading-relaxed">{lowDomain.change}</p>
+              <h4 className="text-base font-black text-[#000000] mb-2">{lowDomain.leak}</h4>
+              <p className="text-xs text-[#555555] leading-relaxed">{lowDomain.change}</p>
             </div>
           </div>
           
-          <div className="bg-white rounded-3xl p-7 shadow-sm border border-slate-200/60">
-            <h3 className="font-black text-slate-800 mb-4 flex items-center gap-2">
+          <div className="bg-white rounded-none p-7 shadow-[0_0_12px_rgba(35,48,59,0.25)] border border-[#dddddd]">
+            <h3 className="font-black text-[#000000] mb-4 flex items-center gap-2">
               <span className="w-1.5 h-1.5 bg-indigo-500 rounded-full"></span>
               할 일을 실제 행동으로 바꾸는 4단계
             </h3>
             <div className="space-y-3">
-              <div className="flex gap-3 bg-slate-50 rounded-2xl p-4">
+              <div className="flex gap-3 bg-[#f8f8f8] rounded-none p-4">
                 <div className="text-indigo-600 font-black">1. 꺼내기</div>
-                <div className="text-xs text-slate-600 leading-relaxed">머릿속에서 기억하려 하지 말고 해야 할 일을 한곳에 적기</div>
+                <div className="text-xs text-[#555555] leading-relaxed">머릿속에서 기억하려 하지 말고 해야 할 일을 한곳에 적기</div>
               </div>
-              <div className="flex gap-3 bg-slate-50 rounded-2xl p-4">
+              <div className="flex gap-3 bg-[#f8f8f8] rounded-none p-4">
                 <div className="text-indigo-600 font-black">2. 명확히</div>
-                <div className="text-xs text-slate-600 leading-relaxed">‘준비하기’가 아니라 바로 할 수 있는 다음 행동으로 바꾸기</div>
+                <div className="text-xs text-[#555555] leading-relaxed">‘준비하기’가 아니라 바로 할 수 있는 다음 행동으로 바꾸기</div>
               </div>
-              <div className="flex gap-3 bg-slate-50 rounded-2xl p-4">
+              <div className="flex gap-3 bg-[#f8f8f8] rounded-none p-4">
                 <div className="text-indigo-600 font-black">3. 배치하기</div>
-                <div className="text-xs text-slate-600 leading-relaxed">중요한 일은 마감일만 적지 말고 실제 시간을 먼저 확보하기</div>
+                <div className="text-xs text-[#555555] leading-relaxed">중요한 일은 마감일만 적지 말고 실제 시간을 먼저 확보하기</div>
               </div>
-              <div className="flex gap-3 bg-slate-50 rounded-2xl p-4">
+              <div className="flex gap-3 bg-[#f8f8f8] rounded-none p-4">
                 <div className="text-indigo-600 font-black">4. 다시 보기</div>
-                <div className="text-xs text-slate-600 leading-relaxed">상황이 바뀌면 목록과 일정을 업데이트하고 지금 할 일을 다시 고르기</div>
+                <div className="text-xs text-[#555555] leading-relaxed">상황이 바뀌면 목록과 일정을 업데이트하고 지금 할 일을 다시 고르기</div>
               </div>
             </div>
           </div>
 
-          <div className="bg-amber-600 rounded-3xl p-7 shadow-lg">
-            <h2 className="text-lg font-black text-white mb-2 text-center">
+          <div className="bg-amber-600 rounded-none p-7 shadow-lg">
+            <h2 className="text-lg font-black text-[#000000] mb-2 text-center">
               🎯 오늘 바로 해볼 것
             </h2>
             <p className="text-amber-50 text-sm text-center mb-6 leading-relaxed">
@@ -236,7 +236,7 @@ export const TimeManagementTest: React.FC = () => {
             </p>
             <button
               onClick={() => navigate("/self-understanding")}
-              className="w-full bg-white text-amber-600 font-black py-4 rounded-2xl hover:bg-amber-50 transition-colors shadow-sm"
+              className="w-full bg-[#102135] text-[#40e2de] font-black py-4 rounded-none hover:bg-[#0c1a29] border border-[#40e2de] transition-colors"
             >
               진단 센터로 돌아가기
             </button>
@@ -251,16 +251,16 @@ export const TimeManagementTest: React.FC = () => {
   const hero = randomMentors[qIndex] || JOB_CHARACTER_MASTER_LIST[0];
 
   return (
-    <div className="min-h-screen bg-[#F5F6F8] flex flex-col">
-      <header className="sticky top-0 z-20 bg-white/90 backdrop-blur-md border-b border-slate-100 px-5 py-4">
+    <div className="min-h-screen bg-[#102135] flex flex-col">
+      <header className="sticky top-0 z-20 bg-[#0c1a29]/90 backdrop-blur-md border-b border-[#244161] px-5 py-4">
         <div className="max-w-md mx-auto flex items-center justify-between">
-          <div className="text-base font-black text-slate-800 tracking-tight">시간관리 역량 프로파일</div>
-          <div className="text-xs font-black text-amber-600 bg-amber-50 px-3 py-1 rounded-full">
+          <div className="text-base font-black text-[#d7dfe6] tracking-tight">시간관리 역량 프로파일</div>
+          <div className="text-xs font-black text-[#d7dfe6] bg-[#12273d] px-3 py-1 rounded-full">
             {qIndex + 1} / {TM_QUESTIONS.length}
           </div>
         </div>
-        <div className="max-w-md mx-auto h-1.5 bg-slate-100 rounded-full mt-4 overflow-hidden">
-          <div className="h-full bg-amber-500 rounded-full transition-all duration-300" style={{ width: `${progress}%` }} />
+        <div className="max-w-md mx-auto h-2 bg-[#12273d] rounded-full mt-4 overflow-hidden">
+          <div className="h-full bg-[#40e2de] rounded-full transition-all duration-300" style={{ width: `${progress}%` }} />
         </div>
       </header>
 
@@ -271,7 +271,7 @@ export const TimeManagementTest: React.FC = () => {
             <span className="text-[10px] font-black text-amber-800 bg-amber-200 px-3 py-1 rounded-sm mb-3 inline-block uppercase tracking-widest border border-amber-400">
               {typeInfo.name}
             </span>
-            <p className="text-lg font-black text-slate-800 leading-relaxed text-center break-keep font-serif">"{currentQ.q}"</p>
+            <p className="text-lg font-black text-[#000000] leading-relaxed text-center break-keep font-serif">"{currentQ.q}"</p>
           </div>
         </div>
 
@@ -284,7 +284,7 @@ export const TimeManagementTest: React.FC = () => {
                 onClick={() => handleSelectAnswer(opt.value)}
                 className={`w-full p-4 rounded-none border-l-8 font-black transition-all flex items-center gap-4 ${opt.bg} ${opt.text} ${opt.border} ${opt.hover} ${isSelected ? 'ring-2 ring-amber-500 ring-offset-2' : ''}`}
               >
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm ${isSelected ? 'bg-amber-500 text-white' : 'bg-white text-slate-400 border border-slate-200'}`}>
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm ${isSelected ? 'bg-amber-500 text-[#000000]' : 'bg-white text-[#707070] border border-slate-200'}`}>
                   {opt.icon}
                 </div>
                 <span className="flex-1 text-left text-lg">{opt.label}</span>

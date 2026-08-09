@@ -15,8 +15,8 @@ const shuffleArray = (array: any[]) => {
 };
 
 const LIKERT_OPTIONS = [
-  { value: 5, label: "완전 공감해! 👍", bg: "bg-gradient-to-br from-violet-500 to-fuchsia-500", text: "text-white", border: "border-transparent", hover: "hover:scale-[1.02] shadow-xl shadow-fuchsia-200" },
-  { value: 1, label: "나랑은 안 맞아 🙅", bg: "bg-white", text: "text-slate-700", border: "border-slate-200", hover: "hover:border-slate-400 hover:bg-slate-50 shadow-sm" },
+  { value: 5, label: "완전 공감해! 👍", bg: "bg-gradient-to-br from-violet-500 to-fuchsia-500", text: "text-[#000000]", border: "border-transparent", hover: "hover:scale-[1.02] shadow-xl shadow-fuchsia-200" },
+  { value: 1, label: "나랑은 안 맞아 🙅", bg: "bg-white", text: "text-[#000000]", border: "border-slate-200", hover: "hover:border-slate-400 hover:bg-slate-50 shadow-sm" },
 ];
 
 export const MultipleIntelligencesTest: React.FC = () => {
@@ -118,13 +118,13 @@ export const MultipleIntelligencesTest: React.FC = () => {
 
   if (currentView === "calculating") {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6">
-        <div className="bg-white rounded-3xl p-10 max-w-sm w-full text-center shadow-xl border border-slate-100">
-          <div className="w-20 h-20 bg-indigo-50 rounded-2xl mx-auto flex items-center justify-center mb-6 animate-pulse">
+      <div className="min-h-screen bg-[#102135] flex items-center justify-center p-6">
+        <div className="bg-white rounded-none p-10 max-w-sm w-full text-center shadow-[0_0_12px_rgba(35,48,59,0.25)] border border-[#dddddd]">
+          <div className="w-20 h-20 bg-[#f8f8f8] rounded-none mx-auto flex items-center justify-center mb-6 animate-pulse">
             <span className="text-4xl">🤖</span>
           </div>
-          <h2 className="text-2xl font-black text-slate-800 mb-3 tracking-tight">AI 멘토가<br/>결과를 분석중이에요!</h2>
-          <p className="text-sm text-slate-500 font-medium leading-relaxed">다중지능 패턴을 분석하여<br/>최적 강점을 도출합니다...</p>
+          <h2 className="text-2xl font-black text-[#000000] mb-3 tracking-tight">AI 멘토가<br/>결과를 분석중이에요!</h2>
+          <p className="text-sm text-[#707070] font-medium leading-relaxed">다중지능 패턴을 분석하여<br/>최적 강점을 도출합니다...</p>
         </div>
       </div>
     );
@@ -144,22 +144,22 @@ export const MultipleIntelligencesTest: React.FC = () => {
     const type3 = (MI_TYPES as any)[p3];
 
     return (
-      <div className="min-h-screen bg-slate-50 pt-10 pb-20 px-5">
+      <div className="min-h-screen bg-[#102135] pt-10 pb-20 px-5">
         <div className="max-w-md mx-auto space-y-6">
-          <div className="bg-white rounded-3xl p-7 shadow-sm border border-slate-200/60 text-center">
+          <div className="bg-white rounded-none p-7 shadow-[0_0_12px_rgba(35,48,59,0.25)] border border-[#dddddd] text-center">
             <div className="inline-block px-3 py-1 bg-indigo-50 text-indigo-600 font-black text-xs rounded-full mb-4">
               나의 다중지능 강점 프로파일
             </div>
-            <h1 className="text-2xl font-black text-slate-800 mb-3">{combo?.title}</h1>
-            <p className="text-sm text-slate-600 leading-relaxed mb-8">{combo?.summary}</p>
+            <h1 className="text-2xl font-black text-[#000000] mb-3">{combo?.title}</h1>
+            <p className="text-sm text-[#555555] leading-relaxed mb-8">{combo?.summary}</p>
             
             <div className="flex gap-3 justify-center mb-6">
               {[p1, p2, p3].map((k, idx) => {
                 const t = (MI_TYPES as any)[k];
                 return (
-                  <div key={k} className={`flex-1 p-3 rounded-2xl border ${idx === 0 ? 'bg-indigo-50 border-indigo-200 shadow-sm transform scale-105' : 'bg-white border-slate-100'}`}>
+                  <div key={k} className={`flex-1 p-3 rounded-none border ${idx === 0 ? 'bg-indigo-50 border-indigo-200 shadow-sm transform scale-105' : 'bg-white border-slate-100'}`}>
                     <div className="text-2xl mb-1">{['🥇', '🥈', '🥉'][idx]}</div>
-                    <div className="text-[10px] font-black text-slate-700">{t.icon} {t.name}</div>
+                    <div className="text-[10px] font-black text-[#000000]">{t.icon} {t.name}</div>
                     <div className="text-lg font-black text-indigo-600">{percent(lastScores[k].avg)}</div>
                   </div>
                 );
@@ -167,61 +167,61 @@ export const MultipleIntelligencesTest: React.FC = () => {
             </div>
           </div>
 
-          <div className="bg-white rounded-3xl p-7 shadow-sm border border-slate-200/60">
-            <h3 className="font-black text-slate-800 mb-4 flex items-center gap-2">
+          <div className="bg-white rounded-none p-7 shadow-[0_0_12px_rgba(35,48,59,0.25)] border border-[#dddddd]">
+            <h3 className="font-black text-[#000000] mb-4 flex items-center gap-2">
               <span className="w-1.5 h-1.5 bg-indigo-500 rounded-full"></span>
               대표 강점 조합
             </h3>
-            <div className="flex items-center justify-between gap-3 bg-slate-50 p-4 rounded-2xl border border-slate-100 mb-4">
+            <div className="flex items-center justify-between gap-3 bg-slate-50 p-4 rounded-none border border-slate-100 mb-4">
               <div className="text-center flex-1">
                 <div className="text-2xl mb-1">{type1.icon}</div>
-                <div className="text-xs font-bold text-slate-700">1위 · {type1.name}</div>
+                <div className="text-xs font-bold text-[#000000]">1위 · {type1.name}</div>
               </div>
-              <div className="text-slate-300 font-black">+</div>
+              <div className="text-[#000000] font-black">+</div>
               <div className="text-center flex-1">
                 <div className="text-2xl mb-1">{type2.icon}</div>
-                <div className="text-xs font-bold text-slate-700">2위 · {type2.name}</div>
+                <div className="text-xs font-bold text-[#000000]">2위 · {type2.name}</div>
               </div>
             </div>
-            <p className="text-sm text-slate-600 leading-relaxed">{combo?.strength}</p>
+            <p className="text-sm text-[#555555] leading-relaxed">{combo?.strength}</p>
           </div>
 
-          <div className="bg-white rounded-3xl p-7 shadow-sm border border-slate-200/60">
-            <h3 className="font-black text-slate-800 mb-4 flex items-center gap-2">
+          <div className="bg-white rounded-none p-7 shadow-[0_0_12px_rgba(35,48,59,0.25)] border border-[#dddddd]">
+            <h3 className="font-black text-[#000000] mb-4 flex items-center gap-2">
               <span className="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
               너 이런 편이지?
             </h3>
             <ul className="space-y-3">
               {combo?.traits.map((t: string, i: number) => (
-                <li key={i} className="flex gap-2 text-sm text-slate-600 leading-relaxed">
+                <li key={i} className="flex gap-2 text-sm text-[#555555] leading-relaxed">
                   <span className="text-indigo-500 font-bold">✓</span> {t}
                 </li>
               ))}
             </ul>
           </div>
           
-          <div className="bg-white rounded-3xl p-7 shadow-sm border border-slate-200/60">
-            <h3 className="font-black text-slate-800 mb-2 flex items-center gap-2">
+          <div className="bg-white rounded-none p-7 shadow-[0_0_12px_rgba(35,48,59,0.25)] border border-[#dddddd]">
+            <h3 className="font-black text-[#000000] mb-2 flex items-center gap-2">
               <span className="w-1.5 h-1.5 bg-yellow-500 rounded-full"></span>
               이것만 신경 써보기
             </h3>
-            <p className="text-sm text-slate-600 leading-relaxed">{combo?.caution}</p>
+            <p className="text-sm text-[#555555] leading-relaxed">{combo?.caution}</p>
           </div>
           
-          <div className="bg-white rounded-3xl p-7 shadow-sm border border-slate-200/60">
-            <h3 className="font-black text-slate-800 mb-2 flex items-center gap-2">
+          <div className="bg-white rounded-none p-7 shadow-[0_0_12px_rgba(35,48,59,0.25)] border border-[#dddddd]">
+            <h3 className="font-black text-[#000000] mb-2 flex items-center gap-2">
               <span className="w-1.5 h-1.5 bg-purple-500 rounded-full"></span>
               그리고 하나 더 👀
             </h3>
-            <div className="bg-slate-50 p-4 rounded-xl">
+            <div className="bg-slate-50 p-4 rounded-none">
               <div className="font-bold text-sm mb-2">{type3.icon} 3위 · {type3.name} 지능도 꽤 잘 드러났어요.</div>
-              <p className="text-xs text-slate-600 mb-2">{type3.extra}</p>
+              <p className="text-xs text-[#555555] mb-2">{type3.extra}</p>
               <div className="text-xs font-bold text-indigo-600 mt-2">💡 활용 아이디어: {type3.use}</div>
             </div>
           </div>
 
-          <div className="bg-indigo-600 rounded-3xl p-7 shadow-lg">
-            <h2 className="text-lg font-black text-white mb-2 text-center">
+          <div className="bg-indigo-600 rounded-none p-7 shadow-lg">
+            <h2 className="text-lg font-black text-[#000000] mb-2 text-center">
               🎯 오늘의 작은 미션
             </h2>
             <p className="text-indigo-100 text-sm text-center mb-6">
@@ -229,7 +229,7 @@ export const MultipleIntelligencesTest: React.FC = () => {
             </p>
             <button
               onClick={() => navigate("/self-understanding")}
-              className="w-full bg-white text-indigo-600 font-black py-4 rounded-2xl hover:bg-indigo-50 transition-colors shadow-sm"
+              className="w-full bg-[#102135] text-[#40e2de] font-black py-4 rounded-none hover:bg-[#0c1a29] border border-[#40e2de] transition-colors"
             >
               진단 센터로 돌아가기
             </button>
@@ -244,16 +244,16 @@ export const MultipleIntelligencesTest: React.FC = () => {
   const hero = randomMentors[qIndex] || JOB_CHARACTER_MASTER_LIST[0];
 
   return (
-    <div className="min-h-screen bg-[#F5F6F8] flex flex-col">
-      <header className="sticky top-0 z-20 bg-white/90 backdrop-blur-md border-b border-slate-100 px-5 py-4">
+    <div className="min-h-screen bg-[#102135] flex flex-col">
+      <header className="sticky top-0 z-20 bg-[#0c1a29]/90 backdrop-blur-md border-b border-[#244161] px-5 py-4">
         <div className="max-w-md mx-auto flex items-center justify-between">
-          <div className="text-base font-black text-slate-800 tracking-tight">다중지능 강점 프로파일</div>
-          <div className="text-xs font-black text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full">
+          <div className="text-base font-black text-[#d7dfe6] tracking-tight">다중지능 강점 프로파일</div>
+          <div className="text-xs font-black text-[#d7dfe6] bg-[#12273d] px-3 py-1 rounded-full">
             {qIndex + 1} / {MI_QUESTIONS.length}
           </div>
         </div>
-        <div className="max-w-md mx-auto h-1.5 bg-slate-100 rounded-full mt-4 overflow-hidden">
-          <div className="h-full bg-indigo-600 rounded-full transition-all duration-300" style={{ width: `${progress}%` }} />
+        <div className="max-w-md mx-auto h-2 bg-[#12273d] rounded-full mt-4 overflow-hidden">
+          <div className="h-full bg-[#40e2de] rounded-full transition-all duration-300" style={{ width: `${progress}%` }} />
         </div>
       </header>
 
@@ -262,10 +262,10 @@ export const MultipleIntelligencesTest: React.FC = () => {
           <div className="absolute inset-0 bg-gradient-to-r from-violet-100 to-fuchsia-100 rounded-[32px] transform -rotate-2 scale-105 z-0" />
           <div className="bg-white p-6 sm:p-8 rounded-[32px] shadow-lg relative z-10 w-full text-center border border-white/40">
             <img src={hero.defaultImageUrl} alt="mentor" className="w-24 h-24 mx-auto object-contain drop-shadow-md mb-4" />
-            <span className="text-[11px] font-black text-fuchsia-600 bg-fuchsia-50 px-3 py-1 rounded-full mb-3 inline-block shadow-xs border border-fuchsia-100">
+            <span className="text-[11px] font-black text-[#d7dfe6] bg-[#12273d] px-3 py-1 rounded-full mb-3 inline-block shadow-xs border border-fuchsia-100">
               {typeInfo.name} 지능
             </span>
-            <p className="text-xl sm:text-2xl font-black text-slate-800 leading-tight break-keep mt-2">"{currentQ.q}"</p>
+            <p className="text-xl sm:text-2xl font-black text-[#000000] leading-tight break-keep mt-2">"{currentQ.q}"</p>
           </div>
         </div>
 

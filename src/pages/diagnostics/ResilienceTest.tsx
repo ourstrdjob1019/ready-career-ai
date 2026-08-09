@@ -16,7 +16,7 @@ const shuffleArray = (array: any[]) => {
 
 const LIKERT_OPTIONS = [
   { value: 5, label: "맞아, 나도 그래! 😊", bg: "bg-gradient-to-r from-orange-100 to-amber-100", text: "text-orange-900", border: "border-orange-200", hover: "hover:scale-[1.02] shadow-md shadow-orange-100" },
-  { value: 1, label: "아직은 잘 안 돼 🥲", bg: "bg-white", text: "text-slate-600", border: "border-slate-100", hover: "hover:bg-slate-50 shadow-sm" },
+  { value: 1, label: "아직은 잘 안 돼 🥲", bg: "bg-white", text: "text-[#555555]", border: "border-slate-100", hover: "hover:bg-slate-50 shadow-sm" },
 ];
 
 export const ResilienceTest: React.FC = () => {
@@ -114,13 +114,13 @@ export const ResilienceTest: React.FC = () => {
 
   if (currentView === "calculating") {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6">
-        <div className="bg-white rounded-3xl p-10 max-w-sm w-full text-center shadow-xl border border-slate-100">
-          <div className="w-20 h-20 bg-green-50 rounded-2xl mx-auto flex items-center justify-center mb-6 animate-pulse">
+      <div className="min-h-screen bg-[#102135] flex items-center justify-center p-6">
+        <div className="bg-white rounded-none p-10 max-w-sm w-full text-center shadow-[0_0_12px_rgba(35,48,59,0.25)] border border-[#dddddd]">
+          <div className="w-20 h-20 bg-[#f8f8f8] rounded-none mx-auto flex items-center justify-center mb-6 animate-pulse">
             <span className="text-4xl">🌿</span>
           </div>
-          <h2 className="text-2xl font-black text-slate-800 mb-3 tracking-tight">회복탄력성 역량<br/>분석 중!</h2>
-          <p className="text-sm text-slate-500 font-medium leading-relaxed">어려움을 마주했을 때의 회복과<br/>적응 자원을 분석합니다...</p>
+          <h2 className="text-2xl font-black text-[#000000] mb-3 tracking-tight">회복탄력성 역량<br/>분석 중!</h2>
+          <p className="text-sm text-[#707070] font-medium leading-relaxed">어려움을 마주했을 때의 회복과<br/>적응 자원을 분석합니다...</p>
         </div>
       </div>
     );
@@ -134,97 +134,97 @@ export const ResilienceTest: React.FC = () => {
     const lowDomain = (RESILIENCE_DOMAINS as any)[low];
 
     return (
-      <div className="min-h-screen bg-slate-50 pt-10 pb-20 px-5">
+      <div className="min-h-screen bg-[#102135] pt-10 pb-20 px-5">
         <div className="max-w-md mx-auto space-y-6">
-          <div className="bg-white rounded-3xl p-7 shadow-sm border border-green-200/60 text-center">
+          <div className="bg-white rounded-none p-7 shadow-sm border border-green-200/60 text-center">
             <div className="inline-block px-3 py-1 bg-green-50 text-green-600 font-black text-xs rounded-full mb-4">
               나의 회복탄력성 상태
             </div>
-            <h1 className="text-2xl font-black text-slate-800 mb-3">{currentLevel?.title}</h1>
-            <p className="text-sm text-slate-600 leading-relaxed mb-6">{currentLevel?.summary}</p>
+            <h1 className="text-2xl font-black text-[#000000] mb-3">{currentLevel?.title}</h1>
+            <p className="text-sm text-[#555555] leading-relaxed mb-6">{currentLevel?.summary}</p>
             
             <div className="flex items-end justify-center gap-2 mt-4">
               <div className="text-5xl font-black text-green-600 leading-none">{overallAvg}</div>
-              <div className="text-sm font-bold text-slate-400 pb-1">/ 100 · 회복탄력성 프로파일 지수</div>
+              <div className="text-sm font-bold text-[#707070] pb-1">/ 100 · 회복탄력성 프로파일 지수</div>
             </div>
           </div>
 
-          <div className="bg-white rounded-3xl p-7 shadow-sm border border-slate-200/60">
-            <h3 className="font-black text-slate-800 mb-2 flex items-center gap-2">
+          <div className="bg-white rounded-none p-7 shadow-[0_0_12px_rgba(35,48,59,0.25)] border border-[#dddddd]">
+            <h3 className="font-black text-[#000000] mb-2 flex items-center gap-2">
               <span className="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
               나의 5가지 회복 자원
             </h3>
-            <p className="text-xs text-slate-400 mb-5 leading-relaxed">점수는 또래 백분위가 아니라 이번 응답을 100점 기준으로 환산한 자기보고형 프로파일입니다.</p>
+            <p className="text-xs text-[#707070] mb-5 leading-relaxed">점수는 또래 백분위가 아니라 이번 응답을 100점 기준으로 환산한 자기보고형 프로파일입니다.</p>
             <div className="space-y-4">
               {finalRank.map((k) => {
                 const d = (RESILIENCE_DOMAINS as any)[k];
                 return (
                   <div key={k} className="flex items-center gap-3">
-                    <div className="w-24 text-xs font-black text-slate-700 shrink-0">{d.icon} {d.name}</div>
-                    <div className="flex-1 h-2.5 bg-slate-100 rounded-full overflow-hidden">
+                    <div className="w-24 text-xs font-black text-[#000000] shrink-0">{d.icon} {d.name}</div>
+                    <div className="flex-1 h-2 bg-[#12273d] rounded-full overflow-hidden">
                       <div className="h-full bg-gradient-to-r from-green-300 to-green-500 rounded-full" style={{ width: `${lastScores[k]}%` }} />
                     </div>
-                    <div className="w-8 text-right text-xs font-black text-slate-500">{lastScores[k]}</div>
+                    <div className="w-8 text-right text-xs font-black text-[#707070]">{lastScores[k]}</div>
                   </div>
                 );
               })}
             </div>
           </div>
 
-          <div className="bg-white rounded-3xl p-7 shadow-sm border border-slate-200/60">
-            <h3 className="font-black text-slate-800 mb-4 flex items-center gap-2">
+          <div className="bg-white rounded-none p-7 shadow-[0_0_12px_rgba(35,48,59,0.25)] border border-[#dddddd]">
+            <h3 className="font-black text-[#000000] mb-4 flex items-center gap-2">
               <span className="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
               지금 잘 쓰는 힘과 가장 먼저 보완할 힘
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div className="bg-green-50/70 border border-green-100 rounded-2xl p-4">
+              <div className="bg-[#f8f8f8] rounded-none border border-[#dddddd] p-4">
                 <div className="text-2xl mb-1">{strongDomain.icon}</div>
                 <div className="text-xs font-black text-green-800 mb-2">강점 · {strongDomain.name}</div>
                 <div className="text-[11px] leading-relaxed text-green-700">{strongDomain.strong}</div>
               </div>
-              <div className="bg-slate-50 border border-slate-100 rounded-2xl p-4">
+              <div className="bg-[#f8f8f8] rounded-none border border-[#dddddd] p-4">
                 <div className="text-2xl mb-1">{lowDomain.icon}</div>
-                <div className="text-xs font-black text-slate-700 mb-2">NEXT · {lowDomain.name}</div>
-                <div className="text-[11px] leading-relaxed text-slate-500">{lowDomain.change}</div>
+                <div className="text-xs font-black text-[#000000] mb-2">NEXT · {lowDomain.name}</div>
+                <div className="text-[11px] leading-relaxed text-[#707070]">{lowDomain.change}</div>
               </div>
             </div>
           </div>
           
-          <div className="bg-orange-50/50 rounded-3xl p-7 shadow-sm border border-orange-100/60">
-            <h3 className="font-black text-slate-800 mb-4 flex items-center gap-2">
+          <div className="bg-[#f8f8f8] rounded-none p-7 shadow-[0_0_12px_rgba(35,48,59,0.25)] border border-[#dddddd]">
+            <h3 className="font-black text-[#000000] mb-4 flex items-center gap-2">
               <span className="w-1.5 h-1.5 bg-orange-500 rounded-full"></span>
               내 회복을 가장 늦추는 지점
             </h3>
-            <div className="bg-white rounded-2xl p-5 border border-orange-200 shadow-sm">
+            <div className="bg-white rounded-none p-5 border border-orange-200 shadow-sm">
               <div className="text-[10px] font-black text-orange-600 mb-2">{lowDomain.icon} {lowDomain.name}</div>
-              <h4 className="text-base font-black text-slate-800 mb-2">{lowDomain.leak}</h4>
-              <p className="text-xs text-slate-600 leading-relaxed">{lowDomain.change}</p>
+              <h4 className="text-base font-black text-[#000000] mb-2">{lowDomain.leak}</h4>
+              <p className="text-xs text-[#555555] leading-relaxed">{lowDomain.change}</p>
             </div>
           </div>
           
-          <div className="bg-white rounded-3xl p-7 shadow-sm border border-slate-200/60">
-            <h3 className="font-black text-slate-800 mb-4 flex items-center gap-2">
+          <div className="bg-white rounded-none p-7 shadow-[0_0_12px_rgba(35,48,59,0.25)] border border-[#dddddd]">
+            <h3 className="font-black text-[#000000] mb-4 flex items-center gap-2">
               <span className="w-1.5 h-1.5 bg-indigo-500 rounded-full"></span>
               회복할 때 기억할 3가지
             </h3>
             <div className="space-y-3">
-              <div className="bg-slate-50 rounded-2xl p-4">
+              <div className="bg-[#f8f8f8] rounded-none p-4">
                 <div className="text-indigo-600 font-black mb-1 text-xs">① 감정은 없애는 게 아님</div>
-                <div className="text-xs text-slate-600 leading-relaxed">흔들리는 건 자연스럽고, 중요한 건 다시 균형을 찾는 방법입니다.</div>
+                <div className="text-xs text-[#555555] leading-relaxed">흔들리는 건 자연스럽고, 중요한 건 다시 균형을 찾는 방법입니다.</div>
               </div>
-              <div className="bg-slate-50 rounded-2xl p-4">
+              <div className="bg-[#f8f8f8] rounded-none p-4">
                 <div className="text-indigo-600 font-black mb-1 text-xs">② 방법은 바꿔도 됨</div>
-                <div className="text-xs text-slate-600 leading-relaxed">원래 계획이 틀어져도 목표를 향한 다른 길을 선택할 수 있습니다.</div>
+                <div className="text-xs text-[#555555] leading-relaxed">원래 계획이 틀어져도 목표를 향한 다른 길을 선택할 수 있습니다.</div>
               </div>
-              <div className="bg-slate-50 rounded-2xl p-4">
+              <div className="bg-[#f8f8f8] rounded-none p-4">
                 <div className="text-indigo-600 font-black mb-1 text-xs">③ 도움도 회복 자원임</div>
-                <div className="text-xs text-slate-600 leading-relaxed">혼자 버티는 것보다 필요한 사람과 정보를 활용하는 것도 회복탄력성입니다.</div>
+                <div className="text-xs text-[#555555] leading-relaxed">혼자 버티는 것보다 필요한 사람과 정보를 활용하는 것도 회복탄력성입니다.</div>
               </div>
             </div>
           </div>
 
-          <div className="bg-green-600 rounded-3xl p-7 shadow-lg">
-            <h2 className="text-lg font-black text-white mb-2 text-center">
+          <div className="bg-green-600 rounded-none p-7 shadow-lg">
+            <h2 className="text-lg font-black text-[#000000] mb-2 text-center">
               🎯 오늘 바로 해볼 것
             </h2>
             <p className="text-green-50 text-sm text-center mb-6 leading-relaxed">
@@ -232,7 +232,7 @@ export const ResilienceTest: React.FC = () => {
             </p>
             <button
               onClick={() => navigate("/self-understanding")}
-              className="w-full bg-white text-green-600 font-black py-4 rounded-2xl hover:bg-green-50 transition-colors shadow-sm"
+              className="w-full bg-[#102135] text-[#40e2de] font-black py-4 rounded-none hover:bg-[#0c1a29] border border-[#40e2de] transition-colors"
             >
               진단 센터로 돌아가기
             </button>
@@ -247,16 +247,16 @@ export const ResilienceTest: React.FC = () => {
   const hero = randomMentors[qIndex] || JOB_CHARACTER_MASTER_LIST[0];
 
   return (
-    <div className="min-h-screen bg-[#F5F6F8] flex flex-col">
-      <header className="sticky top-0 z-20 bg-white/90 backdrop-blur-md border-b border-slate-100 px-5 py-4">
+    <div className="min-h-screen bg-[#102135] flex flex-col">
+      <header className="sticky top-0 z-20 bg-[#0c1a29]/90 backdrop-blur-md border-b border-[#244161] px-5 py-4">
         <div className="max-w-md mx-auto flex items-center justify-between">
-          <div className="text-base font-black text-slate-800 tracking-tight">회복탄력성 프로파일</div>
-          <div className="text-xs font-black text-green-600 bg-green-50 px-3 py-1 rounded-full">
+          <div className="text-base font-black text-[#d7dfe6] tracking-tight">회복탄력성 프로파일</div>
+          <div className="text-xs font-black text-[#d7dfe6] bg-[#12273d] px-3 py-1 rounded-full">
             {qIndex + 1} / {RESILIENCE_QUESTIONS.length}
           </div>
         </div>
-        <div className="max-w-md mx-auto h-1.5 bg-slate-100 rounded-full mt-4 overflow-hidden">
-          <div className="h-full bg-green-500 rounded-full transition-all duration-300" style={{ width: `${progress}%` }} />
+        <div className="max-w-md mx-auto h-2 bg-[#12273d] rounded-full mt-4 overflow-hidden">
+          <div className="h-full bg-[#40e2de] rounded-full transition-all duration-300" style={{ width: `${progress}%` }} />
         </div>
       </header>
 
@@ -267,7 +267,7 @@ export const ResilienceTest: React.FC = () => {
             <span className="text-xs font-black text-orange-600 bg-white px-4 py-1.5 rounded-full mb-4 inline-block shadow-sm">
               {typeInfo.name}
             </span>
-            <p className="text-xl font-bold text-slate-800 leading-snug break-keep">"{currentQ.q}"</p>
+            <p className="text-xl font-bold text-[#000000] leading-snug break-keep">"{currentQ.q}"</p>
           </div>
         </div>
 

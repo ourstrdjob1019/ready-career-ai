@@ -142,10 +142,10 @@ export const OnboardingTestFlow: React.FC = () => {
               <div className="flex justify-center gap-4">
                 {matchingJobs.slice(0, 3).map(job => (
                   <div key={job.jobName} className="flex flex-col items-center">
-                    <div className="w-16 h-16 rounded-full bg-white shadow-sm border-2 border-indigo-50 flex items-center justify-center overflow-hidden mb-1">
-                      <img src={job.defaultImageUrl} alt={job.jobName} className="w-full h-full object-contain drop-shadow-sm" />
+                    <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-white shadow-sm border-2 border-indigo-50 flex items-center justify-center overflow-hidden mb-2 group cursor-pointer hover:border-indigo-400 transition-all" onClick={() => setSelectedJob(job)}>
+                      <img src={job.defaultImageUrl} alt={job.jobName} className="w-full h-full object-contain drop-shadow-sm group-hover:scale-110 transition-transform" />
                     </div>
-                    <span className="text-[10px] font-bold text-slate-500">{job.jobName}</span>
+                    <span className="text-[11px] sm:text-xs font-bold text-slate-600">{job.jobName}</span>
                   </div>
                 ))}
               </div>
@@ -216,7 +216,7 @@ export const OnboardingTestFlow: React.FC = () => {
                         <span className="text-xs font-black bg-white px-3 py-0.5 rounded-full shadow-xs border border-slate-200">{item.lv}</span>
                         <span className="text-[11px] font-bold text-slate-500">{item.badge}</span>
                       </div>
-                      <div className="w-20 h-20 rounded-full bg-white p-2 border border-slate-100 flex items-center justify-center my-2 group-hover:scale-105 transition-transform shadow-xs">
+                      <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-white p-2 border border-slate-100 flex items-center justify-center my-2 group-hover:scale-105 transition-transform shadow-xs">
                         <img src={getJobCharacterImage(selectedJob.jobName, i + 1)} alt="stage" className="w-full h-full object-contain filter drop-shadow-sm" />
                       </div>
                       <strong className="text-[11px] font-black text-slate-800 text-center w-full bg-white rounded-xl py-2 px-1 border border-slate-200/80 shadow-xs truncate">
