@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../context";
 import { executeAiPrompt } from "../services/aiService";
-import { ARI_BLOB_URL } from "../assets/mascotData";
+import { getJobCharacterImage } from "../assets/mascotData";
+import { getCurrentXP, getRankFromXP } from "../services/expService";
 import { rewardXP } from "../services/expService";
 import {
   Sparkles,
@@ -89,7 +90,9 @@ export const Portfolio: React.FC = () => {
   const { session } = useAuth();
 
   const targetJobName = localStorage.getItem("readycareer_target_job_name") || session?.targetJob || "로봇공학자";
-  const customAvatarUrl = localStorage.getItem("readycareer_custom_avatar_url") || ARI_BLOB_URL;
+  
+  const currentLevel = getRankFromXP(getCurrentXP()).levelNum;
+  const customAvatarUrl = getJobCharacterImage(targetJobName, currentLevel);
 
   const [items, setItems] = useState<PortfolioItem[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("전체 보기");
@@ -346,8 +349,8 @@ export const Portfolio: React.FC = () => {
         </div>
 
         <div className="flex-shrink-0 z-10 flex flex-col sm:flex-row items-center gap-4">
-          <div className="w-32 h-32 rounded-3xl bg-white/20 backdrop-blur-md p-2.5 border-2 border-white/50 shadow-xl hidden sm:flex items-center justify-center transform hover:rotate-6 transition-all">
-            <img src={customAvatarUrl} alt="Target Avatar" className="w-full h-full object-contain filter drop-shadow-lg" />
+          <div className="w-48 h-48 sm:w-64 sm:h-64 rounded-[36px] bg-white/20 backdrop-blur-md p-4 border-4 border-white/50 shadow-2xl hidden sm:flex items-center justify-center transform hover:rotate-6 transition-all">
+            <img src={customAvatarUrl} alt="Target Avatar" className="w-full h-full object-contain filter drop-shadow-2xl" />
           </div>
         </div>
       </div>

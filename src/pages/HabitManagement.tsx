@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Card, MascotAri } from "../components";
 import { Sparkles, Flame, CheckCircle2, Plus, Calendar, FileText } from "lucide-react";
-import { rewardXP } from "../services/expService";
+import { rewardXP, getCurrentXP, getRankFromXP } from "../services/expService";
+import { getJobCharacterImage } from "../assets/mascotData";
+import { useAuth } from "../context";
 
 interface Habit {
   id: string;
@@ -14,6 +16,12 @@ interface Habit {
 
 export const HabitManagement: React.FC = () => {
   const navigate = useNavigate();
+  const { session } = useAuth();
+  
+  const targetJobName = localStorage.getItem("readycareer_target_job_name") || session?.targetJob || "로봇공학자";
+  const currentLevel = getRankFromXP(getCurrentXP()).levelNum;
+  const customAvatarUrl = getJobCharacterImage(targetJobName, currentLevel);
+  
   const isNewClean = localStorage.getItem("is_new_student_clean_state") === "true";
   const [habits, setHabits] = useState<Habit[]>(() => {
     const saved = localStorage.getItem("my_habits_v2");
@@ -130,32 +138,44 @@ export const HabitManagement: React.FC = () => {
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 space-y-10">
       
-      {/* Title */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-surface-variant/40 pb-6">
-        <div>
-          <div className="inline-flex items-center gap-1.5 bg-secondary/15 text-secondary px-3 py-1 rounded-full text-xs font-headline font-black mb-3">
-            <Flame className="w-4 h-4 text-secondary-spot animate-bounce" />
-            <span>50일 진로 찼린지</span>
+      {/* Title Box */}
+      <div className="rounded-[36px] bg-[#1E293B] text-white p-8 sm:p-12 shadow-[0_18px_48px_rgba(106,66,237,0.22)] border-4 border-white/20 flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden">
+        <div className="space-y-4 max-w-2xl z-10 text-center sm:text-left">
+          <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+            <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-md px-4 py-1.5 rounded-full font-extrabold text-xs sm:text-sm tracking-wide border border-white/30 shadow-sm">
+              <Sparkles className="w-4 h-4 text-amber-300 animate-spin-slow" />
+              <span>★ 나의 희망 진로: <strong>{targetJobName}</strong></span>
+            </div>
+            <span className="bg-[#6A42ED] text-white text-xs sm:text-sm font-black px-3.5 py-1.5 rounded-full shadow-md">
+              🔥 50일 진로 챌린지
+            </span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-headline font-black text-text-primary tracking-tight">
-            습관 &amp; <span className="text-[#6A42ED]">목표 관리</span>
+          
+          <h1 className="text-3xl sm:text-5xl font-headline font-black text-white tracking-tight leading-tight">
+            습관 &amp; 목표 관리
           </h1>
-          <p className="text-sm text-text-muted mt-2 font-body-md max-w-2xl leading-relaxed">
+          <p className="text-sm sm:text-base font-semibold text-indigo-100 leading-relaxed">
             매일 작은 챌린지를 달성하며 1~50일 그리드를 채워나가세요! 연속 성공 수치가 오를 때마다 진로 퀘스트 EXP가 누적되어 상위 캐릭터 외형을 해금합니다.
           </p>
+
+          {/* AI Recommend Action */}
+          <div className="pt-2">
+            <Button
+              variant="teal"
+              size="lg"
+              onClick={handleAiRecommendHabits}
+              icon={<Sparkles className="w-5 h-5 animate-pulse" />}
+              className="font-headline font-extrabold shadow-md whitespace-nowrap bg-[#0D9488] hover:bg-[#0F766E] border-none text-white"
+            >
+              🤖 아리와 함께 진로 관련 습관 즉시 설계
+            </Button>
+          </div>
         </div>
 
-        {/* AI Recommend Action */}
-        <div className="flex items-center gap-2">
-          <Button
-            variant="teal"
-            size="lg"
-            onClick={handleAiRecommendHabits}
-            icon={<Sparkles className="w-5 h-5 animate-pulse" />}
-            className="font-headline font-extrabold shadow-md whitespace-nowrap"
-          >
-            🤖 아리와 함께 진로 관련 습관 즉시 설계
-          </Button>
+        <div className="flex-shrink-0 z-10 flex flex-col sm:flex-row items-center gap-4">
+          <div className="w-48 h-48 sm:w-64 sm:h-64 rounded-[36px] bg-white/20 backdrop-blur-md p-4 border-4 border-white/50 shadow-2xl hidden sm:flex items-center justify-center transform hover:rotate-6 transition-all">
+            <img src={customAvatarUrl} alt="Target Avatar" className="w-full h-full object-contain filter drop-shadow-2xl" />
+          </div>
         </div>
       </div>
 

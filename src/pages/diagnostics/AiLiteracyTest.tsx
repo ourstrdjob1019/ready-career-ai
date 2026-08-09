@@ -296,31 +296,32 @@ export const AiLiteracyTest: React.FC = () => {
       </header>
 
       <main className="flex-1 max-w-md w-full mx-auto p-5 pb-32 flex flex-col justify-center">
-        <div className="mb-8 relative flex flex-col items-center">
-          <img src={hero.defaultImageUrl} alt="mentor" className="w-32 h-32 object-contain drop-shadow-xl z-10" />
-          <div className="bg-white border border-slate-200/60 p-5 rounded-2xl shadow-sm relative -mt-4 w-full text-center">
-            <span className="text-[10px] font-black text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full mb-2 inline-block">
-              나라면 어떻게 할까?
+        <div className="mb-10 relative flex flex-col items-center">
+          <div className="bg-slate-900 border border-cyan-400/40 p-6 rounded-2xl shadow-[0_0_20px_rgba(34,211,238,0.2)] relative -mt-4 w-full text-center overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-50" />
+            <img src={hero.defaultImageUrl} alt="mentor" className="w-20 h-20 object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.2)] mb-4 mx-auto" />
+            <span className="text-[10px] font-mono text-cyan-300 bg-cyan-900/50 px-3 py-1 rounded-sm mb-3 inline-block border border-cyan-500/30">
+              SYS.QUERY::나라면_어떻게할까?
             </span>
-            <p className="text-base font-bold text-slate-800 leading-snug break-keep">"{currentQ.q}"</p>
+            <p className="text-lg font-black text-white leading-relaxed break-keep">"{currentQ.q}"</p>
           </div>
         </div>
 
-        <div className="space-y-2.5">
+        <div className="space-y-3">
           {currentOrders.map((origIndex: number, idx: number) => {
             const isSelected = answers[qIndex] === origIndex;
             return (
               <button
                 key={origIndex}
                 onClick={() => handleSelectAnswer(origIndex)}
-                className={`w-full p-4 rounded-2xl border font-bold text-sm transition-all flex items-center gap-3 text-left ${
+                className={`w-full p-4 rounded-xl border font-bold text-sm transition-all flex items-center gap-4 text-left ${
                   isSelected 
-                    ? "bg-indigo-50 border-indigo-500 text-indigo-900 shadow-md transform scale-[1.02]" 
-                    : "bg-white border-slate-200 text-slate-600 hover:border-indigo-200 hover:bg-slate-50"
+                    ? "bg-slate-800 border-cyan-400 text-cyan-50 shadow-[0_0_15px_rgba(34,211,238,0.3)] transform scale-[1.02]" 
+                    : "bg-white border-slate-200 text-slate-600 hover:border-cyan-300 hover:bg-cyan-50/30 hover:shadow-sm"
                 }`}
               >
-                <div className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] shrink-0 border ${isSelected ? 'bg-indigo-500 border-indigo-500 text-white' : 'bg-slate-50 border-slate-200 text-slate-400'}`}>
-                  {String.fromCharCode(65 + idx)}
+                <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-xs font-mono shrink-0 border ${isSelected ? 'bg-cyan-500 border-cyan-400 text-slate-900' : 'bg-slate-50 border-slate-200 text-slate-400'}`}>
+                  0{idx + 1}
                 </div>
                 <span className="flex-1 leading-snug">{currentQ.o[origIndex][0]}</span>
               </button>

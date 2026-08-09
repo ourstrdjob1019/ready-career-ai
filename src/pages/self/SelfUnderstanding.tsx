@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context";
-import { ARI_BLOB_URL } from "../../assets/mascotData";
+import { getJobCharacterImage } from "../../assets/mascotData";
+import { getCurrentXP, getRankFromXP } from "../../services/expService";
 import { rewardXP } from "../../services/expService";
 import {
   Sparkles,
@@ -37,7 +38,10 @@ interface DiagnosticTest {
 export const SelfUnderstanding: React.FC = () => {
   const navigate = useNavigate();
   const { session } = useAuth();
-  const targetJobName = localStorage.getItem("readycareer_target_job_name") || session?.targetJob || "소프트웨어개발자";
+
+  const targetJobName = localStorage.getItem("readycareer_target_job_name") || session?.targetJob || "로봇공학자";
+  const currentLevel = getRankFromXP(getCurrentXP()).levelNum;
+  const customAvatarUrl = getJobCharacterImage(targetJobName, currentLevel);
 
   const [tests, setTests] = useState<DiagnosticTest[]>([]);
   const [activeReportTest, setActiveReportTest] = useState<DiagnosticTest | null>(null);
@@ -219,8 +223,8 @@ export const SelfUnderstanding: React.FC = () => {
           </div>
         </div>
 
-        <div className="flex-shrink-0 z-10 w-36 h-36 sm:w-48 sm:h-48 rounded-[36px] bg-white/20 backdrop-blur-xl p-4 border-4 border-white/50 shadow-2xl flex items-center justify-center transform hover:scale-105 transition-all">
-          <img src={ARI_BLOB_URL} alt="Ari Mascot" className="w-full h-full object-contain filter drop-shadow-2xl" />
+        <div className="flex-shrink-0 z-10 w-48 h-48 sm:w-64 sm:h-64 rounded-[36px] bg-white/20 backdrop-blur-xl p-4 border-4 border-white/50 shadow-2xl flex items-center justify-center transform hover:scale-105 transition-all">
+          <img src={customAvatarUrl} alt="Target Job Avatar" className="w-full h-full object-contain filter drop-shadow-2xl" />
         </div>
       </div>
 

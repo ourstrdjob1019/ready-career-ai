@@ -62,8 +62,13 @@ export const HomeDashboard: React.FC = () => {
       if (storedSelectedJobJson) {
         try {
           const parsed = JSON.parse(storedSelectedJobJson);
-          primaryJob = { name: parsed.title, image: "⭐", category: parsed.category, imageUrl: parsed.imageUrl };
-        } catch(e) {}
+          const sanitizedName = parsed.title ? parsed.title.replace(/\s*\(.*\)/, '').replace(/\s+/g, '') : "로봇공학자";
+          primaryJob = { name: sanitizedName, image: "⭐", category: parsed.category, imageUrl: parsed.imageUrl };
+        } catch(e) {
+          const sanitizedStr = storedSelectedJobJson.replace(/\s*\(.*\)/, '').replace(/\s+/g, '');
+          primaryJob.name = sanitizedStr;
+          primaryJob.imageUrl = getJobCharacterImage(sanitizedStr, 1);
+        }
       }
 
       setInterestedJobs([
@@ -231,8 +236,6 @@ export const HomeDashboard: React.FC = () => {
 
   const currentJob = interestedJobs[selectedJobIdx] || { name: "로봇공학자", image: "🤖", category: "탐색 중", imageUrl: ARI_BLOB_URL };
   const userName = localStorage.getItem("readycareer_student_name") || (session?.name && session.name.trim() !== "" ? session.name : "신규 꿈 탐구어");
-  const userSchool = localStorage.getItem("readycareer_student_school") || (session?.school && session.school.trim() !== "" ? session.school : "창의융합 인공지능 고교");
-  const userGrade = parseInt(localStorage.getItem("readycareer_student_grade")?.replace(/[^0-9]/g, "") || "") || session?.grade || 1;
 
   // 계급 뱃지 및 동기부여 등급 산출 시스템 (전역 expService 싱크 - 50 XP 간격 레벨업)
   const currentXP = getCurrentXP();
@@ -269,10 +272,7 @@ export const HomeDashboard: React.FC = () => {
         <div className="flex flex-wrap items-center gap-2 mb-1">
           <span className="text-xs font-extrabold bg-slate-100 text-slate-800 px-3.5 py-1 rounded-full border border-slate-200 flex items-center gap-1.5">
             <Star className="w-3.5 h-3.5 text-purple-600 fill-purple-600" />
-            <span>선택 직업: {getJobCharacterTitle(currentJob.name, currentLevel)}</span>
-          </span>
-          <span className="text-xs font-black px-3.5 py-1 rounded-full border border-purple-300 bg-[#5328E0] text-amber-300 shadow-2xs">
-            {rankBadge.classBadge}
+            <span>선택 직업: {currentJob.name}</span>
           </span>
           <span className="text-xs font-extrabold text-[#0D9488] bg-teal-50 px-3.5 py-1 rounded-full border border-teal-200">
             ✨ 진단 유형: {displayRiasec}
@@ -280,11 +280,8 @@ export const HomeDashboard: React.FC = () => {
         </div>
         <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-[#1F193B] leading-tight">
           {userName}님, 안녕하세요!<br />
-          나만의 진로 별자리를 찾아볼까요?
+          나만의 직업 로드맵을 알아볼까요?
         </h2>
-        <p className="text-xs sm:text-sm font-bold text-slate-500">
-          {userSchool} ({userGrade}학년) · {rankBadge.title} 단계에서 맞춤 진로 활동 마주하기
-        </p>
       </div>
 
       {/* =========================================================================
@@ -297,10 +294,6 @@ export const HomeDashboard: React.FC = () => {
           
           {/* Left Info & Vision Statement */}
           <div className="space-y-5 w-full md:w-3/5 text-center md:text-left">
-            <div className="inline-flex items-center gap-2 bg-white/15 px-4 py-1.5 rounded-full font-extrabold text-xs border border-white/20 shadow-sm">
-              <Award className="w-4 h-4 text-amber-300 animate-pulse" />
-              <span className="text-amber-300">{rankBadge.title} 랭크 장착 중!</span>
-            </div>
             
             <div className="space-y-1">
               <span className="text-xs font-extrabold text-purple-200 tracking-widest block">
@@ -383,8 +376,8 @@ export const HomeDashboard: React.FC = () => {
           {/* Right Mascot Showcase */}
           <div className="flex flex-col items-center justify-center relative w-full md:w-2/5 shrink-0">
             <div className="w-64 h-64 sm:w-80 sm:h-80 rounded-full bg-gradient-to-b from-white/20 to-black/20 p-5 border-2 border-white/30 flex items-center justify-center relative group shadow-2xl">
-              <span className="absolute -top-4 left-1/2 -translate-x-1/2 bg-slate-900 text-3xl p-3 rounded-2xl border border-slate-700 shadow-md">
-                {rankBadge.icon}
+              <span className="absolute -top-4 left-1/2 -translate-x-1/2 bg-slate-900 text-sm font-black px-4 py-1.5 rounded-2xl border border-slate-700 shadow-md text-amber-300">
+                {currentJob.name}
               </span>
               <img
                 src={displayAvatarUrl}

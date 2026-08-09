@@ -15,8 +15,8 @@ const shuffleArray = (array: any[]) => {
 };
 
 const LIKERT_OPTIONS = [
-  { value: 5, label: "네, 완전 공감해요! 👍", color: "indigo" },
-  { value: 1, label: "아니요, 저랑은 안 맞아요 🙅", color: "rose" },
+  { value: 5, label: "완전 공감해! 👍", bg: "bg-gradient-to-br from-violet-500 to-fuchsia-500", text: "text-white", border: "border-transparent", hover: "hover:scale-[1.02] shadow-xl shadow-fuchsia-200" },
+  { value: 1, label: "나랑은 안 맞아 🙅", bg: "bg-white", text: "text-slate-700", border: "border-slate-200", hover: "hover:border-slate-400 hover:bg-slate-50 shadow-sm" },
 ];
 
 export const MultipleIntelligencesTest: React.FC = () => {
@@ -258,34 +258,25 @@ export const MultipleIntelligencesTest: React.FC = () => {
       </header>
 
       <main className="flex-1 max-w-md w-full mx-auto p-5 pb-32 flex flex-col justify-center">
-        <div className="mb-8 relative flex flex-col items-center">
-          <img src={hero.defaultImageUrl} alt="mentor" className="w-32 h-32 object-contain drop-shadow-xl z-10" />
-          <div className="bg-white border border-slate-200/60 p-5 rounded-2xl shadow-sm relative -mt-4 w-full text-center">
-            <span className="text-[10px] font-black text-indigo-500 bg-indigo-50 px-2 py-0.5 rounded-full mb-2 inline-block">
+        <div className="mb-10 relative flex flex-col items-center">
+          <div className="absolute inset-0 bg-gradient-to-r from-violet-100 to-fuchsia-100 rounded-[32px] transform -rotate-2 scale-105 z-0" />
+          <div className="bg-white p-6 sm:p-8 rounded-[32px] shadow-lg relative z-10 w-full text-center border border-white/40">
+            <img src={hero.defaultImageUrl} alt="mentor" className="w-24 h-24 mx-auto object-contain drop-shadow-md mb-4" />
+            <span className="text-[11px] font-black text-fuchsia-600 bg-fuchsia-50 px-3 py-1 rounded-full mb-3 inline-block shadow-xs border border-fuchsia-100">
               {typeInfo.name} 지능
             </span>
-            <p className="text-base font-bold text-slate-800 leading-snug break-keep">"{currentQ.q}"</p>
+            <p className="text-xl sm:text-2xl font-black text-slate-800 leading-tight break-keep mt-2">"{currentQ.q}"</p>
           </div>
         </div>
 
-                <div className="space-y-3">
+        <div className="grid grid-cols-1 gap-4">
           {LIKERT_OPTIONS.map((opt) => {
             const isSelected = answers[qIndex] === opt.value;
-            const colorClass = opt.color === "indigo" 
-              ? "bg-indigo-50 border-indigo-200 text-indigo-700 hover:bg-indigo-100 hover:border-indigo-400" 
-              : "bg-rose-50 border-rose-200 text-rose-700 hover:bg-rose-100 hover:border-rose-400";
-            
-            const selectedClass = opt.color === "indigo"
-              ? "bg-indigo-500 border-indigo-600 text-white shadow-lg transform scale-[1.02]"
-              : "bg-rose-500 border-rose-600 text-white shadow-lg transform scale-[1.02]";
-
             return (
               <button
                 key={opt.value}
                 onClick={() => handleSelectAnswer(opt.value)}
-                className={`w-full p-5 rounded-2xl border-2 font-black text-base transition-all flex items-center justify-center ${
-                  isSelected ? selectedClass : colorClass
-                }`}
+                className={`w-full p-6 rounded-[24px] border-2 font-black text-lg transition-all flex items-center justify-center ${opt.bg} ${opt.text} ${opt.border} ${opt.hover} ${isSelected ? 'ring-4 ring-indigo-300 ring-offset-2' : ''}`}
               >
                 <span>{opt.label}</span>
               </button>

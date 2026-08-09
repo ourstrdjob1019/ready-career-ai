@@ -15,8 +15,8 @@ const shuffleArray = (array: any[]) => {
 };
 
 const LIKERT_OPTIONS = [
-  { value: 5, label: "네, 완전 공감해요! 👍", color: "indigo" },
-  { value: 1, label: "아니요, 저랑은 안 맞아요 🙅", color: "rose" },
+  { value: 5, label: "맞아요, 그 길로 가고 있어요 🧭", bg: "bg-gradient-to-r from-blue-50 to-sky-50", text: "text-blue-900", border: "border-blue-200", hover: "hover:scale-[1.01] hover:border-blue-400 shadow-sm", point: "bg-blue-500 ring-4 ring-blue-100" },
+  { value: 1, label: "아직은 그 위치가 아니에요 🛑", bg: "bg-white", text: "text-slate-600", border: "border-slate-200", hover: "hover:bg-slate-50 hover:border-slate-300 shadow-sm", point: "bg-slate-200 ring-4 ring-slate-50" },
 ];
 
 export const CareerMaturityTest: React.FC = () => {
@@ -291,35 +291,31 @@ export const CareerMaturityTest: React.FC = () => {
       </header>
 
       <main className="flex-1 max-w-md w-full mx-auto p-5 pb-32 flex flex-col justify-center">
-        <div className="mb-8 relative flex flex-col items-center">
-          <img src={hero.defaultImageUrl} alt="mentor" className="w-32 h-32 object-contain drop-shadow-xl z-10" />
-          <div className="bg-white border border-slate-200/60 p-5 rounded-2xl shadow-sm relative -mt-4 w-full text-center">
-            <span className="text-[10px] font-black text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full mb-2 inline-block">
-              {typeInfo.name}
+        <div className="mb-10 relative flex flex-col items-center">
+          <div className="bg-[#F8FAFC] border-[3px] border-blue-100 p-8 pt-10 rounded-[40px] shadow-sm relative w-full text-center overflow-hidden">
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-16 h-8 bg-blue-100 rounded-b-full flex items-end justify-center pb-1">
+              <span className="text-[10px] font-black text-blue-500 uppercase tracking-widest">N</span>
+            </div>
+            <img src={hero.defaultImageUrl} alt="mentor" className="w-20 h-20 object-contain drop-shadow-md mx-auto mb-4" />
+            <span className="text-[11px] font-black text-blue-600 bg-white border border-blue-200 px-3 py-1 rounded-full mb-3 inline-block shadow-sm">
+              현재 위치: {typeInfo.name}
             </span>
-            <p className="text-base font-bold text-slate-800 leading-snug break-keep">"{currentQ.q}"</p>
+            <p className="text-xl font-bold text-slate-800 leading-snug break-keep">"{currentQ.q}"</p>
           </div>
         </div>
 
-                <div className="space-y-3">
+        <div className="space-y-4 relative">
+          {/* Path Line connecting options */}
+          <div className="absolute left-6 top-6 bottom-6 w-1 bg-slate-100 rounded-full z-0"></div>
           {LIKERT_OPTIONS.map((opt) => {
             const isSelected = answers[qIndex] === opt.value;
-            const colorClass = opt.color === "indigo" 
-              ? "bg-indigo-50 border-indigo-200 text-indigo-700 hover:bg-indigo-100 hover:border-indigo-400" 
-              : "bg-rose-50 border-rose-200 text-rose-700 hover:bg-rose-100 hover:border-rose-400";
-            
-            const selectedClass = opt.color === "indigo"
-              ? "bg-indigo-500 border-indigo-600 text-white shadow-lg transform scale-[1.02]"
-              : "bg-rose-500 border-rose-600 text-white shadow-lg transform scale-[1.02]";
-
             return (
               <button
                 key={opt.value}
                 onClick={() => handleSelectAnswer(opt.value)}
-                className={`w-full p-5 rounded-2xl border-2 font-black text-base transition-all flex items-center justify-center ${
-                  isSelected ? selectedClass : colorClass
-                }`}
+                className={`w-full p-5 rounded-3xl border-2 font-black text-lg transition-all flex items-center justify-start gap-5 relative z-10 ${opt.bg} ${opt.text} ${opt.border} ${opt.hover} ${isSelected ? 'ring-2 ring-blue-400 ring-offset-2' : ''}`}
               >
+                <div className={`w-3 h-3 rounded-full ${isSelected ? 'bg-blue-600 ring-4 ring-blue-200' : opt.point}`}></div>
                 <span>{opt.label}</span>
               </button>
             );
