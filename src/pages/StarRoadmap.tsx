@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../context";
 import { executeAiPrompt } from "../services/aiService";
-import { ARI_BLOB_URL } from "../assets/mascotData";
-import { rewardXP } from "../services/expService";
+import { ARI_BLOB_URL, getJobCharacterImage } from "../assets/mascotData";
+import { rewardXP, getCurrentXP, getRankFromXP } from "../services/expService";
 import {
   Sparkles,
   CheckCircle2,
@@ -117,7 +117,9 @@ export const StarRoadmap: React.FC = () => {
   const { session } = useAuth();
   
   const targetJobName = localStorage.getItem("readycareer_target_job_name") || session?.targetJob || "로봇공학자";
-  const customAvatarUrl = localStorage.getItem("readycareer_custom_avatar_url") || ARI_BLOB_URL;
+  
+  const currentLevel = getRankFromXP(getCurrentXP()).levelNum;
+  const customAvatarUrl = getJobCharacterImage(targetJobName, currentLevel);
 
   // [신규 기능] 정량적 학습 목표 설정 및 평균 점수 관리 상태
   const [currentAvg, setCurrentAvg] = useState<number>(78);
@@ -451,19 +453,19 @@ export const StarRoadmap: React.FC = () => {
               <span>★ 나의 희망 진로: <strong>{targetJobName}</strong></span>
             </div>
             <span className="bg-[#10B981] text-white text-xs sm:text-sm font-black px-3.5 py-1.5 rounded-full shadow-md">
-              ⚡ 학습 노트 &amp; AI 학습 튜터
+              ⚡ AI 스마트 학습 노트
             </span>
           </div>
           
           <h1 className="text-3xl sm:text-5xl font-headline font-black text-white tracking-tight leading-tight">
-            📘 AI 스마트 학습 노트 <br className="hidden sm:block"/> &amp; AI 학습 튜터
+            📘 AI 스마트 학습 노트
           </h1>
           <p className="text-sm sm:text-base font-semibold text-[#CCFBF1] leading-relaxed">
             이번 학기 <strong>정량적 목표 점수</strong>를 도약시키고, 중·고등 과목별 요약 스티커로 나의 공부 현황을 한눈에 점검하세요! AI가 <strong>"{targetJobName}"</strong> 세특 연계 요약을 도출하며 <strong>다중 취합 실전 퀴즈</strong>를 제공합니다.
           </p>
         </div>
 
-        <div className="flex-shrink-0 z-10 w-36 h-36 sm:w-48 sm:h-48 rounded-[36px] bg-white/15 backdrop-blur-xl p-4 border-4 border-white/40 shadow-2xl flex items-center justify-center transform hover:scale-105 transition-all">
+        <div className="flex-shrink-0 z-10 w-48 h-48 sm:w-64 sm:h-64 rounded-[36px] bg-white/15 backdrop-blur-xl p-4 border-4 border-white/40 shadow-2xl flex items-center justify-center transform hover:scale-105 transition-all">
           <img src={customAvatarUrl} alt="Target Job Avatar" className="w-full h-full object-contain filter drop-shadow-2xl" />
         </div>
       </div>
