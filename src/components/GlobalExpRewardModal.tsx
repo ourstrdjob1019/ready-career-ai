@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ARI_BLOB_URL } from "../assets/mascotData";
+import { ARI_BLOB_URL, getJobCharacterImage } from "../assets/mascotData";
 import type { RankLevel } from "../services/expService";
 import { Sparkles, Award, ArrowRight, CheckCircle2, X } from "lucide-react";
 
@@ -35,8 +35,12 @@ export const GlobalExpRewardModal: React.FC = () => {
 
   if (!data) return null;
 
-  const characterImage = localStorage.getItem("readycareer_custom_avatar_url") || ARI_BLOB_URL;
-  const jobTitle = localStorage.getItem("readycareer_target_job_name") || "AI 융합 개척자";
+  const jobTitle = localStorage.getItem("readycareer_target_job_name") || localStorage.getItem("readycareer_selected_job") || "AI 융합 개척자";
+  
+  // 레벨업일 경우, 새 랭크의 레벨에 맞는 캐릭터 이미지를 동적으로 불러옵니다.
+  const characterImage = data.isLevelUp && data.newRank.levelNum
+    ? getJobCharacterImage(jobTitle, data.newRank.levelNum)
+    : (localStorage.getItem("readycareer_custom_avatar_url") || ARI_BLOB_URL);
 
   return (
     <div className="fixed inset-0 z-[110] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-fadeIn" onClick={() => setData(null)}>
