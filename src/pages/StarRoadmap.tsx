@@ -445,19 +445,19 @@ export const StarRoadmap: React.FC = () => {
       {/* =========================================================================
           SECTION 1: HERO TITLE (학습 스터디 랩 & 청명 에메랄드/네이비 테마)
          ========================================================================= */}
-      <div className="rounded-[36px] bg-[#1E293B] text-white p-8 sm:p-12 shadow-[0_18px_48px_rgba(13,148,136,0.22)] border-4 border-white/20 flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden">
+      <div className="rounded-[36px] bg-[#1E293B] text-white p-8 sm:p-12 shadow-sm border-4 border-white/20 flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden">
         <div className="space-y-4 max-w-2xl z-10 text-center sm:text-left">
           <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
-            <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-md px-4 py-1.5 rounded-full font-extrabold text-xs sm:text-sm tracking-wide border border-white/30 shadow-sm">
+            <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-md px-4 py-1.5 rounded-full font-semibold tracking-tighter text-xs sm:text-sm tracking-wide border border-white/30 shadow-sm">
               <Sparkles className="w-4 h-4 text-amber-300 animate-spin-slow" />
               <span>★ 나의 희망 진로: <strong>{targetJobName}</strong></span>
             </div>
-            <span className="bg-[#10B981] text-white text-xs sm:text-sm font-black px-3.5 py-1.5 rounded-full shadow-md">
+            <span className="bg-[#10B981] text-white text-xs sm:text-sm font-semibold tracking-tighter px-3.5 py-1.5 rounded-full shadow-md">
               ⚡ AI 스마트 학습 노트
             </span>
           </div>
           
-          <h1 className="text-3xl sm:text-5xl font-headline font-black text-white tracking-tight leading-tight">
+          <h1 className="text-3xl sm:text-5xl font-headline font-semibold tracking-tighter text-white tracking-tight leading-tight">
             📘 AI 스마트 학습 노트
           </h1>
           <p className="text-sm sm:text-base font-semibold text-[#CCFBF1] leading-relaxed">
@@ -473,16 +473,16 @@ export const StarRoadmap: React.FC = () => {
       {/* =========================================================================
           [신규 탑재] SECTION 0: 이번 학기 나의 정량적 학습 목표 & 성취 대시보드 (KPI Board)
          ========================================================================= */}
-      <div className="bg-white rounded-[36px] p-7 sm:p-10 border-2 border-[#A7F3D0] shadow-[0_15px_40px_rgba(13,148,136,0.12)] space-y-8 relative overflow-hidden">
+      <div className="bg-white rounded-[36px] p-7 sm:p-10 border-2 border-[#A7F3D0] shadow-sm space-y-8 relative overflow-hidden">
         
         {/* 상단 타이틀 & 소개 */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-2 border-teal-100 pb-5">
           <div className="space-y-1">
-            <div className="inline-flex items-center gap-1.5 bg-[#0D9488]/15 text-[#0D9488] px-3 py-1 rounded-full text-xs font-black">
+            <div className="inline-flex items-center gap-1.5 bg-[#0D9488]/15 text-[#0D9488] px-3 py-1 rounded-full text-xs font-semibold tracking-tighter">
               <Target className="w-4 h-4 text-[#0D9488]" />
               <span>Quantitative Academic Goal Dashboard</span>
             </div>
-            <h2 className="text-2xl sm:text-3xl font-headline font-black text-[#0F172A] flex items-center gap-2">
+            <h2 className="text-2xl sm:text-3xl font-headline font-semibold tracking-tighter text-[#0F172A] flex items-center gap-2">
               <span>📈 나의 이번 학기 학습 목표</span>
             </h2>
             <p className="text-xs sm:text-sm font-semibold text-[#475569]">
@@ -492,7 +492,7 @@ export const StarRoadmap: React.FC = () => {
 
           <button
             onClick={() => setShowGoalInput(!showGoalInput)}
-            className="px-5 py-3 rounded-2xl bg-[#0D9488] hover:bg-[#0F766E] text-white font-black text-xs sm:text-sm shadow-md transition-all flex items-center gap-1.5 shrink-0 transform hover:-translate-y-0.5 active:scale-95 cursor-pointer"
+            className="px-5 py-3 rounded-3xl bg-[#0D9488] hover:bg-[#0F766E] text-white font-semibold tracking-tighter text-xs sm:text-sm shadow-md transition-all flex items-center gap-1.5 shrink-0 transform hover:-translate-y-0.5 active:scale-95 cursor-pointer"
           >
             <Plus className="w-4 h-4 text-amber-300 stroke-[3]" />
             <span>{showGoalInput ? "목표 입력창 닫기 ▲" : "+ 이번 학기 학습 목표 추가"}</span>
@@ -502,33 +502,33 @@ export const StarRoadmap: React.FC = () => {
         {/* 신규 과목별 목표 입력 폼 (토글) */}
         {showGoalInput && (
           <form onSubmit={handleAddGoal} className="p-6 rounded-3xl bg-[#E6FFFA] border-2 border-[#14B8A6] space-y-4 animate-fadeIn">
-            <h4 className="text-sm font-black text-[#0F766E] flex items-center gap-1.5">
+            <h4 className="text-sm font-semibold tracking-tighter text-[#0F766E] flex items-center gap-1.5">
               <Award className="w-4 h-4 text-amber-500" />
               <span>✨ 새 과목 핀포인트 성취 목표 기입 (터치하여 빠르게 자동 입력)</span>
             </h4>
             
             {/* 빠른 입력 추천 칩 */}
             <div className="flex flex-wrap gap-2 pt-0.5">
-              <span className="text-[11px] font-black text-slate-500 py-1">⚡ 빠른 과목:</span>
+              <span className="text-[11px] font-semibold tracking-tighter text-slate-500 py-1">⚡ 빠른 과목:</span>
               {["📐 수학 I", "🔬 물리학 I", "🗣️ 영어 I", "💻 인공지능", "📖 국어", "🌍 사회"].map(s => (
                 <button
                   type="button"
                   key={s}
                   onClick={() => setNewGoalSubject(s)}
-                  className="px-2.5 py-1 rounded-lg bg-white border border-teal-200 text-xs font-black text-[#0D9488] hover:bg-teal-50 shadow-2xs"
+                  className="px-2.5 py-1 rounded-lg bg-white border border-teal-200 text-xs font-semibold tracking-tighter text-[#0D9488] hover:bg-teal-50 shadow-2xs"
                 >
                   {s}
                 </button>
               ))}
             </div>
             <div className="flex flex-wrap gap-2">
-              <span className="text-[11px] font-black text-slate-500 py-1">🎯 추천 목표:</span>
+              <span className="text-[11px] font-semibold tracking-tighter text-slate-500 py-1">🎯 추천 목표:</span>
               {["85점 이상 쟁취 🔥", "지필 1등급 🎯", "수행평가 만점 ✨", "세특 A+ 달성 🏆", "평균 90점 돌파 🚀"].map(score => (
                 <button
                   type="button"
                   key={score}
                   onClick={() => setNewGoalScore(score)}
-                  className="px-2.5 py-1 rounded-lg bg-amber-50 border border-amber-200 text-xs font-extrabold text-amber-800 hover:bg-amber-100 shadow-2xs"
+                  className="px-2.5 py-1 rounded-lg bg-amber-50 border border-amber-200 text-xs font-semibold tracking-tighter text-amber-800 hover:bg-amber-100 shadow-2xs"
                 >
                   {score}
                 </button>
@@ -537,29 +537,29 @@ export const StarRoadmap: React.FC = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 pt-2 border-t border-teal-200/60">
               <div>
-                <label className="text-xs font-bold text-slate-700 block mb-1">📚 대상 과목</label>
+                <label className="text-xs font-medium tracking-tight text-slate-700 block mb-1">📚 대상 과목</label>
                 <input
                   type="text"
                   placeholder="예: 📐 수학 I 또는 🔬 물리학"
                   value={newGoalSubject}
                   onChange={(e) => setNewGoalSubject(e.target.value)}
-                  className="w-full h-12 px-4 rounded-xl bg-white border border-teal-300 font-bold text-sm text-[#0F172A] focus:outline-none focus:ring-2 focus:ring-[#0D9488]"
+                  className="w-full h-12 px-4 rounded-2xl bg-white border border-teal-300 font-medium tracking-tight text-sm text-[#0F172A] focus:outline-none focus:ring-2 focus:ring-[#0D9488]"
                 />
               </div>
               <div>
-                <label className="text-xs font-bold text-slate-700 block mb-1">🎯 목표 수치 / 등급 / 성과</label>
+                <label className="text-xs font-medium tracking-tight text-slate-700 block mb-1">🎯 목표 수치 / 등급 / 성과</label>
                 <input
                   type="text"
                   placeholder="예: 85점 돌파 / 1등급 쟁취 / 세특 A+"
                   value={newGoalScore}
                   onChange={(e) => setNewGoalScore(e.target.value)}
-                  className="w-full h-12 px-4 rounded-xl bg-white border border-teal-300 font-extrabold text-sm text-[#0F172A] focus:outline-none focus:ring-2 focus:ring-[#0D9488]"
+                  className="w-full h-12 px-4 rounded-2xl bg-white border border-teal-300 font-semibold tracking-tighter text-sm text-[#0F172A] focus:outline-none focus:ring-2 focus:ring-[#0D9488]"
                 />
               </div>
               <div className="flex items-end">
                 <button
                   type="submit"
-                  className="w-full h-12 rounded-xl bg-[#0D9488] hover:bg-[#0F766E] text-white font-black text-sm shadow-sm transition-transform active:scale-95 cursor-pointer flex items-center justify-center gap-1.5"
+                  className="w-full h-12 rounded-2xl bg-[#0D9488] hover:bg-[#0F766E] text-white font-semibold tracking-tighter text-sm shadow-sm transition-transform active:scale-95 cursor-pointer flex items-center justify-center gap-1.5"
                 >
                   <Check className="w-4 h-4 text-amber-300 stroke-[3]" />
                   <span>목표 리스트에 장착!</span>
@@ -576,28 +576,28 @@ export const StarRoadmap: React.FC = () => {
           <div className="lg:col-span-5 bg-white p-7 rounded-[32px] border-2 border-[#CCFBF1] shadow-sm space-y-5 relative">
             {/* 점수 설정 모드 */}
             {isEditingAvg ? (
-              <div className="space-y-3 p-4 rounded-2xl bg-slate-50 border border-slate-200">
+              <div className="space-y-3 p-4 rounded-3xl bg-white border border-slate-200">
                 <div className="flex items-center justify-between gap-2">
-                  <span className="text-xs font-bold text-slate-600">현재 내 평균 점수:</span>
+                  <span className="text-xs font-medium tracking-tight text-slate-600">현재 내 평균 점수:</span>
                   <input
                     type="number"
                     value={currentAvg}
                     onChange={(e) => setCurrentAvg(Number(e.target.value))}
-                    className="w-24 h-9 px-3 rounded-lg bg-white border font-black text-center text-sm text-[#0F172A]"
+                    className="w-24 h-9 px-3 rounded-lg bg-white border font-semibold tracking-tighter text-center text-sm text-[#0F172A]"
                   />
                 </div>
                 <div className="flex items-center justify-between gap-2">
-                  <span className="text-xs font-bold text-slate-600">이번 학기 목표 평균:</span>
+                  <span className="text-xs font-medium tracking-tight text-slate-600">이번 학기 목표 평균:</span>
                   <input
                     type="number"
                     value={targetAvg}
                     onChange={(e) => setTargetAvg(Number(e.target.value))}
-                    className="w-24 h-9 px-3 rounded-lg bg-white border font-black text-center text-sm text-[#0D9488]"
+                    className="w-24 h-9 px-3 rounded-lg bg-white border font-semibold tracking-tighter text-center text-sm text-[#0D9488]"
                   />
                 </div>
                 <button
                   onClick={handleSaveAvg}
-                  className="w-full py-2 bg-[#0D9488] text-white rounded-xl font-black text-xs shadow-xs hover:bg-[#0F766E]"
+                  className="w-full py-2 bg-[#0D9488] text-white rounded-2xl font-semibold tracking-tighter text-xs shadow-xs hover:bg-[#0F766E]"
                 >
                   저장 및 도약율 업데이트
                 </button>
@@ -606,19 +606,19 @@ export const StarRoadmap: React.FC = () => {
               <div className="space-y-4">
                 <div className="flex items-baseline justify-between pt-1">
                   <div>
-                    <span className="text-xs font-extrabold text-slate-400 block">현재</span>
-                    <span className="text-3xl font-black text-[#475569]">{currentAvg}</span>
-                    <span className="text-sm font-bold text-slate-400">점</span>
+                    <span className="text-xs font-semibold tracking-tighter text-slate-400 block">현재</span>
+                    <span className="text-3xl font-semibold tracking-tighter text-[#475569]">{currentAvg}</span>
+                    <span className="text-sm font-medium tracking-tight text-slate-400">점</span>
                   </div>
                   <div className="text-center px-4">
-                    <div className="bg-emerald-100 text-[#059669] font-black text-xs px-3 py-1 rounded-full border border-emerald-300 shadow-2xs animate-pulse">
+                    <div className="bg-emerald-100 text-[#059669] font-semibold tracking-tighter text-xs px-3 py-1 rounded-full border border-emerald-300 shadow-2xs animate-pulse">
                       ▲ +{Math.max(0, targetAvg - currentAvg)}점 상향 도전 중!
                     </div>
                   </div>
                   <div className="text-right">
-                    <span className="text-xs font-extrabold text-[#0D9488] block">목표</span>
-                    <span className="text-4xl font-black text-[#0D9488]">{targetAvg}</span>
-                    <span className="text-sm font-bold text-[#0D9488]">점</span>
+                    <span className="text-xs font-semibold tracking-tighter text-[#0D9488] block">목표</span>
+                    <span className="text-4xl font-semibold tracking-tighter text-[#0D9488]">{targetAvg}</span>
+                    <span className="text-sm font-medium tracking-tight text-[#0D9488]">점</span>
                   </div>
                 </div>
 
@@ -630,7 +630,7 @@ export const StarRoadmap: React.FC = () => {
                       style={{ width: `${Math.min(100, Math.max(10, (currentAvg / targetAvg) * 100))}%` }}
                     />
                   </div>
-                  <div className="flex justify-between text-[11px] font-extrabold text-slate-400">
+                  <div className="flex justify-between text-[11px] font-semibold tracking-tighter text-slate-400">
                     <span>학습 시작 0%</span>
                     <span>현재 성취율: {Math.round((currentAvg / (targetAvg || 1)) * 100)}%</span>
                     <span>목표 100% (A+ 등급)</span>
@@ -639,7 +639,7 @@ export const StarRoadmap: React.FC = () => {
               </div>
             )}
 
-            <div className="p-3 rounded-2xl bg-teal-50/70 border border-teal-100 flex items-center justify-between text-xs font-extrabold text-[#0F766E]">
+            <div className="p-3 rounded-3xl bg-teal-50/70 border border-teal-100 flex items-center justify-between text-xs font-semibold tracking-tighter text-[#0F766E]">
               <span>🎓 나의 미래를 향한 노력이 차곡차곡 쌓이고 있어요. (현재 {notes.length}건)</span>
               <Sparkles className="w-4 h-4 text-amber-500 shrink-0" />
             </div>
@@ -648,14 +648,14 @@ export const StarRoadmap: React.FC = () => {
           {/* 우측: 과목별 핀포인트 목표 칩 보드 (7열) */}
           <div className="lg:col-span-7 space-y-4">
             <div className="flex items-center justify-between pl-2">
-              <h3 className="text-base font-black text-[#0F172A] flex items-center gap-2">
+              <h3 className="text-base font-semibold tracking-tighter text-[#0F172A] flex items-center gap-2">
                 <span>📌 과목별 핀포인트 타겟 리스트 ({studyGoals.filter(g => g.isCompleted).length}/{studyGoals.length} 완수)</span>
               </h3>
-              <span className="text-xs font-bold text-slate-400">💡 칩을 터치하여 달성 여부 체크</span>
+              <span className="text-xs font-medium tracking-tight text-slate-400">💡 칩을 터치하여 달성 여부 체크</span>
             </div>
 
             {studyGoals.length === 0 ? (
-              <div className="p-8 rounded-[28px] bg-white border-2 border-dashed border-slate-200 text-center text-slate-400 font-bold text-xs space-y-1">
+              <div className="p-8 rounded-[28px] bg-white border-2 border-dashed border-slate-200 text-center text-slate-400 font-medium tracking-tight text-xs space-y-1">
                 <span>등록된 과목 목표가 없습니다.</span>
                 <p>우측 상단 '+ 과목별 핀포인트 목표 추가'를 눌러 A과목 n점 달성을 기재해보세요!</p>
               </div>
@@ -672,18 +672,18 @@ export const StarRoadmap: React.FC = () => {
                     }`}
                   >
                     <div className="flex items-center gap-3 min-w-0">
-                      <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 border transition-colors ${
+                      <div className={`w-8 h-8 rounded-2xl flex items-center justify-center shrink-0 border transition-colors ${
                         goal.isCompleted 
                           ? "bg-[#10B981] border-[#10B981] text-white shadow-xs" 
-                          : "bg-slate-50 border-slate-300 text-transparent group-hover:border-[#0D9488]"
+                          : "bg-white border-slate-300 text-transparent group-hover:border-[#0D9488]"
                       }`}>
                         ✓
                       </div>
                       <div className="min-w-0">
-                        <span className={`text-xs font-black block truncate ${goal.isCompleted ? "text-slate-400 line-through" : "text-[#0F172A]"}`}>
+                        <span className={`text-xs font-semibold tracking-tighter block truncate ${goal.isCompleted ? "text-slate-400 line-through" : "text-[#0F172A]"}`}>
                           {goal.subject}
                         </span>
-                        <span className={`text-xs sm:text-sm font-black block truncate ${goal.isCompleted ? "text-[#059669]" : "text-[#0D9488]"}`}>
+                        <span className={`text-xs sm:text-sm font-semibold tracking-tighter block truncate ${goal.isCompleted ? "text-[#059669]" : "text-[#0D9488]"}`}>
                           🎯 {goal.targetScore}
                         </span>
                       </div>
@@ -707,14 +707,14 @@ export const StarRoadmap: React.FC = () => {
 
             {/* 실시간 아리 멘토링 바 */}
             <div className="p-5 rounded-3xl bg-[#1E293B] text-white shadow-md flex items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-teal-500/20 p-1 shrink-0 border border-teal-400/30 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-3xl bg-teal-500/20 p-1 shrink-0 border border-teal-400/30 flex items-center justify-center">
                 <img src={ARI_BLOB_URL} alt="Ari Mascot" className="w-full h-full object-contain filter drop-shadow-md" />
               </div>
               <div className="space-y-0.5">
-                <span className="text-[11px] font-black bg-amber-400 text-slate-950 px-2 py-0.5 rounded-md uppercase tracking-wide inline-block">
+                <span className="text-[11px] font-semibold tracking-tighter bg-amber-400 text-slate-950 px-2 py-0.5 rounded-md uppercase tracking-wide inline-block">
                   🤖 AI 튜터의 실시간 응원
                 </span>
-                <p className="text-xs sm:text-sm font-extrabold text-teal-100 leading-snug">
+                <p className="text-xs sm:text-sm font-semibold tracking-tighter text-teal-100 leading-snug">
                   "이번 학기 평균 <strong>{targetAvg}점</strong> 도전을 응원해! 이번 주 <strong>[{(pendingGoals[0] || studyGoals[0])?.subject?.split(' ')[1] || (pendingGoals[0] || studyGoals[0])?.subject || '주요 약점 과목'}]</strong> 학습 노트를 1건 더 정리하고 취합 퀴즈를 돌려보자!"
                 </p>
               </div>
@@ -731,11 +731,11 @@ export const StarRoadmap: React.FC = () => {
          ========================================================================= */}
       <div className="bg-white rounded-[32px] p-6 sm:p-8 border-2 border-[#CBD5E1] shadow-sm flex flex-col lg:flex-row items-center justify-between gap-6 relative overflow-hidden">
         <div className="space-y-1.5 text-center lg:text-left">
-          <div className="inline-flex items-center gap-1.5 bg-[#0D9488]/15 text-[#0D9488] px-3 py-1 rounded-full text-xs font-black">
+          <div className="inline-flex items-center gap-1.5 bg-[#0D9488]/15 text-[#0D9488] px-3 py-1 rounded-full text-xs font-semibold tracking-tighter">
             <Layers className="w-4 h-4 text-[#0D9488]" />
             <span>Smart Study Portfolio Control Center</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-headline font-black text-[#0F172A]">
+          <h2 className="text-2xl sm:text-3xl font-headline font-semibold tracking-tighter text-[#0F172A]">
             📚 총 <span className="text-[#0D9488] underline underline-offset-4">{notes.length}</span>건의 학습 학습 노트가 보관 중입니다
           </h2>
           <p className="text-xs sm:text-sm font-semibold text-[#475569] break-keep">
@@ -746,7 +746,7 @@ export const StarRoadmap: React.FC = () => {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 w-full lg:w-auto shrink-0">
           <button
             onClick={() => setShowNoteForm(true)}
-            className="w-full sm:w-auto px-6 py-4 rounded-2xl bg-[#0D9488] hover:brightness-110 text-white font-black text-sm sm:text-base shadow-[0_10px_25px_rgba(13,148,136,0.3)] transition-all flex items-center justify-center gap-2.5 transform hover:-translate-y-1 active:scale-95 cursor-pointer border-2 border-white/60"
+            className="w-full sm:w-auto px-6 py-4 rounded-3xl bg-[#0D9488] hover:brightness-110 text-white font-semibold tracking-tighter text-sm sm:text-base shadow-sm transition-all flex items-center justify-center gap-2.5 transform hover:-translate-y-1 active:scale-95 cursor-pointer border-2 border-white/60"
           >
             <Plus className="w-5 h-5 text-amber-300 stroke-[3]" />
             <span>✨ 새로운 학습 기록하기 (노트 작성)</span>
@@ -757,7 +757,7 @@ export const StarRoadmap: React.FC = () => {
               setSelectedQuizNoteIds([]);
               setShowQuizStudioModal(true);
             }}
-            className="w-full sm:w-auto px-6 py-4 rounded-2xl bg-[#0D9488] hover:brightness-110 text-white font-black text-sm sm:text-base shadow-[0_10px_25px_rgba(255,59,124,0.35)] transition-all flex items-center justify-center gap-2.5 transform hover:-translate-y-1 active:scale-95 cursor-pointer border-2 border-white/60"
+            className="w-full sm:w-auto px-6 py-4 rounded-3xl bg-[#0D9488] hover:brightness-110 text-white font-semibold tracking-tighter text-sm sm:text-base shadow-sm transition-all flex items-center justify-center gap-2.5 transform hover:-translate-y-1 active:scale-95 cursor-pointer border-2 border-white/60"
           >
             <Brain className="w-5 h-5 text-amber-300 animate-bounce-short" />
             <span>🤖 나만의 AI 학습 퀴즈 만들기 (AI 스튜디오)</span>
@@ -769,21 +769,21 @@ export const StarRoadmap: React.FC = () => {
           SECTION 3 (MODAL / TOGGLE PANEL): 신규 학습 노트 작성 및 AI 심화 요약 폼
          ========================================================================= */}
       {showNoteForm && (
-        <div className="bg-white rounded-[36px] p-7 sm:p-12 shadow-[0_20px_60px_rgba(13,148,136,0.18)] border-4 border-[#0D9488] space-y-8 animate-fadeIn relative">
+        <div className="bg-white rounded-[36px] p-7 sm:p-12 shadow-sm border-4 border-[#0D9488] space-y-8 animate-fadeIn relative">
           <button
             onClick={() => setShowNoteForm(false)}
-            className="absolute top-6 right-6 px-4 py-2 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-black text-xs flex items-center gap-1.5 transition-colors shadow-sm"
+            className="absolute top-6 right-6 px-4 py-2 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold tracking-tighter text-xs flex items-center gap-1.5 transition-colors shadow-sm"
           >
             <X className="w-4 h-4" />
             <span>작성창 닫기</span>
           </button>
 
           <div className="border-b-2 border-teal-100 pb-5">
-            <div className="inline-flex items-center gap-1.5 bg-[#0D9488]/15 text-[#0D9488] px-3.5 py-1 rounded-full text-xs font-black mb-2">
+            <div className="inline-flex items-center gap-1.5 bg-[#0D9488]/15 text-[#0D9488] px-3.5 py-1 rounded-full text-xs font-semibold tracking-tighter mb-2">
               <BookOpen className="w-4 h-4" />
               <span>Cornell Note-Taking System & AI 세특 연결</span>
             </div>
-            <h3 className="text-2xl sm:text-3xl font-headline font-black text-[#0F172A]">
+            <h3 className="text-2xl sm:text-3xl font-headline font-semibold tracking-tighter text-[#0F172A]">
               ✍️ 중·고등 및 고교학점제 맞춤 코넬 학습 노트 작성
             </h3>
             <p className="text-xs sm:text-sm font-semibold text-[#475569] mt-1 break-keep">
@@ -795,9 +795,9 @@ export const StarRoadmap: React.FC = () => {
             
             {/* 1. 학교급 선택 */}
             <div className="space-y-3">
-              <label className="text-xs sm:text-sm font-black text-[#0F172A] block flex items-center gap-2">
+              <label className="text-xs sm:text-sm font-semibold tracking-tighter text-[#0F172A] block flex items-center gap-2">
                 <span>🏫 1단계: 회원님의 학교급 및 교과과정을 선택하세요</span>
-                <span className="text-xs text-[#0D9488] font-bold">(교육과정 자동 연계)</span>
+                <span className="text-xs text-[#0D9488] font-medium tracking-tight">(교육과정 자동 연계)</span>
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {SCHOOL_LEVEL_INFO.map((level) => {
@@ -806,15 +806,15 @@ export const StarRoadmap: React.FC = () => {
                     <div
                       key={level.id}
                       onClick={() => setSelectedSchoolLevel(level.id as "high" | "middle")}
-                      className={`p-5 rounded-2xl border-2 transition-all cursor-pointer flex flex-col justify-between gap-2 ${
+                      className={`p-5 rounded-3xl border-2 transition-all cursor-pointer flex flex-col justify-between gap-2 ${
                         isSelected
                           ? "bg-[#F0FDFA] border-[#0D9488] shadow-md scale-[1.01]"
-                          : "bg-slate-50 border-slate-200 hover:bg-slate-100"
+                          : "bg-white border-slate-200 hover:bg-slate-100"
                       }`}
                     >
                       <div className="flex items-center justify-between">
-                        <h4 className="font-extrabold text-base text-[#0F172A]">{level.label}</h4>
-                        <span className={`text-[11px] px-2.5 py-1 rounded-full font-black ${isSelected ? 'bg-[#0D9488] text-white' : 'bg-slate-200 text-slate-600'}`}>
+                        <h4 className="font-semibold tracking-tighter text-base text-[#0F172A]">{level.label}</h4>
+                        <span className={`text-[11px] px-2.5 py-1 rounded-full font-semibold tracking-tighter ${isSelected ? 'bg-[#0D9488] text-white' : 'bg-slate-200 text-slate-600'}`}>
                           {level.badge}
                         </span>
                       </div>
@@ -828,13 +828,13 @@ export const StarRoadmap: React.FC = () => {
             {/* 2. 과목 영역 및 과목명 */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2 border-t border-slate-100">
               <div className="space-y-2">
-                <label className="text-xs sm:text-sm font-black text-[#0F172A] block">
+                <label className="text-xs sm:text-sm font-semibold tracking-tighter text-[#0F172A] block">
                   🏷️ 2단계: 교과 영역 분류
                 </label>
                 <select
                   value={categoryInput}
                   onChange={(e) => setCategoryInput(e.target.value)}
-                  className="w-full h-14 px-4 rounded-2xl bg-[#F8FAFC] border-2 border-slate-200 font-extrabold text-sm text-[#0F172A] focus:border-[#0D9488] focus:outline-none shadow-inner"
+                  className="w-full h-14 px-4 rounded-3xl bg-[#F8FAFC] border-2 border-slate-200 font-semibold tracking-tighter text-sm text-[#0F172A] focus:border-[#0D9488] focus:outline-none shadow-inner"
                 >
                   {SUBJECT_CATEGORIES.filter(c => c !== "전체").map((c, idx) => (
                     <option key={idx} value={c}>{c}</option>
@@ -843,21 +843,21 @@ export const StarRoadmap: React.FC = () => {
               </div>
 
               <div className="space-y-3 md:col-span-2">
-                <label className="text-xs sm:text-sm font-black text-[#0F172A] block flex items-center justify-between">
+                <label className="text-xs sm:text-sm font-semibold tracking-tighter text-[#0F172A] block flex items-center justify-between">
                   <span>📚 3단계: 과목명 및 세부 단원 / 범위</span>
-                  <span className="text-[11px] font-bold text-[#0D9488]">💡 하단 추천 과목을 클릭하면 입력됩니다</span>
+                  <span className="text-[11px] font-medium tracking-tight text-[#0D9488]">💡 하단 추천 과목을 클릭하면 입력됩니다</span>
                 </label>
                 <input
                   type="text"
                   placeholder="예: 물리학 I - 신소재 열역학, 혹은 통합사회 - 세계시민과 인권"
                   value={subjectInput}
                   onChange={(e) => setSubjectInput(e.target.value)}
-                  className="w-full h-14 px-5 rounded-2xl bg-[#F8FAFC] border-2 border-slate-200 font-bold text-sm text-[#0F172A] placeholder:text-[#94A3B8] focus:border-[#0D9488] focus:outline-none shadow-inner"
+                  className="w-full h-14 px-5 rounded-3xl bg-[#F8FAFC] border-2 border-slate-200 font-medium tracking-tight text-sm text-[#0F172A] placeholder:text-[#94A3B8] focus:border-[#0D9488] focus:outline-none shadow-inner"
                 />
 
                 {/* 추천 과목 칩 */}
-                <div className="bg-[#F0FDFA] p-4 rounded-2xl border border-teal-100 space-y-2">
-                  <span className="text-[11px] font-black text-[#0F766E] block">
+                <div className="bg-[#F0FDFA] p-4 rounded-3xl border border-teal-100 space-y-2">
+                  <span className="text-[11px] font-semibold tracking-tighter text-[#0F766E] block">
                     ✨ [{selectedSchoolLevel === "high" ? "고교학점제" : "중등 교과"}] {categoryInput} 영역 추천 과목 (클릭 시 자동 입력):
                   </span>
                   <div className="flex flex-wrap gap-1.5">
@@ -866,7 +866,7 @@ export const StarRoadmap: React.FC = () => {
                         key={i}
                         type="button"
                         onClick={() => setSubjectInput(chip)}
-                        className="text-xs font-black bg-white hover:bg-[#0D9488] hover:text-white text-[#0F766E] px-3 py-1.5 rounded-xl border border-teal-200 shadow-2xs transition-all duration-150 transform active:scale-95 cursor-pointer"
+                        className="text-xs font-semibold tracking-tighter bg-white hover:bg-[#0D9488] hover:text-white text-[#0F766E] px-3 py-1.5 rounded-2xl border border-teal-200 shadow-2xs transition-all duration-150 transform active:scale-95 cursor-pointer"
                       >
                         + {chip}
                       </button>
@@ -879,7 +879,7 @@ export const StarRoadmap: React.FC = () => {
             {/* 3. 학습 주제 및 핵심 키워드 */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2 border-t border-slate-100">
               <div className="space-y-2">
-                <label className="text-xs sm:text-sm font-black text-[#0F172A] block">
+                <label className="text-xs sm:text-sm font-semibold tracking-tighter text-[#0F172A] block">
                   🎯 4단계: 오늘의 핵심 탐구 주제 (Topic)
                 </label>
                 <input
@@ -887,12 +887,12 @@ export const StarRoadmap: React.FC = () => {
                   placeholder="예: 양자 역학 이론을 활용한 첨단 모빌리티 열변형 제어"
                   value={topicInput}
                   onChange={(e) => setTopicInput(e.target.value)}
-                  className="w-full h-14 px-5 rounded-2xl bg-[#F8FAFC] border-2 border-slate-200 font-bold text-sm text-[#0F172A] placeholder:text-[#94A3B8] focus:border-[#0D9488] focus:outline-none shadow-inner"
+                  className="w-full h-14 px-5 rounded-3xl bg-[#F8FAFC] border-2 border-slate-200 font-medium tracking-tight text-sm text-[#0F172A] placeholder:text-[#94A3B8] focus:border-[#0D9488] focus:outline-none shadow-inner"
                 />
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs sm:text-sm font-black text-[#0F172A] block">
+                <label className="text-xs sm:text-sm font-semibold tracking-tighter text-[#0F172A] block">
                   🔑 5단계: 핵심 키워드 3~5개 (Cornell Cues 란)
                 </label>
                 <input
@@ -900,14 +900,14 @@ export const StarRoadmap: React.FC = () => {
                   placeholder="예: 열역학 제2법칙, 엔트로피 제어, 초전도체, 융합사고"
                   value={keywordsInput}
                   onChange={(e) => setKeywordsInput(e.target.value)}
-                  className="w-full h-14 px-5 rounded-2xl bg-[#F8FAFC] border-2 border-slate-200 font-bold text-sm text-[#0F172A] placeholder:text-[#94A3B8] focus:border-[#0D9488] focus:outline-none shadow-inner"
+                  className="w-full h-14 px-5 rounded-3xl bg-[#F8FAFC] border-2 border-slate-200 font-medium tracking-tight text-sm text-[#0F172A] placeholder:text-[#94A3B8] focus:border-[#0D9488] focus:outline-none shadow-inner"
                 />
               </div>
             </div>
 
             {/* 4. 학습 요약 */}
             <div className="space-y-2 pt-2 border-t border-slate-100">
-              <label className="text-xs sm:text-sm font-black text-[#0F172A] block">
+              <label className="text-xs sm:text-sm font-semibold tracking-tighter text-[#0F172A] block">
                 📝 6단계: 나의 학습 요약 &amp; 심화 고찰 (Cornell Notes 란)
               </label>
               <textarea
@@ -915,7 +915,7 @@ export const StarRoadmap: React.FC = () => {
                 placeholder="학교 수업, 인터넷 강좌, 혹은 동아리 탐구를 통해 배우고 느낀 점, 의문점이나 융합 확장 아이디어를 적어보세요! AI가 '희망 직급 세특용 요약'을 자동 덧붙여 줍니다."
                 value={summaryInput}
                 onChange={(e) => setSummaryInput(e.target.value)}
-                className="w-full p-5 rounded-2xl bg-[#F8FAFC] border-2 border-slate-200 font-semibold text-sm text-[#0F172A] placeholder:text-[#94A3B8] focus:border-[#0D9488] focus:outline-none shadow-inner leading-relaxed"
+                className="w-full p-5 rounded-3xl bg-[#F8FAFC] border-2 border-slate-200 font-semibold text-sm text-[#0F172A] placeholder:text-[#94A3B8] focus:border-[#0D9488] focus:outline-none shadow-inner leading-relaxed"
               />
             </div>
 
@@ -924,14 +924,14 @@ export const StarRoadmap: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setShowNoteForm(false)}
-                className="w-full sm:w-auto px-7 py-4 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-black text-sm transition-all"
+                className="w-full sm:w-auto px-7 py-4 rounded-3xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold tracking-tighter text-sm transition-all"
               >
                 작성 취소 및 닫기
               </button>
               <button
                 type="submit"
                 disabled={isAiGenerating}
-                className="w-full sm:w-auto py-4 px-10 rounded-2xl bg-gradient-to-r from-[#0D9488] via-[#0F766E] to-[#047857] hover:brightness-110 text-white font-black text-base border-2 border-white shadow-[0_10px_25px_rgba(13,148,136,0.3)] hover:shadow-[0_15px_35px_rgba(13,148,136,0.45)] transition-all flex items-center justify-center gap-3 cursor-pointer"
+                className="w-full sm:w-auto py-4 px-10 rounded-3xl bg-gradient-to-r from-[#0D9488] via-[#0F766E] to-[#047857] hover:brightness-110 text-white font-semibold tracking-tighter text-base border-2 border-white shadow-sm hover:shadow-sm transition-all flex items-center justify-center gap-3 cursor-pointer"
               >
                 <Sparkles className={`w-6 h-6 text-amber-300 ${isAiGenerating ? "animate-spin" : ""}`} />
                 <span>{isAiGenerating ? "AI가 세특 심화 정리본 도출 중..." : "✨ AI 스마트 정리본 도출 및 보관함에 즉시 누적"}</span>
@@ -947,7 +947,7 @@ export const StarRoadmap: React.FC = () => {
       <div className="space-y-8">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-2 border-slate-200 pb-5">
           <div>
-            <h3 className="text-2xl font-headline font-black text-[#0F172A] flex items-center gap-2.5">
+            <h3 className="text-2xl font-headline font-semibold tracking-tighter text-[#0F172A] flex items-center gap-2.5">
               <FolderCheck className="w-8 h-8 text-[#0D9488]" />
               <span>🗂️ 나의 학습 노트</span>
             </h3>
@@ -958,7 +958,7 @@ export const StarRoadmap: React.FC = () => {
 
           {/* 카테고리 필터 탭 바 */}
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-xs font-black text-slate-400 mr-1 flex items-center gap-1">
+            <span className="text-xs font-semibold tracking-tighter text-slate-400 mr-1 flex items-center gap-1">
               <Filter className="w-3.5 h-3.5" /> 필터:
             </span>
             {SUBJECT_CATEGORIES.map((cat) => {
@@ -968,7 +968,7 @@ export const StarRoadmap: React.FC = () => {
                 <button
                   key={cat}
                   onClick={() => setSelectedCategory(cat)}
-                  className={`px-4 py-2 rounded-2xl font-black text-xs sm:text-sm transition-all shadow-sm flex items-center gap-1.5 ${
+                  className={`px-4 py-2 rounded-3xl font-semibold tracking-tighter text-xs sm:text-sm transition-all shadow-sm flex items-center gap-1.5 ${
                     isSelected
                       ? "bg-[#0D9488] text-white scale-105 shadow-md"
                       : "bg-white text-[#64748B] border border-slate-200 hover:bg-[#F0FDFA]"
@@ -988,19 +988,19 @@ export const StarRoadmap: React.FC = () => {
         {filteredNotes.length === 0 ? (
           <div className="w-full py-20 text-center bg-white rounded-[36px] border-2 border-dashed border-slate-200 space-y-3 shadow-sm">
             <span className="text-5xl block">📭</span>
-            <p className="text-lg font-extrabold text-[#0D9488]">선택하신 교과 영역에 등록된 학습 노트가 없습니다.</p>
-            <p className="text-xs font-bold text-[#64748B]">상단 [ ✨ 새로운 학습 기록하기 ] 버튼을 눌러 중·고교 교목 노트를 채워보세요!</p>
+            <p className="text-lg font-semibold tracking-tighter text-[#0D9488]">선택하신 교과 영역에 등록된 학습 노트가 없습니다.</p>
+            <p className="text-xs font-medium tracking-tight text-[#64748B]">상단 [ ✨ 새로운 학습 기록하기 ] 버튼을 눌러 중·고교 교목 노트를 채워보세요!</p>
           </div>
         ) : (
           <div className="space-y-6">
-            <div className="flex items-center justify-between bg-white px-6 py-4 rounded-2xl border border-slate-200/80 shadow-xs">
-              <span className="text-sm font-black text-[#0F172A] flex items-center gap-2">
+            <div className="flex items-center justify-between bg-white px-6 py-4 rounded-3xl border border-slate-200/80 shadow-xs">
+              <span className="text-sm font-semibold tracking-tighter text-[#0F172A] flex items-center gap-2">
                 <span>📚 <strong>{selectedCategory}</strong> 교과 쇼룸 갤러리</span>
                 <span className="px-2.5 py-0.5 rounded-full bg-teal-50 text-[#0D9488] text-xs border border-teal-200/80">총 {filteredNotes.length}개 기록</span>
               </span>
               <button
                 onClick={() => handleStartQuiz(filteredNotes)}
-                className="px-5 py-2 rounded-xl bg-[#0F766E] hover:bg-[#047857] text-white font-black text-xs sm:text-sm shadow-md transition-transform transform hover:scale-105 flex items-center gap-1.5"
+                className="px-5 py-2 rounded-2xl bg-[#0F766E] hover:bg-[#047857] text-white font-semibold tracking-tighter text-xs sm:text-sm shadow-md transition-transform transform hover:scale-105 flex items-center gap-1.5"
               >
                 <Brain className="w-4 h-4 text-amber-300 animate-pulse" />
                 <span>⚡ 이 교과 ({filteredNotes.length}건) 전체 취합 퀴즈</span>
@@ -1019,17 +1019,17 @@ export const StarRoadmap: React.FC = () => {
                     <div className="space-y-2.5 overflow-hidden w-full">
                       {/* 상단 과목 뱃지 & 날짜 */}
                       <div className="flex items-center justify-between gap-1.5">
-                        <span className="text-xs font-black px-3 py-1 rounded-full bg-teal-50 text-[#0D9488] border border-teal-200 truncate max-w-[140px] shadow-2xs">
+                        <span className="text-xs font-semibold tracking-tighter px-3 py-1 rounded-full bg-teal-50 text-[#0D9488] border border-teal-200 truncate max-w-[140px] shadow-2xs">
                           • {note.subject}
                         </span>
-                        <span className="text-xs font-bold text-slate-400 shrink-0">
+                        <span className="text-xs font-medium tracking-tight text-slate-400 shrink-0">
                           {note.date?.split(' ')[0] || note.date}
                         </span>
                       </div>
 
                       {/* 주제(Topic) 및 내 요약(MySummary) */}
                       <div className="space-y-1">
-                        <h4 className="text-base font-black text-[#1F193B] group-hover:text-[#0D9488] transition-colors line-clamp-2 leading-snug break-keep">
+                        <h4 className="text-base font-semibold tracking-tighter text-[#1F193B] group-hover:text-[#0D9488] transition-colors line-clamp-2 leading-snug break-keep">
                           {note.topic}
                         </h4>
                         <p className="text-xs font-semibold text-slate-500 line-clamp-2 leading-relaxed break-keep">
@@ -1040,18 +1040,18 @@ export const StarRoadmap: React.FC = () => {
                       {/* 핵심 키워드 태그 리스트 */}
                       <div className="flex flex-wrap gap-1.5 pt-1">
                         {tagList.slice(0, 3).map((tag, tIdx) => (
-                          <span key={tIdx} className="text-[11px] font-extrabold bg-slate-50 text-slate-600 px-2.5 py-0.5 rounded-lg border border-slate-200 shadow-2xs">
+                          <span key={tIdx} className="text-[11px] font-semibold tracking-tighter bg-white text-slate-600 px-2.5 py-0.5 rounded-lg border border-slate-200 shadow-2xs">
                             #{tag.replace(/^#/, '')}
                           </span>
                         ))}
                         {tagList.length > 3 && (
-                          <span className="text-[11px] font-black text-teal-600 px-1.5 py-0.5">+{tagList.length - 3}</span>
+                          <span className="text-[11px] font-semibold tracking-tighter text-teal-600 px-1.5 py-0.5">+{tagList.length - 3}</span>
                         )}
                       </div>
                     </div>
 
                     {/* 하단 스티커 액션바 */}
-                    <div className="pt-3.5 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-extrabold">
+                    <div className="pt-3.5 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-semibold tracking-tighter">
                       <span className="text-amber-600 flex items-center gap-1">
                         💡 {note.aiSummary ? "AI 세특 분석 완료" : "학습 노트 완성"}
                       </span>
@@ -1072,7 +1072,7 @@ export const StarRoadmap: React.FC = () => {
          ========================================================================= */}
       {activeQuizNotes && activeQuizNotes.length > 0 && (
         <div className="fixed inset-0 z-50 bg-black/65 backdrop-blur-md flex items-center justify-center p-4 animate-fadeIn">
-          <div className="bg-gradient-to-b from-white via-[#F0FDFA] to-[#E6FFFA] w-full max-w-4xl rounded-[40px] p-8 sm:p-12 shadow-[0_25px_80px_rgba(0,0,0,0.55)] border-4 border-white relative max-h-[90vh] overflow-y-auto space-y-8">
+          <div className="bg-gradient-to-b from-white via-[#F0FDFA] to-[#E6FFFA] w-full max-w-4xl rounded-[40px] p-8 sm:p-12 shadow-sm border-4 border-white relative max-h-[90vh] overflow-y-auto space-y-8">
             
             <button
               onClick={() => setActiveQuizNotes(null)}
@@ -1083,19 +1083,19 @@ export const StarRoadmap: React.FC = () => {
 
             <div className="text-center space-y-3 border-b-2 border-teal-100 pb-6">
               <div className="flex flex-wrap items-center justify-center gap-2">
-                <span className="text-xs font-black bg-[#FF3B7C] text-white px-4 py-1.5 rounded-full shadow-md inline-flex items-center gap-1.5">
+                <span className="text-xs font-semibold tracking-tighter bg-[#FF3B7C] text-white px-4 py-1.5 rounded-full shadow-md inline-flex items-center gap-1.5">
                   <Brain className="w-4 h-4 text-amber-300" />
                   <span>AI 맞춤 셀프 테스트 아레나</span>
                 </span>
-                <span className="text-xs font-black bg-[#0F766E] text-white px-3.5 py-1.5 rounded-full shadow-md">
+                <span className="text-xs font-semibold tracking-tighter bg-[#0F766E] text-white px-3.5 py-1.5 rounded-full shadow-md">
                   ⚡ {activeQuizNotes.length === 1 ? "단일 과목 딥다이브 모드" : `${activeQuizNotes.length}과목 취합·종합 융합 테스트`}
                 </span>
               </div>
 
-              <h3 className="text-2xl sm:text-4xl font-black text-[#0F172A] tracking-tight">
+              <h3 className="text-2xl sm:text-4xl font-semibold tracking-tighter text-[#0F172A] tracking-tight">
                 🧠 [{activeQuizNotes.length === 1 ? activeQuizNotes[0].subject : `${activeQuizNotes.map(n => n.subject.split('-')[0].trim()).slice(0, 2).join(", ")} 등 ${activeQuizNotes.length}과목 종합`}] 실전 점검!
               </h3>
-              <p className="text-xs sm:text-sm font-extrabold text-[#475569] break-keep">
+              <p className="text-xs sm:text-sm font-semibold tracking-tighter text-[#475569] break-keep">
                 {activeQuizNotes.length === 1 ? "해당 단일 학습 노트" : `선택하신 ${activeQuizNotes.length}개의 노트를 통합 취합`}하여 AI가 생성한 <strong>맞춤 문제</strong>입니다. 터치하여 해설과 마일리지를 획득하세요!
               </p>
             </div>
@@ -1105,16 +1105,16 @@ export const StarRoadmap: React.FC = () => {
                 <div className="w-16 h-16 rounded-full bg-[#0D9488] text-white text-3xl flex items-center justify-center mx-auto animate-spin-slow shadow-xl">
                   ✨
                 </div>
-                <h4 className="text-xl font-black text-[#0D9488]">
+                <h4 className="text-xl font-semibold tracking-tighter text-[#0D9488]">
                   AI 멘토 아리가 {activeQuizNotes.length > 1 ? `${activeQuizNotes.length}과목의 지식을 취합하여 융합` : '노트 데이터를 Deep Analysis하여'} 퀴즈를 출제 중입니다...
                 </h4>
-                <p className="text-xs text-slate-500 font-bold">고교학점제 및 진로 세특 시나리오 적용 중...</p>
+                <p className="text-xs text-slate-500 font-medium tracking-tight">고교학점제 및 진로 세특 시나리오 적용 중...</p>
               </div>
             ) : (
               <div className="space-y-8">
                 {quizzes.map((q, idx) => (
                   <div key={idx} className="bg-white p-6 sm:p-8 rounded-[32px] border-2 border-teal-150 shadow-md space-y-5">
-                    <h4 className="text-lg sm:text-xl font-extrabold text-[#0F172A] leading-snug">
+                    <h4 className="text-lg sm:text-xl font-semibold tracking-tighter text-[#0F172A] leading-snug">
                       {q.question}
                     </h4>
                     <div className="grid grid-cols-1 gap-3">
@@ -1123,10 +1123,10 @@ export const StarRoadmap: React.FC = () => {
                         const isCorrect = oIdx === q.correctIdx;
                         let btnStyle = "bg-[#F8FAFC] text-[#334155] border-2 border-slate-200 hover:bg-[#F1F5F9]";
                         if (showResults) {
-                          if (isCorrect) btnStyle = "bg-[#E2FDEC] text-[#007A3E] border-2 border-[#54E297] font-black shadow-md";
+                          if (isCorrect) btnStyle = "bg-[#E2FDEC] text-[#007A3E] border-2 border-[#54E297] font-semibold tracking-tighter shadow-md";
                           else if (isSelected && !isCorrect) btnStyle = "bg-[#FFE8EF] text-[#D3184E] border-2 border-[#FFA1BC]";
                         } else if (isSelected) {
-                          btnStyle = "bg-[#0D9488] text-white border-2 border-[#0F766E] font-black shadow-md";
+                          btnStyle = "bg-[#0D9488] text-white border-2 border-[#0F766E] font-semibold tracking-tighter shadow-md";
                         }
 
                         return (
@@ -1134,7 +1134,7 @@ export const StarRoadmap: React.FC = () => {
                             key={oIdx}
                             onClick={() => !showResults && setUserAnswers({ ...userAnswers, [idx]: oIdx })}
                             disabled={showResults}
-                            className={`w-full py-4 px-6 rounded-2xl text-left font-bold text-xs sm:text-sm transition-all flex items-center justify-between cursor-pointer ${btnStyle}`}
+                            className={`w-full py-4 px-6 rounded-3xl text-left font-medium tracking-tight text-xs sm:text-sm transition-all flex items-center justify-between cursor-pointer ${btnStyle}`}
                           >
                             <span>{opt}</span>
                             {showResults && isCorrect && <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 ml-2" />}
@@ -1144,7 +1144,7 @@ export const StarRoadmap: React.FC = () => {
                     </div>
 
                     {showResults && (
-                      <div className="mt-4 p-5 rounded-2xl bg-[#F0FDFA] border border-teal-200 text-xs sm:text-sm font-extrabold text-[#0F766E] space-y-1">
+                      <div className="mt-4 p-5 rounded-3xl bg-[#F0FDFA] border border-teal-200 text-xs sm:text-sm font-semibold tracking-tighter text-[#0F766E] space-y-1">
                         <span className="text-[11px] bg-[#0F766E] text-white px-2.5 py-0.5 rounded-md inline-block mr-2">💡 AI 멘토 해설</span>
                         <span>{q.explanation}</span>
                       </div>
@@ -1153,7 +1153,7 @@ export const StarRoadmap: React.FC = () => {
                 ))}
 
                 <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-4 border-t-2 border-teal-100">
-                  <span className="text-xs sm:text-sm font-black text-[#64748B]">
+                  <span className="text-xs sm:text-sm font-semibold tracking-tighter text-[#64748B]">
                     💡 문제를 모두 다 풀고 정답을 제출하면 진로 탐구 마일리지가 적립됩니다!
                   </span>
                   {!showResults ? (
@@ -1166,14 +1166,14 @@ export const StarRoadmap: React.FC = () => {
                         setShowResults(true);
                         rewardXP(60, "AI 맞춤 셀프 테스트 퀴즈 완료!");
                       }}
-                      className="w-full sm:w-auto py-4 px-10 rounded-2xl bg-[#0D9488] hover:bg-[#0F766E] text-white font-black text-base shadow-xl transition-transform transform hover:scale-105 cursor-pointer"
+                      className="w-full sm:w-auto py-4 px-10 rounded-3xl bg-[#0D9488] hover:bg-[#0F766E] text-white font-semibold tracking-tighter text-base shadow-xl transition-transform transform hover:scale-105 cursor-pointer"
                     >
                       💯 정답 채점 및 AI 해설 즉시 확인!
                     </button>
                   ) : (
                     <button
                       onClick={() => setActiveQuizNotes(null)}
-                      className="w-full sm:w-auto py-4 px-10 rounded-2xl bg-[#0F766E] hover:bg-[#047857] text-white font-black text-base shadow-xl transition-transform transform hover:scale-105 cursor-pointer"
+                      className="w-full sm:w-auto py-4 px-10 rounded-3xl bg-[#0F766E] hover:bg-[#047857] text-white font-semibold tracking-tighter text-base shadow-xl transition-transform transform hover:scale-105 cursor-pointer"
                     >
                       🏆 셀프 테스트 완수! 보관함으로 돌아가기 &rarr;
                     </button>
@@ -1191,7 +1191,7 @@ export const StarRoadmap: React.FC = () => {
          ========================================================================= */}
       {showQuizStudioModal && (
         <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center p-4 animate-fadeIn">
-          <div className="bg-gradient-to-b from-white via-[#F0FDFA] to-[#E6FFFA] w-full max-w-3xl rounded-[40px] p-7 sm:p-10 shadow-[0_25px_80px_rgba(0,0,0,0.55)] border-4 border-white relative max-h-[90vh] overflow-hidden flex flex-col space-y-6">
+          <div className="bg-gradient-to-b from-white via-[#F0FDFA] to-[#E6FFFA] w-full max-w-3xl rounded-[40px] p-7 sm:p-10 shadow-sm border-4 border-white relative max-h-[90vh] overflow-hidden flex flex-col space-y-6">
             
             <button
               onClick={() => setShowQuizStudioModal(false)}
@@ -1204,17 +1204,17 @@ export const StarRoadmap: React.FC = () => {
               <div className="w-16 h-16 rounded-3xl bg-white p-1.5 mx-auto shadow-xl border-2 border-teal-200 flex items-center justify-center animate-float">
                 <img src={ARI_BLOB_URL} alt="Ari Mascot" className="w-full h-full object-contain filter drop-shadow-md" />
               </div>
-              <h3 className="text-2xl sm:text-3xl font-black text-[#0F172A] tracking-tight">
+              <h3 className="text-2xl sm:text-3xl font-semibold tracking-tighter text-[#0F172A] tracking-tight">
                 🤖 나만의 AI 학습 퀴즈 만들기 <span className="text-[#0D9488]">(AI 퀴즈 스튜디오)</span>
               </h3>
-              <p className="text-xs sm:text-sm font-extrabold text-[#475569] break-keep leading-relaxed">
+              <p className="text-xs sm:text-sm font-semibold tracking-tighter text-[#475569] break-keep leading-relaxed">
                 한 과목을 집중 점검하는 <strong>[단독 퀴즈]</strong>는 물론, 여러 노트를 묶어 융합 역량을 시험하는 <strong>[취합 종합 퀴즈]</strong>를 자유롭게 선택해 보세요!
               </p>
 
               <div className="flex items-center justify-center gap-2 pt-2">
                 <button
                   onClick={() => setQuizStudioTab("multi")}
-                  className={`px-6 py-2.5 rounded-2xl font-black text-xs sm:text-sm transition-all flex items-center gap-2 ${
+                  className={`px-6 py-2.5 rounded-3xl font-semibold tracking-tighter text-xs sm:text-sm transition-all flex items-center gap-2 ${
                     quizStudioTab === "multi"
                       ? "bg-[#FF3B7C] text-white shadow-lg scale-105"
                       : "bg-slate-100 hover:bg-teal-50 text-slate-600 border border-slate-200"
@@ -1226,7 +1226,7 @@ export const StarRoadmap: React.FC = () => {
 
                 <button
                   onClick={() => setQuizStudioTab("single")}
-                  className={`px-6 py-2.5 rounded-2xl font-black text-xs sm:text-sm transition-all flex items-center gap-2 ${
+                  className={`px-6 py-2.5 rounded-3xl font-semibold tracking-tighter text-xs sm:text-sm transition-all flex items-center gap-2 ${
                     quizStudioTab === "single"
                       ? "bg-[#0D9488] text-white shadow-lg scale-105"
                       : "bg-slate-100 hover:bg-teal-50 text-slate-600 border border-slate-200"
@@ -1239,7 +1239,7 @@ export const StarRoadmap: React.FC = () => {
             </div>
 
             {notes.length === 0 ? (
-              <div className="py-12 text-center text-slate-500 font-bold space-y-2">
+              <div className="py-12 text-center text-slate-500 font-medium tracking-tight space-y-2">
                 <span className="text-4xl block">📭</span>
                 <p>아직 작성된 학습 노트가 없어요! 메인 화면에서 요약 노트를 먼저 등록해 주세요.</p>
               </div>
@@ -1247,7 +1247,7 @@ export const StarRoadmap: React.FC = () => {
               <div className="flex-grow overflow-y-auto pr-1 space-y-4">
                 
                 {quizStudioTab === "multi" && (
-                  <div className="flex items-center justify-between bg-teal-50/80 p-3.5 rounded-2xl border border-teal-200 text-xs font-black text-[#0F766E]">
+                  <div className="flex items-center justify-between bg-teal-50/80 p-3.5 rounded-3xl border border-teal-200 text-xs font-semibold tracking-tighter text-[#0F766E]">
                     <span>✨ 취합하고 싶은 과목들을 체크하고 하단 출제 버튼을 눌러주세요!</span>
                     <div className="flex gap-2">
                       <button
@@ -1295,7 +1295,7 @@ export const StarRoadmap: React.FC = () => {
                       >
                         <div className="space-y-2">
                           <div className="flex items-center justify-between">
-                            <span className="text-[11px] font-black bg-[#0F766E] text-white px-2.5 py-0.5 rounded-full">
+                            <span className="text-[11px] font-semibold tracking-tighter bg-[#0F766E] text-white px-2.5 py-0.5 rounded-full">
                               {note.subject}
                             </span>
                             {quizStudioTab === "multi" ? (
@@ -1303,22 +1303,22 @@ export const StarRoadmap: React.FC = () => {
                                 ✓
                               </div>
                             ) : (
-                              <span className="text-[10px] bg-teal-100 text-[#0F766E] font-black px-2 py-0.5 rounded-md">
+                              <span className="text-[10px] bg-teal-100 text-[#0F766E] font-semibold tracking-tighter px-2 py-0.5 rounded-md">
                                 단독 출제 &rarr;
                               </span>
                             )}
                           </div>
                           
-                          <h4 className="text-base font-black text-[#0F172A] line-clamp-1 tracking-tight">
+                          <h4 className="text-base font-semibold tracking-tighter text-[#0F172A] line-clamp-1 tracking-tight">
                             🎯 {note.topic}
                           </h4>
                           
-                          <p className="text-xs font-bold text-[#475569] line-clamp-2 bg-[#F8FAFC] p-2 rounded-xl border border-slate-100">
+                          <p className="text-xs font-medium tracking-tight text-[#475569] line-clamp-2 bg-[#F8FAFC] p-2 rounded-2xl border border-slate-100">
                             📌 {note.keywords}
                           </p>
                         </div>
 
-                        <div className="flex items-center justify-between text-[11px] font-black text-slate-400 pt-2 border-t border-slate-100">
+                        <div className="flex items-center justify-between text-[11px] font-semibold tracking-tighter text-slate-400 pt-2 border-t border-slate-100">
                           <span>📅 {note.date}</span>
                           <span className="text-[#0D9488]">
                             {quizStudioTab === "single" ? "🧠 클릭 시 즉시 도전" : (isChecked ? "✨ 취합 목록 포함됨" : "+ 터치하여 취합 추가")}
@@ -1335,10 +1335,10 @@ export const StarRoadmap: React.FC = () => {
             {quizStudioTab === "multi" && (
               <div className="pt-4 border-t-2 border-teal-100 flex flex-col sm:flex-row items-center justify-between gap-4 shrink-0 bg-white p-4 rounded-3xl shadow-lg border">
                 <div className="text-center sm:text-left">
-                  <span className="text-sm font-black text-[#0F172A] block">
+                  <span className="text-sm font-semibold tracking-tighter text-[#0F172A] block">
                     ✨ 현재 <strong className="text-[#FF3B7C] text-lg">{selectedQuizNoteIds.length}개</strong>의 학습 기록이 선택되었습니다.
                   </span>
-                  <span className="text-xs font-bold text-slate-500">2개 이상 선택 시, 과목 간 융합 역량 퀴즈가 생성됩니다.</span>
+                  <span className="text-xs font-medium tracking-tight text-slate-500">2개 이상 선택 시, 과목 간 융합 역량 퀴즈가 생성됩니다.</span>
                 </div>
 
                 <button
@@ -1351,7 +1351,7 @@ export const StarRoadmap: React.FC = () => {
                     setShowQuizStudioModal(false);
                     handleStartQuiz(selectedNotes);
                   }}
-                  className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-[#0D9488] hover:brightness-110 text-white font-black text-base shadow-xl transition-all transform hover:scale-105 active:scale-95 cursor-pointer flex items-center justify-center gap-2"
+                  className="w-full sm:w-auto px-8 py-4 rounded-3xl bg-[#0D9488] hover:brightness-110 text-white font-semibold tracking-tighter text-base shadow-xl transition-all transform hover:scale-105 active:scale-95 cursor-pointer flex items-center justify-center gap-2"
                 >
                   <Sparkles className="w-5 h-5 text-amber-300 animate-bounce-short" />
                   <span>🚀 선택한 {selectedQuizNoteIds.length}개 노트 통합 퀴즈 출제!</span>
@@ -1375,10 +1375,10 @@ export const StarRoadmap: React.FC = () => {
             {/* 헤더 */}
             <div className="p-6 bg-[#F8FAFC] border-b border-slate-200 flex items-center justify-between shrink-0">
               <div className="flex items-center gap-2">
-                <span className="px-3 py-1 bg-teal-600 text-white font-extrabold text-xs rounded-full shadow-2xs">
+                <span className="px-3 py-1 bg-teal-600 text-white font-semibold tracking-tighter text-xs rounded-full shadow-2xs">
                   {selectedDetailNote.subject}
                 </span>
-                <span className="text-xs text-slate-500 font-bold">📅 {selectedDetailNote.date}</span>
+                <span className="text-xs text-slate-500 font-medium tracking-tight">📅 {selectedDetailNote.date}</span>
               </div>
               <button 
                 onClick={() => setSelectedDetailNote(null)}
@@ -1391,12 +1391,12 @@ export const StarRoadmap: React.FC = () => {
             {/* 메인 스크롤 콘텐츠 영역 */}
             <div className="p-6 sm:p-8 overflow-y-auto space-y-6 flex-grow">
               <div className="space-y-2">
-                <h3 className="text-2xl font-black text-[#111] tracking-tight">
+                <h3 className="text-2xl font-semibold tracking-tighter text-[#111] tracking-tight">
                   🎯 {selectedDetailNote.topic}
                 </h3>
                 <div className="flex flex-wrap gap-1.5">
                   {selectedDetailNote.keywords.split(',').map((kw, kIdx) => (
-                    <span key={kIdx} className="text-xs font-extrabold bg-amber-50 text-amber-700 px-2.5 py-1 rounded-lg border border-amber-200">
+                    <span key={kIdx} className="text-xs font-semibold tracking-tighter bg-amber-50 text-amber-700 px-2.5 py-1 rounded-lg border border-amber-200">
                       #{kw.trim()}
                     </span>
                   ))}
@@ -1405,16 +1405,16 @@ export const StarRoadmap: React.FC = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 border-2 border-slate-200 rounded-3xl overflow-hidden">
                 <div className="bg-amber-50/50 p-5 space-y-2 md:col-span-1 border-b md:border-b-0 md:border-r border-slate-200">
-                  <span className="text-xs font-black text-rose-600 bg-rose-50 px-2.5 py-1 rounded-md border border-rose-200 inline-block">
+                  <span className="text-xs font-semibold tracking-tighter text-rose-600 bg-rose-50 px-2.5 py-1 rounded-md border border-rose-200 inline-block">
                     📌 Cues (핵심 개념)
                   </span>
-                  <p className="text-sm font-bold text-slate-700 leading-relaxed pt-1">
+                  <p className="text-sm font-medium tracking-tight text-slate-700 leading-relaxed pt-1">
                     {selectedDetailNote.keywords}
                   </p>
                 </div>
 
                 <div className="bg-white p-5 space-y-2 md:col-span-2">
-                  <span className="text-xs font-black text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200 inline-block">
+                  <span className="text-xs font-semibold tracking-tighter text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200 inline-block">
                     📝 Notes (학업 요약 & 고찰)
                   </span>
                   <p className="text-sm font-medium text-[#111] leading-relaxed whitespace-pre-wrap pt-1">
@@ -1427,11 +1427,11 @@ export const StarRoadmap: React.FC = () => {
                 <div className="bg-gradient-to-r from-[#F0FDFA] to-[#ECFDF5] p-6 rounded-3xl border border-teal-200 space-y-2">
                   <div className="flex items-center gap-2">
                     <Sparkles className="w-5 h-5 text-teal-600 animate-spin-slow" />
-                    <span className="text-xs font-extrabold text-teal-800 bg-white px-3 py-1 rounded-full border border-teal-200 shadow-2xs">
+                    <span className="text-xs font-semibold tracking-tighter text-teal-800 bg-white px-3 py-1 rounded-full border border-teal-200 shadow-2xs">
                       💡 AI 스마트 심화 정리 및 세특 매칭
                     </span>
                   </div>
-                  <p className="text-sm font-extrabold text-teal-900 leading-relaxed pt-1">
+                  <p className="text-sm font-semibold tracking-tighter text-teal-900 leading-relaxed pt-1">
                     {selectedDetailNote.aiSummary}
                   </p>
                 </div>
@@ -1439,21 +1439,21 @@ export const StarRoadmap: React.FC = () => {
             </div>
 
             {/* 푸터 버튼 */}
-            <div className="p-4 bg-slate-50 border-t border-slate-200 flex items-center justify-end gap-3 shrink-0">
+            <div className="p-4 bg-white border-t border-slate-200 flex items-center justify-end gap-3 shrink-0">
               <button
                 onClick={() => {
                   const target = selectedDetailNote;
                   setSelectedDetailNote(null);
                   handleStartQuiz([target]);
                 }}
-                className="px-6 py-3 rounded-xl bg-gradient-to-r from-rose-500 to-amber-500 hover:brightness-110 text-white font-black text-sm shadow-md transition-all flex items-center gap-2"
+                className="px-6 py-3 rounded-2xl bg-gradient-to-r from-rose-500 to-amber-500 hover:brightness-110 text-white font-semibold tracking-tighter text-sm shadow-md transition-all flex items-center gap-2"
               >
                 <Brain className="w-4 h-4 text-white" />
                 <span>🧠 이 노트 단독 퀴즈 도전</span>
               </button>
               <button
                 onClick={() => setSelectedDetailNote(null)}
-                className="px-6 py-3 rounded-xl bg-[#111] hover:bg-slate-800 text-white font-bold text-sm transition-all"
+                className="px-6 py-3 rounded-2xl bg-[#111] hover:bg-slate-800 text-white font-medium tracking-tight text-sm transition-all"
               >
                 닫기
               </button>

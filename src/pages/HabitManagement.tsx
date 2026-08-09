@@ -139,19 +139,19 @@ export const HabitManagement: React.FC = () => {
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 space-y-10">
       
       {/* Title Box */}
-      <div className="rounded-[36px] bg-[#1E293B] text-white p-8 sm:p-12 shadow-[0_18px_48px_rgba(106,66,237,0.22)] border-4 border-white/20 flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden">
+      <div className="rounded-[36px] bg-[#1E293B] text-white p-8 sm:p-12 shadow-sm border-4 border-white/20 flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden">
         <div className="space-y-4 max-w-2xl z-10 text-center sm:text-left">
           <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
-            <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-md px-4 py-1.5 rounded-full font-extrabold text-xs sm:text-sm tracking-wide border border-white/30 shadow-sm">
+            <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-md px-4 py-1.5 rounded-full font-semibold tracking-tighter text-xs sm:text-sm tracking-wide border border-white/30 shadow-sm">
               <Sparkles className="w-4 h-4 text-amber-300 animate-spin-slow" />
               <span>★ 나의 희망 진로: <strong>{targetJobName}</strong></span>
             </div>
-            <span className="bg-[#6A42ED] text-white text-xs sm:text-sm font-black px-3.5 py-1.5 rounded-full shadow-md">
+            <span className="bg-[#6A42ED] text-white text-xs sm:text-sm font-semibold tracking-tighter px-3.5 py-1.5 rounded-full shadow-md">
               🔥 50일 진로 챌린지
             </span>
           </div>
           
-          <h1 className="text-3xl sm:text-5xl font-headline font-black text-white tracking-tight leading-tight">
+          <h1 className="text-3xl sm:text-5xl font-headline font-semibold tracking-tighter text-white tracking-tight leading-tight">
             습관 &amp; 목표 관리
           </h1>
           <p className="text-sm sm:text-base font-semibold text-indigo-100 leading-relaxed">
@@ -165,7 +165,7 @@ export const HabitManagement: React.FC = () => {
               size="lg"
               onClick={handleAiRecommendHabits}
               icon={<Sparkles className="w-5 h-5 animate-pulse" />}
-              className="font-headline font-extrabold shadow-md whitespace-nowrap bg-[#0D9488] hover:bg-[#0F766E] border-none text-white"
+              className="font-headline font-semibold tracking-tighter shadow-md whitespace-nowrap bg-[#0D9488] hover:bg-[#0F766E] border-none text-white"
             >
               🤖 아리와 함께 진로 관련 습관 즉시 설계
             </Button>
@@ -183,11 +183,11 @@ export const HabitManagement: React.FC = () => {
       <section className="space-y-4">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-2xl font-extrabold text-[#1A1626] tracking-tight flex items-center gap-2">
+            <h2 className="text-2xl font-semibold tracking-tighter text-[#1A1626] tracking-tight flex items-center gap-2">
               <span>📌 오늘 할 일</span>
             </h2>
           </div>
-          <span className="text-xs font-bold bg-[#e6deff] text-[#6240d5] px-3.5 py-1 rounded-full border border-[#cbbeff] whitespace-nowrap">
+          <span className="text-xs font-medium tracking-tight bg-[#e6deff] text-[#6240d5] px-3.5 py-1 rounded-full border border-[#cbbeff] whitespace-nowrap">
             완료 시 경험치 10점 획득 ✨
           </span>
         </div>
@@ -197,19 +197,19 @@ export const HabitManagement: React.FC = () => {
             <div
               key={q.id}
               onClick={() => setFlippedQuestId(flippedQuestId === q.id ? null : q.id)}
-              className="bg-white rounded-[28px] p-6 border border-[#E3E1E9] shadow-[0_15px_35px_rgba(123,92,240,0.08)] hover:shadow-[0_25px_50px_rgba(123,92,240,0.16)] hover:border-[#7B5CF0]/50 transition-all duration-300 cursor-pointer flex flex-col justify-between group min-h-[170px] relative overflow-hidden"
+              className="bg-white rounded-[28px] p-6 border border-[#E3E1E9] shadow-sm hover:shadow-sm hover:border-[#7B5CF0]/50 transition-all duration-300 cursor-pointer flex flex-col justify-between group min-h-[170px] relative overflow-hidden"
             >
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <div className="w-12 h-12 rounded-2xl bg-[#f4f2fa] border border-[#cac4d7]/50 flex items-center justify-center text-2xl shadow-sm group-hover:scale-110 transition-transform">
+                  <div className="w-12 h-12 rounded-3xl bg-[#f4f2fa] border border-[#cac4d7]/50 flex items-center justify-center text-2xl shadow-sm group-hover:scale-110 transition-transform">
                     {q.icon}
                   </div>
-                  <span className="text-xs font-black bg-[#7af1fc]/30 text-[#006970] px-3 py-1 rounded-full border border-[#006970]/20">
+                  <span className="text-xs font-semibold tracking-tighter bg-[#7af1fc]/30 text-[#006970] px-3 py-1 rounded-full border border-[#006970]/20">
                     {q.exp}
                   </span>
                 </div>
                 <div>
-                  <h3 className={`text-lg font-extrabold transition-colors ${q.completed ? "text-[#7B5CF0] line-through" : "text-[#1A1626] group-hover:text-[#7B5CF0]"}`}>
+                  <h3 className={`text-lg font-semibold tracking-tighter transition-colors ${q.completed ? "text-[#7B5CF0] line-through" : "text-[#1A1626] group-hover:text-[#7B5CF0]"}`}>
                     {q.title}
                   </h3>
                   <p className="text-xs text-[#6E6A80] font-normal leading-relaxed mt-0.5">{q.desc}</p>
@@ -222,7 +222,7 @@ export const HabitManagement: React.FC = () => {
                     e.stopPropagation();
                     toggleQuest(q.id);
                   }}
-                  className={`px-4 py-2 rounded-full text-xs font-black flex items-center gap-1.5 transition-all ${
+                  className={`px-4 py-2 rounded-full text-xs font-semibold tracking-tighter flex items-center gap-1.5 transition-all ${
                     q.completed
                       ? "bg-[#006970] text-white shadow-md"
                       : "bg-[#f4f2fa] text-[#484554] hover:bg-[#7B5CF0] hover:text-white"
@@ -237,8 +237,8 @@ export const HabitManagement: React.FC = () => {
               </div>
 
               {flippedQuestId === q.id && (
-                <div className="mt-4 p-4 rounded-2xl bg-[#efedf5] border border-[#cac4d7]/60 text-xs text-[#1A1626] space-y-1.5 animate-fadeIn">
-                  <p className="font-extrabold text-[#6240d5]">💡 AI 역량 성장 연계 정보</p>
+                <div className="mt-4 p-4 rounded-3xl bg-[#efedf5] border border-[#cac4d7]/60 text-xs text-[#1A1626] space-y-1.5 animate-fadeIn">
+                  <p className="font-semibold tracking-tighter text-[#6240d5]">💡 AI 역량 성장 연계 정보</p>
                   <p className="text-text-muted leading-snug">이 퀘스트를 달성하면 생활기록부 '자기주도 학업역량' 및 '진로 탐색 태도' 평가 항목에 시도 포인트가 누적 기록됩니다!</p>
                 </div>
               )}
@@ -252,7 +252,7 @@ export const HabitManagement: React.FC = () => {
         
         {/* LEFT: Habit Selector List & New Form */}
         <div className="lg:col-span-4 space-y-4">
-          <h3 className="text-lg font-headline font-black text-text-primary flex items-center gap-2">
+          <h3 className="text-lg font-headline font-semibold tracking-tighter text-text-primary flex items-center gap-2">
             <Calendar className="w-5 h-5 text-primary" />
             <span>진행 중인 내 챌린지 목록</span>
           </h3>
@@ -274,12 +274,12 @@ export const HabitManagement: React.FC = () => {
                   }`}
                 >
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-headline font-black bg-surface-container-high text-text-muted px-2 py-0.5 rounded-full">
+                    <span className="text-[10px] font-headline font-semibold tracking-tighter bg-surface-container-high text-text-muted px-2 py-0.5 rounded-full">
                       #{h.category || "AI 챌린지"}
                     </span>
-                    <span className="text-xs font-black text-primary">{compDays.length} / {tgtDays}일</span>
+                    <span className="text-xs font-semibold tracking-tighter text-primary">{compDays.length} / {tgtDays}일</span>
                   </div>
-                  <strong className="text-sm md:text-base font-headline font-black text-text-primary block leading-snug">
+                  <strong className="text-sm md:text-base font-headline font-semibold tracking-tighter text-text-primary block leading-snug">
                     {h.title || (h as any).text || "50일 실천 목표"}
                   </strong>
                   <div className="w-full bg-surface-container-highest h-1.5 rounded-full overflow-hidden">
@@ -292,7 +292,7 @@ export const HabitManagement: React.FC = () => {
 
           {/* New Habit Form */}
           <Card variant="surface" padding="md" className="border border-surface-variant/60 shadow-inner space-y-3">
-            <span className="text-xs font-headline font-extrabold text-text-primary block">
+            <span className="text-xs font-headline font-semibold tracking-tighter text-text-primary block">
               + 새 50일 챌린지 목표 생성하기
             </span>
             <form onSubmit={handleCreateHabit} className="flex gap-2">
@@ -301,9 +301,9 @@ export const HabitManagement: React.FC = () => {
                 placeholder="예: 매일 영어 VOA 5분 듣기"
                 value={newTitle}
                 onChange={(e) => setNewTitle(e.target.value)}
-                className="flex-1 px-3 py-2 bg-surface-container-lowest border border-surface-variant/60 rounded-2xl text-xs focus:ring-2 focus:ring-primary font-bold shadow-inner"
+                className="flex-1 px-3 py-2 bg-surface-container-lowest border border-surface-variant/60 rounded-3xl text-xs focus:ring-2 focus:ring-primary font-medium tracking-tight shadow-inner"
               />
-              <Button variant="secondary" size="sm" type="submit" icon={<Plus className="w-4 h-4" />} className="font-extrabold">
+              <Button variant="secondary" size="sm" type="submit" icon={<Plus className="w-4 h-4" />} className="font-semibold tracking-tighter">
                 추가
               </Button>
             </form>
@@ -314,16 +314,16 @@ export const HabitManagement: React.FC = () => {
         <Card variant="hero" padding="lg" className="lg:col-span-8 shadow-3d-ambient bg-gradient-to-t from-surface-container-lowest to-surface border border-surface-variant/50 space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-surface-variant/30 pb-4">
             <div>
-              <span className="text-xs font-headline font-black text-secondary uppercase tracking-wider block mb-1">
+              <span className="text-xs font-headline font-semibold tracking-tighter text-secondary uppercase tracking-wider block mb-1">
                 📅 나의 50일 찼린지
               </span>
-              <h2 className="text-2xl font-headline font-black text-text-primary leading-tight">
+              <h2 className="text-2xl font-headline font-semibold tracking-tighter text-text-primary leading-tight">
                 {activeHabit.title}
               </h2>
             </div>
-            <div className="bg-secondary/10 px-4 py-2 rounded-2xl border border-secondary/30 flex items-center gap-2 self-start sm:self-auto shadow-sm">
+            <div className="bg-secondary/10 px-4 py-2 rounded-3xl border border-secondary/30 flex items-center gap-2 self-start sm:self-auto shadow-sm">
               <Flame className="w-5 h-5 text-secondary-spot animate-bounce" />
-              <span className="text-sm font-headline font-black text-secondary">
+              <span className="text-sm font-headline font-semibold tracking-tighter text-secondary">
                 현재 <strong>{currentStreak}일차</strong> 챌린지 성공! ({successRate}%)
               </span>
             </div>
@@ -338,7 +338,7 @@ export const HabitManagement: React.FC = () => {
                 <button
                   key={dayNo}
                   onClick={() => handleToggleDay(dayNo)}
-                  className={`h-14 rounded-2xl font-headline font-black text-xs md:text-sm flex flex-col items-center justify-center transition-all duration-150 select-none shadow-sm ${
+                  className={`h-14 rounded-3xl font-headline font-semibold tracking-tighter text-xs md:text-sm flex flex-col items-center justify-center transition-all duration-150 select-none shadow-sm ${
                     isCompleted
                       ? "bg-gradient-to-br from-primary to-secondary text-white shadow-3d-base scale-105"
                       : "bg-surface-container hover:bg-surface-container-high text-text-muted hover:text-text-primary border border-surface-variant/40"
@@ -358,7 +358,7 @@ export const HabitManagement: React.FC = () => {
             <div className="flex items-center gap-4">
               <MascotAri pose="celebrate" size="sm" rotate={false} />
               <div className="space-y-1">
-                <strong className="text-sm font-headline font-extrabold text-text-primary block">
+                <strong className="text-sm font-headline font-semibold tracking-tighter text-text-primary block">
                   👊 화이팅! 계속 해요
                 </strong>
                 <p className="text-xs text-text-muted leading-relaxed font-body-md">
@@ -367,10 +367,10 @@ export const HabitManagement: React.FC = () => {
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <Button variant="primary" size="sm" onClick={() => navigate("/activity-form")} className="font-extrabold text-xs whitespace-nowrap shadow-sm">
+              <Button variant="primary" size="sm" onClick={() => navigate("/activity-form")} className="font-semibold tracking-tighter text-xs whitespace-nowrap shadow-sm">
                 <FileText className="w-3.5 h-3.5 mr-1 inline" /> ✏️ 실천 활동 기록하기 &rarr;
               </Button>
-              <Button variant="outline" size="sm" onClick={() => navigate("/portfolio")} className="font-extrabold text-xs whitespace-nowrap bg-white shadow-sm">
+              <Button variant="outline" size="sm" onClick={() => navigate("/portfolio")} className="font-semibold tracking-tighter text-xs whitespace-nowrap bg-white shadow-sm">
                 포트폴리오 보관함
               </Button>
             </div>

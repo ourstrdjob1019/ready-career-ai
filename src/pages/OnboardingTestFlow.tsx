@@ -81,12 +81,12 @@ export const OnboardingTestFlow: React.FC = () => {
 
   if (currentView === "calculating") {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6">
+      <div className="min-h-screen bg-white flex items-center justify-center p-6">
         <div className="bg-white rounded-3xl p-10 max-w-sm w-full text-center shadow-xl border border-slate-100">
-          <div className="w-20 h-20 bg-indigo-50 rounded-2xl mx-auto flex items-center justify-center mb-6 animate-pulse">
+          <div className="w-20 h-20 bg-gray-100 rounded-3xl mx-auto flex items-center justify-center mb-6 animate-pulse">
             <span className="text-4xl">🤖</span>
           </div>
-          <h2 className="text-2xl font-black text-slate-800 mb-3 tracking-tight">AI 멘토가<br/>결과를 분석중이에요!</h2>
+          <h2 className="text-2xl font-semibold tracking-tighter text-slate-800 mb-3 tracking-tight">AI 멘토가<br/>결과를 분석중이에요!</h2>
           <p className="text-sm text-slate-500 font-medium leading-relaxed">수만 개의 직업 데이터를<br/>조합하고 있습니다...</p>
         </div>
       </div>
@@ -116,24 +116,24 @@ export const OnboardingTestFlow: React.FC = () => {
     );
 
     return (
-      <div className="min-h-screen bg-slate-50 pt-10 pb-20 px-5">
+      <div className="min-h-screen bg-white pt-10 pb-20 px-5">
         <div className="max-w-md mx-auto space-y-6">
           <div className="bg-white rounded-3xl p-7 shadow-sm border border-slate-200/60">
-            <div className="inline-block px-3 py-1 bg-indigo-50 text-indigo-600 font-black text-xs rounded-full mb-4">
+            <div className="inline-block px-3 py-1 bg-gray-100 text-black font-semibold tracking-tighter text-xs rounded-full mb-4">
               나의 진로흥미 코드 · {finalCode}
             </div>
-            <h1 className="text-2xl font-black text-slate-800 mb-2">{profile.title}</h1>
+            <h1 className="text-2xl font-semibold tracking-tighter text-slate-800 mb-2">{profile.title}</h1>
             <p className="text-sm text-slate-600 leading-relaxed mb-6">{profile.summary}</p>
             
-            <div className="flex items-center justify-between gap-3 bg-slate-50 p-4 rounded-2xl border border-slate-100 mb-6">
+            <div className="flex items-center justify-between gap-3 bg-white p-4 rounded-3xl border border-slate-100 mb-6">
               <div className="text-center flex-1">
-                <div className="text-2xl font-black text-indigo-600 mb-1">{primary}</div>
-                <div className="text-xs font-bold text-slate-700">{pInfo.name}</div>
+                <div className="text-2xl font-semibold tracking-tighter text-black mb-1">{primary}</div>
+                <div className="text-xs font-medium tracking-tight text-slate-700">{pInfo.name}</div>
               </div>
-              <div className="text-slate-300 font-black">+</div>
+              <div className="text-slate-300 font-semibold tracking-tighter">+</div>
               <div className="text-center flex-1">
-                <div className="text-2xl font-black text-blue-500 mb-1">{secondary}</div>
-                <div className="text-xs font-bold text-slate-700">{sInfo.name}</div>
+                <div className="text-2xl font-semibold tracking-tighter text-blue-500 mb-1">{secondary}</div>
+                <div className="text-xs font-medium tracking-tight text-slate-700">{sInfo.name}</div>
               </div>
             </div>
             
@@ -145,7 +145,7 @@ export const OnboardingTestFlow: React.FC = () => {
                     <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-white shadow-sm border-2 border-indigo-50 flex items-center justify-center overflow-hidden mb-2 group cursor-pointer hover:border-indigo-400 transition-all" onClick={() => setSelectedJob(job)}>
                       <img src={job.defaultImageUrl} alt={job.jobName} className="w-full h-full object-contain drop-shadow-sm group-hover:scale-110 transition-transform" />
                     </div>
-                    <span className="text-[11px] sm:text-xs font-bold text-slate-600">{job.jobName}</span>
+                    <span className="text-[11px] sm:text-xs font-medium tracking-tight text-slate-600">{job.jobName}</span>
                   </div>
                 ))}
               </div>
@@ -153,7 +153,7 @@ export const OnboardingTestFlow: React.FC = () => {
           </div>
 
           <div className="bg-white rounded-3xl p-7 shadow-sm border border-slate-200/60">
-            <h2 className="text-lg font-black text-slate-800 mb-4 text-center">
+            <h2 className="text-lg font-semibold tracking-tighter text-slate-800 mb-4 text-center">
               내 성향에 딱 맞는 직업 선택하기
             </h2>
             <p className="text-slate-500 text-xs text-center mb-6 font-medium break-keep">
@@ -164,10 +164,10 @@ export const OnboardingTestFlow: React.FC = () => {
                 <button
                   key={job.jobName}
                   onClick={() => setSelectedJob(job)}
-                  className="bg-slate-50 hover:bg-slate-100 border border-slate-100 rounded-2xl p-4 flex flex-col items-center transition-all group shadow-sm hover:shadow-md"
+                  className="bg-white hover:bg-slate-100 border border-slate-100 rounded-3xl p-4 flex flex-col items-center transition-all group shadow-sm hover:shadow-md"
                 >
                   <img src={job.defaultImageUrl} alt={job.jobName} className="w-32 h-32 sm:w-40 sm:h-40 object-contain mb-3 drop-shadow-sm group-hover:scale-110 transition-transform" />
-                  <span className="text-base sm:text-lg font-black text-slate-700">{job.jobName}</span>
+                  <span className="text-base sm:text-lg font-semibold tracking-tighter text-slate-700">{job.jobName}</span>
                 </button>
               ))}
             </div>
@@ -180,18 +180,18 @@ export const OnboardingTestFlow: React.FC = () => {
             <div className="bg-white rounded-[32px] p-6 sm:p-10 max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative text-center">
               <button 
                 onClick={() => setSelectedJob(null)}
-                className="absolute top-4 right-5 sm:top-6 sm:right-6 p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-full font-bold text-xl transition-colors"
+                className="absolute top-4 right-5 sm:top-6 sm:right-6 p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-full font-medium tracking-tight text-xl transition-colors"
               >
                 ✕
               </button>
               
-              <div className="flex flex-col sm:flex-row items-center gap-6 sm:gap-10 text-left mb-10 bg-slate-50 p-6 sm:p-8 rounded-[24px] border border-slate-100">
+              <div className="flex flex-col sm:flex-row items-center gap-6 sm:gap-10 text-left mb-10 bg-white p-6 sm:p-8 rounded-[24px] border border-slate-100">
                 <div className="w-40 h-40 sm:w-48 sm:h-48 shrink-0 relative">
-                  <div className="absolute inset-0 bg-indigo-100 rounded-full blur-xl opacity-50" />
+                  <div className="absolute inset-0 bg-gray-200 rounded-full blur-xl opacity-50" />
                   <img src={selectedJob.defaultImageUrl} alt={selectedJob.jobName} className="w-full h-full object-contain relative z-10 drop-shadow-xl" />
                 </div>
                 <div>
-                  <h2 className="text-3xl sm:text-4xl font-black text-slate-900 mb-3">{selectedJob.jobName}</h2>
+                  <h2 className="text-3xl sm:text-4xl font-semibold tracking-tighter text-slate-900 mb-3">{selectedJob.jobName}</h2>
                   <p className="text-base sm:text-lg text-slate-600 leading-relaxed font-medium break-keep">
                     {selectedJob.description || "이 직업과 함께 나의 커리어 여정을 시작해보세요!"}
                   </p>
@@ -200,7 +200,7 @@ export const OnboardingTestFlow: React.FC = () => {
 
               {/* Lv.1 ~ Lv.5 진화 UI */}
               <div className="mb-10 text-left">
-                <h3 className="text-xl font-black text-slate-800 mb-6 flex items-center gap-2">
+                <h3 className="text-xl font-semibold tracking-tighter text-slate-800 mb-6 flex items-center gap-2">
                   <span className="text-2xl">⚡</span> 성장 로드맵 엿보기
                 </h3>
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
@@ -211,15 +211,15 @@ export const OnboardingTestFlow: React.FC = () => {
                     { lv: "Lv.4", badge: "차세대 고수", name: "엑스퍼트" },
                     { lv: "Lv.5", badge: "마스터", name: "마스터" },
                   ].map((item, i) => (
-                    <div key={i} className="rounded-[24px] bg-slate-50 p-4 border border-slate-200 hover:border-indigo-400 transition-all flex flex-col items-center justify-between space-y-3 group">
+                    <div key={i} className="rounded-[24px] bg-white p-4 border border-slate-200 hover:border-indigo-400 transition-all flex flex-col items-center justify-between space-y-3 group">
                       <div className="w-full flex flex-col items-center space-y-1">
-                        <span className="text-xs font-black bg-white px-3 py-0.5 rounded-full shadow-xs border border-slate-200">{item.lv}</span>
-                        <span className="text-[11px] font-bold text-slate-500">{item.badge}</span>
+                        <span className="text-xs font-semibold tracking-tighter bg-white px-3 py-0.5 rounded-full shadow-xs border border-slate-200">{item.lv}</span>
+                        <span className="text-[11px] font-medium tracking-tight text-slate-500">{item.badge}</span>
                       </div>
-                      <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-white p-2 border border-slate-100 flex items-center justify-center my-2 group-hover:scale-105 transition-transform shadow-xs">
+                      <div className="w-32 h-32 sm:w-36 sm:h-36 rounded-full bg-white p-2 border border-slate-100 flex items-center justify-center my-2 group-hover:scale-105 transition-transform shadow-xs">
                         <img src={getJobCharacterImage(selectedJob.jobName, i + 1)} alt="stage" className="w-full h-full object-contain filter drop-shadow-sm" />
                       </div>
-                      <strong className="text-[11px] font-black text-slate-800 text-center w-full bg-white rounded-xl py-2 px-1 border border-slate-200/80 shadow-xs truncate">
+                      <strong className="text-[11px] font-semibold tracking-tighter text-slate-800 text-center w-full bg-white rounded-2xl py-2 px-1 border border-slate-200/80 shadow-xs truncate">
                         {getJobCharacterTitle(selectedJob.jobName, i + 1, item.name)}
                       </strong>
                     </div>
@@ -229,7 +229,7 @@ export const OnboardingTestFlow: React.FC = () => {
               
               <button
                 onClick={() => selectFinalJob(selectedJob.jobName)}
-                className="w-full max-w-md mx-auto bg-indigo-600 hover:bg-indigo-700 text-white font-black text-lg sm:text-xl py-5 rounded-[20px] shadow-[0_8px_30px_rgba(79,70,229,0.3)] hover:shadow-[0_12px_40px_rgba(79,70,229,0.4)] transition-all flex items-center justify-center gap-2"
+                className="w-full max-w-md mx-auto bg-black hover:bg-gray-800 text-white font-semibold tracking-tighter text-lg sm:text-xl py-5 rounded-full shadow-sm hover:shadow-sm transition-all flex items-center justify-center gap-2"
               >
                 <span>이 직업으로 여정 시작하기</span>
                 <span>🚀</span>
@@ -246,19 +246,19 @@ export const OnboardingTestFlow: React.FC = () => {
   const typeInfo = (RIASEC_TYPES as any)[currentQ.t];
 
   return (
-    <div className="min-h-screen bg-[#F5F6F8] flex flex-col">
+    <div className="min-h-screen bg-[#F5F5F5] flex flex-col">
       {/* 상단 30문항 러닝 막대 & 헤더 */}
       <header className="sticky top-0 z-20 bg-white/90 backdrop-blur-md border-b border-slate-100 px-5 py-4 shadow-sm">
-        <div className="max-w-md mx-auto flex items-center justify-between text-indigo-700">
-          <div className="flex items-center gap-2 font-black text-base tracking-tight">
+        <div className="max-w-md mx-auto flex items-center justify-between text-black">
+          <div className="flex items-center gap-2 font-semibold tracking-tighter text-base tracking-tight">
             <span>🚀 K-RIASEC 진로흥미검사</span>
           </div>
-          <div className="text-xs font-black bg-indigo-100 px-3 py-1 rounded-full">
+          <div className="text-xs font-semibold tracking-tighter bg-gray-200 px-3 py-1 rounded-full">
             문항 {qIndex + 1} / {RIASEC_QUESTIONS.length} ({progress}%)
           </div>
         </div>
         <div className="max-w-md mx-auto w-full h-3 bg-slate-100 rounded-full mt-3 overflow-hidden shadow-inner p-0.5 relative">
-          <div className="h-full rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-600 transition-all duration-300 shadow-sm" style={{ width: `${progress}%` }} />
+          <div className="h-full rounded-full bg-gradient-to-r from-gray-700 via-gray-800 to-black transition-all duration-300 shadow-sm" style={{ width: `${progress}%` }} />
         </div>
       </header>
 
@@ -272,10 +272,10 @@ export const OnboardingTestFlow: React.FC = () => {
               alt="진단검사 캐릭터" 
               className="w-24 h-24 object-contain drop-shadow-md mx-auto mb-4 group-hover:scale-105 transition-transform" 
             />
-            <span className="text-[11px] font-black text-indigo-500 bg-indigo-50 px-4 py-1.5 rounded-full mb-5 inline-block shadow-sm">
+            <span className="text-[11px] font-semibold tracking-tighter text-gray-600 bg-gray-100 px-4 py-1.5 rounded-full mb-5 inline-block shadow-sm">
               {typeInfo.name} 질문
             </span>
-            <p className="text-xl md:text-2xl font-bold text-slate-800 leading-snug break-keep">"{currentQ.q}"</p>
+            <p className="text-xl md:text-2xl font-medium tracking-tight text-slate-800 leading-snug break-keep">"{currentQ.q}"</p>
           </div>
         </div>
 
@@ -284,7 +284,7 @@ export const OnboardingTestFlow: React.FC = () => {
           {LIKERT_OPTIONS.map((opt) => {
             const isSelected = answers[qIndex] === opt.value;
             const colorClass = opt.color === "indigo" 
-              ? "bg-indigo-50 border-indigo-200 text-indigo-700 hover:bg-indigo-100 hover:border-indigo-400" 
+              ? "bg-gray-100 border-gray-300 text-black hover:bg-gray-200 hover:border-indigo-400" 
               : "bg-rose-50 border-rose-200 text-rose-700 hover:bg-rose-100 hover:border-rose-400";
             
             const selectedClass = opt.color === "indigo"
@@ -295,7 +295,7 @@ export const OnboardingTestFlow: React.FC = () => {
               <button
                 key={opt.value}
                 onClick={() => handleSelectAnswer(opt.value)}
-                className={`w-full py-8 px-4 rounded-2xl border-2 font-black text-lg md:text-xl transition-all flex flex-col items-center justify-center gap-2 ${
+                className={`w-full py-8 px-4 rounded-3xl border-2 font-semibold tracking-tighter text-lg md:text-xl transition-all flex flex-col items-center justify-center gap-2 ${
                   isSelected ? selectedClass : colorClass
                 }`}
               >

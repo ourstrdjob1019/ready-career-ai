@@ -70,8 +70,8 @@ export const Header: React.FC = () => {
           </div>
           <div className="flex flex-col">
             <div className="flex items-center gap-1.5">
-              <span className="font-headline font-bold text-xl text-[#1A1626] tracking-tight group-hover:text-[#7B5CF0] transition-colors">
-                ReadyCareer <span className="text-[#7B5CF0] font-black">AI</span>
+              <span className="font-headline font-medium tracking-tight text-xl text-[#1A1626] tracking-tight group-hover:text-[#7B5CF0] transition-colors">
+                ReadyCareer <span className="text-[#7B5CF0] font-semibold tracking-tighter">AI</span>
               </span>
             </div>
             <span className="text-[11px] text-text-muted font-body-md">
@@ -94,7 +94,7 @@ export const Header: React.FC = () => {
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`px-3.5 py-2 rounded-full text-xs font-headline font-black flex items-center gap-1.5 transition-all duration-150 whitespace-nowrap ${
+                  className={`px-3.5 py-2 rounded-full text-xs font-headline font-semibold tracking-tighter flex items-center gap-1.5 transition-all duration-150 whitespace-nowrap ${
                     isActive
                       ? "bg-primary text-on-primary shadow-3d-base scale-[1.02]"
                       : "text-text-muted hover:text-text-primary hover:bg-surface-container-low"
@@ -103,7 +103,7 @@ export const Header: React.FC = () => {
                   <IconComponent className="w-3.5 h-3.5 flex-shrink-0" />
                   <span>{item.label}</span>
                   {(item as any).badge && (
-                    <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-black ml-0.5 ${
+                    <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-semibold tracking-tighter ml-0.5 ${
                       isActive ? "bg-white/20 text-white" : "bg-secondary/15 text-secondary"
                     }`}>
                       {(item as any).badge}
@@ -132,10 +132,10 @@ export const Header: React.FC = () => {
                 ) : (
                   <UserCheck className="w-4 h-4 text-primary group-hover:scale-110 transition-transform flex-shrink-0" />
                 )}
-                <span className="text-xs font-headline font-black text-text-primary whitespace-nowrap group-hover:text-primary transition-colors">
+                <span className="text-xs font-headline font-semibold tracking-tighter text-text-primary whitespace-nowrap group-hover:text-primary transition-colors">
                   {localStorage.getItem("readycareer_student_name") || (session.name && session.name.trim() !== "" ? session.name : "신규 방문 학생")}
                 </span>
-                <Chip size="sm" variant={session.role === "super_admin" || session.role === "teacher" ? "teal" : "default"} className="py-0.5 text-[10px] font-extrabold whitespace-nowrap">
+                <Chip size="sm" variant={session.role === "super_admin" || session.role === "teacher" ? "teal" : "default"} className="py-0.5 text-[10px] font-semibold tracking-tighter whitespace-nowrap">
                   {session.role === "super_admin" ? "마스터" : session.role === "teacher" ? "교직원" : "마이페이지 🌟"}
                 </Chip>
               </Link>
@@ -143,7 +143,7 @@ export const Header: React.FC = () => {
               {/* Logout button */}
               <button
                 onClick={handleLogout}
-                className="inline-flex items-center gap-1.5 text-xs font-bold px-3.5 py-2 rounded-full bg-surface-container border border-surface-variant/60 text-text-muted hover:text-error hover:border-error/40 transition-colors whitespace-nowrap"
+                className="inline-flex items-center gap-1.5 text-xs font-medium tracking-tight px-3.5 py-2 rounded-full bg-surface-container border border-surface-variant/60 text-text-muted hover:text-error hover:border-error/40 transition-colors whitespace-nowrap"
                 title="로그아웃"
               >
                 <LogOut className="w-3.5 h-3.5" />
@@ -152,7 +152,7 @@ export const Header: React.FC = () => {
             </div>
           ) : (
             /* 비로그인 혹은 첫 진입 시 우측은 깔끔하게 유지 */
-            <div className="text-xs font-headline font-bold text-text-muted">
+            <div className="text-xs font-headline font-medium tracking-tight text-text-muted">
               <span>2026 ReadyCareer AI 스마트 에듀테크 플랫폼</span>
             </div>
           )}
@@ -163,7 +163,7 @@ export const Header: React.FC = () => {
           <div className="flex md:hidden items-center gap-2">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-2xl bg-surface-container text-text-primary focus:outline-none"
+              className="p-2 rounded-3xl bg-surface-container text-text-primary focus:outline-none"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
@@ -174,8 +174,8 @@ export const Header: React.FC = () => {
       {/* Mobile Dropdown Navigation */}
       {mobileMenuOpen && isAuthenticated && !isStartScreen && (
         <div className="md:hidden bg-surface-container-lowest/95 backdrop-blur-xl border-b border-surface-variant/50 px-4 py-5 space-y-4 shadow-2xl">
-          <div className="p-3 bg-surface-container rounded-2xl flex items-center justify-between text-xs">
-            <span className="font-black text-text-primary flex items-center gap-1.5">
+          <div className="p-3 bg-surface-container rounded-3xl flex items-center justify-between text-xs">
+            <span className="font-semibold tracking-tighter text-text-primary flex items-center gap-1.5">
               {session?.role === "super_admin" ? "👑" : session?.role === "teacher" ? "👨‍🏫" : "🧑‍🎓"} {session?.name}
             </span>
             <Chip size="sm" variant={session?.role === "super_admin" || session?.role === "teacher" ? "teal" : "default"}>
@@ -192,7 +192,7 @@ export const Header: React.FC = () => {
                   key={item.path}
                   to={item.path}
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`px-4 py-3 rounded-2xl font-headline font-bold text-base flex items-center justify-between ${
+                  className={`px-4 py-3 rounded-3xl font-headline font-medium tracking-tight text-base flex items-center justify-between ${
                     isActive
                       ? "bg-primary text-on-primary shadow-sm"
                       : "text-text-primary bg-surface-container-low"
@@ -210,7 +210,7 @@ export const Header: React.FC = () => {
           <div className="pt-2 border-t border-surface-variant/30">
             <button
               onClick={handleLogout}
-              className="w-full py-3 rounded-xl bg-error-container/20 text-error font-bold text-sm flex items-center justify-center gap-2"
+              className="w-full py-3 rounded-2xl bg-error-container/20 text-error font-medium tracking-tight text-sm flex items-center justify-center gap-2"
             >
               <LogOut className="w-4 h-4" />
               <span>로그아웃 (세션 종료)</span>

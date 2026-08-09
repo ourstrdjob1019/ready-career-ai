@@ -37,7 +37,7 @@ export const BottomNav: React.FC = () => {
       : studentItems;
 
   return (
-    <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-surface-container-lowest/90 backdrop-blur-2xl border-t border-surface-variant/50 shadow-[0_-10px_25px_rgba(0,0,0,0.15)] px-2 py-2">
+    <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-surface-container-lowest/90 backdrop-blur-2xl border-t border-surface-variant/50 shadow-sm px-2 py-2">
       <div className="flex items-center justify-around max-w-md mx-auto">
         {navItems.map((item) => {
           const isActive = location.pathname === item.path;
@@ -48,11 +48,11 @@ export const BottomNav: React.FC = () => {
             <Link
               key={item.path}
               to={item.path}
-              className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-2xl transition-all duration-200 select-none ${
+              className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-3xl transition-all duration-200 select-none ${
                 isActive
                   ? isSpot
-                    ? "text-secondary font-black -translate-y-0.5"
-                    : "text-primary font-black -translate-y-0.5"
+                    ? "text-secondary font-semibold tracking-tighter -translate-y-0.5"
+                    : "text-primary font-semibold tracking-tighter -translate-y-0.5"
                   : "text-text-muted hover:text-text-primary"
               }`}
             >
@@ -67,7 +67,7 @@ export const BottomNav: React.FC = () => {
               >
                 <IconComponent className="w-4 h-4 stroke-[2.4]" />
               </div>
-              <span className={`text-[10px] font-headline tracking-tight mt-1 truncate ${isActive ? "font-black text-text-primary" : "font-semibold"}`}>
+              <span className={`text-[10px] font-headline tracking-tight mt-1 truncate ${isActive ? "font-semibold tracking-tighter text-text-primary" : "font-semibold"}`}>
                 {item.label}
               </span>
             </Link>

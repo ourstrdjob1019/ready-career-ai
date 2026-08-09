@@ -270,15 +270,15 @@ export const HomeDashboard: React.FC = () => {
          ========================================================================= */}
       <div className="space-y-2 pl-1">
         <div className="flex flex-wrap items-center gap-2 mb-1">
-          <span className="text-xs font-extrabold bg-slate-100 text-slate-800 px-3.5 py-1 rounded-full border border-slate-200 flex items-center gap-1.5">
+          <span className="text-xs font-semibold tracking-tighter bg-slate-100 text-slate-800 px-3.5 py-1 rounded-full border border-slate-200 flex items-center gap-1.5">
             <Star className="w-3.5 h-3.5 text-purple-600 fill-purple-600" />
             <span>선택 직업: {currentJob.name}</span>
           </span>
-          <span className="text-xs font-extrabold text-[#0D9488] bg-teal-50 px-3.5 py-1 rounded-full border border-teal-200">
+          <span className="text-xs font-semibold tracking-tighter text-[#0D9488] bg-teal-50 px-3.5 py-1 rounded-full border border-teal-200">
             ✨ 진단 유형: {displayRiasec}
           </span>
         </div>
-        <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-[#1F193B] leading-tight">
+        <h2 className="text-3xl md:text-4xl font-semibold tracking-tighter tracking-tight text-[#1F193B] leading-tight">
           {userName}님, 안녕하세요!<br />
           나만의 직업 로드맵을 알아볼까요?
         </h2>
@@ -288,7 +288,7 @@ export const HomeDashboard: React.FC = () => {
           SECTION 2 & 3 COMBINED: Master Hero Board & Primary CTA
           (가장 눈에 잘 띄는 밸런스드 퍼플 파스텔 히어로 영역 + 아리 커리어 가이던스 트리거)
          ========================================================================= */}
-      <section className="rounded-[36px] overflow-hidden bg-[#6A42ED] text-white p-8 sm:p-12 shadow-[0_25px_80px_rgba(106,66,237,0.32)] border-2 border-[#9F7FFF]/40 space-y-10 relative">
+      <section className="rounded-[36px] overflow-hidden bg-[#6A42ED] text-white p-8 sm:p-12 shadow-sm border-2 border-[#9F7FFF]/40 space-y-10 relative">
 
         <div className="flex flex-col md:flex-row items-center justify-between gap-8 relative z-10">
           
@@ -296,17 +296,17 @@ export const HomeDashboard: React.FC = () => {
           <div className="space-y-5 w-full md:w-3/5 text-center md:text-left">
             
             <div className="space-y-1">
-              <span className="text-xs font-extrabold text-purple-200 tracking-widest block">
+              <span className="text-xs font-semibold tracking-tighter text-purple-200 tracking-widest block">
                 🎯 나의 목표 직업
               </span>
-              <h3 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-none">
+              <h3 className="text-3xl sm:text-5xl font-semibold tracking-tighter text-white tracking-tight leading-none">
                 {getJobCharacterTitle(currentJob.name, currentLevel)}
               </h3>
             </div>
 
             {/* Vision Statement Box (글과 박스 비율 및 품격 있는 프리미엄 쿼트 카드 개선) */}
             <div className="bg-black/45 backdrop-blur-md rounded-[24px] p-6 sm:p-7 border border-white/25 border-l-[6px] border-l-[#FFB800] space-y-4 text-left shadow-2xl w-full max-w-full overflow-hidden min-w-0 flex flex-col justify-between">
-              <div className="flex flex-wrap items-center justify-between gap-2 text-xs sm:text-sm font-extrabold text-amber-200 w-full pb-2 border-b border-white/10">
+              <div className="flex flex-wrap items-center justify-between gap-2 text-xs sm:text-sm font-semibold tracking-tighter text-amber-200 w-full pb-2 border-b border-white/10">
                 <span className="flex items-center gap-2 truncate min-w-0">
                   <Sparkles className="w-4 h-4 text-amber-300 flex-shrink-0 animate-pulse" />
                   <span className="truncate tracking-wide">나만의 비전 선언문</span>
@@ -315,14 +315,14 @@ export const HomeDashboard: React.FC = () => {
                   <button
                     onClick={handleAiSuggestVision}
                     disabled={isAiLoading}
-                    className="px-3 py-1.5 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-black text-xs transition-all flex items-center gap-1.5 disabled:opacity-50 cursor-pointer shadow-sm active:scale-95"
+                    className="px-3 py-1.5 rounded-2xl bg-teal-600 hover:bg-teal-500 text-white font-semibold tracking-tighter text-xs transition-all flex items-center gap-1.5 disabled:opacity-50 cursor-pointer shadow-sm active:scale-95"
                   >
                     <RefreshCw className={`w-3.5 h-3.5 ${isAiLoading ? "animate-spin" : ""}`} />
                     <span>AI 추천</span>
                   </button>
                   <button
                     onClick={() => setIsEditingVision(!isEditingVision)}
-                    className="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs transition-colors flex items-center gap-1.5 cursor-pointer shadow-sm"
+                    className="px-3 py-1.5 rounded-2xl bg-slate-800 hover:bg-slate-700 text-white font-medium tracking-tight text-xs transition-colors flex items-center gap-1.5 cursor-pointer shadow-sm"
                     title="직접 수정"
                   >
                     <Edit2 className="w-3.5 h-3.5 text-amber-300" />
@@ -337,13 +337,13 @@ export const HomeDashboard: React.FC = () => {
                     value={visionStatement}
                     onChange={(e) => setVisionStatement(e.target.value)}
                     rows={3}
-                    className="w-full max-w-full p-4 rounded-xl border border-amber-300/50 bg-black/70 text-sm sm:text-base md:text-lg font-bold text-white focus:outline-none focus:border-amber-300 break-words break-keep whitespace-pre-wrap resize-y leading-relaxed shadow-inner"
+                    className="w-full max-w-full p-4 rounded-2xl border border-amber-300/50 bg-black/70 text-sm sm:text-base md:text-lg font-medium tracking-tight text-white focus:outline-none focus:border-amber-300 break-words break-keep whitespace-pre-wrap resize-y leading-relaxed shadow-inner"
                     placeholder="나만의 진로 비전을 자유롭게 서술해보세요!"
                   />
                   <div className="flex justify-end w-full">
                     <button 
                       onClick={handleSaveVision} 
-                      className="px-6 py-2.5 bg-gradient-to-r from-amber-300 via-teal-300 to-white text-[#111111] hover:brightness-105 rounded-xl text-xs sm:text-sm font-black shadow-lg cursor-pointer transition-transform active:scale-95 flex items-center gap-1.5"
+                      className="px-6 py-2.5 bg-gradient-to-r from-amber-300 via-teal-300 to-white text-[#111111] hover:brightness-105 rounded-2xl text-xs sm:text-sm font-semibold tracking-tighter shadow-lg cursor-pointer transition-transform active:scale-95 flex items-center gap-1.5"
                     >
                       <span>비전 저장 및 장착하기</span>
                       <strong className="text-base leading-none">✓</strong>
@@ -352,7 +352,7 @@ export const HomeDashboard: React.FC = () => {
                 </div>
               ) : (
                 <div className="py-2.5 px-1">
-                  <p className="text-base sm:text-lg md:text-xl font-extrabold text-white leading-relaxed sm:leading-9 break-words break-keep whitespace-pre-wrap w-full overflow-hidden tracking-wide">
+                  <p className="text-base sm:text-lg md:text-xl font-semibold tracking-tighter text-white leading-relaxed sm:leading-9 break-words break-keep whitespace-pre-wrap w-full overflow-hidden tracking-wide">
                     "{visionStatement}"
                   </p>
                 </div>
@@ -361,9 +361,9 @@ export const HomeDashboard: React.FC = () => {
 
             {/* XP Bar */}
             <div className="space-y-2 pt-2">
-              <div className="flex justify-between text-xs sm:text-sm font-black text-purple-100">
+              <div className="flex justify-between text-xs sm:text-sm font-semibold tracking-tighter text-purple-100">
                 <span>⚡ 성장 마일리지 ({rankBadge.title})</span>
-                <span className="text-amber-300 font-black">
+                <span className="text-amber-300 font-semibold tracking-tighter">
                   {currentLevel >= 5 ? `${currentXP} XP (최상위 마스터 달성!)` : `${currentXP} / ${nextLevelXP} XP (다음 레벨까지 ${nextLevelXP - currentXP} XP)`} ({progressPercent}%)
                 </span>
               </div>
@@ -376,13 +376,13 @@ export const HomeDashboard: React.FC = () => {
           {/* Right Mascot Showcase */}
           <div className="flex flex-col items-center justify-center relative w-full md:w-2/5 shrink-0">
             <div className="w-64 h-64 sm:w-80 sm:h-80 rounded-full bg-gradient-to-b from-white/20 to-black/20 p-5 border-2 border-white/30 flex items-center justify-center relative group shadow-2xl">
-              <span className="absolute -top-4 left-1/2 -translate-x-1/2 bg-slate-900 text-sm font-black px-4 py-1.5 rounded-2xl border border-slate-700 shadow-md text-amber-300">
+              <span className="absolute -top-4 left-1/2 -translate-x-1/2 bg-slate-900 text-sm font-semibold tracking-tighter px-4 py-1.5 rounded-3xl border border-slate-700 shadow-md text-amber-300">
                 {currentJob.name}
               </span>
               <img
                 src={displayAvatarUrl}
                 alt="3D Character Avatar"
-                className="w-full h-full object-contain drop-shadow-[0_12px_24px_rgba(0,0,0,0.6)] group-hover:scale-105 transition-transform duration-300"
+                className="w-full h-full object-contain drop-shadow-sm group-hover:scale-105 transition-transform duration-300"
               />
             </div>
           </div>
@@ -390,12 +390,12 @@ export const HomeDashboard: React.FC = () => {
 
         {/* Primary CTA Block (아리와 함께 실전 맞춤 진로 활동 찾아보기 - MEGA HERO BANNER) */}
         <div className="pt-4 relative z-10">
-          <div className="bg-white/15 backdrop-blur-md rounded-[32px] p-6 sm:p-8 border-2 border-white/30 shadow-[0_20px_60px_rgba(0,0,0,0.35)] flex flex-col items-center justify-between gap-6 text-center">
+          <div className="bg-white/15 backdrop-blur-md rounded-[32px] p-6 sm:p-8 border-2 border-white/30 shadow-sm flex flex-col items-center justify-between gap-6 text-center">
             <div className="space-y-2 max-w-2xl mx-auto">
-              <span className="text-[12px] sm:text-xs font-black text-[#20104E] bg-gradient-to-r from-amber-300 to-amber-200 px-4 py-1 rounded-full mb-1 inline-block shadow-md">
+              <span className="text-[12px] sm:text-xs font-semibold tracking-tighter text-[#20104E] bg-gradient-to-r from-amber-300 to-amber-200 px-4 py-1 rounded-full mb-1 inline-block shadow-md">
                 🔥 핵심 진로 활동
               </span>
-              <h4 className="text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-tight leading-tight">
+              <h4 className="text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tighter text-white tracking-tight leading-tight">
                 나만의 맞춤 진로 활동 시작하기
               </h4>
               <p className="text-xs sm:text-sm font-semibold text-purple-100 leading-relaxed">
@@ -408,7 +408,7 @@ export const HomeDashboard: React.FC = () => {
                 <button
                   onClick={handleGenerateRoadmap}
                   disabled={isGeneratingAnim}
-                  className="w-full py-5 px-6 sm:px-12 rounded-[26px] bg-gradient-to-r from-[#FFB800] via-[#FFCA3A] to-[#FFE07D] hover:brightness-105 text-[#201150] font-black text-lg sm:text-2xl lg:text-3xl shadow-[0_15px_45px_rgba(255,184,0,0.5)] hover:shadow-[0_20px_60px_rgba(255,184,0,0.65)] transition-all transform hover:scale-[1.01] active:scale-98 cursor-pointer border-2 border-amber-100/70 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-center break-keep"
+                  className="w-full py-5 px-6 sm:px-12 rounded-[26px] bg-gradient-to-r from-[#FFB800] via-[#FFCA3A] to-[#FFE07D] hover:brightness-105 text-[#201150] font-semibold tracking-tighter text-lg sm:text-2xl lg:text-3xl shadow-sm hover:shadow-sm transition-all transform hover:scale-[1.01] active:scale-98 cursor-pointer border-2 border-amber-100/70 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-center break-keep"
                 >
                   <div className="flex items-center gap-2">
                     <span className="text-2xl sm:text-3xl animate-bounce-short shrink-0">✨</span>
@@ -417,13 +417,13 @@ export const HomeDashboard: React.FC = () => {
                 </button>
               ) : (
                 <div className="flex flex-col items-center gap-2 w-full">
-                  <div className="w-full py-4 px-8 rounded-[24px] bg-white text-[#5328E0] font-black text-lg sm:text-xl shadow-xl flex items-center justify-center gap-3 border border-purple-200">
+                  <div className="w-full py-4 px-8 rounded-[24px] bg-white text-[#5328E0] font-semibold tracking-tighter text-lg sm:text-xl shadow-xl flex items-center justify-center gap-3 border border-purple-200">
                     <Unlock className="w-6 h-6 text-emerald-500 shrink-0" />
                     <span>✅ 실전 맞춤 진로 활동 4대 모듈이 성공적으로 개방되었습니다! (아래 카드 클릭)</span>
                   </div>
                   <button
                     onClick={() => { setIsRoadmapGenerated(false); localStorage.removeItem("readycareer_roadmap_generated"); }}
-                    className="text-xs font-bold text-purple-200 hover:text-white underline decoration-1 mt-1"
+                    className="text-xs font-medium tracking-tight text-purple-200 hover:text-white underline decoration-1 mt-1"
                   >
                     (모듈 다시 접기 / 초기화)
                   </button>
@@ -440,10 +440,10 @@ export const HomeDashboard: React.FC = () => {
               <img src={ARI_BLOB_URL} alt="Ari Loading" className="w-full h-full object-contain" />
             </div>
             <div className="space-y-2 max-w-xl mx-auto">
-              <span className="px-4 py-1 rounded-full bg-teal-500/20 text-teal-300 text-xs font-black border border-teal-500/30 inline-block">
+              <span className="px-4 py-1 rounded-full bg-teal-500/20 text-teal-300 text-xs font-semibold tracking-tighter border border-teal-500/30 inline-block">
                 💡 AI 아리 맞춤 진로 알고리즘 발동 중...
               </span>
-              <h4 className="text-lg sm:text-xl font-black text-white leading-snug">
+              <h4 className="text-lg sm:text-xl font-semibold tracking-tighter text-white leading-snug">
                 "잠시만 기다려! 회원님의 흥미 유형과 꿈의 직무에 최적화된 4대 실전 모듈과 50일 루틴을 세팅하고 있어!"
               </h4>
               <div className="w-full max-w-xs mx-auto h-1.5 bg-slate-800 rounded-full overflow-hidden">
@@ -458,11 +458,11 @@ export const HomeDashboard: React.FC = () => {
         {isRoadmapGenerated && !isGeneratingAnim && (
           <div className="py-6 space-y-4 animate-fadeIn">
             <div className="flex items-center justify-between">
-              <h4 className="text-lg sm:text-xl font-black text-[#1F193B] flex items-center gap-2">
+              <h4 className="text-lg sm:text-xl font-semibold tracking-tighter text-[#1F193B] flex items-center gap-2">
                 <span>🌌 실전 맞춤 진로 활동 4대 모듈</span>
                 <span className="text-xs bg-teal-50 text-teal-600 px-3 py-0.5 rounded-full border border-teal-200">Active</span>
               </h4>
-              <span className="text-xs font-bold text-slate-500">원하는 카드를 터치하여 바로 진입하세요 ↗</span>
+              <span className="text-xs font-medium tracking-tight text-slate-500">원하는 카드를 터치하여 바로 진입하세요 ↗</span>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -472,15 +472,15 @@ export const HomeDashboard: React.FC = () => {
                 <div className="bg-white rounded-[24px] p-6 border border-slate-200 hover:border-amber-400 shadow-sm hover:shadow-lg transition-all duration-200 flex flex-col justify-between h-full min-h-[200px] text-[#1F193B]">
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-600 border border-amber-200">
+                      <span className="text-[11px] font-semibold tracking-tighter px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-600 border border-amber-200">
                         • STEP 1
                       </span>
-                      <div className="w-9 h-9 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <div className="w-9 h-9 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center group-hover:scale-110 transition-transform">
                         <Compass className="w-4 h-4" />
                       </div>
                     </div>
                     <div>
-                      <h5 className="text-base font-black text-[#1F193B] group-hover:text-amber-600 transition-colors">
+                      <h5 className="text-base font-semibold tracking-tighter text-[#1F193B] group-hover:text-amber-600 transition-colors">
                         자기이해 진로검사
                       </h5>
                       <p className="text-xs font-medium text-slate-500 mt-1.5 leading-relaxed">
@@ -488,7 +488,7 @@ export const HomeDashboard: React.FC = () => {
                       </p>
                     </div>
                   </div>
-                  <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-[#1F193B] group-hover:text-amber-600">
+                  <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-medium tracking-tight text-[#1F193B] group-hover:text-amber-600">
                     <span>확인하기 &gt;</span>
                   </div>
                 </div>
@@ -499,15 +499,15 @@ export const HomeDashboard: React.FC = () => {
                 <div className="bg-white rounded-[24px] p-6 border border-slate-200 hover:border-rose-400 shadow-sm hover:shadow-lg transition-all duration-200 flex flex-col justify-between h-full min-h-[200px] text-[#1F193B]">
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-rose-50 text-rose-600 border border-rose-200">
+                      <span className="text-[11px] font-semibold tracking-tighter px-2.5 py-0.5 rounded-full bg-rose-50 text-rose-600 border border-rose-200">
                         • STEP 2
                       </span>
-                      <div className="w-9 h-9 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <div className="w-9 h-9 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center group-hover:scale-110 transition-transform">
                         <FolderCheck className="w-4 h-4" />
                       </div>
                     </div>
                     <div>
-                      <h5 className="text-base font-black text-[#1F193B] group-hover:text-rose-600 transition-colors">
+                      <h5 className="text-base font-semibold tracking-tighter text-[#1F193B] group-hover:text-rose-600 transition-colors">
                         진로 포트폴리오
                       </h5>
                       <p className="text-xs font-medium text-slate-500 mt-1.5 leading-relaxed">
@@ -515,7 +515,7 @@ export const HomeDashboard: React.FC = () => {
                       </p>
                     </div>
                   </div>
-                  <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-[#1F193B] group-hover:text-rose-600">
+                  <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-medium tracking-tight text-[#1F193B] group-hover:text-rose-600">
                     <span>진로 보관함 확인 &gt;</span>
                   </div>
                 </div>
@@ -526,15 +526,15 @@ export const HomeDashboard: React.FC = () => {
                 <div className="bg-white rounded-[24px] p-6 border border-slate-200 hover:border-indigo-400 shadow-sm hover:shadow-lg transition-all duration-200 flex flex-col justify-between h-full min-h-[200px] text-[#1F193B]">
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-600 border border-indigo-200">
+                      <span className="text-[11px] font-semibold tracking-tighter px-2.5 py-0.5 rounded-full bg-gray-100 text-black border border-gray-300">
                         • STEP 3
                       </span>
-                      <div className="w-9 h-9 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <div className="w-9 h-9 rounded-2xl bg-gray-200 text-black flex items-center justify-center group-hover:scale-110 transition-transform">
                         <Route className="w-4 h-4" />
                       </div>
                     </div>
                     <div>
-                      <h5 className="text-base font-black text-[#1F193B] group-hover:text-indigo-600 transition-colors">
+                      <h5 className="text-base font-semibold tracking-tighter text-[#1F193B] group-hover:text-black transition-colors">
                         학습포트폴리오
                       </h5>
                       <p className="text-xs font-medium text-slate-500 mt-1.5 leading-relaxed">
@@ -542,7 +542,7 @@ export const HomeDashboard: React.FC = () => {
                       </p>
                     </div>
                   </div>
-                  <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-[#1F193B] group-hover:text-indigo-600">
+                  <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-medium tracking-tight text-[#1F193B] group-hover:text-black">
                     <span>확인하기 &gt;</span>
                   </div>
                 </div>
@@ -553,15 +553,15 @@ export const HomeDashboard: React.FC = () => {
                 <div className="bg-white rounded-[24px] p-6 border border-slate-200 hover:border-teal-400 shadow-sm hover:shadow-lg transition-all duration-200 flex flex-col justify-between h-full min-h-[200px] text-[#1F193B]">
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-teal-50 text-teal-600 border border-teal-200">
+                      <span className="text-[11px] font-semibold tracking-tighter px-2.5 py-0.5 rounded-full bg-teal-50 text-teal-600 border border-teal-200">
                         • STEP 4
                       </span>
-                      <div className="w-9 h-9 rounded-xl bg-teal-100 text-teal-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <div className="w-9 h-9 rounded-2xl bg-teal-100 text-teal-600 flex items-center justify-center group-hover:scale-110 transition-transform">
                         <ListCheck className="w-4 h-4" />
                       </div>
                     </div>
                     <div>
-                      <h5 className="text-base font-black text-[#1F193B] group-hover:text-teal-600 transition-colors">
+                      <h5 className="text-base font-semibold tracking-tighter text-[#1F193B] group-hover:text-teal-600 transition-colors">
                         습관목표
                       </h5>
                       <p className="text-xs font-medium text-slate-500 mt-1.5 leading-relaxed">
@@ -569,7 +569,7 @@ export const HomeDashboard: React.FC = () => {
                       </p>
                     </div>
                   </div>
-                  <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-[#1F193B] group-hover:text-teal-600">
+                  <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-medium tracking-tight text-[#1F193B] group-hover:text-teal-600">
                     <span>확인하기 &gt;</span>
                   </div>
                 </div>
@@ -586,10 +586,10 @@ export const HomeDashboard: React.FC = () => {
       <div className="bg-[#F8F6FF] rounded-[24px] p-5 sm:p-6 border border-[#E4DDFF] shadow-xs space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#E8E1FF] pb-3">
           <div className="flex items-center gap-2">
-            <span className="text-base sm:text-lg font-black text-[#2D1B69] flex items-center gap-1.5">
+            <span className="text-base sm:text-lg font-semibold tracking-tighter text-[#2D1B69] flex items-center gap-1.5">
               ⚡ 진로 탐험 직군 변경
             </span>
-            <span className="text-xs font-bold text-slate-500">
+            <span className="text-xs font-medium tracking-tight text-slate-500">
               (터치 시 마스코트와 목표를 즉시 스위칭)
             </span>
           </div>
@@ -600,9 +600,9 @@ export const HomeDashboard: React.FC = () => {
               placeholder="예: AI 바이오 연구원..."
               value={newJobInput}
               onChange={(e) => setNewJobInput(e.target.value)}
-              className="flex-grow h-9 text-xs px-3.5 rounded-xl bg-white border border-purple-200 text-[#1F193B] placeholder:text-slate-400 focus:outline-none focus:border-[#6A42ED] font-medium shadow-2xs"
+              className="flex-grow h-9 text-xs px-3.5 rounded-2xl bg-white border border-purple-200 text-[#1F193B] placeholder:text-slate-400 focus:outline-none focus:border-[#6A42ED] font-medium shadow-2xs"
             />
-            <Button type="submit" variant="primary" size="sm" className="h-9 px-3.5 whitespace-nowrap font-bold text-xs rounded-xl bg-[#6A42ED] hover:bg-[#5430CE] text-white">
+            <Button type="submit" variant="primary" size="sm" className="h-9 px-3.5 whitespace-nowrap font-medium tracking-tight text-xs rounded-2xl bg-[#6A42ED] hover:bg-[#5430CE] text-white">
               + 추가
             </Button>
           </form>
@@ -629,10 +629,10 @@ export const HomeDashboard: React.FC = () => {
                   )}
                 </div>
                 <div className="w-full overflow-hidden space-y-1 mt-3">
-                  <strong className={`text-sm sm:text-base font-black block line-clamp-2 leading-snug break-keep ${isSelected ? "text-white" : "text-[#1F193B] group-hover:text-[#6A42ED]"}`}>
+                  <strong className={`text-sm sm:text-base font-semibold tracking-tighter block line-clamp-2 leading-snug break-keep ${isSelected ? "text-white" : "text-[#1F193B] group-hover:text-[#6A42ED]"}`}>
                     {job.name}
                   </strong>
-                  <span className={`text-xs font-extrabold block pt-1 ${isSelected ? "text-amber-300" : "text-slate-400 group-hover:text-purple-600"}`}>
+                  <span className={`text-xs font-semibold tracking-tighter block pt-1 ${isSelected ? "text-amber-300" : "text-slate-400 group-hover:text-purple-600"}`}>
                     {isSelected ? "★ 현재 맞춤 적용 중" : "클릭하여 즉시 변경"}
                   </span>
                 </div>
@@ -660,10 +660,10 @@ export const HomeDashboard: React.FC = () => {
               {/* Balanced Purple & Violet Theme Header */}
               <div className="rounded-[32px] bg-gradient-to-r from-[#5328E0] via-[#6537EA] to-[#8054FC] text-white p-8 sm:p-10 border border-[#9F7FFF]/40 shadow-xl flex flex-col sm:flex-row items-center justify-between gap-6 relative overflow-hidden">
                 <div className="space-y-3 max-w-2xl text-center sm:text-left z-10">
-                  <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
+                  <h2 className="text-3xl sm:text-5xl font-semibold tracking-tighter text-white tracking-tight leading-tight">
                     <span className="text-amber-300">{getJobCharacterTitle(interestedJobs[jobIntroModalIdx].name, currentLevel)}</span> <br className="hidden sm:block"/>
                   </h2>
-                  <p className="text-sm sm:text-base font-bold text-purple-100">
+                  <p className="text-sm sm:text-base font-medium tracking-tight text-purple-100">
                     이 직업을 선택하면 새로운 캐릭터와 함께 맞춤 활동이 시작됩니다!
                   </p>
                 </div>
@@ -682,15 +682,15 @@ export const HomeDashboard: React.FC = () => {
                     { lv: "Lv.4", badge: "차세대 고수", name: "엑스퍼트" },
                     { lv: "Lv.5", badge: "마스터", name: "마스터" },
                   ].map((item, i) => (
-                    <div key={i} className="rounded-[24px] bg-slate-50 p-5 border border-slate-200 hover:border-[#6A42ED] transition-all flex flex-col items-center justify-between space-y-3.5 group">
+                    <div key={i} className="rounded-[24px] bg-white p-5 border border-slate-200 hover:border-[#6A42ED] transition-all flex flex-col items-center justify-between space-y-3.5 group">
                       <div className="w-full flex flex-col items-center space-y-1.5">
-                        <span className="text-xs font-black bg-white px-3 py-0.5 rounded-full shadow-xs border border-slate-200">{item.lv}</span>
-                        <span className="text-xs font-bold text-slate-600">{item.badge}</span>
+                        <span className="text-xs font-semibold tracking-tighter bg-white px-3 py-0.5 rounded-full shadow-xs border border-slate-200">{item.lv}</span>
+                        <span className="text-xs font-medium tracking-tight text-slate-600">{item.badge}</span>
                       </div>
                       <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-white p-3 border border-slate-100 flex items-center justify-center my-2 group-hover:scale-105 transition-transform shadow-xs">
                         <img src={getJobCharacterImage(interestedJobs[jobIntroModalIdx].name, i + 1)} alt="Ari Stage" className="w-full h-full object-contain filter drop-shadow-xs" />
                       </div>
-                      <strong className="text-xs font-black text-[#1F193B] text-center w-full bg-white rounded-xl py-2 px-1 border border-slate-200/80 shadow-xs truncate">{getJobCharacterTitle(interestedJobs[jobIntroModalIdx].name, i + 1, item.name)}</strong>
+                      <strong className="text-xs font-semibold tracking-tighter text-[#1F193B] text-center w-full bg-white rounded-2xl py-2 px-1 border border-slate-200/80 shadow-xs truncate">{getJobCharacterTitle(interestedJobs[jobIntroModalIdx].name, i + 1, item.name)}</strong>
                     </div>
                   ))}
                 </div>
@@ -699,7 +699,7 @@ export const HomeDashboard: React.FC = () => {
               <div className="pt-4 w-full max-w-2xl mx-auto border-t border-slate-100 flex flex-col items-center gap-3">
                 <button
                   onClick={handleConfirmJobChange}
-                  className="w-full py-5 px-8 rounded-2xl bg-gradient-to-r from-[#5328E0] via-[#6537EA] to-[#8054FC] hover:brightness-105 text-white font-black text-base sm:text-xl shadow-[0_12px_35px_rgba(83,40,224,0.35)] transition-all duration-200 flex items-center justify-center gap-3 cursor-pointer"
+                  className="w-full py-5 px-8 rounded-3xl bg-gradient-to-r from-[#5328E0] via-[#6537EA] to-[#8054FC] hover:brightness-105 text-white font-semibold tracking-tighter text-base sm:text-xl shadow-sm transition-all duration-200 flex items-center justify-center gap-3 cursor-pointer"
                 >
                   <Award className="w-6 h-6 text-amber-300" />
                   <span>이 직업으로 내 홈화면 & 포트폴리오 맞춤 스위칭!</span>

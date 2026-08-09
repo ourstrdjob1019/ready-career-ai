@@ -323,7 +323,7 @@ export const Portfolio: React.FC = () => {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 py-8 space-y-10 selection:bg-[#D946EF]/20 selection:text-[#D946EF] relative">
       
       {toastMsg && (
-        <div className="fixed bottom-10 right-10 z-50 bg-[#008A90] text-white px-6 py-4 rounded-3xl font-black text-sm sm:text-base shadow-[0_15px_35px_rgba(0,138,144,0.4)] flex items-center gap-3 animate-bounce-short border-2 border-white">
+        <div className="fixed bottom-10 right-10 z-50 bg-[#008A90] text-white px-6 py-4 rounded-3xl font-semibold tracking-tighter text-sm sm:text-base shadow-sm flex items-center gap-3 animate-bounce-short border-2 border-white">
           <Sparkles className="w-5 h-5 text-amber-300 animate-spin-slow" />
           <span>{toastMsg}</span>
         </div>
@@ -332,15 +332,15 @@ export const Portfolio: React.FC = () => {
       {/* =========================================================================
           SECTION 1: HERO (진로 스펙 쇼룸 & 딥퍼플/마젠타 팝업 열정 테마)
          ========================================================================= */}
-      <div className="rounded-[36px] bg-gradient-to-r from-[#1E114D] via-[#4A20D2] to-[#D946EF] text-white p-8 sm:p-12 shadow-[0_20px_60px_rgba(217,70,239,0.25)] border-4 border-white/25 flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden">
+      <div className="rounded-[36px] bg-gradient-to-r from-[#1E114D] via-[#4A20D2] to-[#D946EF] text-white p-8 sm:p-12 shadow-sm border-4 border-white/25 flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden">
         <div className="space-y-4 max-w-2xl z-10 text-center sm:text-left">
           <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
-            <span className="text-xs font-black bg-[#7AF1FC] text-[#006970] px-3.5 py-1.5 rounded-full shadow-md">
+            <span className="text-xs font-semibold tracking-tighter bg-[#7AF1FC] text-[#006970] px-3.5 py-1.5 rounded-full shadow-md">
               🎯 목표 직업: {targetJobName}
             </span>
           </div>
           
-          <h1 className="text-3xl sm:text-5xl font-headline font-black tracking-tight leading-tight">
+          <h1 className="text-3xl sm:text-5xl font-headline font-semibold tracking-tighter tracking-tight leading-tight">
             💼 나의 꿈 보관함
           </h1>
           <p className="text-sm sm:text-base font-semibold text-[#F0E6FF] leading-relaxed">
@@ -361,7 +361,7 @@ export const Portfolio: React.FC = () => {
       <div className="bg-gradient-to-br from-[#F8F5FF] via-white to-[#FAF0FF] rounded-[36px] p-7 sm:p-10 border-2 border-[#E9D5FF] shadow-sm space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-purple-150 pb-4">
           <div>
-            <h2 className="text-2xl sm:text-3xl font-headline font-black text-[#1A1626]">
+            <h2 className="text-2xl sm:text-3xl font-headline font-semibold tracking-tighter text-[#1A1626]">
               🏆 나의 진로활동 발자취
             </h2>
             <p className="text-xs sm:text-sm font-semibold text-[#6E6A80]">
@@ -371,7 +371,7 @@ export const Portfolio: React.FC = () => {
 
           <button
             onClick={() => setShowInputForm(!showInputForm)}
-            className="w-full sm:w-auto py-4 px-8 rounded-2xl bg-gradient-to-r from-[#FF3B7C] via-[#FF5C8A] to-[#7B5CF0] hover:brightness-110 text-white font-black text-sm sm:text-base shadow-[0_10px_25px_rgba(255,59,124,0.35)] transition-transform transform hover:-translate-y-1 active:scale-95 cursor-pointer border-2 border-white flex items-center justify-center gap-2"
+            className="w-full sm:w-auto py-4 px-8 rounded-3xl bg-gradient-to-r from-[#FF3B7C] via-[#FF5C8A] to-[#7B5CF0] hover:brightness-110 text-white font-semibold tracking-tighter text-sm sm:text-base shadow-sm transition-transform transform hover:-translate-y-1 active:scale-95 cursor-pointer border-2 border-white flex items-center justify-center gap-2"
           >
             <Plus className="w-5 h-5 stroke-[3]" />
             <span>{showInputForm ? "입력창 닫기 ▲" : "✍️ 내 진로 활동 직접 추가하기"}</span>
@@ -381,42 +381,42 @@ export const Portfolio: React.FC = () => {
         {/* 4대 스펙 훈장 메트릭 그리드 */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           <div className="bg-white p-5 sm:p-6 rounded-3xl border-2 border-purple-100 shadow-sm flex items-center gap-4 transform hover:scale-[1.02] transition-all">
-            <div className="w-12 h-12 rounded-2xl bg-purple-50 flex items-center justify-center text-2xl shrink-0 border border-purple-200">
+            <div className="w-12 h-12 rounded-3xl bg-purple-50 flex items-center justify-center text-2xl shrink-0 border border-purple-200">
               🔬
             </div>
             <div>
-              <span className="text-xs font-black text-[#8D88A0] block">교과·세특 탐구</span>
-              <span className="text-2xl sm:text-3xl font-black text-[#7B5CF0]">{studyCount} <span className="text-sm font-bold text-slate-500">건</span></span>
+              <span className="text-xs font-semibold tracking-tighter text-[#8D88A0] block">교과·세특 탐구</span>
+              <span className="text-2xl sm:text-3xl font-semibold tracking-tighter text-[#7B5CF0]">{studyCount} <span className="text-sm font-medium tracking-tight text-slate-500">건</span></span>
             </div>
           </div>
 
           <div className="bg-white p-5 sm:p-6 rounded-3xl border-2 border-pink-100 shadow-sm flex items-center gap-4 transform hover:scale-[1.02] transition-all">
-            <div className="w-12 h-12 rounded-2xl bg-pink-50 flex items-center justify-center text-2xl shrink-0 border border-pink-200">
+            <div className="w-12 h-12 rounded-3xl bg-pink-50 flex items-center justify-center text-2xl shrink-0 border border-pink-200">
               🤝
             </div>
             <div>
-              <span className="text-xs font-black text-[#8D88A0] block">동아리·창작</span>
-              <span className="text-2xl sm:text-3xl font-black text-[#FF3B7C]">{clubCount} <span className="text-sm font-bold text-slate-500">건</span></span>
+              <span className="text-xs font-semibold tracking-tighter text-[#8D88A0] block">동아리·창작</span>
+              <span className="text-2xl sm:text-3xl font-semibold tracking-tighter text-[#FF3B7C]">{clubCount} <span className="text-sm font-medium tracking-tight text-slate-500">건</span></span>
             </div>
           </div>
 
           <div className="bg-white p-5 sm:p-6 rounded-3xl border-2 border-amber-100 shadow-sm flex items-center gap-4 transform hover:scale-[1.02] transition-all">
-            <div className="w-12 h-12 rounded-2xl bg-amber-50 flex items-center justify-center text-2xl shrink-0 border border-amber-200 animate-bounce-short">
+            <div className="w-12 h-12 rounded-3xl bg-amber-50 flex items-center justify-center text-2xl shrink-0 border border-amber-200 animate-bounce-short">
               🏅
             </div>
             <div>
-              <span className="text-xs font-black text-[#8D88A0] block">취득 자격증</span>
-              <span className="text-2xl sm:text-3xl font-black text-amber-600">{certCount} <span className="text-sm font-bold text-slate-500">개</span></span>
+              <span className="text-xs font-semibold tracking-tighter text-[#8D88A0] block">취득 자격증</span>
+              <span className="text-2xl sm:text-3xl font-semibold tracking-tighter text-amber-600">{certCount} <span className="text-sm font-medium tracking-tight text-slate-500">개</span></span>
             </div>
           </div>
 
           <div className="bg-white p-5 sm:p-6 rounded-3xl border-2 border-cyan-100 shadow-sm flex items-center gap-4 transform hover:scale-[1.02] transition-all">
-            <div className="w-12 h-12 rounded-2xl bg-cyan-50 flex items-center justify-center text-2xl shrink-0 border border-cyan-200">
+            <div className="w-12 h-12 rounded-3xl bg-cyan-50 flex items-center justify-center text-2xl shrink-0 border border-cyan-200">
               📷
             </div>
             <div>
-              <span className="text-xs font-black text-[#8D88A0] block">인증 사진 첨부</span>
-              <span className="text-2xl sm:text-3xl font-black text-[#008A90]">{photoCount} <span className="text-sm font-bold text-slate-500">건</span></span>
+              <span className="text-xs font-semibold tracking-tighter text-[#8D88A0] block">인증 사진 첨부</span>
+              <span className="text-2xl sm:text-3xl font-semibold tracking-tighter text-[#008A90]">{photoCount} <span className="text-sm font-medium tracking-tight text-slate-500">건</span></span>
             </div>
           </div>
         </div>
@@ -426,19 +426,19 @@ export const Portfolio: React.FC = () => {
           SECTION 2 (MODAL / PANEL): 내 진로 경험 직접 입력 폼 (AI 세특 교정, 사진 압축)
          ========================================================================= */}
       {showInputForm && (
-        <div className="bg-white/95 backdrop-blur-2xl rounded-[40px] p-8 sm:p-12 shadow-[0_25px_65px_rgba(123,92,240,0.18)] border-4 border-[#DED4FF] space-y-8 animate-fadeIn">
+        <div className="bg-white/95 backdrop-blur-2xl rounded-[40px] p-8 sm:p-12 shadow-sm border-4 border-[#DED4FF] space-y-8 animate-fadeIn">
           <div className="flex items-center justify-between border-b-2 border-purple-100 pb-5">
             <div className="space-y-1">
-              <span className="text-xs font-black bg-purple-100 text-[#7B5CF0] px-3 py-1 rounded-full inline-block">
+              <span className="text-xs font-semibold tracking-tighter bg-purple-100 text-[#7B5CF0] px-3 py-1 rounded-full inline-block">
                 ✨ NEIS 100% 맞춤 및 이미지 88% 압축 엔진 탑재
               </span>
-              <h2 className="text-2xl sm:text-3xl font-headline font-black text-[#1A1626]">
+              <h2 className="text-2xl sm:text-3xl font-headline font-semibold tracking-tighter text-[#1A1626]">
                 📝 내 진로 경험 및 세특/자격증 직접 등록
               </h2>
             </div>
             <button
               onClick={() => setShowInputForm(false)}
-              className="p-2 rounded-full bg-purple-50 hover:bg-purple-100 text-[#7B5CF0] font-bold"
+              className="p-2 rounded-full bg-purple-50 hover:bg-purple-100 text-[#7B5CF0] font-medium tracking-tight"
             >
               <X className="w-6 h-6" />
             </button>
@@ -448,13 +448,13 @@ export const Portfolio: React.FC = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="space-y-2">
-                <label className="text-xs sm:text-sm font-black text-[#3B364C] block">
+                <label className="text-xs sm:text-sm font-semibold tracking-tighter text-[#3B364C] block">
                   🏷️ 활동 영역 및 분류
                 </label>
                 <select
                   value={formCategory}
                   onChange={(e) => setFormCategory(e.target.value)}
-                  className="w-full h-14 px-4 rounded-2xl bg-[#F9F7FF] border-2 border-[#DED4FF] font-black text-sm text-[#1A1626] focus:border-[#7B5CF0] focus:outline-none shadow-inner"
+                  className="w-full h-14 px-4 rounded-3xl bg-[#F9F7FF] border-2 border-[#DED4FF] font-semibold tracking-tighter text-sm text-[#1A1626] focus:border-[#7B5CF0] focus:outline-none shadow-inner"
                 >
                   <option value="진학·탐구 (교과)">진학·탐구 (교과 세특)</option>
                   <option value="동아리·자율 (창작)">동아리·자율 (창작)</option>
@@ -469,14 +469,14 @@ export const Portfolio: React.FC = () => {
                     placeholder="예: 스포츠 과학 해설 봉사활동"
                     value={customCategoryInput}
                     onChange={(e) => setCustomCategoryInput(e.target.value)}
-                    className="w-full h-12 px-4 mt-2 rounded-xl bg-purple-50/70 border border-[#7B5CF0] font-black text-xs text-[#7B5CF0] placeholder:text-[#8D88A0] focus:outline-none"
+                    className="w-full h-12 px-4 mt-2 rounded-2xl bg-purple-50/70 border border-[#7B5CF0] font-semibold tracking-tighter text-xs text-[#7B5CF0] placeholder:text-[#8D88A0] focus:outline-none"
                     required
                   />
                 )}
               </div>
 
               <div className="space-y-2 md:col-span-2">
-                <label className="text-xs sm:text-sm font-black text-[#3B364C] block">
+                <label className="text-xs sm:text-sm font-semibold tracking-tighter text-[#3B364C] block">
                   📌 활동 이름
                 </label>
                 <input
@@ -484,35 +484,35 @@ export const Portfolio: React.FC = () => {
                   placeholder="예: 인공지능 윤리 논쟁 해부 및 챗봇 모형 설계 프로젝트"
                   value={formTitle}
                   onChange={(e) => setFormTitle(e.target.value)}
-                  className="w-full h-14 px-5 rounded-2xl bg-[#F9F7FF] border-2 border-[#DED4FF] font-bold text-sm text-[#1A1626] placeholder:text-[#8D88A0] focus:border-[#7B5CF0] focus:outline-none shadow-inner"
+                  className="w-full h-14 px-5 rounded-3xl bg-[#F9F7FF] border-2 border-[#DED4FF] font-medium tracking-tight text-sm text-[#1A1626] placeholder:text-[#8D88A0] focus:border-[#7B5CF0] focus:outline-none shadow-inner"
                   required
                 />
               </div>
             </div>
 
             <div className="space-y-2 bg-[#FAF6FF] p-5 rounded-3xl border border-purple-100">
-              <label className="text-xs sm:text-sm font-black text-[#3B364C] flex items-center gap-1.5">
+              <label className="text-xs sm:text-sm font-semibold tracking-tighter text-[#3B364C] flex items-center gap-1.5">
                 <Calendar className="w-4 h-4 text-[#7B5CF0]" />
                 <span>⏳ 활동 수행 기간 선택 (시작일 ~ 종료일)</span>
               </label>
               <div className="flex flex-col sm:flex-row items-center gap-4 pt-2">
                 <div className="w-full sm:w-1/2 flex items-center gap-3">
-                  <span className="text-xs font-bold text-[#6E6A80] whitespace-nowrap">시작일:</span>
+                  <span className="text-xs font-medium tracking-tight text-[#6E6A80] whitespace-nowrap">시작일:</span>
                   <input
                     type="date"
                     value={startDate}
                     onChange={(e) => setStartDate(e.target.value)}
-                    className="w-full h-12 px-4 rounded-xl bg-white border border-purple-200 font-bold text-sm text-[#1A1626] shadow-sm"
+                    className="w-full h-12 px-4 rounded-2xl bg-white border border-purple-200 font-medium tracking-tight text-sm text-[#1A1626] shadow-sm"
                   />
                 </div>
-                <span className="hidden sm:inline font-black text-[#7B5CF0]">~</span>
+                <span className="hidden sm:inline font-semibold tracking-tighter text-[#7B5CF0]">~</span>
                 <div className="w-full sm:w-1/2 flex items-center gap-3">
-                  <span className="text-xs font-bold text-[#6E6A80] whitespace-nowrap">종료일:</span>
+                  <span className="text-xs font-medium tracking-tight text-[#6E6A80] whitespace-nowrap">종료일:</span>
                   <input
                     type="date"
                     value={endDate}
                     onChange={(e) => setEndDate(e.target.value)}
-                    className="w-full h-12 px-4 rounded-xl bg-white border border-purple-200 font-bold text-sm text-[#1A1626] shadow-sm"
+                    className="w-full h-12 px-4 rounded-2xl bg-white border border-purple-200 font-medium tracking-tight text-sm text-[#1A1626] shadow-sm"
                   />
                 </div>
               </div>
@@ -520,14 +520,14 @@ export const Portfolio: React.FC = () => {
 
             <div className="space-y-3">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                <label className="text-xs sm:text-sm font-black text-[#3B364C] block">
+                <label className="text-xs sm:text-sm font-semibold tracking-tighter text-[#3B364C] block">
                   📝 활동 내용과 배운 점
                 </label>
                 <button
                   type="button"
                   onClick={handleAiRefineForm}
                   disabled={isAiRefining}
-                  className="px-5 py-2 rounded-xl bg-gradient-to-r from-[#008A90] to-[#00A3A8] hover:brightness-110 text-white font-black text-xs sm:text-sm shadow-md transition-all flex items-center gap-2 cursor-pointer w-fit"
+                  className="px-5 py-2 rounded-2xl bg-gradient-to-r from-[#008A90] to-[#00A3A8] hover:brightness-110 text-white font-semibold tracking-tighter text-xs sm:text-sm shadow-md transition-all flex items-center gap-2 cursor-pointer w-fit"
                 >
                   <Sparkles className={`w-4 h-4 text-amber-300 ${isAiRefining ? "animate-spin" : ""}`} />
                   <span>{isAiRefining ? "문장을 다듬는 중..." : "✨ 문장을 다듬어 드려요. 결과는 꼭 직접 확인하세요."}</span>
@@ -538,18 +538,18 @@ export const Portfolio: React.FC = () => {
                 placeholder="어떤 계기로 시작했고 어떤 활동을 했는지 적어보세요!"
                 value={formContent}
                 onChange={(e) => setFormContent(e.target.value)}
-                className="w-full p-5 rounded-2xl bg-[#F9F7FF] border-2 border-[#DED4FF] font-semibold text-sm text-[#1A1626] placeholder:text-[#8D88A0] focus:border-[#7B5CF0] focus:outline-none shadow-inner leading-relaxed"
+                className="w-full p-5 rounded-3xl bg-[#F9F7FF] border-2 border-[#DED4FF] font-semibold text-sm text-[#1A1626] placeholder:text-[#8D88A0] focus:border-[#7B5CF0] focus:outline-none shadow-inner leading-relaxed"
                 required
               />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <label className="text-xs sm:text-sm font-black text-[#3B364C] flex items-center gap-2">
+                <label className="text-xs sm:text-sm font-semibold tracking-tighter text-[#3B364C] flex items-center gap-2">
                   <ImageIcon className="w-4 h-4 text-[#FF3B7C]" />
                   <span>📷 인증 사진 업로드 (용량 자동 88% 축소 최적화)</span>
                 </label>
-                <div className="relative border-2 border-dashed border-[#B8AAFA] hover:border-[#7B5CF0] rounded-2xl p-4 bg-[#F8F6FF] text-center transition-all">
+                <div className="relative border-2 border-dashed border-[#B8AAFA] hover:border-[#7B5CF0] rounded-3xl p-4 bg-[#F8F6FF] text-center transition-all">
                   <input
                     type="file"
                     accept="image/*"
@@ -558,16 +558,16 @@ export const Portfolio: React.FC = () => {
                   />
                   {uploadedPhoto ? (
                     <div className="flex items-center justify-center gap-3">
-                      <img src={uploadedPhoto} alt="Upload Preview" className="w-14 h-14 object-cover rounded-xl shadow-md border" />
+                      <img src={uploadedPhoto} alt="Upload Preview" className="w-14 h-14 object-cover rounded-2xl shadow-md border" />
                       <div className="text-left">
-                        <span className="text-xs font-black text-green-700 block">✅ 사진 최적화 첨부 완료!</span>
-                        <span className="text-[10px] font-bold text-[#8D88A0]">클릭하여 다른 이미지 변경</span>
+                        <span className="text-xs font-semibold tracking-tighter text-green-700 block">✅ 사진 최적화 첨부 완료!</span>
+                        <span className="text-[10px] font-medium tracking-tight text-[#8D88A0]">클릭하여 다른 이미지 변경</span>
                       </div>
                     </div>
                   ) : (
                     <div className="space-y-1">
                       <Upload className="w-6 h-6 text-[#7B5CF0] mx-auto" />
-                      <span className="text-xs font-extrabold text-[#5C5672] block">
+                      <span className="text-xs font-semibold tracking-tighter text-[#5C5672] block">
                         {isPhotoCompressing ? "⚡ Canvas 사진 압축 최적화 중..." : "클릭하거나 사진을 드래그하여 업로드"}
                       </span>
                       <span className="text-[10px] text-[#8A859C] font-semibold block">
@@ -579,7 +579,7 @@ export const Portfolio: React.FC = () => {
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs sm:text-sm font-black text-[#3B364C] block">
+                <label className="text-xs sm:text-sm font-semibold tracking-tighter text-[#3B364C] block">
                   🏷️ 역량 태그 (쉼표로 구분)
                 </label>
                 <input
@@ -587,7 +587,7 @@ export const Portfolio: React.FC = () => {
                   placeholder="예: 인공지능, 빅데이터, 리더십, 국가공인"
                   value={formTags}
                   onChange={(e) => setFormTags(e.target.value)}
-                  className="w-full h-14 px-5 rounded-2xl bg-[#F9F7FF] border-2 border-[#DED4FF] font-extrabold text-sm text-[#1A1626] placeholder:text-[#8D88A0] focus:border-[#7B5CF0] focus:outline-none shadow-inner"
+                  className="w-full h-14 px-5 rounded-3xl bg-[#F9F7FF] border-2 border-[#DED4FF] font-semibold tracking-tighter text-sm text-[#1A1626] placeholder:text-[#8D88A0] focus:border-[#7B5CF0] focus:outline-none shadow-inner"
                 />
               </div>
             </div>
@@ -596,13 +596,13 @@ export const Portfolio: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setShowInputForm(false)}
-                className="py-4 px-8 rounded-2xl bg-slate-100 hover:bg-slate-200 font-bold text-sm text-[#5C5672]"
+                className="py-4 px-8 rounded-3xl bg-slate-100 hover:bg-slate-200 font-medium tracking-tight text-sm text-[#5C5672]"
               >
                 취소
               </button>
               <button
                 type="submit"
-                className="py-4 px-10 rounded-2xl bg-[#7B5CF0] hover:bg-[#643DDD] text-white font-black text-base shadow-xl transition-all flex items-center gap-2 cursor-pointer transform hover:scale-105"
+                className="py-4 px-10 rounded-3xl bg-[#7B5CF0] hover:bg-[#643DDD] text-white font-semibold tracking-tighter text-base shadow-xl transition-all flex items-center gap-2 cursor-pointer transform hover:scale-105"
               >
                 <Save className="w-5 h-5" />
                 <span>내 진로 포트폴리오에 누적 보존하기!</span>
@@ -619,12 +619,12 @@ export const Portfolio: React.FC = () => {
       <div className="bg-gradient-to-r from-[#FAF6FF] via-[#E5FAFF]/50 to-[#FAF6FF] rounded-[32px] p-6 sm:p-8 border-2 border-[#C6EEF4] shadow-md transition-all">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-2xl bg-[#008A90] text-white flex items-center justify-center shrink-0 shadow-md">
+            <div className="w-12 h-12 rounded-3xl bg-[#008A90] text-white flex items-center justify-center shrink-0 shadow-md">
               <Sparkles className="w-6 h-6 text-amber-300" />
             </div>
             <div>
-              <span className="text-xs font-black text-[#008A90] block uppercase tracking-wide">AI Career Activity Explorer</span>
-              <h3 className="text-lg sm:text-xl font-headline font-black text-[#1A1626]">
+              <span className="text-xs font-semibold tracking-tighter text-[#008A90] block uppercase tracking-wide">AI Career Activity Explorer</span>
+              <h3 className="text-lg sm:text-xl font-headline font-semibold tracking-tighter text-[#1A1626]">
                 🚀 나의 꿈을 향한 진로 활동 추천받기
               </h3>
               <p className="text-xs sm:text-sm text-[#5C5672] font-semibold">
@@ -637,7 +637,7 @@ export const Portfolio: React.FC = () => {
             {showRecPool && (
               <button
                 onClick={() => setRecPoolIdx(recPoolIdx + 1)}
-                className="px-4 py-3 rounded-2xl bg-[#008A90] hover:bg-[#007378] text-white font-black text-xs shadow-sm transition-all flex items-center gap-1.5 whitespace-nowrap cursor-pointer"
+                className="px-4 py-3 rounded-3xl bg-[#008A90] hover:bg-[#007378] text-white font-semibold tracking-tighter text-xs shadow-sm transition-all flex items-center gap-1.5 whitespace-nowrap cursor-pointer"
               >
                 <RefreshCw className="w-3.5 h-3.5 animate-spin-slow" />
                 <span>새로고침 ({recPoolIdx % RECOMMENDED_POOLS.length + 1}/{RECOMMENDED_POOLS.length})</span>
@@ -645,7 +645,7 @@ export const Portfolio: React.FC = () => {
             )}
             <button
               onClick={() => setShowRecPool(!showRecPool)}
-              className="px-6 py-3.5 rounded-2xl bg-[#7B5CF0] hover:bg-[#6240D5] text-white font-black text-xs sm:text-sm shadow-md transition-all flex items-center gap-2 cursor-pointer"
+              className="px-6 py-3.5 rounded-3xl bg-[#7B5CF0] hover:bg-[#6240D5] text-white font-semibold tracking-tighter text-xs sm:text-sm shadow-md transition-all flex items-center gap-2 cursor-pointer"
             >
               <span>{showRecPool ? "▲ 추천 보관함 접기" : "▼ AI 추천 활동 풀 열어보기"}</span>
             </button>
@@ -656,25 +656,25 @@ export const Portfolio: React.FC = () => {
         {showRecPool && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6 mt-6 border-t border-cyan-200/60 animate-fadeIn">
             {currentRecPool.map((rec, idx) => (
-              <div key={idx} className="bg-white/95 rounded-[26px] p-6 border-2 border-cyan-100 shadow-[0_8px_25px_rgba(0,0,0,0.05)] hover:shadow-xl transition-all duration-300 flex flex-col justify-between space-y-4 group">
+              <div key={idx} className="bg-white/95 rounded-[26px] p-6 border-2 border-cyan-100 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between space-y-4 group">
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-[11px] font-black bg-[#008A90]/15 text-[#008A90] px-3 py-1 rounded-full">
+                    <span className="text-[11px] font-semibold tracking-tighter bg-[#008A90]/15 text-[#008A90] px-3 py-1 rounded-full">
                       {rec.category}
                     </span>
-                    <span className="text-[11px] font-bold text-[#8D88A0] bg-slate-100 px-2 py-0.5 rounded-md">
+                    <span className="text-[11px] font-medium tracking-tight text-[#8D88A0] bg-slate-100 px-2 py-0.5 rounded-md">
                       📅 {rec.dateRange}
                     </span>
                   </div>
-                  <h4 className="text-base sm:text-lg font-black text-[#1A1626] leading-snug group-hover:text-[#008A90] transition-colors">
+                  <h4 className="text-base sm:text-lg font-semibold tracking-tighter text-[#1A1626] leading-snug group-hover:text-[#008A90] transition-colors">
                     {rec.title}
                   </h4>
-                  <p className="text-xs font-bold text-[#4A4460] leading-relaxed bg-[#F8FDFF] p-3.5 rounded-2xl border border-cyan-50 line-clamp-3">
+                  <p className="text-xs font-medium tracking-tight text-[#4A4460] leading-relaxed bg-[#F8FDFF] p-3.5 rounded-3xl border border-cyan-50 line-clamp-3">
                     {rec.content}
                   </p>
                   <div className="flex flex-wrap gap-1 pt-1">
                     {rec.tags.map((t, tIdx) => (
-                      <span key={tIdx} className="text-[10px] font-extrabold bg-purple-50 text-[#6240D5] px-2 py-0.5 rounded-md">
+                      <span key={tIdx} className="text-[10px] font-semibold tracking-tighter bg-purple-50 text-[#6240D5] px-2 py-0.5 rounded-md">
                         #{t}
                       </span>
                     ))}
@@ -684,7 +684,7 @@ export const Portfolio: React.FC = () => {
                 <div className="pt-3 border-t border-slate-100">
                   <button
                     onClick={() => handleImportRecommendation(rec)}
-                    className="w-full py-3 px-4 bg-gradient-to-r from-[#008A90] to-[#00A0A5] hover:brightness-110 text-white font-black text-xs rounded-2xl shadow-md flex items-center justify-center gap-1.5 cursor-pointer transition-transform active:scale-95"
+                    className="w-full py-3 px-4 bg-gradient-to-r from-[#008A90] to-[#00A0A5] hover:brightness-110 text-white font-semibold tracking-tighter text-xs rounded-3xl shadow-md flex items-center justify-center gap-1.5 cursor-pointer transition-transform active:scale-95"
                   >
                     <Plus className="w-4 h-4 stroke-[3]" />
                     <span>내 포트폴리오로 가져오기!</span>
@@ -702,7 +702,7 @@ export const Portfolio: React.FC = () => {
       <div className="space-y-7">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-2 border-purple-150 pb-5 pl-2">
           <div>
-            <h3 className="text-2xl font-headline font-black text-[#1A1626] flex items-center gap-2">
+            <h3 className="text-2xl font-headline font-semibold tracking-tighter text-[#1A1626] flex items-center gap-2">
               <span>🗃️ 나의 진로 활동 (총 {filteredItems.length}건)</span>
             </h3>
             <p className="text-xs text-slate-500 font-semibold mt-0.5">
@@ -712,7 +712,7 @@ export const Portfolio: React.FC = () => {
 
           {/* 카테고리 필터 바 */}
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-xs font-black text-slate-400 mr-1 flex items-center gap-1">
+            <span className="text-xs font-semibold tracking-tighter text-slate-400 mr-1 flex items-center gap-1">
               <Filter className="w-3.5 h-3.5" /> 분류:
             </span>
             {categoriesList.map((cat) => {
@@ -721,7 +721,7 @@ export const Portfolio: React.FC = () => {
                 <button
                   key={cat}
                   onClick={() => setSelectedCategory(cat)}
-                  className={`px-4 py-2 rounded-2xl font-black text-xs transition-all shadow-2xs ${
+                  className={`px-4 py-2 rounded-3xl font-semibold tracking-tighter text-xs transition-all shadow-2xs ${
                     isSelected
                       ? "bg-[#7B5CF0] text-white scale-105 shadow-md"
                       : "bg-white text-[#6E6A80] border border-purple-200 hover:bg-[#FAF6FF]"
@@ -738,8 +738,8 @@ export const Portfolio: React.FC = () => {
         {filteredItems.length === 0 ? (
           <div className="w-full py-20 text-center bg-white rounded-[36px] border-2 border-dashed border-purple-200 space-y-3">
             <span className="text-5xl block">💼</span>
-            <p className="text-base font-black text-[#7B5CF0]">선택한 분류에 해당하는 포트폴리오 항목이 없습니다.</p>
-            <span className="text-xs font-bold text-[#8A859C]">위의 직접 추가 버튼을 누르거나 AI 추천 풀에서 스펙을 장착해 보세요!</span>
+            <p className="text-base font-semibold tracking-tighter text-[#7B5CF0]">선택한 분류에 해당하는 포트폴리오 항목이 없습니다.</p>
+            <span className="text-xs font-medium tracking-tight text-[#8A859C]">위의 직접 추가 버튼을 누르거나 AI 추천 풀에서 스펙을 장착해 보세요!</span>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
@@ -754,21 +754,21 @@ export const Portfolio: React.FC = () => {
                   <div className="space-y-2.5 overflow-hidden w-full">
                     {/* 상단 뱃지 & 날짜 */}
                     <div className="flex items-center justify-between gap-1.5">
-                      <span className={`text-xs font-black px-3 py-1 rounded-full border truncate max-w-[140px] shadow-2xs ${
+                      <span className={`text-xs font-semibold tracking-tighter px-3 py-1 rounded-full border truncate max-w-[140px] shadow-2xs ${
                         isCert
                           ? "bg-rose-50 text-rose-600 border-rose-200"
                           : "bg-[#F3F0FF] text-[#6A42ED] border-[#D8CEFF]"
                       }`}>
                         • {it.category}
                       </span>
-                      <span className="text-xs font-bold text-slate-400 shrink-0">
+                      <span className="text-xs font-medium tracking-tight text-slate-400 shrink-0">
                         {it.dateRange?.split(' ')[0] || "2026.05"}
                       </span>
                     </div>
 
                     {/* 제목 및 본문 */}
                     <div className="space-y-1">
-                      <h4 className="text-base font-black text-[#1F193B] group-hover:text-[#6A42ED] transition-colors line-clamp-2 leading-snug break-keep">
+                      <h4 className="text-base font-semibold tracking-tighter text-[#1F193B] group-hover:text-[#6A42ED] transition-colors line-clamp-2 leading-snug break-keep">
                         {it.title}
                       </h4>
                       <p className="text-xs font-semibold text-slate-500 line-clamp-2 leading-relaxed break-keep">
@@ -779,18 +779,18 @@ export const Portfolio: React.FC = () => {
                     {/* 태그 리스트 */}
                     <div className="flex flex-wrap gap-1.5 pt-1">
                       {it.tags?.slice(0, 3).map((tag, tIdx) => (
-                        <span key={tIdx} className="text-[11px] font-extrabold bg-slate-50 text-slate-600 px-2.5 py-0.5 rounded-lg border border-slate-200 shadow-2xs">
+                        <span key={tIdx} className="text-[11px] font-semibold tracking-tighter bg-white text-slate-600 px-2.5 py-0.5 rounded-lg border border-slate-200 shadow-2xs">
                           #{tag}
                         </span>
                       ))}
                       {(it.tags?.length || 0) > 3 && (
-                        <span className="text-[11px] font-black text-purple-500 px-1.5 py-0.5">+{it.tags.length - 3}</span>
+                        <span className="text-[11px] font-semibold tracking-tighter text-purple-500 px-1.5 py-0.5">+{it.tags.length - 3}</span>
                       )}
                     </div>
                   </div>
 
                   {/* 하단 스티커 액션바 */}
-                  <div className="pt-3.5 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-extrabold">
+                  <div className="pt-3.5 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-semibold tracking-tighter">
                     <span className="text-[#0D9488] flex items-center gap-1">
                       {it.photoUrl ? "📷 인증사진 포함" : "📄 활동 기록 완료"}
                     </span>
@@ -812,12 +812,12 @@ export const Portfolio: React.FC = () => {
       {viewingItem && (
         <div className="fixed inset-0 z-50 bg-black/65 backdrop-blur-md flex items-center justify-center p-4 animate-fadeIn" onClick={() => setViewingItem(null)}>
           <div 
-            className="bg-white w-full max-w-3xl rounded-[40px] p-8 sm:p-12 shadow-[0_25px_80px_rgba(0,0,0,0.6)] border-4 border-purple-200 relative max-h-[90vh] overflow-y-auto space-y-7"
+            className="bg-white w-full max-w-3xl rounded-[40px] p-8 sm:p-12 shadow-sm border-4 border-purple-200 relative max-h-[90vh] overflow-y-auto space-y-7"
             onClick={(e) => e.stopPropagation()}
           >
             <button
               onClick={() => setViewingItem(null)}
-              className="absolute top-7 right-7 p-2.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold"
+              className="absolute top-7 right-7 p-2.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium tracking-tight"
             >
               <X className="w-6 h-6" />
             </button>
@@ -825,39 +825,39 @@ export const Portfolio: React.FC = () => {
             {/* 상단 분류 */}
             <div className="space-y-3 border-b-2 border-purple-100 pb-5 pr-8">
               <div className="flex items-center gap-2">
-                <span className={`text-sm font-black px-4 py-1.5 rounded-full ${viewingItem.category.includes('자격증') ? 'bg-[#FF3B7C] text-white' : 'bg-[#7B5CF0] text-white'}`}>
+                <span className={`text-sm font-semibold tracking-tighter px-4 py-1.5 rounded-full ${viewingItem.category.includes('자격증') ? 'bg-[#FF3B7C] text-white' : 'bg-[#7B5CF0] text-white'}`}>
                   {viewingItem.category}
                 </span>
-                <span className="text-xs font-black text-[#6E6A80] bg-[#F2EEFF] px-3 py-1 rounded-lg">
+                <span className="text-xs font-semibold tracking-tighter text-[#6E6A80] bg-[#F2EEFF] px-3 py-1 rounded-lg">
                   ⏳ 수행 기간: {viewingItem.dateRange || "2026.05 ~ 07"}
                 </span>
               </div>
-              <h3 className="text-2xl sm:text-3xl font-headline font-black text-[#1A1626] leading-snug">
+              <h3 className="text-2xl sm:text-3xl font-headline font-semibold tracking-tighter text-[#1A1626] leading-snug">
                 {viewingItem.title}
               </h3>
             </div>
 
             {/* 첨부 사진 확대 */}
             {viewingItem.photoUrl && (
-              <div className="rounded-3xl overflow-hidden border-2 border-purple-200 shadow-md max-h-[380px] bg-slate-50 text-center">
+              <div className="rounded-3xl overflow-hidden border-2 border-purple-200 shadow-md max-h-[380px] bg-white text-center">
                 <img src={viewingItem.photoUrl} alt="High Res Verification" className="w-full h-full max-h-[360px] object-contain mx-auto" />
               </div>
             )}
 
             {/* 본문 내용 */}
             <div className="space-y-2">
-              <span className="text-xs font-black text-slate-400 uppercase tracking-wide">📝 활동 내용과 배운 점</span>
-              <div className="bg-[#F9F8FD] p-7 rounded-[32px] border border-purple-200 shadow-inner text-base font-bold text-[#2E2840] leading-relaxed whitespace-pre-wrap">
+              <span className="text-xs font-semibold tracking-tighter text-slate-400 uppercase tracking-wide">📝 활동 내용과 배운 점</span>
+              <div className="bg-[#F9F8FD] p-7 rounded-[32px] border border-purple-200 shadow-inner text-base font-medium tracking-tight text-[#2E2840] leading-relaxed whitespace-pre-wrap">
                 {viewingItem.content}
               </div>
             </div>
 
             {/* 역량 태그 */}
             <div className="space-y-2">
-              <span className="text-xs font-black text-slate-400">🏷️ 핵심 직무 역량 태그</span>
+              <span className="text-xs font-semibold tracking-tighter text-slate-400">🏷️ 핵심 직무 역량 태그</span>
               <div className="flex flex-wrap gap-2">
                 {viewingItem.tags?.map((tag, idx) => (
-                  <span key={idx} className="text-sm font-black bg-[#EFEAFE] text-[#6240D5] px-4 py-1.5 rounded-xl border border-purple-200">
+                  <span key={idx} className="text-sm font-semibold tracking-tighter bg-[#EFEAFE] text-[#6240D5] px-4 py-1.5 rounded-2xl border border-purple-200">
                     #{tag}
                   </span>
                 ))}
@@ -868,15 +868,15 @@ export const Portfolio: React.FC = () => {
             {viewingItem.aiFeedback && (
               <div className="w-full rounded-[32px] bg-gradient-to-r from-[#E6FAFE] via-[#F2EEFF] to-[#FAEAFE] p-7 border-2 border-[#BFF6FE] shadow-inner space-y-3">
                 <div className="flex items-center justify-between">
-                  <div className="inline-flex items-center gap-2 bg-[#008A90] text-white px-3.5 py-1 rounded-full text-xs font-black shadow">
+                  <div className="inline-flex items-center gap-2 bg-[#008A90] text-white px-3.5 py-1 rounded-full text-xs font-semibold tracking-tighter shadow">
                     <Sparkles className="w-4 h-4 text-amber-200 animate-spin-slow" />
                     <span>AI 입학사정관 & 채용관 평가 피드백</span>
                   </div>
-                  <span className="text-xs font-black text-[#008A90] bg-white px-3 py-1 rounded-full border border-cyan-200">
+                  <span className="text-xs font-semibold tracking-tighter text-[#008A90] bg-white px-3 py-1 rounded-full border border-cyan-200">
                     ⚡ 대학·기업 제출 승인됨
                   </span>
                 </div>
-                <p className="text-sm sm:text-base font-black text-[#1A1626] leading-relaxed">
+                <p className="text-sm sm:text-base font-semibold tracking-tighter text-[#1A1626] leading-relaxed">
                   {viewingItem.aiFeedback}
                 </p>
               </div>
@@ -889,14 +889,14 @@ export const Portfolio: React.FC = () => {
                     setEditingItem(viewingItem);
                     setViewingItem(null);
                   }}
-                  className="px-5 py-3 rounded-xl bg-purple-50 hover:bg-purple-100 text-[#7B5CF0] font-black text-sm flex items-center gap-1.5 transition-colors"
+                  className="px-5 py-3 rounded-2xl bg-purple-50 hover:bg-purple-100 text-[#7B5CF0] font-semibold tracking-tighter text-sm flex items-center gap-1.5 transition-colors"
                 >
                   <Edit2 className="w-4 h-4" />
                   <span>수정하기</span>
                 </button>
                 <button
                   onClick={() => handleDeleteItem(viewingItem.id)}
-                  className="px-5 py-3 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 font-black text-sm flex items-center gap-1.5 transition-colors"
+                  className="px-5 py-3 rounded-2xl bg-rose-50 hover:bg-rose-100 text-rose-600 font-semibold tracking-tighter text-sm flex items-center gap-1.5 transition-colors"
                 >
                   <Trash2 className="w-4 h-4" />
                   <span>삭제하기</span>
@@ -905,7 +905,7 @@ export const Portfolio: React.FC = () => {
               
               <button
                 onClick={() => setViewingItem(null)}
-                className="px-8 py-3.5 rounded-2xl bg-[#7B5CF0] hover:bg-[#6240D5] text-white font-black text-sm shadow-md transition-all cursor-pointer"
+                className="px-8 py-3.5 rounded-3xl bg-[#7B5CF0] hover:bg-[#6240D5] text-white font-semibold tracking-tighter text-sm shadow-md transition-all cursor-pointer"
               >
                 닫기 &rarr;
               </button>
@@ -920,13 +920,13 @@ export const Portfolio: React.FC = () => {
          ========================================================================= */}
       {editingItem && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-md flex items-center justify-center p-4 animate-fadeIn">
-          <div className="bg-white w-full max-w-2xl rounded-[36px] p-8 sm:p-10 shadow-[0_25px_80px_rgba(0,0,0,0.5)] border-4 border-purple-200 relative max-h-[90vh] overflow-y-auto space-y-6">
+          <div className="bg-white w-full max-w-2xl rounded-[36px] p-8 sm:p-10 shadow-sm border-4 border-purple-200 relative max-h-[90vh] overflow-y-auto space-y-6">
             
             <div className="flex items-center justify-between border-b-2 border-purple-100 pb-4">
-              <h3 className="text-xl sm:text-2xl font-headline font-black text-[#1A1626]">
+              <h3 className="text-xl sm:text-2xl font-headline font-semibold tracking-tighter text-[#1A1626]">
                 ✏️ 포트폴리오 내역 직접 수정
               </h3>
-              <button onClick={() => setEditingItem(null)} className="p-2 rounded-full bg-purple-50 text-[#7B5CF0] font-bold">
+              <button onClick={() => setEditingItem(null)} className="p-2 rounded-full bg-purple-50 text-[#7B5CF0] font-medium tracking-tight">
                 <X className="w-6 h-6" />
               </button>
             </div>
@@ -934,7 +934,7 @@ export const Portfolio: React.FC = () => {
             <form onSubmit={handleUpdateItem} className="space-y-5">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs font-black text-[#3B364C] block mb-1">🏷️ 활동 분류</label>
+                  <label className="text-xs font-semibold tracking-tighter text-[#3B364C] block mb-1">🏷️ 활동 분류</label>
                   <select
                     value={["진학·탐구 (교과)", "동아리·자율 (창작)", "독서·예술", "🏅 자격증"].includes(editingItem.category) ? editingItem.category : "🛠️ 기타(직접입력)"}
                     onChange={(e) => {
@@ -945,7 +945,7 @@ export const Portfolio: React.FC = () => {
                         setEditingItem({ ...editingItem, category: val });
                       }
                     }}
-                    className="w-full h-12 px-4 rounded-xl bg-purple-50 border border-[#B8AAFA] font-black text-sm text-[#1A1626]"
+                    className="w-full h-12 px-4 rounded-2xl bg-purple-50 border border-[#B8AAFA] font-semibold tracking-tighter text-sm text-[#1A1626]"
                   >
                     <option value="진학·탐구 (교과)">진학·탐구 (교과)</option>
                     <option value="동아리·자율 (창작)">동아리·자율 (창작)</option>
@@ -959,50 +959,50 @@ export const Portfolio: React.FC = () => {
                       placeholder="분류 직접 입력 (예: 봉사활동, 학교제안)"
                       value={editingItem.category}
                       onChange={(e) => setEditingItem({ ...editingItem, category: e.target.value })}
-                      className="w-full h-10 px-3 mt-2 rounded-lg bg-white border border-[#7B5CF0] text-xs font-black text-[#7B5CF0] focus:outline-none shadow-inner"
+                      className="w-full h-10 px-3 mt-2 rounded-lg bg-white border border-[#7B5CF0] text-xs font-semibold tracking-tighter text-[#7B5CF0] focus:outline-none shadow-inner"
                     />
                   )}
                 </div>
 
                 <div>
-                  <label className="text-xs font-black text-[#3B364C] block mb-1">⏳ 수행 기간</label>
+                  <label className="text-xs font-semibold tracking-tighter text-[#3B364C] block mb-1">⏳ 수행 기간</label>
                   <input
                     type="text"
                     value={editingItem.dateRange || ""}
                     onChange={(e) => setEditingItem({ ...editingItem, dateRange: e.target.value })}
                     placeholder="예: 2026.05.01 ~ 2026.07.15"
-                    className="w-full h-12 px-4 rounded-xl bg-purple-50 border border-[#B8AAFA] font-black text-sm text-[#1A1626]"
+                    className="w-full h-12 px-4 rounded-2xl bg-purple-50 border border-[#B8AAFA] font-semibold tracking-tighter text-sm text-[#1A1626]"
                   >
                   </input>
                 </div>
               </div>
 
               <div>
-                <label className="text-xs font-black text-[#3B364C] block mb-1">📌 활동 제목 (또는 자격증명)</label>
+                <label className="text-xs font-semibold tracking-tighter text-[#3B364C] block mb-1">📌 활동 제목 (또는 자격증명)</label>
                 <input
                   type="text"
                   value={editingItem.title}
                   onChange={(e) => setEditingItem({ ...editingItem, title: e.target.value })}
-                  className="w-full h-12 px-4 rounded-xl bg-purple-50 border border-[#B8AAFA] font-bold text-sm text-[#1A1626]"
+                  className="w-full h-12 px-4 rounded-2xl bg-purple-50 border border-[#B8AAFA] font-medium tracking-tight text-sm text-[#1A1626]"
                   required
                 />
               </div>
 
               <div>
-                <label className="text-xs font-black text-[#3B364C] block mb-1">📝 수행 내용 및 고찰</label>
+                <label className="text-xs font-semibold tracking-tighter text-[#3B364C] block mb-1">📝 수행 내용 및 고찰</label>
                 <textarea
                   rows={6}
                   value={editingItem.content}
                   onChange={(e) => setEditingItem({ ...editingItem, content: e.target.value })}
-                  className="w-full p-4 rounded-2xl bg-purple-50 border border-[#B8AAFA] font-semibold text-sm text-[#1A1626] leading-relaxed"
+                  className="w-full p-4 rounded-3xl bg-purple-50 border border-[#B8AAFA] font-semibold text-sm text-[#1A1626] leading-relaxed"
                   required
                 />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs font-black text-[#3B364C] block mb-1">📷 인증 사진 수정 (용량 88% 압축)</label>
-                  <div className="border-2 border-dashed border-[#B8AAFA] rounded-xl p-3 text-center bg-purple-50 relative">
+                  <label className="text-xs font-semibold tracking-tighter text-[#3B364C] block mb-1">📷 인증 사진 수정 (용량 88% 압축)</label>
+                  <div className="border-2 border-dashed border-[#B8AAFA] rounded-2xl p-3 text-center bg-purple-50 relative">
                     <input
                       type="file"
                       accept="image/*"
@@ -1012,21 +1012,21 @@ export const Portfolio: React.FC = () => {
                     {editingItem.photoUrl ? (
                       <div className="flex items-center justify-center gap-2">
                         <img src={editingItem.photoUrl} alt="preview" className="w-10 h-10 object-cover rounded" />
-                        <span className="text-xs font-bold text-purple-800">새 사진으로 교체</span>
+                        <span className="text-xs font-medium tracking-tight text-purple-800">새 사진으로 교체</span>
                       </div>
                     ) : (
-                      <span className="text-xs font-bold text-slate-500">클릭하여 새 인증 사진 업로드</span>
+                      <span className="text-xs font-medium tracking-tight text-slate-500">클릭하여 새 인증 사진 업로드</span>
                     )}
                   </div>
                 </div>
 
                 <div>
-                  <label className="text-xs font-black text-[#3B364C] block mb-1">🏷️ 역량 태그 (쉼표 구분)</label>
+                  <label className="text-xs font-semibold tracking-tighter text-[#3B364C] block mb-1">🏷️ 역량 태그 (쉼표 구분)</label>
                   <input
                     type="text"
                     value={editingItem.tags ? editingItem.tags.join(", ") : ""}
                     onChange={(e) => setEditingItem({ ...editingItem, tags: e.target.value.split(",").map(t => t.trim()).filter(t => t) })}
-                    className="w-full h-12 px-4 rounded-xl bg-purple-50 border border-[#B8AAFA] font-bold text-sm text-[#1A1626]"
+                    className="w-full h-12 px-4 rounded-2xl bg-purple-50 border border-[#B8AAFA] font-medium tracking-tight text-sm text-[#1A1626]"
                   />
                 </div>
               </div>
@@ -1035,13 +1035,13 @@ export const Portfolio: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setEditingItem(null)}
-                  className="py-3 px-6 rounded-xl bg-slate-100 hover:bg-slate-200 font-bold text-sm text-[#5C5672]"
+                  className="py-3 px-6 rounded-2xl bg-slate-100 hover:bg-slate-200 font-medium tracking-tight text-sm text-[#5C5672]"
                 >
                   취소
                 </button>
                 <button
                   type="submit"
-                  className="py-3 px-8 rounded-xl bg-[#7B5CF0] hover:bg-[#643DDD] text-white font-black text-sm shadow-lg"
+                  className="py-3 px-8 rounded-2xl bg-[#7B5CF0] hover:bg-[#643DDD] text-white font-semibold tracking-tighter text-sm shadow-lg"
                 >
                   수정 사항 반영하기
                 </button>

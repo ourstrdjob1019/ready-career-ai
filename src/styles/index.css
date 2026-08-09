@@ -3,17 +3,35 @@
 @tailwind utilities;
 
 @layer base {
-  body {
-    background-color: #fbf8ff;
-    background-image: radial-gradient(at 0% 0%, hsla(253,100%,94%,1) 0px, transparent 50%),
-                      radial-gradient(at 100% 100%, hsla(263,100%,92%,1) 0px, transparent 50%);
-    background-attachment: fixed;
+  @font-face {
+    font-family: 'TT Norms Pro';
+    src: url('/fonts/tt-norms-pro-regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'TT Norms Pro';
+    src: url('/fonts/tt-norms-pro-semibold.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  html, body {
+    background-color: #F5F5F5;
     min-height: 100vh;
-    @apply text-on-surface font-body-md antialiased pb-28 md:pb-0;
+    font-family: 'TT Norms Pro', ui-sans-serif, system-ui, sans-serif;
+    color: #000000;
+    @apply antialiased pb-28 md:pb-0;
+  }
+  
+  * {
+    font-family: inherit;
   }
   
   h1, h2, h3, h4, h5, h6, .font-headline {
-    font-family: 'Hanken Grotesk', sans-serif;
+    font-family: 'TT Norms Pro', ui-sans-serif, system-ui, sans-serif;
   }
 }
 

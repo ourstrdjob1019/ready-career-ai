@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { Header, BottomNav, AriChatModal, GlobalExpRewardModal } from "./components";
 import { ARI_BLOB_URL } from "./assets/mascotData";
@@ -77,8 +77,51 @@ const AppContent: React.FC = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const showChatButton = isAuthenticated && location.pathname !== "/start";
 
+  useEffect(() => {
+    // 찌꺼기 텍스트(아리, 토리, 괄호 등) 자동 정리
+    const keysToClean = [
+      "readycareer_target_job_name",
+      "readycareer_user_job"
+    ];
+    keysToClean.forEach(key => {
+      const val = localStorage.getItem(key);
+      if (val) {
+        const cleaned = val.replace(/\s*\([^)]*\)/g, '').trim();
+        if (cleaned !== val) {
+          localStorage.setItem(key, cleaned);
+        }
+      }
+    });
+
+    try {
+      const historyStr = localStorage.getItem("readycareer_my_job_history_v1");
+      if (historyStr) {
+        const history = JSON.parse(historyStr);
+        let changed = false;
+        history.forEach((h: any) => {
+          if (h.jobName && /\(/.test(h.jobName)) {
+            h.jobName = h.jobName.replace(/\s*\([^)]*\)/g, '').trim();
+            changed = true;
+          }
+        });
+        if (changed) localStorage.setItem("readycareer_my_job_history_v1", JSON.stringify(history));
+      }
+      
+      const selectedJobStr = localStorage.getItem("readycareer_selected_job");
+      if (selectedJobStr) {
+        const sj = JSON.parse(selectedJobStr);
+        if (sj.jobName && /\(/.test(sj.jobName)) {
+          sj.jobName = sj.jobName.replace(/\s*\([^)]*\)/g, '').trim();
+          localStorage.setItem("readycareer_selected_job", JSON.stringify(sj));
+        }
+      }
+    } catch (e) {
+      // ignore
+    }
+  }, []);
+
   return (
-    <div className="min-h-screen flex flex-col bg-[#FBF8FF] font-body-md text-[#1A1626] selection:bg-[#7B5CF0]/20 selection:text-[#7B5CF0] pb-20 lg:pb-0 relative">
+    <div className="min-h-screen flex flex-col bg-[#F5F5F5] text-black pb-20 lg:pb-0 relative selection:bg-black selection:text-white">
       <Header />
 
       <main className="flex-grow">
