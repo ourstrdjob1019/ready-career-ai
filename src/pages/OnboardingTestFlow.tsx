@@ -6,8 +6,8 @@ import { RIASEC_QUESTIONS, RIASEC_TYPES, RIASEC_PROFILES } from "../data/riasecD
 
 // 2가지 선택 (색깔 대비)
 const LIKERT_OPTIONS = [
-  { value: 5, label: "네, 완전 공감해요! 👍", color: "indigo" },
-  { value: 1, label: "아니요, 저랑은 안 맞아요 🙅", color: "rose" },
+  { value: 5, label: "네, 완전 공감해요!", color: "indigo" },
+  { value: 1, label: "아니요, 저랑은 안 맞아요", color: "rose" },
 ];
 
 export const OnboardingTestFlow: React.FC = () => {
@@ -280,26 +280,23 @@ export const OnboardingTestFlow: React.FC = () => {
         </div>
 
         {/* 2가지 선택 버튼 (가로 배치) */}
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-4">
           {LIKERT_OPTIONS.map((opt) => {
             const isSelected = answers[qIndex] === opt.value;
-            const colorClass = opt.color === "indigo" 
-              ? "bg-gray-100 border-gray-300 text-black hover:bg-gray-200 hover:border-indigo-400" 
-              : "bg-rose-50 border-rose-200 text-rose-700 hover:bg-rose-100 hover:border-rose-400";
-            
-            const selectedClass = opt.color === "indigo"
-              ? "bg-indigo-500 border-indigo-600 text-white shadow-lg transform scale-[1.02]"
-              : "bg-rose-500 border-rose-600 text-white shadow-lg transform scale-[1.02]";
-
             return (
               <button
                 key={opt.value}
                 onClick={() => handleSelectAnswer(opt.value)}
-                className={`w-full py-8 px-4 rounded-3xl border-2 font-semibold tracking-tighter text-lg md:text-xl transition-all flex flex-col items-center justify-center gap-2 ${
-                  isSelected ? selectedClass : colorClass
+                className={`w-full p-5 rounded-2xl border-2 font-semibold tracking-tighter text-[15px] sm:text-lg transition-all flex flex-col items-center justify-center gap-4 text-center shadow-sm hover:shadow-md ${
+                  isSelected 
+                    ? 'bg-black border-black text-white ring-2 ring-black ring-offset-2' 
+                    : 'bg-white border-gray-200 text-gray-700 hover:border-gray-300'
                 }`}
               >
-                <span>{opt.label.split(' ')[0]} {opt.label.split(' ').slice(1).join(' ')}</span>
+                <div className={`w-5 h-5 rounded-full flex-shrink-0 transition-all border-2 flex items-center justify-center ${isSelected ? 'bg-white border-white' : 'bg-transparent border-gray-300'}`}>
+                   {isSelected && <div className="w-2.5 h-2.5 rounded-full bg-black"></div>}
+                </div>
+                <span className="break-keep leading-snug">{opt.label}</span>
               </button>
             );
           })}
