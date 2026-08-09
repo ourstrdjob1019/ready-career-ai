@@ -72,7 +72,20 @@ export const OnboardingTestFlow: React.FC = () => {
 
 
   const selectFinalJob = (jobName: string) => {
-    localStorage.setItem("readycareer_selected_job", jobName);
+    if (selectedJob) {
+      localStorage.setItem("readycareer_target_job_name", selectedJob.jobName);
+      localStorage.setItem("readycareer_custom_avatar_url", selectedJob.defaultImageUrl);
+      localStorage.setItem("readycareer_selected_job", JSON.stringify({
+        title: selectedJob.jobName,
+        category: selectedJob.category || "진로 탐색",
+        imageUrl: selectedJob.defaultImageUrl,
+        bgGradient: "from-[#E6FAFE] to-[#F2FEFF]",
+        badgeColor: "bg-[#008A90] text-white"
+      }));
+    } else {
+      localStorage.setItem("readycareer_target_job_name", jobName);
+      localStorage.setItem("readycareer_selected_job", jobName);
+    }
     localStorage.setItem("readycareer_student_xp_v1", "0");
     navigate("/");
   };

@@ -297,7 +297,7 @@ export const CareerMaturityTest: React.FC = () => {
               <span className="text-[10px] font-semibold tracking-tighter text-blue-500 uppercase tracking-widest">N</span>
             </div>
             <img src={hero.defaultImageUrl} alt="mentor" className="w-20 h-20 object-contain drop-shadow-md mx-auto mb-4" />
-            <span className="text-[11px] font-semibold tracking-tighter text-blue-600 bg-white border border-blue-200 px-3 py-1 rounded-full mb-3 inline-block shadow-sm">
+            <span className="text-[11px] font-semibold tracking-tighter text-teal-700 bg-teal-100 px-4 py-1.5 rounded-full mb-4 inline-block shadow-sm">
               현재 위치: {typeInfo.name}
             </span>
             <p className="text-xl font-medium tracking-tight text-black leading-snug break-keep">"{currentQ.q}"</p>
@@ -313,12 +313,12 @@ export const CareerMaturityTest: React.FC = () => {
                 onClick={() => handleSelectAnswer(opt.value)}
                 className={`w-full p-5 rounded-2xl border-2 font-semibold tracking-tighter text-[15px] sm:text-lg transition-all flex flex-col items-center justify-center gap-4 text-center shadow-sm hover:shadow-md ${
                   isSelected 
-                    ? 'bg-black border-black text-white ring-2 ring-black ring-offset-2' 
-                    : 'bg-white border-gray-200 text-gray-700 hover:border-gray-300'
+                    ? 'bg-teal-500 border-teal-600 text-white ring-2 ring-teal-400 ring-offset-2' 
+                    : 'bg-white border-teal-200 text-slate-700 hover:border-teal-300 hover:bg-teal-50/50'
                 }`}
               >
-                <div className={`w-5 h-5 rounded-full flex-shrink-0 transition-all border-2 flex items-center justify-center ${isSelected ? 'bg-white border-white' : 'bg-transparent border-gray-300'}`}>
-                   {isSelected && <div className="w-2.5 h-2.5 rounded-full bg-black"></div>}
+                <div className={`w-5 h-5 rounded-full flex-shrink-0 transition-all border-2 flex items-center justify-center ${isSelected ? 'bg-white border-white' : 'bg-transparent border-teal-300'}`}>
+                   {isSelected && <div className="w-2.5 h-2.5 rounded-full bg-teal-500"></div>}
                 </div>
                 <span className="break-keep leading-snug">{opt.label}</span>
               </button>

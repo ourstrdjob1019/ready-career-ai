@@ -268,12 +268,12 @@ export const GrowthMindsetTest: React.FC = () => {
                 onClick={() => handleSelectAnswer(opt.value)}
                 className={`w-full p-5 rounded-2xl border-2 font-semibold tracking-tighter text-[15px] sm:text-lg transition-all flex flex-col items-center justify-center gap-4 text-center shadow-sm hover:shadow-md ${
                   isSelected 
-                    ? 'bg-black border-black text-white ring-2 ring-black ring-offset-2' 
-                    : 'bg-white border-gray-200 text-gray-700 hover:border-gray-300'
+                    ? 'bg-emerald-500 border-emerald-600 text-white ring-2 ring-emerald-400 ring-offset-2' 
+                    : 'bg-white border-emerald-200 text-slate-700 hover:border-emerald-300 hover:bg-emerald-50/50'
                 }`}
               >
-                <div className={`w-5 h-5 rounded-full flex-shrink-0 transition-all border-2 flex items-center justify-center ${isSelected ? 'bg-white border-white' : 'bg-transparent border-gray-300'}`}>
-                   {isSelected && <div className="w-2.5 h-2.5 rounded-full bg-black"></div>}
+                <div className={`w-5 h-5 rounded-full flex-shrink-0 transition-all border-2 flex items-center justify-center ${isSelected ? 'bg-white border-white' : 'bg-transparent border-emerald-300'}`}>
+                   {isSelected && <div className="w-2.5 h-2.5 rounded-full bg-emerald-500"></div>}
                 </div>
                 <span className="break-keep leading-snug">{opt.label}</span>
               </button>
