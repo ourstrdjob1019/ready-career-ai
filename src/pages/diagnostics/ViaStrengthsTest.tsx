@@ -15,8 +15,8 @@ const shuffleArray = (array: any[]) => {
 };
 
 const LIKERT_OPTIONS = [
-  { value: 5, label: "완전 딱 제 모습이에요 ✨", bg: "bg-white", text: "text-gray-600", border: "border-gray-200", hover: "hover:border-gray-300 shadow-sm", point: "bg-gray-200 ring-4 ring-gray-50" },
-  { value: 1, label: "저랑은 좀 거리가 멀어요 😅", bg: "bg-white", text: "text-gray-600", border: "border-gray-200", hover: "hover:border-gray-300 shadow-sm", point: "bg-gray-200 ring-4 ring-gray-50" },
+  { value: 5, label: "완전 딱 제 모습이에요", bg: "bg-white", text: "text-gray-700", border: "border-gray-200", hover: "hover:border-gray-300 shadow-sm", point: "bg-gray-200" },
+  { value: 1, label: "저랑은 좀 거리가 멀어요", bg: "bg-white", text: "text-gray-700", border: "border-gray-200", hover: "hover:border-gray-300 shadow-sm", point: "bg-gray-200" },
 ];
 
 export const ViaStrengthsTest: React.FC = () => {
@@ -279,19 +279,23 @@ export const ViaStrengthsTest: React.FC = () => {
           </div>
         </div>
 
-        <div className="space-y-4 relative">
-          {/* Path Line connecting options */}
-          <div className="absolute left-6 top-6 bottom-6 w-1 bg-gray-200 rounded-2xl z-0"></div>
+        <div className="grid grid-cols-2 gap-4">
           {LIKERT_OPTIONS.map((opt) => {
             const isSelected = answers[qIndex] === opt.value;
             return (
               <button
                 key={opt.value}
                 onClick={() => handleSelectAnswer(opt.value)}
-                className={`w-full p-5 rounded-2xl border-2 font-semibold tracking-tighter text-lg transition-all flex items-center justify-start gap-5 relative z-10 ${opt.bg} ${opt.text} ${opt.border} ${opt.hover} ${isSelected ? 'ring-2 ring-blue-400 ring-offset-2 border-blue-400' : ''}`}
+                className={`w-full p-5 rounded-2xl border-2 font-semibold tracking-tighter text-[15px] sm:text-lg transition-all flex flex-col items-center justify-center gap-4 text-center shadow-sm hover:shadow-md ${
+                  isSelected 
+                    ? 'bg-black border-black text-white ring-2 ring-black ring-offset-2' 
+                    : 'bg-white border-gray-200 text-gray-700 hover:border-gray-300'
+                }`}
               >
-                <div className={`w-3 h-3 rounded-full flex-shrink-0 ${isSelected ? 'bg-blue-600 ring-4 ring-blue-200' : opt.point}`}></div>
-                <span className="text-left text-gray-800 break-keep">{opt.label}</span>
+                <div className={`w-5 h-5 rounded-full flex-shrink-0 transition-all border-2 flex items-center justify-center ${isSelected ? 'bg-white border-white' : 'bg-transparent border-gray-300'}`}>
+                   {isSelected && <div className="w-2.5 h-2.5 rounded-full bg-black"></div>}
+                </div>
+                <span className="break-keep leading-snug">{opt.label}</span>
               </button>
             );
           })}

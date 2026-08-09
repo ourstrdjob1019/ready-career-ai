@@ -40,7 +40,7 @@ export const InterestTest: React.FC = () => {
     <div className="max-w-4xl mx-auto px-4 py-8 md:py-12 space-y-8">
       
       {/* Top Header & Progress */}
-      <div className="space-y-4">
+      <div className="grid grid-cols-2 gap-4">
         <div className="flex items-center justify-between">
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary/15 text-secondary font-headline text-xs font-semibold tracking-tighter whitespace-nowrap border border-secondary/20 shadow-sm">
             <Brain className="w-4 h-4 text-secondary-spot flex-shrink-0" />
@@ -80,7 +80,7 @@ export const InterestTest: React.FC = () => {
         {/* Option A */}
         <button
           onClick={() => handleSelect(currentQ.options.A.type)}
-          className="p-6 md:p-8 rounded-3xl bg-gradient-to-br from-primary-fixed/30 to-surface-container-low hover:from-primary/20 hover:to-surface-container border-2 border-primary/40 hover:border-primary shadow-3d-base hover:shadow-3d-ambient transition-all duration-200 text-left flex flex-col justify-between group active:scale-[0.98]"
+          className="p-6 md:p-8 rounded-3xl bg-white hover:bg-gray-50 border-2 border-gray-200 hover:border-gray-800 shadow-sm hover:shadow-md transition-all duration-200 text-left flex flex-col justify-between group active:scale-[0.98]"
         >
           <div className="space-y-3">
             <div className="flex items-center justify-between">
@@ -105,7 +105,7 @@ export const InterestTest: React.FC = () => {
         {/* Option B */}
         <button
           onClick={() => handleSelect(currentQ.options.B.type)}
-          className="p-6 md:p-8 rounded-3xl bg-gradient-to-br from-secondary-fixed/30 to-surface-container-low hover:from-secondary/20 hover:to-surface-container border-2 border-secondary/40 hover:border-secondary shadow-3d-base hover:shadow-3d-ambient transition-all duration-200 text-left flex flex-col justify-between group active:scale-[0.98]"
+          className="p-6 md:p-8 rounded-3xl bg-white hover:bg-gray-50 border-2 border-gray-200 hover:border-gray-800 shadow-sm hover:shadow-md transition-all duration-200 text-left flex flex-col justify-between group active:scale-[0.98]"
         >
           <div className="space-y-3">
             <div className="flex items-center justify-between">
