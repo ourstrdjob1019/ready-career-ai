@@ -17,8 +17,6 @@ export const OnboardingTestFlow: React.FC = () => {
   const [currentView, setCurrentView] = useState<"questions" | "calculating" | "tie" | "result">("questions");
 
   // 점수 상태
-  const [lastScores, setLastScores] = useState<any>(null);
-  const [tieState, setTieState] = useState<any>(null);
   const [finalCode, setFinalCode] = useState<string>("");
   const [selectedJob, setSelectedJob] = useState<any>(null);
 
@@ -56,7 +54,7 @@ export const OnboardingTestFlow: React.FC = () => {
       scores[k] = { sum: totals[k], avg: totals[k] / counts[k], five: high5[k], four: high4[k] };
     });
 
-    setLastScores(scores);
+
 
     setTimeout(() => {
       const rank = Object.keys(scores).sort(
@@ -65,62 +63,13 @@ export const OnboardingTestFlow: React.FC = () => {
 
       const top = rank[0];
       const second = rank[1];
-      const sameTop = Object.keys(scores).filter(
-        (k) => scores[k].sum === scores[top].sum && scores[k].five === scores[top].five && scores[k].four === scores[top].four
-      );
-
-      if (sameTop.length > 1) {
-        setTieState({ position: 0, candidates: sameTop, chosen: [] });
-        setCurrentView("tie");
-        return;
-      }
-
-      const sameSecond = Object.keys(scores).filter(
-        (k) =>
-          k !== top &&
-          scores[k].sum === scores[second].sum &&
-          scores[k].five === scores[second].five &&
-          scores[k].four === scores[second].four
-      );
-
-      if (sameSecond.length > 1) {
-        setTieState({ position: 1, candidates: sameSecond, chosen: [top] });
-        setCurrentView("tie");
-        return;
-      }
 
       setFinalCode(top + second);
       setCurrentView("result");
     }, 1500);
   };
 
-  const resolveTie = (selected: string) => {
-    const scores = lastScores;
-    const rank = Object.keys(scores).sort(
-      (a, b) => scores[b].sum - scores[a].sum || scores[b].five - scores[a].five || scores[b].four - scores[a].four
-    );
 
-    if (tieState.position === 0) {
-      const rest = tieState.candidates.filter((x: string) => x !== selected);
-      const newRank = [selected, ...rank.filter((x) => x !== selected)];
-      const second = newRank[1];
-      const sameSecond = rest.filter(
-        (k: string) =>
-          scores[k].sum === scores[second].sum &&
-          scores[k].five === scores[second].five &&
-          scores[k].four === scores[second].four
-      );
-      if (sameSecond.length > 1) {
-        setTieState({ position: 1, candidates: sameSecond, chosen: [selected] });
-        return;
-      }
-      setFinalCode(selected + second);
-      setCurrentView("result");
-    } else {
-      setFinalCode(tieState.chosen[0] + selected);
-      setCurrentView("result");
-    }
-  };
 
   const selectFinalJob = (jobName: string) => {
     localStorage.setItem("readycareer_selected_job", jobName);
@@ -144,41 +93,7 @@ export const OnboardingTestFlow: React.FC = () => {
     );
   }
 
-  if (currentView === "tie" && tieState) {
-    return (
-      <div className="min-h-screen bg-slate-50 flex flex-col pt-12 p-6">
-        <div className="max-w-md w-full mx-auto">
-          <div className="text-center mb-10">
-            <span className="inline-block py-1.5 px-3 rounded-full bg-indigo-100 text-indigo-700 font-black text-xs mb-3">
-              동점자 타이브레이커
-            </span>
-            <h1 className="text-2xl font-black text-slate-800 tracking-tight leading-snug">
-              둘 다 비슷하게 끌리네요.<br />지금 당장 딱 하나만 고른다면?
-            </h1>
-          </div>
-          <div className="space-y-4">
-            {tieState.candidates.map((code: string) => {
-              const typeInfo = (RIASEC_TYPES as any)[code];
-              return (
-                <button
-                  key={code}
-                  onClick={() => resolveTie(code)}
-                  className="w-full text-left bg-white border-2 border-indigo-50 p-5 rounded-2xl shadow-sm hover:border-indigo-400 hover:shadow-md transition-all group"
-                >
-                  <div className="flex items-center gap-3 mb-2">
-                    <span className="text-xl font-black text-indigo-600">{code}</span>
-                    <span className="font-bold text-slate-800">{typeInfo.name}</span>
-                  </div>
-                  <p className="text-sm font-bold text-slate-700 mb-1">{typeInfo.prompt}</p>
-                  <p className="text-xs text-slate-500">{typeInfo.desc}</p>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      </div>
-    );
-  }
+  // Tie view removed
 
   if (currentView === "result") {
     const profile = (RIASEC_PROFILES as any)[finalCode] || {
@@ -210,7 +125,7 @@ export const OnboardingTestFlow: React.FC = () => {
             <h1 className="text-2xl font-black text-slate-800 mb-2">{profile.title}</h1>
             <p className="text-sm text-slate-600 leading-relaxed mb-6">{profile.summary}</p>
             
-            <div className="flex items-center justify-between gap-3 bg-slate-50 p-4 rounded-2xl border border-slate-100">
+            <div className="flex items-center justify-between gap-3 bg-slate-50 p-4 rounded-2xl border border-slate-100 mb-6">
               <div className="text-center flex-1">
                 <div className="text-2xl font-black text-indigo-600 mb-1">{primary}</div>
                 <div className="text-xs font-bold text-slate-700">{pInfo.name}</div>
@@ -221,6 +136,20 @@ export const OnboardingTestFlow: React.FC = () => {
                 <div className="text-xs font-bold text-slate-700">{sInfo.name}</div>
               </div>
             </div>
+            
+            {/* 직업 추천 캐릭터 렌더링 추가 */}
+            {matchingJobs.length > 0 && (
+              <div className="flex justify-center gap-4">
+                {matchingJobs.slice(0, 3).map(job => (
+                  <div key={job.jobName} className="flex flex-col items-center">
+                    <div className="w-16 h-16 rounded-full bg-white shadow-sm border-2 border-indigo-50 flex items-center justify-center overflow-hidden mb-1">
+                      <img src={job.defaultImageUrl} alt={job.jobName} className="w-full h-full object-contain drop-shadow-sm" />
+                    </div>
+                    <span className="text-[10px] font-bold text-slate-500">{job.jobName}</span>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           <div className="bg-white rounded-3xl p-7 shadow-sm border border-slate-200/60">
@@ -318,24 +247,31 @@ export const OnboardingTestFlow: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#F5F6F8] flex flex-col">
-      {/* 헤더 & 진행바 */}
-      <header className="sticky top-0 z-20 bg-white/90 backdrop-blur-md border-b border-slate-100 px-5 py-4">
-        <div className="max-w-md mx-auto flex items-center justify-between">
-          <div className="text-base font-black text-slate-800 tracking-tight">K-RIASEC 진로흥미검사</div>
-          <div className="text-xs font-black text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full">
-            {qIndex + 1} / {RIASEC_QUESTIONS.length}
+      {/* 상단 30문항 러닝 막대 & 헤더 */}
+      <header className="sticky top-0 z-20 bg-white/90 backdrop-blur-md border-b border-slate-100 px-5 py-4 shadow-sm">
+        <div className="max-w-md mx-auto flex items-center justify-between text-indigo-700">
+          <div className="flex items-center gap-2 font-black text-base tracking-tight">
+            <span>🚀 K-RIASEC 진로흥미검사</span>
+          </div>
+          <div className="text-xs font-black bg-indigo-100 px-3 py-1 rounded-full">
+            문항 {qIndex + 1} / {RIASEC_QUESTIONS.length} ({progress}%)
           </div>
         </div>
-        <div className="max-w-md mx-auto h-1.5 bg-slate-100 rounded-full mt-4 overflow-hidden">
-          <div className="h-full bg-indigo-600 rounded-full transition-all duration-300" style={{ width: `${progress}%` }} />
+        <div className="max-w-md mx-auto w-full h-3 bg-slate-100 rounded-full mt-3 overflow-hidden shadow-inner p-0.5 relative">
+          <div className="h-full rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-600 transition-all duration-300 shadow-sm" style={{ width: `${progress}%` }} />
         </div>
       </header>
 
       {/* 메인 뷰 */}
       <main className="flex-1 max-w-md w-full mx-auto p-5 pb-32 flex flex-col justify-center">
-        {/* 질문 영역 (캐릭터 이미지 제외) */}
+        {/* 질문 영역 (진단 캐릭터 복구) */}
         <div className="mb-10 relative flex flex-col items-center">
           <div className="bg-white border border-slate-200/60 p-8 md:p-10 rounded-[32px] shadow-sm relative w-full text-center">
+            <img 
+              src={JOB_CHARACTER_MASTER_LIST[qIndex % JOB_CHARACTER_MASTER_LIST.length].defaultImageUrl} 
+              alt="진단검사 캐릭터" 
+              className="w-24 h-24 object-contain drop-shadow-md mx-auto mb-4 group-hover:scale-105 transition-transform" 
+            />
             <span className="text-[11px] font-black text-indigo-500 bg-indigo-50 px-4 py-1.5 rounded-full mb-5 inline-block shadow-sm">
               {typeInfo.name} 질문
             </span>
