@@ -42,17 +42,17 @@ export const InterestTest: React.FC = () => {
       {/* Top Header & Progress */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary/15 text-secondary font-headline text-xs font-black whitespace-nowrap border border-secondary/20 shadow-sm">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary/15 text-secondary font-headline text-xs font-semibold tracking-tighter whitespace-nowrap border border-secondary/20 shadow-sm">
             <Brain className="w-4 h-4 text-secondary-spot flex-shrink-0" />
             <span>Holland RIASEC 실전 18문항 양자택일 진단</span>
           </span>
-          <span className="text-xs font-headline font-black text-text-muted whitespace-nowrap">
+          <span className="text-xs font-headline font-semibold tracking-tighter text-text-muted whitespace-nowrap">
             문항 {currentIdx + 1} / {questions.length} ({progressPercent}%)
           </span>
         </div>
 
         <ProgressBar value={progressPercent} max={100} variant="teal" />
-        <h1 className="text-2xl md:text-3xl font-headline font-black text-text-primary leading-tight text-center pt-2">
+        <h1 className="text-2xl md:text-3xl font-headline font-semibold tracking-tighter text-text-primary leading-tight text-center pt-2">
           {currentQ.situation}
         </h1>
       </div>
@@ -68,7 +68,7 @@ export const InterestTest: React.FC = () => {
           }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-surface-container-lowest/90 via-transparent to-transparent flex items-end p-4">
-          <span className="text-xs font-headline font-extrabold text-text-primary bg-surface-container-lowest/80 backdrop-blur-md px-3 py-1 rounded-full border border-surface-variant/30 shadow-sm">
+          <span className="text-xs font-headline font-semibold tracking-tighter text-text-primary bg-surface-container-lowest/80 backdrop-blur-md px-3 py-1 rounded-full border border-surface-variant/30 shadow-sm">
             🎨 터치하거나 좌우 버튼(A vs B)을 선택해 내 진행 성향을 발견해 보세요!
           </span>
         </div>
@@ -84,19 +84,19 @@ export const InterestTest: React.FC = () => {
         >
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <span className="w-10 h-10 rounded-2xl bg-primary text-on-primary font-headline font-black text-lg flex items-center justify-center shadow-md group-hover:scale-110 transition-transform flex-shrink-0">
+              <span className="w-10 h-10 rounded-2xl bg-primary text-on-primary font-headline font-semibold tracking-tighter text-lg flex items-center justify-center shadow-md group-hover:scale-110 transition-transform flex-shrink-0">
                 A
               </span>
-              <span className="text-[11px] font-extrabold text-primary px-2.5 py-0.5 rounded-full bg-primary/10 whitespace-nowrap">
+              <span className="text-[11px] font-semibold tracking-tighter text-primary px-2.5 py-0.5 rounded-full bg-primary/10 whitespace-nowrap">
                 선택지 &larr; (좌 화살표)
               </span>
             </div>
-            <p className="text-base md:text-lg font-headline font-extrabold text-text-primary leading-relaxed group-hover:text-primary transition-colors">
+            <p className="text-base md:text-lg font-headline font-semibold tracking-tighter text-text-primary leading-relaxed group-hover:text-primary transition-colors">
               "{currentQ.options.A.label}"
             </p>
           </div>
 
-          <div className="mt-6 pt-3 border-t border-primary/20 flex items-center justify-between text-xs font-black text-primary">
+          <div className="mt-6 pt-3 border-t border-primary/20 flex items-center justify-between text-xs font-semibold tracking-tighter text-primary">
             <span>이 행동 방식을 선택</span>
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
           </div>
@@ -109,19 +109,19 @@ export const InterestTest: React.FC = () => {
         >
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <span className="w-10 h-10 rounded-2xl bg-secondary text-white font-headline font-black text-lg flex items-center justify-center shadow-md group-hover:scale-110 transition-transform flex-shrink-0">
+              <span className="w-10 h-10 rounded-2xl bg-secondary text-white font-headline font-semibold tracking-tighter text-lg flex items-center justify-center shadow-md group-hover:scale-110 transition-transform flex-shrink-0">
                 B
               </span>
-              <span className="text-[11px] font-extrabold text-secondary-spot px-2.5 py-0.5 rounded-full bg-secondary/10 whitespace-nowrap">
+              <span className="text-[11px] font-semibold tracking-tighter text-secondary-spot px-2.5 py-0.5 rounded-full bg-secondary/10 whitespace-nowrap">
                 (우 화살표) &rarr; 선택지
               </span>
             </div>
-            <p className="text-base md:text-lg font-headline font-extrabold text-text-primary leading-relaxed group-hover:text-secondary transition-colors">
+            <p className="text-base md:text-lg font-headline font-semibold tracking-tighter text-text-primary leading-relaxed group-hover:text-secondary transition-colors">
               "{currentQ.options.B.label}"
             </p>
           </div>
 
-          <div className="mt-6 pt-3 border-t border-secondary/20 flex items-center justify-between text-xs font-black text-secondary-spot">
+          <div className="mt-6 pt-3 border-t border-secondary/20 flex items-center justify-between text-xs font-semibold tracking-tighter text-secondary-spot">
             <span>이 생각 방식을 선택</span>
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </div>
@@ -133,7 +133,7 @@ export const InterestTest: React.FC = () => {
       <div className="p-4 bg-surface-container-low rounded-3xl border border-surface-variant/40 flex items-center gap-4">
         <MascotAri pose="sticker" size="sm" rotate={false} />
         <div>
-          <h4 className="text-xs font-headline font-extrabold text-text-primary">아리(Ari)의 검사 코칭 Tip</h4>
+          <h4 className="text-xs font-headline font-semibold tracking-tighter text-text-primary">아리(Ari)의 검사 코칭 Tip</h4>
           <p className="text-xs text-text-muted">
             정답이나 더 좋은 성격은 없어요! 조별과제나 첨단 기기를 다룰 때 본능적으로 가장 마음이 편한 선택을 터치해 주시면 가장 정확한 커리어 클러스터가 생성됩니다.
           </p>

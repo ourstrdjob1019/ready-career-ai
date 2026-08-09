@@ -16,7 +16,7 @@ const shuffleArray = (array: any[]) => {
 
 const LIKERT_OPTIONS = [
   { value: 5, label: "완전 딱 제 모습이에요 ✨", icon: "👑", bg: "bg-gradient-to-r from-purple-800 to-indigo-900", text: "text-amber-300", border: "border-purple-400/50", hover: "hover:scale-[1.02] shadow-xl shadow-purple-900/30" },
-  { value: 1, label: "저랑은 좀 거리가 멀어요 😅", icon: "🤔", bg: "bg-slate-50", text: "text-[#555555]", border: "border-slate-200", hover: "hover:bg-slate-100 hover:border-slate-300 shadow-sm" },
+  { value: 1, label: "저랑은 좀 거리가 멀어요 😅", icon: "🤔", bg: "bg-white", text: "text-gray-600", border: "border-slate-200", hover: "hover:bg-slate-100 hover:border-slate-300 shadow-sm" },
 ];
 
 export const ViaStrengthsTest: React.FC = () => {
@@ -120,12 +120,12 @@ export const ViaStrengthsTest: React.FC = () => {
 
   if (currentView === "calculating") {
     return (
-      <div className="min-h-screen bg-[#102135] flex items-center justify-center p-6">
-        <div className="bg-white rounded-none p-10 max-w-sm w-full text-center shadow-[0_0_12px_rgba(35,48,59,0.25)] border border-[#dddddd]">
-          <div className="w-20 h-20 bg-[#f8f8f8] rounded-none mx-auto flex items-center justify-center mb-6 animate-pulse">
+      <div className="min-h-screen bg-[#F5F5F5] flex items-center justify-center p-6">
+        <div className="bg-white rounded-2xl p-10 max-w-sm w-full text-center shadow-sm border border-[#dddddd]">
+          <div className="w-20 h-20 bg-white rounded-2xl mx-auto flex items-center justify-center mb-6 animate-pulse">
             <span className="text-4xl">✨</span>
           </div>
-          <h2 className="text-2xl font-black text-[#000000] mb-3 tracking-tight">강점 프로파일<br/>분석 중!</h2>
+          <h2 className="text-2xl font-semibold tracking-tighter text-black mb-3 tracking-tight">강점 프로파일<br/>분석 중!</h2>
           <p className="text-sm text-[#707070] font-medium leading-relaxed">24가지 성격강점 중<br/>자연스럽게 드러나는 힘을 찾고 있습니다...</p>
         </div>
       </div>
@@ -139,44 +139,44 @@ export const ViaStrengthsTest: React.FC = () => {
     const sentence = `${top[0].name}과(와) ${top[1].name}이(가) 특히 자연스럽게 드러나고, ${top[2].name}도 함께 자주 사용하는 사람`;
 
     return (
-      <div className="min-h-screen bg-[#102135] pt-10 pb-20 px-5">
+      <div className="min-h-screen bg-[#F5F5F5] pt-10 pb-20 px-5">
         <div className="max-w-md mx-auto space-y-6">
-          <div className="bg-white rounded-none p-7 shadow-sm border border-rose-200/60 text-center">
-            <div className="inline-block px-3 py-1 bg-rose-50 text-rose-600 font-black text-xs rounded-full mb-4">
+          <div className="bg-white rounded-2xl p-7 shadow-sm border border-rose-200/60 text-center">
+            <div className="inline-block px-3 py-1 bg-rose-50 text-rose-600 font-semibold tracking-tighter text-xs rounded-full mb-4">
               나의 대표 성격강점 TOP 5
             </div>
-            <h1 className="text-2xl font-black text-[#000000] mb-3">{top[0].icon} {top[0].name}이 가장 자연스럽게 드러나요</h1>
-            <p className="text-sm text-[#555555] leading-relaxed mb-6">{sentence}으로 볼 수 있어요. 강점은 ‘잘하는 기술’만이 아니라 내가 생각하고 느끼고 행동할 때 자연스럽게 자주 꺼내 쓰는 좋은 힘입니다.</p>
+            <h1 className="text-2xl font-semibold tracking-tighter text-black mb-3">{top[0].icon} {top[0].name}이 가장 자연스럽게 드러나요</h1>
+            <p className="text-sm text-gray-600 leading-relaxed mb-6">{sentence}으로 볼 수 있어요. 강점은 ‘잘하는 기술’만이 아니라 내가 생각하고 느끼고 행동할 때 자연스럽게 자주 꺼내 쓰는 좋은 힘입니다.</p>
             
             <div className="flex flex-wrap gap-2 justify-center">
               {top.map((s, i) => (
-                <span key={s.id} className={`px-3 py-1.5 rounded-full text-xs font-black ${i === 0 ? 'bg-rose-500 text-[#000000] shadow-md' : 'bg-slate-100 text-[#000000]'}`}>
+                <span key={s.id} className={`px-3 py-1.5 rounded-full text-xs font-semibold tracking-tighter ${i === 0 ? 'bg-rose-500 text-black shadow-md' : 'bg-slate-100 text-black'}`}>
                   {s.icon} {s.name}
                 </span>
               ))}
             </div>
           </div>
 
-          <div className="bg-white rounded-none p-7 shadow-[0_0_12px_rgba(35,48,59,0.25)] border border-[#dddddd]">
-            <h3 className="font-black text-[#000000] mb-4 flex items-center gap-2">
+          <div className="bg-white rounded-2xl p-7 shadow-sm border border-[#dddddd]">
+            <h3 className="font-semibold tracking-tighter text-black mb-4 flex items-center gap-2">
               <span className="w-1.5 h-1.5 bg-rose-500 rounded-full"></span>
               나를 가장 잘 보여주는 강점 3가지
             </h3>
             <div className="space-y-3">
               {top3.map((s, i) => (
-                <div key={s.id} className={`rounded-none p-4 border ${i === 0 ? 'bg-rose-50/50 border-rose-200' : 'bg-slate-50 border-slate-100'}`}>
+                <div key={s.id} className={`rounded-2xl p-4 border ${i === 0 ? 'bg-rose-50/50 border-rose-200' : 'bg-white border-slate-100'}`}>
                   <div className="flex justify-between items-center mb-2">
-                    <div className="text-sm font-black text-[#000000]">{i + 1}. {s.icon} {s.name}</div>
-                    <div className="text-xs font-black text-[#707070]">{s.score}</div>
+                    <div className="text-sm font-semibold tracking-tighter text-black">{i + 1}. {s.icon} {s.name}</div>
+                    <div className="text-xs font-semibold tracking-tighter text-[#707070]">{s.score}</div>
                   </div>
-                  <div className="text-xs text-[#555555] mb-3 leading-relaxed">{s.desc}</div>
+                  <div className="text-xs text-gray-600 mb-3 leading-relaxed">{s.desc}</div>
                   <div className="grid grid-cols-1 gap-2">
-                    <div className="bg-white rounded-none p-3 border border-slate-100">
-                      <div className="text-[10px] font-black text-[#000000] mb-1">💡 이 강점 써보기</div>
+                    <div className="bg-white rounded-2xl p-3 border border-slate-100">
+                      <div className="text-[10px] font-semibold tracking-tighter text-black mb-1">💡 이 강점 써보기</div>
                       <div className="text-xs text-[#707070] leading-relaxed">{s.use}</div>
                     </div>
-                    <div className="bg-white rounded-none p-3 border border-slate-100">
-                      <div className="text-[10px] font-black text-[#000000] mb-1">⚠️ 너무 세게 쓰이면</div>
+                    <div className="bg-white rounded-2xl p-3 border border-slate-100">
+                      <div className="text-[10px] font-semibold tracking-tighter text-black mb-1">⚠️ 너무 세게 쓰이면</div>
                       <div className="text-xs text-[#707070] leading-relaxed">{s.caution}</div>
                     </div>
                   </div>
@@ -185,8 +185,8 @@ export const ViaStrengthsTest: React.FC = () => {
             </div>
           </div>
 
-          <div className="bg-white rounded-none p-7 shadow-[0_0_12px_rgba(35,48,59,0.25)] border border-[#dddddd]">
-            <h3 className="font-black text-[#000000] mb-2 flex items-center gap-2">
+          <div className="bg-white rounded-2xl p-7 shadow-sm border border-[#dddddd]">
+            <h3 className="font-semibold tracking-tighter text-black mb-2 flex items-center gap-2">
               <span className="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
               6가지 큰 강점 영역
             </h3>
@@ -194,42 +194,42 @@ export const ViaStrengthsTest: React.FC = () => {
             <div className="space-y-4">
               {virtueRank.map((v) => (
                 <div key={v} className="flex items-center gap-3">
-                  <div className="w-16 text-xs font-black text-[#000000] shrink-0">{v}</div>
-                  <div className="flex-1 h-2 bg-[#12273d] rounded-full overflow-hidden">
+                  <div className="w-16 text-xs font-semibold tracking-tighter text-black shrink-0">{v}</div>
+                  <div className="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">
                     <div className="h-full bg-gradient-to-r from-rose-300 to-rose-500 rounded-full" style={{ width: `${virtueScores[v]}%` }} />
                   </div>
-                  <div className="w-8 text-right text-xs font-black text-[#707070]">{virtueScores[v]}</div>
+                  <div className="w-8 text-right text-xs font-semibold tracking-tighter text-[#707070]">{virtueScores[v]}</div>
                 </div>
               ))}
             </div>
           </div>
           
-          <div className="bg-[#f8f8f8] rounded-none p-7 shadow-[0_0_12px_rgba(35,48,59,0.25)] border border-[#dddddd]">
-            <h3 className="font-black text-[#000000] mb-4 flex items-center gap-2">
+          <div className="bg-white rounded-2xl p-7 shadow-sm border border-[#dddddd]">
+            <h3 className="font-semibold tracking-tighter text-black mb-4 flex items-center gap-2">
               <span className="w-1.5 h-1.5 bg-rose-500 rounded-full"></span>
               강점을 더 잘 쓰는 방법
             </h3>
-            <div className="bg-white rounded-none p-5 border border-rose-200 shadow-sm">
-              <div className="text-[10px] font-black text-rose-600 mb-2">TOP 강점 활용하기</div>
-              <h4 className="text-base font-black text-[#000000] mb-2">{top[0].name}을 실제 행동으로 꺼내보기</h4>
-              <p className="text-xs text-[#555555] leading-relaxed">{top[0].use} 강점은 ‘가지고 있는 것’보다 상황에 맞게 직접 써볼 때 더 분명하게 느껴집니다.</p>
+            <div className="bg-white rounded-2xl p-5 border border-rose-200 shadow-sm">
+              <div className="text-[10px] font-semibold tracking-tighter text-rose-600 mb-2">TOP 강점 활용하기</div>
+              <h4 className="text-base font-semibold tracking-tighter text-black mb-2">{top[0].name}을 실제 행동으로 꺼내보기</h4>
+              <p className="text-xs text-gray-600 leading-relaxed">{top[0].use} 강점은 ‘가지고 있는 것’보다 상황에 맞게 직접 써볼 때 더 분명하게 느껴집니다.</p>
             </div>
           </div>
           
-          <div className="bg-[#f8f8f8] rounded-none p-7 shadow-[0_0_12px_rgba(35,48,59,0.25)] border border-[#dddddd]">
-            <h3 className="font-black text-[#000000] mb-4 flex items-center gap-2">
+          <div className="bg-white rounded-2xl p-7 shadow-sm border border-[#dddddd]">
+            <h3 className="font-semibold tracking-tighter text-black mb-4 flex items-center gap-2">
               <span className="w-1.5 h-1.5 bg-slate-400 rounded-full"></span>
               덜 자주 쓰는 강점도 내 안에 있어요
             </h3>
-            <div className="bg-white rounded-none p-5 border border-slate-200 shadow-sm">
-              <div className="text-[10px] font-black text-[#707070] mb-2">숨은 강점 후보 · {low.icon} {low.name}</div>
-              <h4 className="text-base font-black text-[#000000] mb-2">낮은 순위 = 약점은 아니에요</h4>
-              <p className="text-xs text-[#555555] leading-relaxed">{low.desc} 지금 응답에서는 상대적으로 덜 자주 드러났지만 필요할 때 의식적으로 꺼내볼 수 있는 강점입니다. 이번 주 한 번만 이 강점을 써볼 장면을 찾아보세요.</p>
+            <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
+              <div className="text-[10px] font-semibold tracking-tighter text-[#707070] mb-2">숨은 강점 후보 · {low.icon} {low.name}</div>
+              <h4 className="text-base font-semibold tracking-tighter text-black mb-2">낮은 순위 = 약점은 아니에요</h4>
+              <p className="text-xs text-gray-600 leading-relaxed">{low.desc} 지금 응답에서는 상대적으로 덜 자주 드러났지만 필요할 때 의식적으로 꺼내볼 수 있는 강점입니다. 이번 주 한 번만 이 강점을 써볼 장면을 찾아보세요.</p>
             </div>
           </div>
 
-          <div className="bg-rose-600 rounded-none p-7 shadow-lg">
-            <h2 className="text-lg font-black text-[#000000] mb-2 text-center">
+          <div className="bg-rose-600 rounded-2xl p-7 shadow-lg">
+            <h2 className="text-lg font-semibold tracking-tighter text-black mb-2 text-center">
               🎯 오늘의 작은 미션
             </h2>
             <p className="text-rose-50 text-sm text-center mb-6 leading-relaxed">
@@ -237,7 +237,7 @@ export const ViaStrengthsTest: React.FC = () => {
             </p>
             <button
               onClick={() => navigate("/self-understanding")}
-              className="w-full bg-[#102135] text-[#40e2de] font-black py-4 rounded-none hover:bg-[#0c1a29] border border-[#40e2de] transition-colors"
+              className="w-full bg-[#F5F5F5] text-black font-semibold tracking-tighter py-4 rounded-2xl hover:bg-gray-800 border border-gray-200 transition-colors"
             >
               진단 센터로 돌아가기
             </button>
@@ -251,31 +251,31 @@ export const ViaStrengthsTest: React.FC = () => {
   const hero = randomMentors[qIndex] || JOB_CHARACTER_MASTER_LIST[0];
 
   return (
-    <div className="min-h-screen bg-[#102135] flex flex-col">
-      <header className="sticky top-0 z-20 bg-[#0c1a29]/90 backdrop-blur-md border-b border-[#244161] px-5 py-4">
+    <div className="min-h-screen bg-[#F5F5F5] flex flex-col">
+      <header className="sticky top-0 z-20 bg-white/90 backdrop-blur-md border-b border-gray-200 px-5 py-4">
         <div className="max-w-md mx-auto flex items-center justify-between">
-          <div className="text-base font-black text-[#d7dfe6] tracking-tight">성격강점 프로파일</div>
-          <div className="text-xs font-black text-[#d7dfe6] bg-[#12273d] px-3 py-1 rounded-full">
+          <div className="text-base font-semibold tracking-tighter text-black tracking-tight">성격강점 프로파일</div>
+          <div className="text-xs font-semibold tracking-tighter text-black bg-gray-100 px-3 py-1 rounded-full">
             {qIndex + 1} / {VIA_QUESTIONS.length}
           </div>
         </div>
-        <div className="max-w-md mx-auto h-2 bg-[#12273d] rounded-full mt-4 overflow-hidden">
-          <div className="h-full bg-[#40e2de] rounded-full transition-all duration-300" style={{ width: `${progress}%` }} />
+        <div className="max-w-md mx-auto h-2 bg-gray-100 rounded-full mt-4 overflow-hidden">
+          <div className="h-full bg-black rounded-full transition-all duration-300" style={{ width: `${progress}%` }} />
         </div>
       </header>
 
       <main className="flex-1 max-w-md w-full mx-auto p-5 pb-32 flex flex-col justify-center">
         <div className="mb-10 relative flex flex-col items-center">
           <div className="bg-gradient-to-b from-purple-900 to-indigo-900 p-8 pt-12 mt-10 rounded-[32px] shadow-2xl relative w-full text-center border-2 border-purple-500/30">
-            <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-24 h-24 bg-gradient-to-tr from-amber-200 to-yellow-500 rounded-full p-1 shadow-[0_0_30px_rgba(251,191,36,0.4)] z-10">
+            <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-24 h-24 bg-gradient-to-tr from-amber-200 to-yellow-500 rounded-full p-1 shadow-sm z-10">
               <div className="w-full h-full bg-white rounded-full overflow-hidden flex items-center justify-center">
                 <img src={hero.defaultImageUrl} alt="mentor" className="w-20 h-20 object-contain drop-shadow-sm" />
               </div>
             </div>
-            <span className="text-[10px] font-black text-amber-900 bg-amber-300 px-3 py-1 rounded-full mb-4 inline-block shadow-sm">
+            <span className="text-[10px] font-semibold tracking-tighter text-amber-900 bg-amber-300 px-3 py-1 rounded-full mb-4 inline-block shadow-sm">
               {currentQ.virtue} 덕목
             </span>
-            <p className="text-xl sm:text-2xl font-black text-[#000000] leading-tight break-keep mt-2 text-shadow-sm">"{currentQ.q}"</p>
+            <p className="text-xl sm:text-2xl font-semibold tracking-tighter text-black leading-tight break-keep mt-2 text-shadow-sm">"{currentQ.q}"</p>
           </div>
         </div>
 
@@ -286,7 +286,7 @@ export const ViaStrengthsTest: React.FC = () => {
               <button
                 key={opt.value}
                 onClick={() => handleSelectAnswer(opt.value)}
-                className={`w-full p-6 rounded-[24px] border-2 font-black transition-all flex items-center justify-between ${opt.bg} ${opt.text} ${opt.border} ${opt.hover} ${isSelected ? 'ring-4 ring-amber-400 ring-offset-2 scale-[1.02]' : ''}`}
+                className={`w-full p-6 rounded-[24px] border-2 font-semibold tracking-tighter transition-all flex items-center justify-between ${opt.bg} ${opt.text} ${opt.border} ${opt.hover} ${isSelected ? 'ring-4 ring-amber-400 ring-offset-2 scale-[1.02]' : ''}`}
               >
                 <span className="text-2xl drop-shadow-sm">{opt.icon}</span>
                 <span className="flex-1 text-center text-lg">{opt.label}</span>

@@ -143,12 +143,12 @@ export const AiLiteracyTest: React.FC = () => {
 
   if (currentView === "calculating") {
     return (
-      <div className="min-h-screen bg-[#102135] flex items-center justify-center p-6">
-        <div className="bg-white rounded-none p-10 max-w-sm w-full text-center shadow-[0_0_12px_rgba(35,48,59,0.25)] border border-[#dddddd]">
-          <div className="w-20 h-20 bg-[#f8f8f8] rounded-none mx-auto flex items-center justify-center mb-6 animate-pulse">
+      <div className="min-h-screen bg-[#F5F5F5] flex items-center justify-center p-6">
+        <div className="bg-white rounded-2xl p-10 max-w-sm w-full text-center shadow-sm border border-[#dddddd]">
+          <div className="w-20 h-20 bg-white rounded-2xl mx-auto flex items-center justify-center mb-6 animate-pulse">
             <span className="text-4xl">🤖</span>
           </div>
-          <h2 className="text-2xl font-black text-[#000000] mb-3 tracking-tight">AI 활용 프로파일<br/>분석 중!</h2>
+          <h2 className="text-2xl font-semibold tracking-tighter text-black mb-3 tracking-tight">AI 활용 프로파일<br/>분석 중!</h2>
           <p className="text-sm text-[#707070] font-medium leading-relaxed">나의 AI 활용 기준과<br/>디지털 행동 패턴을 찾고 있습니다...</p>
         </div>
       </div>
@@ -169,31 +169,31 @@ export const AiLiteracyTest: React.FC = () => {
     ];
 
     return (
-      <div className="min-h-screen bg-[#102135] pt-10 pb-20 px-5">
+      <div className="min-h-screen bg-[#F5F5F5] pt-10 pb-20 px-5">
         <div className="max-w-md mx-auto space-y-6">
-          <div className="bg-white rounded-none p-7 shadow-sm border border-indigo-200/60 text-center">
-            <div className="inline-block px-3 py-1 bg-indigo-50 text-indigo-600 font-black text-xs rounded-full mb-4">
+          <div className="bg-white rounded-2xl p-7 shadow-sm border border-gray-300/60 text-center">
+            <div className="inline-block px-3 py-1 bg-gray-100 text-black font-semibold tracking-tighter text-xs rounded-full mb-4">
               나의 AI 활용 프로파일
             </div>
-            <h1 className="text-2xl font-black text-[#000000] mb-3">{resultPair[0]}</h1>
-            <p className="text-sm text-[#555555] leading-relaxed mb-6">{resultPair[1]}</p>
+            <h1 className="text-2xl font-semibold tracking-tighter text-black mb-3">{resultPair[0]}</h1>
+            <p className="text-sm text-gray-600 leading-relaxed mb-6">{resultPair[1]}</p>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4 text-left">
-              <div className="bg-[#f8f8f8] rounded-none border border-[#dddddd] p-4">
-                <div className="text-[10px] font-black text-indigo-800 mb-2">가장 자주 드러난 기준</div>
-                <div className="text-base font-black text-indigo-900 mb-1">{strongDomain.icon} {strongDomain.name}</div>
-                <div className="text-xs text-indigo-700/80 leading-relaxed">{strongDomain.desc}</div>
+              <div className="bg-white rounded-2xl border border-[#dddddd] p-4">
+                <div className="text-[10px] font-semibold tracking-tighter text-indigo-800 mb-2">가장 자주 드러난 기준</div>
+                <div className="text-base font-semibold tracking-tighter text-indigo-900 mb-1">{strongDomain.icon} {strongDomain.name}</div>
+                <div className="text-xs text-black/80 leading-relaxed">{strongDomain.desc}</div>
               </div>
-              <div className="bg-[#f8f8f8] rounded-none border border-[#dddddd] p-4">
-                <div className="text-[10px] font-black text-[#707070] mb-2">함께 자주 드러난 기준</div>
-                <div className="text-base font-black text-[#000000] mb-1">{(AI_DOMAINS as any)[b].icon} {(AI_DOMAINS as any)[b].name}</div>
+              <div className="bg-white rounded-2xl border border-[#dddddd] p-4">
+                <div className="text-[10px] font-semibold tracking-tighter text-[#707070] mb-2">함께 자주 드러난 기준</div>
+                <div className="text-base font-semibold tracking-tighter text-black mb-1">{(AI_DOMAINS as any)[b].icon} {(AI_DOMAINS as any)[b].name}</div>
                 <div className="text-xs text-[#707070] leading-relaxed">{(AI_DOMAINS as any)[b].desc}</div>
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-none p-7 shadow-[0_0_12px_rgba(35,48,59,0.25)] border border-[#dddddd]">
-            <h3 className="font-black text-[#000000] mb-2 flex items-center gap-2">
+          <div className="bg-white rounded-2xl p-7 shadow-sm border border-[#dddddd]">
+            <h3 className="font-semibold tracking-tighter text-black mb-2 flex items-center gap-2">
               <span className="w-1.5 h-1.5 bg-indigo-500 rounded-full"></span>
               나의 5가지 AI 활용 기준
             </h3>
@@ -203,63 +203,63 @@ export const AiLiteracyTest: React.FC = () => {
                 const d = (AI_DOMAINS as any)[k];
                 return (
                   <div key={k} className="flex items-center gap-3">
-                    <div className="w-24 text-xs font-black text-[#000000] shrink-0">{d.icon} {d.name}</div>
-                    <div className="flex-1 h-2 bg-[#12273d] rounded-full overflow-hidden">
+                    <div className="w-24 text-xs font-semibold tracking-tighter text-black shrink-0">{d.icon} {d.name}</div>
+                    <div className="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">
                       <div className="h-full bg-gradient-to-r from-indigo-300 to-indigo-500 rounded-full" style={{ width: `${lastScores[k]}%` }} />
                     </div>
-                    <div className="w-8 text-right text-xs font-black text-[#707070]">{lastScores[k]}</div>
+                    <div className="w-8 text-right text-xs font-semibold tracking-tighter text-[#707070]">{lastScores[k]}</div>
                   </div>
                 );
               })}
             </div>
           </div>
 
-          <div className="bg-white rounded-none p-7 shadow-[0_0_12px_rgba(35,48,59,0.25)] border border-[#dddddd]">
-            <h3 className="font-black text-[#000000] mb-4 flex items-center gap-2">
+          <div className="bg-white rounded-2xl p-7 shadow-sm border border-[#dddddd]">
+            <h3 className="font-semibold tracking-tighter text-black mb-4 flex items-center gap-2">
               <span className="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
               너 이런 편이지?
             </h3>
             <div className="space-y-3">
               {bullets.map((b: string, i: number) => (
-                <div key={i} className="flex gap-3 bg-[#f8f8f8] rounded-none p-4">
-                  <div className="text-indigo-600 font-black">✓</div>
-                  <div className="text-xs text-[#555555] leading-relaxed">{b}</div>
+                <div key={i} className="flex gap-3 bg-white rounded-2xl p-4">
+                  <div className="text-black font-semibold tracking-tighter">✓</div>
+                  <div className="text-xs text-gray-600 leading-relaxed">{b}</div>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="bg-white rounded-none p-7 shadow-[0_0_12px_rgba(35,48,59,0.25)] border border-[#dddddd]">
-            <h3 className="font-black text-[#000000] mb-4 flex items-center gap-2">
+          <div className="bg-white rounded-2xl p-7 shadow-sm border border-[#dddddd]">
+            <h3 className="font-semibold tracking-tighter text-black mb-4 flex items-center gap-2">
               <span className="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
               지금 잘하고 있는 것과 다음에 챙길 기준
             </h3>
             <div className="grid grid-cols-1 gap-3">
-              <div className="bg-[#f8f8f8] rounded-none border border-[#dddddd] p-5">
+              <div className="bg-white rounded-2xl border border-[#dddddd] p-5">
                 <div className="text-2xl mb-1">{strongDomain.icon}</div>
-                <div className="text-xs font-black text-indigo-800 mb-2">잘 드러난 기준 · {strongDomain.name}</div>
-                <div className="text-[11px] leading-relaxed text-indigo-700">{strongDomain.strong}</div>
+                <div className="text-xs font-semibold tracking-tighter text-indigo-800 mb-2">잘 드러난 기준 · {strongDomain.name}</div>
+                <div className="text-[11px] leading-relaxed text-black">{strongDomain.strong}</div>
               </div>
-              <div className="bg-[#f8f8f8] rounded-none border border-[#dddddd] p-5">
+              <div className="bg-white rounded-2xl border border-[#dddddd] p-5">
                 <div className="text-2xl mb-1">{lowDomain.icon}</div>
-                <div className="text-xs font-black text-[#000000] mb-2">다음에 한 번 더 · {lowDomain.name}</div>
+                <div className="text-xs font-semibold tracking-tighter text-black mb-2">다음에 한 번 더 · {lowDomain.name}</div>
                 <div className="text-[11px] leading-relaxed text-[#707070]">{lowDomain.next}</div>
               </div>
             </div>
           </div>
           
-          <div className="bg-[#f8f8f8] rounded-none p-7 shadow-[0_0_12px_rgba(35,48,59,0.25)] border border-[#dddddd]">
-            <h3 className="font-black text-[#000000] mb-3 flex items-center gap-2">
+          <div className="bg-white rounded-2xl p-7 shadow-sm border border-[#dddddd]">
+            <h3 className="font-semibold tracking-tighter text-black mb-3 flex items-center gap-2">
               <span className="w-1.5 h-1.5 bg-indigo-500 rounded-full"></span>
               AI 리터러시는 정답 하나가 아니에요
             </h3>
-            <p className="text-xs text-[#555555] leading-relaxed">
+            <p className="text-xs text-gray-600 leading-relaxed">
               어떤 상황에서는 빠른 창작이 중요하고, 어떤 상황에서는 검증이나 개인정보 보호가 더 중요할 수 있어요. 핵심은 <b>상황에 따라 어떤 기준을 더 우선해야 하는지 스스로 판단하고 조절하는 것</b>입니다.
             </p>
           </div>
 
-          <div className="bg-indigo-600 rounded-none p-7 shadow-lg">
-            <h2 className="text-lg font-black text-[#000000] mb-2 text-center">
+          <div className="bg-black rounded-2xl p-7 shadow-lg">
+            <h2 className="text-lg font-semibold tracking-tighter text-black mb-2 text-center">
               🎯 오늘의 작은 미션
             </h2>
             <p className="text-indigo-50 text-sm text-center mb-6 leading-relaxed">
@@ -267,7 +267,7 @@ export const AiLiteracyTest: React.FC = () => {
             </p>
             <button
               onClick={() => navigate("/self-understanding")}
-              className="w-full bg-[#102135] text-[#40e2de] font-black py-4 rounded-none hover:bg-[#0c1a29] border border-[#40e2de] transition-colors"
+              className="w-full bg-[#F5F5F5] text-black font-semibold tracking-tighter py-4 rounded-2xl hover:bg-gray-800 border border-gray-200 transition-colors"
             >
               진단 센터로 돌아가기
             </button>
@@ -282,28 +282,28 @@ export const AiLiteracyTest: React.FC = () => {
   const hero = randomMentors[qIndex] || JOB_CHARACTER_MASTER_LIST[0];
 
   return (
-    <div className="min-h-screen bg-[#102135] flex flex-col">
-      <header className="sticky top-0 z-20 bg-[#0c1a29]/90 backdrop-blur-md border-b border-[#244161] px-5 py-4">
+    <div className="min-h-screen bg-[#F5F5F5] flex flex-col">
+      <header className="sticky top-0 z-20 bg-white/90 backdrop-blur-md border-b border-gray-200 px-5 py-4">
         <div className="max-w-md mx-auto flex items-center justify-between">
-          <div className="text-base font-black text-[#d7dfe6] tracking-tight">AI 리터러시 프로파일</div>
-          <div className="text-xs font-black text-[#d7dfe6] bg-[#12273d] px-3 py-1 rounded-full">
+          <div className="text-base font-semibold tracking-tighter text-black tracking-tight">AI 리터러시 프로파일</div>
+          <div className="text-xs font-semibold tracking-tighter text-black bg-gray-100 px-3 py-1 rounded-full">
             {qIndex + 1} / {AI_QUESTIONS.length}
           </div>
         </div>
-        <div className="max-w-md mx-auto h-2 bg-[#12273d] rounded-full mt-4 overflow-hidden">
-          <div className="h-full bg-[#40e2de] rounded-full transition-all duration-300" style={{ width: `${progress}%` }} />
+        <div className="max-w-md mx-auto h-2 bg-gray-100 rounded-full mt-4 overflow-hidden">
+          <div className="h-full bg-black rounded-full transition-all duration-300" style={{ width: `${progress}%` }} />
         </div>
       </header>
 
       <main className="flex-1 max-w-md w-full mx-auto p-5 pb-32 flex flex-col justify-center">
         <div className="mb-10 relative flex flex-col items-center">
-          <div className="bg-slate-900 border border-cyan-400/40 p-6 rounded-none shadow-[0_0_20px_rgba(34,211,238,0.2)] relative -mt-4 w-full text-center overflow-hidden">
+          <div className="bg-white border border-gray-200 p-6 rounded-2xl shadow-sm relative -mt-4 w-full text-center overflow-hidden">
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-50" />
-            <img src={hero.defaultImageUrl} alt="mentor" className="w-20 h-20 object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.2)] mb-4 mx-auto" />
-            <span className="text-[10px] font-mono text-[#40e2de] bg-cyan-900/50 px-3 py-1 rounded-sm mb-3 inline-block border border-cyan-500/30">
+            <img src={hero.defaultImageUrl} alt="mentor" className="w-20 h-20 object-contain drop-shadow-sm mb-4 mx-auto" />
+            <span className="text-[10px] font-mono text-black bg-cyan-900/50 px-3 py-1 rounded-sm mb-3 inline-block border border-cyan-500/30">
               AI 리터러시 진단
             </span>
-            <p className="text-lg font-black text-[#000000] leading-relaxed break-keep">"{currentQ.q}"</p>
+            <p className="text-lg font-semibold tracking-tighter text-black leading-relaxed break-keep">"{currentQ.q}"</p>
           </div>
         </div>
 
@@ -314,13 +314,13 @@ export const AiLiteracyTest: React.FC = () => {
               <button
                 key={origIndex}
                 onClick={() => handleSelectAnswer(origIndex)}
-                className={`w-full p-4 rounded-none border font-bold text-sm transition-all flex items-center gap-4 text-left ${
+                className={`w-full p-4 rounded-2xl border font-medium tracking-tight text-sm transition-all flex items-center gap-4 text-left ${
                   isSelected 
-                    ? "bg-slate-800 border-cyan-400 text-cyan-50 shadow-[0_0_15px_rgba(34,211,238,0.3)] transform scale-[1.02]" 
-                    : "bg-white border-slate-200 text-[#555555] hover:border-cyan-300 hover:bg-cyan-50/30 hover:shadow-sm"
+                    ? "bg-white border-cyan-400 text-cyan-50 shadow-sm transform scale-[1.02]" 
+                    : "bg-white border-slate-200 text-gray-600 hover:border-cyan-300 hover:bg-cyan-50/30 hover:shadow-sm"
                 }`}
               >
-                <div className={`w-8 h-8 rounded-none flex items-center justify-center text-xs font-mono shrink-0 border ${isSelected ? 'bg-cyan-500 border-cyan-400 text-slate-900' : 'bg-slate-50 border-slate-200 text-[#707070]'}`}>
+                <div className={`w-8 h-8 rounded-2xl flex items-center justify-center text-xs font-mono shrink-0 border ${isSelected ? 'bg-black border-cyan-400 text-slate-900' : 'bg-white border-slate-200 text-[#707070]'}`}>
                   0{idx + 1}
                 </div>
                 <span className="flex-1 leading-snug">{currentQ.o[origIndex][0]}</span>

@@ -215,12 +215,12 @@ export const IntelligenceTest: React.FC = () => {
         
         {/* 리포트 상단 타이틀 바 */}
         <div className="text-center space-y-3 pb-2">
-          <div className="inline-flex items-center gap-2 bg-purple-100 text-purple-700 px-4 py-1 rounded-full text-xs font-headline font-black border border-purple-200 shadow-sm">
+          <div className="inline-flex items-center gap-2 bg-gray-100 text-black px-4 py-1 rounded-full text-xs font-headline font-semibold tracking-tighter border border-gray-200 shadow-sm">
             <Sparkles className="w-4 h-4 animate-spin-slow" />
             <span>2026학년도 입시 대응 AI 다중지능 정밀 심층 리포트 (16문항 완수)</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-headline font-black text-text-primary tracking-tight">
-            회원님의 최우수 다중지능 영역은 <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600">[{resultData.topTrait}]</span> 입니다!
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-headline font-semibold tracking-tighter text-text-primary tracking-tight">
+            회원님의 최우수 다중지능 영역은 <span className="bg-black">[{resultData.topTrait}]</span> 입니다!
           </h1>
           <p className="text-xs sm:text-sm text-text-muted max-w-2xl mx-auto leading-relaxed">
             단순 국·영·수 암기가 아닌, 미래 인공지능 시대에 필요한 다재다능한 지성 체계를 다면 평가한 공식 리포트입니다.<br />
@@ -229,22 +229,22 @@ export const IntelligenceTest: React.FC = () => {
         </div>
 
         {/* 핵심 히어로 리포트 카드 */}
-        <Card variant="hero" padding="lg" className="shadow-2xl bg-gradient-to-br from-purple-900 via-indigo-900 to-slate-900 text-white rounded-3xl p-6 sm:p-8 border border-purple-500/30">
+        <Card variant="hero" padding="lg" className="shadow-2xl bg-gradient-to-br from-gray-800 to-black text-white rounded-3xl p-6 sm:p-8 border border-purple-500/30">
           <div className="flex flex-col md:flex-row items-center gap-8">
             <div className="w-36 h-36 flex-shrink-0 relative flex items-center justify-center bg-white/10 rounded-full border-2 border-white/20 shadow-inner p-2">
               <MascotAri pose="celebrate" size="md" rotate={true} />
-              <span className="absolute -bottom-2 bg-purple-500 text-white font-black text-[11px] px-3 py-0.5 rounded-full shadow-md">
+              <span className="absolute -bottom-2 bg-purple-500 text-white font-semibold tracking-tighter text-[11px] px-3 py-0.5 rounded-full shadow-md">
                 상위 {100 - resultData.score}% 수준
               </span>
             </div>
             <div className="space-y-4 flex-1 text-center md:text-left">
               <div className="space-y-1">
-                <span className="text-xs text-purple-300 font-bold uppercase tracking-wider">Comprehensive Intelligence Score</span>
-                <h2 className="text-2xl sm:text-3xl font-headline font-black text-white">
-                  진단 종합 지표: <span className="text-yellow-400 font-black">{resultData.score}점</span> (최초 우수 소양 입증)
+                <span className="text-xs text-purple-300 font-medium tracking-tight uppercase tracking-wider">Comprehensive Intelligence Score</span>
+                <h2 className="text-2xl sm:text-3xl font-headline font-semibold tracking-tighter text-white">
+                  진단 종합 지표: <span className="text-yellow-400 font-semibold tracking-tighter">{resultData.score}점</span> (최초 우수 소양 입증)
                 </h2>
               </div>
-              <p className="text-xs sm:text-sm text-purple-100 leading-relaxed bg-white/10 p-4 sm:p-5 rounded-2xl border border-white/15">
+              <p className="text-xs sm:text-sm text-gray-600 leading-relaxed bg-white/10 p-4 sm:p-5 rounded-2xl border border-white/15">
                 <strong>💡 AI 아리 코칭:</strong> {resultData.summary} 학교 생활 속에서 이 영역과 일치하는 과목 및 동아리에 활발하게 지원하면 남들보다 3배 이상 빠르고 돋보이는 성과를 거둘 수 있습니다!
               </p>
             </div>
@@ -254,7 +254,7 @@ export const IntelligenceTest: React.FC = () => {
         {/* 8대 다중지능 TOP 역량 분석 그리드 표 */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-lg space-y-5">
-            <h3 className="text-lg font-headline font-black text-slate-800 flex items-center gap-2 border-b border-slate-100 pb-3">
+            <h3 className="text-lg font-headline font-semibold tracking-tighter text-slate-800 flex items-center gap-2 border-b border-slate-100 pb-3">
               <TrendingUp className="w-5 h-5 text-purple-600 flex-shrink-0" />
               <span>나의 역량 지배지수 Top 5 차트</span>
             </h3>
@@ -263,18 +263,18 @@ export const IntelligenceTest: React.FC = () => {
                 const percent = Math.min(100, Math.round((val / 6) * 100));
                 return (
                   <div key={i} className="space-y-1.5">
-                    <div className="flex justify-between text-xs sm:text-sm font-bold text-slate-700">
+                    <div className="flex justify-between text-xs sm:text-sm font-medium tracking-tight text-slate-700">
                       <span className="flex items-center gap-1.5">
-                        <span className="w-5 h-5 rounded-full bg-purple-100 text-purple-700 text-xs flex items-center justify-center font-black">
+                        <span className="w-5 h-5 rounded-full bg-gray-100 text-black text-xs flex items-center justify-center font-semibold tracking-tighter">
                           {i + 1}
                         </span>
                         {name}
                       </span>
-                      <span className="text-purple-600 font-black">{val * 16}% 역량 우위</span>
+                      <span className="text-purple-600 font-semibold tracking-tighter">{val * 16}% 역량 우위</span>
                     </div>
                     <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
                       <div
-                        className="bg-gradient-to-r from-purple-500 to-indigo-600 h-full rounded-full transition-all duration-1000"
+                        className="bg-gradient-to-r from-purple-500 to-black h-full rounded-full transition-all duration-1000"
                         style={{ width: `${Math.max(25, percent)}%` }}
                       ></div>
                     </div>
@@ -286,16 +286,16 @@ export const IntelligenceTest: React.FC = () => {
 
           <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-lg space-y-5 flex flex-col justify-between">
             <div className="space-y-4">
-              <h3 className="text-lg font-headline font-black text-slate-800 flex items-center gap-2 border-b border-slate-100 pb-3">
-                <Target className="w-5 h-5 text-indigo-600 flex-shrink-0" />
+              <h3 className="text-lg font-headline font-semibold tracking-tighter text-slate-800 flex items-center gap-2 border-b border-slate-100 pb-3">
+                <Target className="w-5 h-5 text-black flex-shrink-0" />
                 <span>맞춤 탐구 과목 및 진로 로드맵 솔루션</span>
               </h3>
               <ul className="space-y-3 text-xs sm:text-sm text-slate-600 font-medium">
-                <li className="flex items-start gap-2.5 bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
+                <li className="flex items-start gap-2.5 bg-white p-3.5 rounded-2xl border border-slate-100">
                   <CheckCircle className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
                   <span><strong>권장 세특 과제:</strong> {resultData.topTrait}과 연계되는 공공 데이터 활용 탐구 보고서 또는 조별 시뮬레이션 프로젝트 주도.</span>
                 </li>
-                <li className="flex items-start gap-2.5 bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
+                <li className="flex items-start gap-2.5 bg-white p-3.5 rounded-2xl border border-slate-100">
                   <CheckCircle className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
                   <span><strong>동아리 연계 추천:</strong> {resultData.topTrait.split("·")[0]} 전문 학술 동아리 및 메타버스/AI 자율 토론 클럽 개설.</span>
                 </li>
@@ -303,7 +303,7 @@ export const IntelligenceTest: React.FC = () => {
             </div>
             
             <div className="bg-gradient-to-r from-purple-50 to-indigo-50 p-4 rounded-2xl border border-purple-100 text-center">
-              <span className="text-xs text-purple-900 font-extrabold block">
+              <span className="text-xs text-purple-900 font-semibold tracking-tighter block">
                 🚨 리포트 저장 필수! 버튼을 눌러야 3종 통합 직업 선택이 열립니다.
               </span>
             </div>
@@ -337,7 +337,7 @@ export const IntelligenceTest: React.FC = () => {
               navigate("/self-understanding?onboarding=true");
             }}
             icon={<ArrowRight className="w-5 h-5 flex-shrink-0" />}
-            className="w-full sm:w-auto font-headline font-black px-10 py-5 text-base shadow-[0_15px_30px_rgba(99,102,241,0.35)] hover:shadow-2xl hover:scale-105 transition-all duration-300 rounded-2xl"
+            className="w-full sm:w-auto font-headline font-semibold tracking-tighter px-10 py-5 text-base shadow-sm hover:shadow-2xl hover:scale-105 transition-all duration-300 rounded-2xl"
           >
             💾 [✔ 리포트 자동 저장] 다중지능 진단 완수 및 3종 선택 허브로 돌아가기 &rarr;
           </Button>
@@ -354,21 +354,21 @@ export const IntelligenceTest: React.FC = () => {
       <div className="flex items-center justify-between">
         <button
           onClick={() => navigate(-1)}
-          className="inline-flex items-center gap-2 text-xs font-extrabold text-text-muted hover:text-text-primary transition-colors bg-white px-3.5 py-2 rounded-xl border border-surface-variant/60 shadow-sm"
+          className="inline-flex items-center gap-2 text-xs font-semibold tracking-tighter text-text-muted hover:text-text-primary transition-colors bg-white px-3.5 py-2 rounded-2xl border border-surface-variant/60 shadow-sm"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>이전으로</span>
         </button>
-        <span className="text-xs font-headline font-black px-3.5 py-1.5 rounded-full bg-purple-100 text-purple-700 shadow-sm border border-purple-200">
+        <span className="text-xs font-headline font-semibold tracking-tighter px-3.5 py-1.5 rounded-full bg-gray-100 text-black shadow-sm border border-gray-200">
           🧠 다중지능 및 강점 16문항 진단 ( {currentIdx + 1} / {QUESTIONS.length} )
         </span>
       </div>
 
       {/* Question Progress Bar */}
       <div className="space-y-2">
-        <div className="flex justify-between items-center text-xs font-black text-text-muted">
+        <div className="flex justify-between items-center text-xs font-semibold tracking-tighter text-text-muted">
           <span>문항 진행률</span>
-          <span className="text-purple-600 font-bold">{progressPercent}% 완료</span>
+          <span className="text-purple-600 font-medium tracking-tight">{progressPercent}% 완료</span>
         </div>
         <ProgressBar value={progressPercent} max={100} variant="gradient" className="h-3" />
       </div>
@@ -376,20 +376,20 @@ export const IntelligenceTest: React.FC = () => {
       {/* Question Image and Situation Card */}
       <Card variant="surface" padding="lg" className="rounded-3xl shadow-xl border border-surface-variant/70 overflow-hidden bg-white">
         <div className="space-y-6">
-          <div className="w-full h-52 sm:h-64 rounded-2xl overflow-hidden shadow-inner bg-slate-900 relative group">
+          <div className="w-full h-52 sm:h-64 rounded-2xl overflow-hidden shadow-inner bg-white relative group">
             <img
               src={currentQ.image}
               alt="상황 일러스트"
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex items-end p-5">
-              <span className="text-xs font-headline font-extrabold text-white bg-purple-900/80 backdrop-blur-md px-3 py-1.5 rounded-full border border-purple-400/40 shadow-sm">
+              <span className="text-xs font-headline font-semibold tracking-tighter text-white bg-purple-900/80 backdrop-blur-md px-3 py-1.5 rounded-full border border-purple-400/40 shadow-sm">
                 🎨 좌우 버튼(A vs B) 중 나에게 더 편한 다중지능 강점을 선택해 보세요!
               </span>
             </div>
           </div>
 
-          <h2 className="text-xl sm:text-2xl font-headline font-black text-slate-900 leading-snug text-center pt-2">
+          <h2 className="text-xl sm:text-2xl font-headline font-semibold tracking-tighter text-slate-900 leading-snug text-center pt-2">
             Q{currentIdx + 1}. {currentQ.situation}
           </h2>
 
@@ -398,50 +398,50 @@ export const IntelligenceTest: React.FC = () => {
             {/* Option A (Left) */}
             <button
               onClick={() => handleSelect(currentQ.options.A.trait, currentQ.options.A.typeName)}
-              className="p-6 md:p-8 rounded-3xl bg-gradient-to-br from-purple-500/10 via-purple-50/50 to-white hover:from-purple-100 hover:to-purple-50 border-2 border-purple-200 hover:border-purple-500 shadow-3d-base hover:shadow-3d-ambient transition-all duration-200 text-left flex flex-col justify-between group active:scale-[0.98]"
+              className="p-6 md:p-8 rounded-3xl bg-gradient-to-br from-purple-500/10 via-purple-50/50 to-white hover:from-purple-100 hover:to-purple-50 border-2 border-gray-200 hover:border-purple-500 shadow-3d-base hover:shadow-3d-ambient transition-all duration-200 text-left flex flex-col justify-between group active:scale-[0.98]"
             >
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="w-10 h-10 rounded-2xl bg-purple-600 text-white font-headline font-black text-lg flex items-center justify-center shadow-md group-hover:scale-110 transition-transform flex-shrink-0">
+                  <span className="w-10 h-10 rounded-2xl bg-purple-600 text-white font-headline font-semibold tracking-tighter text-lg flex items-center justify-center shadow-md group-hover:scale-110 transition-transform flex-shrink-0">
                     A
                   </span>
-                  <span className="text-[11px] font-extrabold text-purple-700 px-2.5 py-0.5 rounded-full bg-purple-100 whitespace-nowrap">
+                  <span className="text-[11px] font-semibold tracking-tighter text-black px-2.5 py-0.5 rounded-full bg-gray-100 whitespace-nowrap">
                     좌측 (A) 성향 &larr;
                   </span>
                 </div>
-                <p className="text-base md:text-lg font-headline font-black text-slate-800 leading-relaxed group-hover:text-purple-950 transition-colors">
+                <p className="text-base md:text-lg font-headline font-semibold tracking-tighter text-slate-800 leading-relaxed group-hover:text-purple-950 transition-colors">
                   "{currentQ.options.A.label}"
                 </p>
               </div>
 
-              <div className="mt-6 pt-3 border-t border-purple-200 flex items-center justify-between text-xs font-black text-purple-700">
+              <div className="mt-6 pt-3 border-t border-gray-200 flex items-center justify-between text-xs font-semibold tracking-tighter text-black">
                 <span>이 강점 방식을 선택</span>
-                <span className="group-hover:-translate-x-1 transition-transform font-bold">&larr; 클릭 선택</span>
+                <span className="group-hover:-translate-x-1 transition-transform font-medium tracking-tight">&larr; 클릭 선택</span>
               </div>
             </button>
 
             {/* Option B (Right) */}
             <button
               onClick={() => handleSelect(currentQ.options.B.trait, currentQ.options.B.typeName)}
-              className="p-6 md:p-8 rounded-3xl bg-gradient-to-br from-indigo-500/10 via-indigo-50/50 to-white hover:from-indigo-100 hover:to-indigo-50 border-2 border-indigo-200 hover:border-indigo-500 shadow-3d-base hover:shadow-3d-ambient transition-all duration-200 text-left flex flex-col justify-between group active:scale-[0.98]"
+              className="p-6 md:p-8 rounded-3xl bg-gradient-to-br from-gray-700/10 via-indigo-50/50 to-white hover:from-indigo-100 hover:to-indigo-50 border-2 border-gray-300 hover:border-indigo-500 shadow-3d-base hover:shadow-3d-ambient transition-all duration-200 text-left flex flex-col justify-between group active:scale-[0.98]"
             >
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="w-10 h-10 rounded-2xl bg-indigo-600 text-white font-headline font-black text-lg flex items-center justify-center shadow-md group-hover:scale-110 transition-transform flex-shrink-0">
+                  <span className="w-10 h-10 rounded-2xl bg-black text-white font-headline font-semibold tracking-tighter text-lg flex items-center justify-center shadow-md group-hover:scale-110 transition-transform flex-shrink-0">
                     B
                   </span>
-                  <span className="text-[11px] font-extrabold text-indigo-700 px-2.5 py-0.5 rounded-full bg-indigo-100 whitespace-nowrap">
+                  <span className="text-[11px] font-semibold tracking-tighter text-black px-2.5 py-0.5 rounded-full bg-gray-200 whitespace-nowrap">
                     &rarr; 우측 (B) 성향
                   </span>
                 </div>
-                <p className="text-base md:text-lg font-headline font-black text-slate-800 leading-relaxed group-hover:text-indigo-950 transition-colors">
+                <p className="text-base md:text-lg font-headline font-semibold tracking-tighter text-slate-800 leading-relaxed group-hover:text-indigo-950 transition-colors">
                   "{currentQ.options.B.label}"
                 </p>
               </div>
 
-              <div className="mt-6 pt-3 border-t border-indigo-200 flex items-center justify-between text-xs font-black text-indigo-700">
+              <div className="mt-6 pt-3 border-t border-gray-300 flex items-center justify-between text-xs font-semibold tracking-tighter text-black">
                 <span>이 강점 방식을 선택</span>
-                <span className="group-hover:translate-x-1 transition-transform font-bold">클릭 선택 &rarr;</span>
+                <span className="group-hover:translate-x-1 transition-transform font-medium tracking-tight">클릭 선택 &rarr;</span>
               </div>
             </button>
           </div>

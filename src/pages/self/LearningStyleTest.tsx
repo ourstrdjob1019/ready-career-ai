@@ -215,12 +215,12 @@ export const LearningStyleTest: React.FC = () => {
         
         {/* 리포트 헤더 타이틀 바 */}
         <div className="text-center space-y-3 pb-2">
-          <div className="inline-flex items-center gap-2 bg-indigo-100 text-indigo-700 px-4 py-1 rounded-full text-xs font-headline font-black border border-indigo-200 shadow-sm">
-            <Sparkles className="w-4 h-4 animate-spin-slow text-indigo-600" />
+          <div className="inline-flex items-center gap-2 bg-gray-200 text-black px-4 py-1 rounded-full text-xs font-headline font-semibold tracking-tighter border border-gray-300 shadow-sm">
+            <Sparkles className="w-4 h-4 animate-spin-slow text-black" />
             <span>2026학년도 생부 기재 및 고교학점제 맞춤 AI 학습스타일 정밀 리포트 (16문항 완수)</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-headline font-black text-text-primary tracking-tight">
-            회원님의 주도적 학습 전략은 <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-purple-600 to-teal-600">[{resultData.topStyle}]</span> 입니다!
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-headline font-semibold tracking-tighter text-text-primary tracking-tight">
+            회원님의 주도적 학습 전략은 <span className="bg-black">[{resultData.topStyle}]</span> 입니다!
           </h1>
           <p className="text-xs sm:text-sm text-text-muted max-w-2xl mx-auto leading-relaxed">
             나의 두뇌가 가장 편안하게 몰입하고 최단 시간에 최대 암기 및 탐구 가치율을 이끌어내는 인지 학습 구조를 정리했습니다.<br />
@@ -229,19 +229,19 @@ export const LearningStyleTest: React.FC = () => {
         </div>
 
         {/* 메인 리포트 하이라이트 카드 */}
-        <Card variant="hero" padding="lg" className="shadow-2xl bg-gradient-to-br from-indigo-900 via-slate-900 to-teal-900 text-white rounded-3xl p-6 sm:p-8 border border-indigo-400/30">
+        <Card variant="hero" padding="lg" className="shadow-2xl bg-gradient-to-br from-gray-800 to-black text-white rounded-3xl p-6 sm:p-8 border border-indigo-400/30">
           <div className="flex flex-col md:flex-row items-center gap-8">
             <div className="w-36 h-36 flex-shrink-0 relative flex items-center justify-center bg-white/10 rounded-full border-2 border-white/20 shadow-inner p-2">
               <MascotAri pose="celebrate" size="md" rotate={true} />
-              <span className="absolute -bottom-2 bg-teal-500 text-white font-black text-[11px] px-3 py-0.5 rounded-full shadow-md">
+              <span className="absolute -bottom-2 bg-teal-500 text-white font-semibold tracking-tighter text-[11px] px-3 py-0.5 rounded-full shadow-md">
                 자기주도 상위 1%
               </span>
             </div>
             <div className="space-y-4 flex-1 text-center md:text-left">
               <div className="space-y-1">
-                <span className="text-xs text-indigo-300 font-bold uppercase tracking-wider">Self-Directed Study Efficiency Score</span>
-                <h2 className="text-2xl sm:text-3xl font-headline font-black text-white">
-                  학습 몰입 적성지수: <span className="text-teal-300 font-black">{resultData.score}점</span> (최상위 등급)
+                <span className="text-xs text-indigo-300 font-medium tracking-tight uppercase tracking-wider">Self-Directed Study Efficiency Score</span>
+                <h2 className="text-2xl sm:text-3xl font-headline font-semibold tracking-tighter text-white">
+                  학습 몰입 적성지수: <span className="text-teal-300 font-semibold tracking-tighter">{resultData.score}점</span> (최상위 등급)
                 </h2>
               </div>
               <p className="text-xs sm:text-sm text-indigo-100 leading-relaxed bg-white/10 p-4 sm:p-5 rounded-2xl border border-white/15">
@@ -254,8 +254,8 @@ export const LearningStyleTest: React.FC = () => {
         {/* 4대 핵심 학습 축 및 고교 학점제 대비 가이드 3단 레이아웃 */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-lg space-y-5">
-            <h3 className="text-lg font-headline font-black text-slate-800 flex items-center gap-2 border-b border-slate-100 pb-3">
-              <TrendingUp className="w-5 h-5 text-indigo-600 flex-shrink-0" />
+            <h3 className="text-lg font-headline font-semibold tracking-tighter text-slate-800 flex items-center gap-2 border-b border-slate-100 pb-3">
+              <TrendingUp className="w-5 h-5 text-black flex-shrink-0" />
               <span>학습 몰입 패턴 및 루틴 지분 분석</span>
             </h3>
             <div className="space-y-4">
@@ -263,18 +263,18 @@ export const LearningStyleTest: React.FC = () => {
                 const percent = Math.min(100, Math.round((val / 6) * 100));
                 return (
                   <div key={i} className="space-y-1.5">
-                    <div className="flex justify-between text-xs sm:text-sm font-bold text-slate-700">
+                    <div className="flex justify-between text-xs sm:text-sm font-medium tracking-tight text-slate-700">
                       <span className="flex items-center gap-1.5">
-                        <span className="w-5 h-5 rounded-full bg-indigo-100 text-indigo-700 text-xs flex items-center justify-center font-black">
+                        <span className="w-5 h-5 rounded-full bg-gray-200 text-black text-xs flex items-center justify-center font-semibold tracking-tighter">
                           {i + 1}
                         </span>
                         {name}
                       </span>
-                      <span className="text-indigo-600 font-black">{val * 17}% 성향 발현</span>
+                      <span className="text-black font-semibold tracking-tighter">{val * 17}% 성향 발현</span>
                     </div>
                     <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
                       <div
-                        className="bg-gradient-to-r from-indigo-500 via-purple-500 to-teal-500 h-full rounded-full transition-all duration-1000"
+                        className="bg-gradient-to-r from-gray-700 via-gray-800 to-teal-500 h-full rounded-full transition-all duration-1000"
                         style={{ width: `${Math.max(30, percent)}%` }}
                       ></div>
                     </div>
@@ -286,16 +286,16 @@ export const LearningStyleTest: React.FC = () => {
 
           <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-lg space-y-5 flex flex-col justify-between">
             <div className="space-y-4">
-              <h3 className="text-lg font-headline font-black text-slate-800 flex items-center gap-2 border-b border-slate-100 pb-3">
+              <h3 className="text-lg font-headline font-semibold tracking-tighter text-slate-800 flex items-center gap-2 border-b border-slate-100 pb-3">
                 <Target className="w-5 h-5 text-teal-600 flex-shrink-0" />
                 <span>2026 입시 세목별 실전 루틴 매뉴얼</span>
               </h3>
               <ul className="space-y-3 text-xs sm:text-sm text-slate-600 font-medium">
-                <li className="flex items-start gap-2.5 bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
+                <li className="flex items-start gap-2.5 bg-white p-3.5 rounded-2xl border border-slate-100">
                   <CheckCircle className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
                   <span><strong>세부 능력 특기사항 작성법:</strong> [{resultData.topStyle}]의 특성을 살려 수업 시간에 알게 된 융합 아이디어를 구조화 된 프레젠테이션이나 다이어그램으로 제출하세요.</span>
                 </li>
-                <li className="flex items-start gap-2.5 bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
+                <li className="flex items-start gap-2.5 bg-white p-3.5 rounded-2xl border border-slate-100">
                   <CheckCircle className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
                   <span><strong>50일 습관 연계:</strong> 45분 집중 10분 휴식 루틴을 하루 2세트 수행하며, 주간 1줄 세특 기록부를 꾸준히 작성할 것을 권장합니다.</span>
                 </li>
@@ -303,7 +303,7 @@ export const LearningStyleTest: React.FC = () => {
             </div>
             
             <div className="bg-gradient-to-r from-teal-50 to-indigo-50 p-4 rounded-2xl border border-teal-100 text-center">
-              <span className="text-xs text-teal-900 font-extrabold block">
+              <span className="text-xs text-teal-900 font-semibold tracking-tighter block">
                 ⭐ 이 버튼을 누르면 필수 3종 진단이 모두 완수되어, 종합 6개 추천 직업 창이 해금됩니다!
               </span>
             </div>
@@ -337,7 +337,7 @@ export const LearningStyleTest: React.FC = () => {
               navigate("/self-understanding?onboarding=true");
             }}
             icon={<ArrowRight className="w-5 h-5 flex-shrink-0" />}
-            className="w-full sm:w-auto font-headline font-black px-10 py-5 text-base shadow-[0_15px_30px_rgba(20,184,166,0.35)] hover:shadow-2xl hover:scale-105 transition-all duration-300 rounded-2xl"
+            className="w-full sm:w-auto font-headline font-semibold tracking-tighter px-10 py-5 text-base shadow-sm hover:shadow-2xl hover:scale-105 transition-all duration-300 rounded-2xl"
           >
             💾 [✔ 3/3 최종 완수 및 저장] 3종 종합 분석 결과 기반 나만의 추천 직업 6개 확인하러 가기 &rarr;
           </Button>
@@ -354,21 +354,21 @@ export const LearningStyleTest: React.FC = () => {
       <div className="flex items-center justify-between">
         <button
           onClick={() => navigate(-1)}
-          className="inline-flex items-center gap-2 text-xs font-extrabold text-text-muted hover:text-text-primary transition-colors bg-white px-3.5 py-2 rounded-xl border border-surface-variant/60 shadow-sm"
+          className="inline-flex items-center gap-2 text-xs font-semibold tracking-tighter text-text-muted hover:text-text-primary transition-colors bg-white px-3.5 py-2 rounded-2xl border border-surface-variant/60 shadow-sm"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>이전으로</span>
         </button>
-        <span className="text-xs font-headline font-black px-3.5 py-1.5 rounded-full bg-indigo-100 text-indigo-700 shadow-sm border border-indigo-200">
+        <span className="text-xs font-headline font-semibold tracking-tighter px-3.5 py-1.5 rounded-full bg-gray-200 text-black shadow-sm border border-gray-300">
           🎯 학습스타일 및 주도 루틴 16문항 ( {currentIdx + 1} / {QUESTIONS.length} )
         </span>
       </div>
 
       {/* Question Progress Bar */}
       <div className="space-y-2">
-        <div className="flex justify-between items-center text-xs font-black text-text-muted">
+        <div className="flex justify-between items-center text-xs font-semibold tracking-tighter text-text-muted">
           <span>문항 진행률 (최종 3번째 진단 검사)</span>
-          <span className="text-indigo-600 font-bold">{progressPercent}% 완료</span>
+          <span className="text-black font-medium tracking-tight">{progressPercent}% 완료</span>
         </div>
         <ProgressBar value={progressPercent} max={100} variant="teal" className="h-3" />
       </div>
@@ -376,20 +376,20 @@ export const LearningStyleTest: React.FC = () => {
       {/* Question Card */}
       <Card variant="surface" padding="lg" className="rounded-3xl shadow-xl border border-surface-variant/70 overflow-hidden bg-white">
         <div className="space-y-6">
-          <div className="w-full h-52 sm:h-64 rounded-2xl overflow-hidden shadow-inner bg-slate-900 relative group">
+          <div className="w-full h-52 sm:h-64 rounded-2xl overflow-hidden shadow-inner bg-white relative group">
             <img
               src={currentQ.image}
               alt="학습 상황 일러스트"
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex items-end p-5">
-              <span className="text-xs font-headline font-extrabold text-white bg-indigo-900/80 backdrop-blur-md px-3 py-1.5 rounded-full border border-indigo-400/40 shadow-sm">
+              <span className="text-xs font-headline font-semibold tracking-tighter text-white bg-indigo-900/80 backdrop-blur-md px-3 py-1.5 rounded-full border border-indigo-400/40 shadow-sm">
                 🎨 좌우 버튼(A vs B) 중 나만의 공부 및 주도 루틴에 더 맞는 선택지를 터치하세요!
               </span>
             </div>
           </div>
 
-          <h2 className="text-xl sm:text-2xl font-headline font-black text-slate-900 leading-snug text-center pt-2">
+          <h2 className="text-xl sm:text-2xl font-headline font-semibold tracking-tighter text-slate-900 leading-snug text-center pt-2">
             Q{currentIdx + 1}. {currentQ.situation}
           </h2>
 
@@ -398,50 +398,50 @@ export const LearningStyleTest: React.FC = () => {
             {/* Option A (Left) */}
             <button
               onClick={() => handleSelect(currentQ.options.A.trait, currentQ.options.A.styleName)}
-              className="p-6 md:p-8 rounded-3xl bg-gradient-to-br from-indigo-500/10 via-indigo-50/50 to-white hover:from-indigo-100 hover:to-indigo-50 border-2 border-indigo-200 hover:border-indigo-500 shadow-3d-base hover:shadow-3d-ambient transition-all duration-200 text-left flex flex-col justify-between group active:scale-[0.98]"
+              className="p-6 md:p-8 rounded-3xl bg-gradient-to-br from-gray-700/10 via-indigo-50/50 to-white hover:from-indigo-100 hover:to-indigo-50 border-2 border-gray-300 hover:border-indigo-500 shadow-3d-base hover:shadow-3d-ambient transition-all duration-200 text-left flex flex-col justify-between group active:scale-[0.98]"
             >
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="w-10 h-10 rounded-2xl bg-indigo-600 text-white font-headline font-black text-lg flex items-center justify-center shadow-md group-hover:scale-110 transition-transform flex-shrink-0">
+                  <span className="w-10 h-10 rounded-2xl bg-black text-white font-headline font-semibold tracking-tighter text-lg flex items-center justify-center shadow-md group-hover:scale-110 transition-transform flex-shrink-0">
                     A
                   </span>
-                  <span className="text-[11px] font-extrabold text-indigo-700 px-2.5 py-0.5 rounded-full bg-indigo-100 whitespace-nowrap">
+                  <span className="text-[11px] font-semibold tracking-tighter text-black px-2.5 py-0.5 rounded-full bg-gray-200 whitespace-nowrap">
                     좌측 (A) 스타일 &larr;
                   </span>
                 </div>
-                <p className="text-base md:text-lg font-headline font-black text-slate-800 leading-relaxed group-hover:text-indigo-950 transition-colors">
+                <p className="text-base md:text-lg font-headline font-semibold tracking-tighter text-slate-800 leading-relaxed group-hover:text-indigo-950 transition-colors">
                   "{currentQ.options.A.label}"
                 </p>
               </div>
 
-              <div className="mt-6 pt-3 border-t border-indigo-200 flex items-center justify-between text-xs font-black text-indigo-700">
+              <div className="mt-6 pt-3 border-t border-gray-300 flex items-center justify-between text-xs font-semibold tracking-tighter text-black">
                 <span>이 학습 스타일 선택</span>
-                <span className="group-hover:-translate-x-1 transition-transform font-bold">&larr; 클릭 선택</span>
+                <span className="group-hover:-translate-x-1 transition-transform font-medium tracking-tight">&larr; 클릭 선택</span>
               </div>
             </button>
 
             {/* Option B (Right) */}
             <button
               onClick={() => handleSelect(currentQ.options.B.trait, currentQ.options.B.styleName)}
-              className="p-6 md:p-8 rounded-3xl bg-gradient-to-br from-teal-500/10 via-teal-50/50 to-white hover:from-teal-100 hover:to-teal-50 border-2 border-teal-200 hover:border-teal-500 shadow-3d-base hover:shadow-3d-ambient transition-all duration-200 text-left flex flex-col justify-between group active:scale-[0.98]"
+              className="p-6 md:p-8 rounded-3xl bg-gradient-to-br from-teal-500/10 via-teal-50/50 to-white hover:from-teal-100 hover:to-teal-50 border-2 border-gray-200 hover:border-teal-500 shadow-3d-base hover:shadow-3d-ambient transition-all duration-200 text-left flex flex-col justify-between group active:scale-[0.98]"
             >
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="w-10 h-10 rounded-2xl bg-teal-600 text-white font-headline font-black text-lg flex items-center justify-center shadow-md group-hover:scale-110 transition-transform flex-shrink-0">
+                  <span className="w-10 h-10 rounded-2xl bg-teal-600 text-white font-headline font-semibold tracking-tighter text-lg flex items-center justify-center shadow-md group-hover:scale-110 transition-transform flex-shrink-0">
                     B
                   </span>
-                  <span className="text-[11px] font-extrabold text-teal-700 px-2.5 py-0.5 rounded-full bg-teal-100 whitespace-nowrap">
+                  <span className="text-[11px] font-semibold tracking-tighter text-black px-2.5 py-0.5 rounded-full bg-gray-100 whitespace-nowrap">
                     &rarr; 우측 (B) 스타일
                   </span>
                 </div>
-                <p className="text-base md:text-lg font-headline font-black text-slate-800 leading-relaxed group-hover:text-teal-950 transition-colors">
+                <p className="text-base md:text-lg font-headline font-semibold tracking-tighter text-slate-800 leading-relaxed group-hover:text-teal-950 transition-colors">
                   "{currentQ.options.B.label}"
                 </p>
               </div>
 
-              <div className="mt-6 pt-3 border-t border-teal-200 flex items-center justify-between text-xs font-black text-teal-700">
+              <div className="mt-6 pt-3 border-t border-gray-200 flex items-center justify-between text-xs font-semibold tracking-tighter text-black">
                 <span>이 학습 스타일 선택</span>
-                <span className="group-hover:translate-x-1 transition-transform font-bold">클릭 선택 &rarr;</span>
+                <span className="group-hover:translate-x-1 transition-transform font-medium tracking-tight">클릭 선택 &rarr;</span>
               </div>
             </button>
           </div>
