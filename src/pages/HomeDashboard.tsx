@@ -689,7 +689,7 @@ export const HomeDashboard: React.FC = () => {
                       <div className="w-40 h-40 sm:w-48 sm:h-48 flex items-center justify-center my-2 group-hover:scale-110 transition-transform">
                         <img src={getJobCharacterImage(interestedJobs[jobIntroModalIdx].name, i + 1)} alt="Ari Stage" className="w-full h-full object-contain filter drop-shadow-lg" />
                       </div>
-                      <strong className="text-sm sm:text-base font-bold tracking-tighter text-[#1F193B] text-center w-full bg-slate-50 rounded-2xl py-3 px-2 border border-slate-200/80 shadow-sm break-keep leading-snug">{getJobCharacterTitle(interestedJobs[jobIntroModalIdx].name, i + 1, item.name)}</strong>
+                      <strong className="text-sm sm:text-base font-bold tracking-tighter text-[#1F193B] text-center w-full bg-slate-50 rounded-2xl py-3 px-2 border border-slate-200/80 shadow-sm break-words whitespace-normal leading-snug flex items-center justify-center min-h-[4rem]">{getJobCharacterTitle(interestedJobs[jobIntroModalIdx].name, i + 1, item.name)}</strong>
                     </div>
                   ))}
                 </div>
