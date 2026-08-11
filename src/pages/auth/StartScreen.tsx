@@ -57,24 +57,37 @@ export const StartScreen: React.FC = () => {
       {/* 배경 장식 */}
       <div className="absolute top-0 left-0 w-full h-1/2 bg-white rounded-b-[40%] shadow-sm pointer-events-none" />
       
-      <div className="relative z-10 flex flex-col items-center text-center max-w-4xl px-4 w-full">
-        {/* 메인 캐릭터 (크게 배치) */}
-        <div className="relative w-full max-w-[650px] aspect-square flex items-center justify-center mb-8 drop-shadow-2xl">
+      <div className="relative z-10 flex flex-col items-center text-center max-w-5xl px-4 w-full pt-8 sm:pt-12">
+        {/* 복구된 타이틀 스타일 및 레이아웃 (텍스트를 이미지 위로 올림) */}
+        <div className="text-center space-y-4 sm:space-y-6 max-w-4xl mb-6 sm:mb-8 z-20">
+          {/* Main Giant Hero Title */}
+          <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-[#31147A] via-[#5E32EB] to-[#8A63FF] leading-none drop-shadow-xs py-2">
+            ReadyCareerAI
+          </h1>
+
+          {/* Subtitle with Sleek Purple & Violet Contrast Badge on '꿈' */}
+          <h2 className="text-2xl sm:text-4xl md:text-5xl font-extrabold text-[#43219C] tracking-tight flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 pt-1">
+            <span>나의</span>
+            <span className="inline-flex items-center justify-center px-5 sm:px-8 py-1 sm:py-1.5 mx-1 rounded-[24px] bg-gradient-to-r from-[#5E32EB] to-[#8A63FF] text-amber-300 font-black text-2xl sm:text-4xl md:text-5xl shadow-[0_6px_20px_rgba(94,50,235,0.35)] border border-[#A582FF]/50 transform -rotate-2 hover:rotate-0 transition-transform duration-200">
+              <span>꿈</span>
+            </span>
+            <span>설계하기</span>
+          </h2>
+
+          <p className="text-sm sm:text-base md:text-lg text-[#5D429B] font-semibold max-w-2xl mx-auto pt-2 sm:pt-4 leading-relaxed break-keep">
+            나만의 고유한 흥미와 재능을 AI 파트너 아리와 함께 분석하고, <br className="hidden sm:block" />
+            밤하늘 커리어 별자리 로드맵을 향한 맞춤 여정을 지금 즉시 경험해보세요.
+          </p>
+        </div>
+
+        {/* 메인 캐릭터 (텍스트 아래로) */}
+        <div className="relative w-full max-w-[500px] sm:max-w-[650px] aspect-square flex items-center justify-center mb-8 drop-shadow-2xl z-10">
            <img 
              src="/landing_character.png" 
              alt="랜딩페이지 캐릭터" 
              className="w-full h-full object-contain hover:scale-105 transition-transform duration-500 ease-out" 
            />
         </div>
-        
-        {/* 심플한 안내 문구 */}
-        <h1 className="text-4xl md:text-5xl font-black text-slate-900 mb-5 tracking-tight break-keep flex flex-col items-center gap-2">
-          <span className="text-indigo-600">ReadyCareer</span>
-          <span><strong className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-indigo-600">꿈</strong>을 향한 AI 커리어 네비게이터</span>
-        </h1>
-        <p className="text-base md:text-lg text-slate-600 mb-10 max-w-lg break-keep font-medium">
-          진로 탐색부터 생기부 맞춤형 포트폴리오까지, AI 파트너 아리가 여러분의 진학 여정을 안내합니다.
-        </p>
 
         {/* 시작하기 버튼 */}
         <button 
