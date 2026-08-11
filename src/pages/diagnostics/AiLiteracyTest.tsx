@@ -312,7 +312,7 @@ export const AiLiteracyTest: React.FC = () => {
           <div className="absolute left-6 top-6 bottom-6 w-1 bg-gray-200 rounded-2xl z-0"></div>
           {currentOrders.map((origIndex: number) => {
             const isSelected = answers[qIndex] === origIndex;
-            const optLabel = currentQ.o[origIndex];
+            const optLabel = currentQ.o[origIndex][0];
             return (
               <button
                 key={origIndex}

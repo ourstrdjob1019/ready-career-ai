@@ -266,7 +266,7 @@ export const ViaStrengthsTest: React.FC = () => {
 
       <main className="flex-1 max-w-md w-full mx-auto p-5 pb-32 flex flex-col justify-center">
         <div className="mb-10 relative flex flex-col items-center">
-          <div className="bg-transparent p-8 pt-12 mt-10 rounded-[32px] relative w-full text-center">
+          <div className="bg-transparent p-8 pt-12 mt-10 rounded-[32px] border-2 border-gray-300 relative w-full text-center">
             <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-24 h-24 bg-gradient-to-tr from-amber-200 to-yellow-500 rounded-full p-1 shadow-sm z-10">
               <div className="w-full h-full bg-white rounded-full overflow-hidden flex items-center justify-center">
                 <img src={hero.defaultImageUrl} alt="mentor" className="w-20 h-20 object-contain drop-shadow-sm" />
