@@ -130,7 +130,7 @@ export const OnboardingTestFlow: React.FC = () => {
 
     return (
       <div className="min-h-screen bg-white pt-10 pb-20 px-5">
-        <div className="max-w-md mx-auto space-y-6">
+        <div className="w-full max-w-md mx-auto mb-10">
           <div className="bg-white rounded-3xl p-7 shadow-sm border border-slate-200/60">
             <div className="inline-block px-3 py-1 bg-gray-100 text-black font-semibold tracking-tighter text-xs rounded-full mb-4">
               나의 진로흥미 코드 · {finalCode}
@@ -150,9 +150,9 @@ export const OnboardingTestFlow: React.FC = () => {
               </div>
             </div>
             
-            {/* 직업 추천 캐릭터 렌더링 추가 */}
+            {/* 상단 추천 캐릭터 렌더링 추가 */}
             {matchingJobs.length > 0 && (
-              <div className="flex flex-nowrap overflow-x-auto gap-3 sm:gap-4 mb-8 pb-4 w-full hide-scrollbar snap-x">
+              <div className="flex flex-nowrap overflow-x-auto gap-3 sm:gap-4 mb-2 pb-4 w-full hide-scrollbar snap-x">
                 {matchingJobs.slice(0, 6).map(job => (
                   <div key={job.jobName} className="flex flex-col items-center flex-shrink-0 snap-center w-24 sm:w-32">
                     <div className="w-24 h-24 sm:w-32 sm:h-32 flex items-center justify-center overflow-hidden mb-2 group cursor-pointer transition-all" onClick={() => setSelectedJob(job)}>
@@ -164,23 +164,27 @@ export const OnboardingTestFlow: React.FC = () => {
               </div>
             )}
           </div>
+        </div>
 
-          <div className="bg-white rounded-3xl p-7 shadow-sm border border-slate-200/60">
-            <h2 className="text-lg font-semibold tracking-tighter text-slate-800 mb-4 text-center">
+        <div className="w-full max-w-[1400px] mx-auto">
+          <div className="bg-white rounded-3xl p-7 sm:p-10 shadow-sm border border-slate-200/60">
+            <h2 className="text-xl sm:text-2xl font-semibold tracking-tighter text-slate-800 mb-4 text-center">
               내 성향에 딱 맞는 직업 선택하기
             </h2>
-            <p className="text-slate-500 text-xs text-center mb-6 font-medium break-keep">
+            <p className="text-slate-500 text-sm sm:text-base text-center mb-8 sm:mb-12 font-medium break-keep">
               추천된 {Math.min(matchingJobs.length, 6)}개의 캐릭터 중 가장 끌리는 하나를 골라 여정을 시작하세요!
             </p>
-            <div className="grid grid-cols-6 gap-2 sm:gap-4">
+            <div className="grid grid-cols-6 gap-2 sm:gap-6">
               {matchingJobs.slice(0, 6).map((job) => (
                 <button
                   key={job.jobName}
                   onClick={() => setSelectedJob(job)}
-                  className="bg-white hover:bg-slate-100 border border-slate-100 rounded-2xl p-2 sm:p-4 flex flex-col items-center transition-all group shadow-sm hover:shadow-md"
+                  className="bg-white hover:bg-slate-50 border border-slate-100 rounded-3xl p-3 sm:p-6 flex flex-col items-center justify-center transition-all group shadow-sm hover:shadow-md"
                 >
-                  <img src={job.defaultImageUrl} alt={job.jobName} className="w-full aspect-square object-contain mb-2 sm:mb-3 drop-shadow-lg group-hover:scale-110 transition-transform" />
-                  <span className="text-[10px] sm:text-sm font-semibold tracking-tighter text-slate-700 text-center break-keep leading-tight">{job.jobName}</span>
+                  <div className="w-full max-w-[192px] aspect-square mb-3 sm:mb-5">
+                    <img src={job.defaultImageUrl} alt={job.jobName} className="w-full h-full object-contain drop-shadow-lg group-hover:scale-110 transition-transform" />
+                  </div>
+                  <span className="text-xs sm:text-lg font-bold tracking-tighter text-slate-700 text-center break-keep leading-tight">{job.jobName}</span>
                 </button>
               ))}
             </div>
