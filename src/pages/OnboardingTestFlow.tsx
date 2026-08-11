@@ -6,8 +6,8 @@ import { RIASEC_QUESTIONS, RIASEC_TYPES, RIASEC_PROFILES } from "../data/riasecD
 
 // 2가지 선택 (색깔 대비)
 const LIKERT_OPTIONS = [
-  { value: 5, label: "네, 완전 공감해요!", color: "indigo" },
-  { value: 1, label: "아니요, 저랑은 안 맞아요", color: "rose" },
+  { value: 5, label: "그렇다", color: "blue" },
+  { value: 1, label: "아니다", color: "green" },
 ];
 
 export const OnboardingTestFlow: React.FC = () => {
@@ -155,8 +155,8 @@ export const OnboardingTestFlow: React.FC = () => {
               <div className="flex justify-center gap-4">
                 {matchingJobs.slice(0, 3).map(job => (
                   <div key={job.jobName} className="flex flex-col items-center">
-                    <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-white shadow-sm border-2 border-indigo-50 flex items-center justify-center overflow-hidden mb-2 group cursor-pointer hover:border-indigo-400 transition-all" onClick={() => setSelectedJob(job)}>
-                      <img src={job.defaultImageUrl} alt={job.jobName} className="w-full h-full object-contain drop-shadow-sm group-hover:scale-110 transition-transform" />
+                    <div className="w-24 h-24 sm:w-32 sm:h-32 flex items-center justify-center overflow-hidden mb-2 group cursor-pointer transition-all" onClick={() => setSelectedJob(job)}>
+                      <img src={job.defaultImageUrl} alt={job.jobName} className="w-full h-full object-contain drop-shadow-md group-hover:scale-110 transition-transform" />
                     </div>
                     <span className="text-[11px] sm:text-xs font-medium tracking-tight text-slate-600">{job.jobName}</span>
                   </div>
@@ -179,7 +179,7 @@ export const OnboardingTestFlow: React.FC = () => {
                   onClick={() => setSelectedJob(job)}
                   className="bg-white hover:bg-slate-100 border border-slate-100 rounded-3xl p-4 flex flex-col items-center transition-all group shadow-sm hover:shadow-md"
                 >
-                  <img src={job.defaultImageUrl} alt={job.jobName} className="w-32 h-32 sm:w-40 sm:h-40 object-contain mb-3 drop-shadow-sm group-hover:scale-110 transition-transform" />
+                  <img src={job.defaultImageUrl} alt={job.jobName} className="w-40 h-40 sm:w-48 sm:h-48 object-contain mb-3 drop-shadow-lg group-hover:scale-110 transition-transform" />
                   <span className="text-base sm:text-lg font-semibold tracking-tighter text-slate-700">{job.jobName}</span>
                 </button>
               ))}
@@ -199,9 +199,9 @@ export const OnboardingTestFlow: React.FC = () => {
               </button>
               
               <div className="flex flex-col sm:flex-row items-center gap-6 sm:gap-10 text-left mb-10 bg-white p-6 sm:p-8 rounded-[24px] border border-slate-100">
-                <div className="w-40 h-40 sm:w-48 sm:h-48 shrink-0 relative">
-                  <div className="absolute inset-0 bg-gray-200 rounded-full blur-xl opacity-50" />
-                  <img src={selectedJob.defaultImageUrl} alt={selectedJob.jobName} className="w-full h-full object-contain relative z-10 drop-shadow-xl" />
+                <div className="w-48 h-48 sm:w-56 sm:h-56 shrink-0 relative flex items-center justify-center">
+                  <div className="absolute inset-0 bg-indigo-200 rounded-full blur-2xl opacity-30" />
+                  <img src={selectedJob.defaultImageUrl} alt={selectedJob.jobName} className="w-full h-full object-contain relative z-10 drop-shadow-2xl" />
                 </div>
                 <div>
                   <h2 className="text-3xl sm:text-4xl font-semibold tracking-tighter text-slate-900 mb-3">{selectedJob.jobName}</h2>
@@ -229,8 +229,8 @@ export const OnboardingTestFlow: React.FC = () => {
                         <span className="text-base sm:text-lg font-bold tracking-tighter bg-slate-50 px-4 py-1 rounded-full shadow-sm border border-slate-200 text-indigo-700">{item.lv}</span>
                         <span className="text-sm sm:text-base font-semibold tracking-tight text-slate-500">{item.badge}</span>
                       </div>
-                      <div className="w-32 h-32 sm:w-40 sm:h-40 rounded-full bg-white p-2 border border-slate-100 flex items-center justify-center my-2 group-hover:scale-110 transition-transform shadow-sm">
-                        <img src={getJobCharacterImage(selectedJob.jobName, i + 1)} alt="stage" className="w-full h-full object-contain filter drop-shadow-sm" />
+                      <div className="w-40 h-40 sm:w-48 sm:h-48 flex items-center justify-center my-2 group-hover:scale-110 transition-transform">
+                        <img src={getJobCharacterImage(selectedJob.jobName, i + 1)} alt="stage" className="w-full h-full object-contain filter drop-shadow-lg" />
                       </div>
                       <strong className="text-sm sm:text-base font-bold tracking-tighter text-slate-800 text-center w-full bg-slate-50 rounded-2xl py-3 px-2 border border-slate-200/80 shadow-sm break-keep leading-snug">
                         {getJobCharacterTitle(selectedJob.jobName, i + 1, item.name)}
@@ -296,18 +296,22 @@ export const OnboardingTestFlow: React.FC = () => {
         <div className="grid grid-cols-2 gap-4">
           {LIKERT_OPTIONS.map((opt) => {
             const isSelected = answers[qIndex] === opt.value;
+            const selectedStyle = opt.value === 5
+              ? 'bg-blue-600 border-blue-600 text-white ring-2 ring-blue-600 ring-offset-2'
+              : 'bg-green-600 border-green-600 text-white ring-2 ring-green-600 ring-offset-2';
+
             return (
               <button
                 key={opt.value}
                 onClick={() => handleSelectAnswer(opt.value)}
                 className={`w-full p-5 rounded-2xl border-2 font-semibold tracking-tighter text-[15px] sm:text-lg transition-all flex flex-col items-center justify-center gap-4 text-center shadow-sm hover:shadow-md ${
                   isSelected 
-                    ? 'bg-black border-black text-white ring-2 ring-black ring-offset-2' 
+                    ? selectedStyle 
                     : 'bg-white border-gray-200 text-gray-700 hover:border-gray-300'
                 }`}
               >
                 <div className={`w-5 h-5 rounded-full flex-shrink-0 transition-all border-2 flex items-center justify-center ${isSelected ? 'bg-white border-white' : 'bg-transparent border-gray-300'}`}>
-                   {isSelected && <div className="w-2.5 h-2.5 rounded-full bg-black"></div>}
+                   {isSelected && <div className={`w-2.5 h-2.5 rounded-full ${opt.value === 5 ? 'bg-blue-600' : 'bg-green-600'}`}></div>}
                 </div>
                 <span className="break-keep leading-snug">{opt.label}</span>
               </button>

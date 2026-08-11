@@ -375,14 +375,14 @@ export const HomeDashboard: React.FC = () => {
 
           {/* Right Mascot Showcase */}
           <div className="flex flex-col items-center justify-center relative w-full md:w-2/5 shrink-0">
-            <div className="w-64 h-64 sm:w-80 sm:h-80 rounded-full bg-gradient-to-b from-white/20 to-black/20 p-5 border-2 border-white/30 flex items-center justify-center relative group shadow-2xl">
-              <span className="absolute -top-4 left-1/2 -translate-x-1/2 bg-slate-900 text-sm font-semibold tracking-tighter px-4 py-1.5 rounded-3xl border border-slate-700 shadow-md text-amber-300">
+            <div className="w-72 h-72 sm:w-96 sm:h-96 flex items-center justify-center relative group">
+              <span className="absolute -top-4 left-1/2 -translate-x-1/2 bg-slate-900 text-sm font-semibold tracking-tighter px-4 py-1.5 rounded-3xl border border-slate-700 shadow-md text-amber-300 z-10">
                 {currentJob.name}
               </span>
               <img
                 src={displayAvatarUrl}
                 alt="3D Character Avatar"
-                className="w-full h-full object-contain drop-shadow-sm group-hover:scale-105 transition-transform duration-300"
+                className="w-full h-full object-contain drop-shadow-2xl group-hover:scale-105 transition-transform duration-300"
               />
             </div>
           </div>
@@ -621,11 +621,11 @@ export const HomeDashboard: React.FC = () => {
                     : "bg-white text-[#1F193B] border-purple-150 hover:border-[#6A42ED] hover:bg-purple-50/60 shadow-xs hover:shadow-md"
                 }`}
               >
-                <div className="w-48 h-48 sm:w-64 sm:h-64 rounded-[32px] bg-white p-4 border border-purple-100 shrink-0 flex items-center justify-center my-3 shadow-sm group-hover:scale-110 transition-transform">
+                <div className="w-56 h-56 sm:w-72 sm:h-72 shrink-0 flex items-center justify-center my-3 group-hover:scale-110 transition-transform">
                   {job.imageUrl ? (
-                    <img src={job.imageUrl} alt={job.name} className="w-full h-full object-contain" />
+                    <img src={job.imageUrl} alt={job.name} className="w-full h-full object-contain drop-shadow-lg" />
                   ) : (
-                    <span className="text-6xl">{job.image}</span>
+                    <span className="text-7xl drop-shadow-lg">{job.image}</span>
                   )}
                 </div>
                 <div className="w-full overflow-hidden space-y-1 mt-3">
@@ -667,8 +667,8 @@ export const HomeDashboard: React.FC = () => {
                     이 직업을 선택하면 새로운 캐릭터와 함께 맞춤 활동이 시작됩니다!
                   </p>
                 </div>
-                <div className="w-56 h-56 sm:w-72 sm:h-72 rounded-[36px] bg-white p-6 shadow-2xl border border-purple-100 shrink-0 flex items-center justify-center">
-                  <img src={interestedJobs[jobIntroModalIdx].imageUrl || ARI_BLOB_URL} alt="Mascot" className="w-full h-full object-contain filter drop-shadow-md" />
+                <div className="w-64 h-64 sm:w-80 sm:h-80 shrink-0 flex items-center justify-center">
+                  <img src={interestedJobs[jobIntroModalIdx].imageUrl || ARI_BLOB_URL} alt="Mascot" className="w-full h-full object-contain filter drop-shadow-2xl" />
                 </div>
               </div>
 
@@ -687,8 +687,8 @@ export const HomeDashboard: React.FC = () => {
                         <span className="text-base sm:text-lg font-bold tracking-tighter bg-slate-50 px-4 py-1 rounded-full shadow-sm border border-slate-200 text-[#6A42ED]">{item.lv}</span>
                         <span className="text-sm sm:text-base font-semibold tracking-tight text-slate-500">{item.badge}</span>
                       </div>
-                      <div className="w-32 h-32 sm:w-40 sm:h-40 rounded-full bg-white p-2 border border-slate-100 flex items-center justify-center my-2 group-hover:scale-110 transition-transform shadow-sm">
-                        <img src={getJobCharacterImage(interestedJobs[jobIntroModalIdx].name, i + 1)} alt="Ari Stage" className="w-full h-full object-contain filter drop-shadow-sm" />
+                      <div className="w-40 h-40 sm:w-48 sm:h-48 flex items-center justify-center my-2 group-hover:scale-110 transition-transform">
+                        <img src={getJobCharacterImage(interestedJobs[jobIntroModalIdx].name, i + 1)} alt="Ari Stage" className="w-full h-full object-contain filter drop-shadow-lg" />
                       </div>
                       <strong className="text-sm sm:text-base font-bold tracking-tighter text-[#1F193B] text-center w-full bg-slate-50 rounded-2xl py-3 px-2 border border-slate-200/80 shadow-sm break-keep leading-snug">{getJobCharacterTitle(interestedJobs[jobIntroModalIdx].name, i + 1, item.name)}</strong>
                     </div>

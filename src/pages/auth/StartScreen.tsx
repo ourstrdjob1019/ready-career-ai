@@ -68,8 +68,9 @@ export const StartScreen: React.FC = () => {
         </div>
         
         {/* 심플한 안내 문구 */}
-        <h1 className="text-4xl md:text-5xl font-black text-slate-900 mb-5 tracking-tight break-keep">
-          학생부 AI 커리어 네비게이터
+        <h1 className="text-4xl md:text-5xl font-black text-slate-900 mb-5 tracking-tight break-keep flex flex-col items-center gap-2">
+          <span className="text-indigo-600">ReadyCareer</span>
+          <span><strong className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-indigo-600">꿈</strong>을 향한 AI 커리어 네비게이터</span>
         </h1>
         <p className="text-base md:text-lg text-slate-600 mb-10 max-w-lg break-keep font-medium">
           진로 탐색부터 생기부 맞춤형 포트폴리오까지, AI 파트너 아리가 여러분의 진학 여정을 안내합니다.
