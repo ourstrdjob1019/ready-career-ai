@@ -80,6 +80,16 @@ export const StartScreen: React.FC = () => {
           </p>
         </div>
 
+        {/* 시작하기 버튼 (캐릭터 위로 이동) */}
+        <div className="z-20 mb-8">
+          <button 
+            onClick={() => setShowRoleModal(true)}
+            className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xl px-14 py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-1"
+          >
+            시작하기
+          </button>
+        </div>
+
         {/* 메인 캐릭터 (텍스트 아래로) */}
         <div className="relative w-full max-w-[500px] sm:max-w-[650px] aspect-square flex items-center justify-center mb-8 drop-shadow-2xl z-10">
            <img 
@@ -88,14 +98,6 @@ export const StartScreen: React.FC = () => {
              className="w-full h-full object-contain hover:scale-105 transition-transform duration-500 ease-out" 
            />
         </div>
-
-        {/* 시작하기 버튼 */}
-        <button 
-          onClick={() => setShowRoleModal(true)}
-          className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xl px-14 py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-1"
-        >
-          시작하기
-        </button>
       </div>
 
       {/* 역할 선택 팝업 모달 */}

@@ -465,7 +465,7 @@ export const StarRoadmap: React.FC = () => {
           </p>
         </div>
 
-        <div className="flex-shrink-0 z-10 w-48 h-48 sm:w-64 sm:h-64 rounded-[36px] bg-white/15 backdrop-blur-xl p-4 border-4 border-white/40 shadow-2xl flex items-center justify-center transform hover:scale-105 transition-all">
+        <div className="flex-shrink-0 z-10 w-56 h-56 sm:w-80 sm:h-80 flex items-center justify-center transform hover:scale-105 transition-all">
           <img src={customAvatarUrl} alt="Target Job Avatar" className="w-full h-full object-contain filter drop-shadow-2xl" />
         </div>
       </div>
