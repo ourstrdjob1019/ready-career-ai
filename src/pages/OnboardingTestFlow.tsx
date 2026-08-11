@@ -152,9 +152,9 @@ export const OnboardingTestFlow: React.FC = () => {
             
             {/* 직업 추천 캐릭터 렌더링 추가 */}
             {matchingJobs.length > 0 && (
-              <div className="flex justify-center gap-4">
-                {matchingJobs.slice(0, 3).map(job => (
-                  <div key={job.jobName} className="flex flex-col items-center">
+              <div className="flex flex-nowrap overflow-x-auto gap-3 sm:gap-4 mb-8 pb-4 w-full hide-scrollbar snap-x">
+                {matchingJobs.slice(0, 6).map(job => (
+                  <div key={job.jobName} className="flex flex-col items-center flex-shrink-0 snap-center w-24 sm:w-32">
                     <div className="w-24 h-24 sm:w-32 sm:h-32 flex items-center justify-center overflow-hidden mb-2 group cursor-pointer transition-all" onClick={() => setSelectedJob(job)}>
                       <img src={job.defaultImageUrl} alt={job.jobName} className="w-full h-full object-contain drop-shadow-md group-hover:scale-110 transition-transform" />
                     </div>
@@ -226,8 +226,8 @@ export const OnboardingTestFlow: React.FC = () => {
                   ].map((item, i) => (
                     <div key={i} className="rounded-[24px] bg-white p-4 border border-slate-200 hover:border-indigo-400 transition-all flex flex-col items-center justify-between space-y-4 group">
                       <div className="w-full flex flex-col items-center space-y-2">
+                      <div className="inline-flex items-center gap-1.5 mb-2">
                         <span className="text-base sm:text-lg font-bold tracking-tighter bg-slate-50 px-4 py-1 rounded-full shadow-sm border border-slate-200 text-indigo-700">{item.lv}</span>
-                        <span className="text-sm sm:text-base font-semibold tracking-tight text-slate-500">{item.badge}</span>
                       </div>
                       <div className="w-40 h-40 sm:w-48 sm:h-48 flex items-center justify-center my-2 group-hover:scale-110 transition-transform">
                         <img src={getJobCharacterImage(selectedJob.jobName, i + 1)} alt="stage" className="w-full h-full object-contain filter drop-shadow-lg" />
@@ -296,21 +296,21 @@ export const OnboardingTestFlow: React.FC = () => {
         <div className="grid grid-cols-2 gap-4">
           {LIKERT_OPTIONS.map((opt) => {
             const isSelected = answers[qIndex] === opt.value;
-            const selectedStyle = opt.value === 5
-              ? 'bg-blue-600 border-blue-600 text-white ring-2 ring-blue-600 ring-offset-2'
-              : 'bg-green-600 border-green-600 text-white ring-2 ring-green-600 ring-offset-2';
+            const baseStyle = opt.value === 5
+              ? 'bg-blue-500 border-blue-600 text-white hover:bg-blue-600'
+              : 'bg-green-500 border-green-600 text-white hover:bg-green-600';
+            
+            const activeStyle = isSelected 
+              ? (opt.value === 5 ? 'ring-4 ring-blue-300 ring-offset-2' : 'ring-4 ring-green-300 ring-offset-2')
+              : 'opacity-90';
 
             return (
               <button
                 key={opt.value}
                 onClick={() => handleSelectAnswer(opt.value)}
-                className={`w-full p-5 rounded-2xl border-2 font-semibold tracking-tighter text-[15px] sm:text-lg transition-all flex flex-col items-center justify-center gap-4 text-center shadow-sm hover:shadow-md ${
-                  isSelected 
-                    ? selectedStyle 
-                    : 'bg-white border-gray-200 text-gray-700 hover:border-gray-300'
-                }`}
+                className={`w-full p-5 rounded-2xl border-2 font-semibold tracking-tighter text-[15px] sm:text-lg transition-all flex flex-col items-center justify-center gap-4 text-center shadow-sm hover:shadow-md ${baseStyle} ${activeStyle}`}
               >
-                <div className={`w-5 h-5 rounded-full flex-shrink-0 transition-all border-2 flex items-center justify-center ${isSelected ? 'bg-white border-white' : 'bg-transparent border-gray-300'}`}>
+                <div className={`w-5 h-5 rounded-full flex-shrink-0 transition-all border-2 flex items-center justify-center ${isSelected ? 'bg-white border-white' : 'bg-transparent border-white/50'}`}>
                    {isSelected && <div className={`w-2.5 h-2.5 rounded-full ${opt.value === 5 ? 'bg-blue-600' : 'bg-green-600'}`}></div>}
                 </div>
                 <span className="break-keep leading-snug">{opt.label}</span>

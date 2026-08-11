@@ -685,7 +685,6 @@ export const HomeDashboard: React.FC = () => {
                     <div key={i} className="rounded-[24px] bg-white p-4 border border-slate-200 hover:border-[#6A42ED] transition-all flex flex-col items-center justify-between space-y-4 group">
                       <div className="w-full flex flex-col items-center space-y-2">
                         <span className="text-base sm:text-lg font-bold tracking-tighter bg-slate-50 px-4 py-1 rounded-full shadow-sm border border-slate-200 text-[#6A42ED]">{item.lv}</span>
-                        <span className="text-sm sm:text-base font-semibold tracking-tight text-slate-500">{item.badge}</span>
                       </div>
                       <div className="w-40 h-40 sm:w-48 sm:h-48 flex items-center justify-center my-2 group-hover:scale-110 transition-transform">
                         <img src={getJobCharacterImage(interestedJobs[jobIntroModalIdx].name, i + 1)} alt="Ari Stage" className="w-full h-full object-contain filter drop-shadow-lg" />
