@@ -141,12 +141,12 @@ export const OnboardingTestFlow: React.FC = () => {
             <div className="flex items-center justify-between gap-3 bg-white p-4 rounded-3xl border border-slate-100 mb-6">
               <div className="text-center flex-1">
                 <div className="text-2xl font-semibold tracking-tighter text-black mb-1">{primary}</div>
-                <div className="text-xs font-medium tracking-tight text-slate-700">{pInfo.name}</div>
+                <div className="text-xs font-medium tracking-tight text-slate-700">{pInfo?.name || "알 수 없음"}</div>
               </div>
               <div className="text-slate-300 font-semibold tracking-tighter">+</div>
               <div className="text-center flex-1">
                 <div className="text-2xl font-semibold tracking-tighter text-blue-500 mb-1">{secondary}</div>
-                <div className="text-xs font-medium tracking-tight text-slate-700">{sInfo.name}</div>
+                <div className="text-xs font-medium tracking-tight text-slate-700">{sInfo?.name || "알 수 없음"}</div>
               </div>
             </div>
             
