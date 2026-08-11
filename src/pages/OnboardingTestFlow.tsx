@@ -36,10 +36,10 @@ export const OnboardingTestFlow: React.FC = () => {
 
   const processResults = (finalAnswers: number[]) => {
     setCurrentView("calculating");
-    const totals: any = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 };
-    const counts: any = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 };
-    const high5: any = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 };
-    const high4: any = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 };
+    const totals: any = { R: 0, I: 0, A: 0, S: 0 };
+    const counts: any = { R: 0, I: 0, A: 0, S: 0 };
+    const high5: any = { R: 0, I: 0, A: 0, S: 0 };
+    const high4: any = { R: 0, I: 0, A: 0, S: 0 };
 
     RIASEC_QUESTIONS.forEach((q, i) => {
       const v = finalAnswers[i];
