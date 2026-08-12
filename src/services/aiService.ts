@@ -7,7 +7,7 @@
 import { getJobAiProfile } from "./jobAiTemplates";
 
 export interface AiRequestPayload {
-  promptType: "saengbu_guideline" | "generate_constellation" | "portfolio_refine" | "habit_design" | "vision_recommendation" | "self_understanding_report" | "cornell_note_synthesis";
+  promptType: "saengbu_guideline" | "generate_constellation" | "portfolio_refine" | "habit_design" | "vision_recommendation" | "self_understanding_report" | "cornell_note_synthesis" | "chat";
   studentName?: string;
   riasecCode?: string;
   targetJob?: string;
@@ -247,6 +247,30 @@ function getExpoFallbackResult(payload: AiRequestPayload): AiResponseResult {
       provider: "expo-demo-fallback",
       json: profile.visionSuggestions,
       content: profile.visionSuggestions.join("\n")
+    };
+  }
+
+  if (payload.promptType === "chat") {
+    return {
+      success: true,
+      provider: "expo-demo-fallback",
+      content: `💡 아리가 분석한 결과, 회원님은 '${profile.jobName}' 진로 여정에서 최고 수준의 역량을 꽃피울 준비가 끝난 영재입니다!
+
+이 활동을 완벽하게 수행하기 위한 **3가지 구체적인 액션 플랜**을 제안합니다:
+
+1. 🌐 **관련 공신력 있는 웹사이트 탐색**
+   - **KOCW (대학공개강의)**: [kocw.net](http://www.kocw.net)에 접속하여 '${profile.jobName}' 관련 전공 기초 강의를 1개 이상 수강하고 요약해보세요.
+   - **DBpia (논문검색)**: [dbpia.co.kr](https://www.dbpia.co.kr)에서 현재 활동 주제와 관련된 학술 논문을 검색하여 서론과 결론을 읽어보세요.
+
+2. 🏅 **도움이 되는 자격증 알아보기**
+   - **Q-Net (큐넷)**: [q-net.or.kr](http://www.q-net.or.kr)에 접속해서 '${profile.jobName}' 분야의 국가공인 자격증 시험 과목과 응시 자격을 확인해보세요.
+   - **민간자격 정보서비스**: [pqi.or.kr](https://www.pqi.or.kr)에서 직무와 관련된 전문 민간 자격증을 검색하고 취득 계획을 세워보세요.
+
+3. 🎬 **실무자의 생생한 조언 구하기**
+   - **커리어넷 (진로동영상)**: [career.go.kr](https://www.career.go.kr)에서 해당 직업인의 인터뷰 영상을 찾아 시청하고 가장 인상 깊은 문장 3가지를 기록해보세요.
+   - **유튜브 실무 브이로그**: 유튜브에 '${profile.jobName} 실무 인터뷰' 등을 검색하여 실제 근무 환경과 필요 역량을 정리해보세요.
+
+위 추천 액션들을 클릭하고 직접 체험해본 후, 그 경험을 포트폴리오에 추가로 기록하면 훨씬 더 전문적인 진로 포트폴리오가 완성될 거예요! 🚀`
     };
   }
 

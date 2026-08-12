@@ -294,7 +294,7 @@ export const Portfolio: React.FC = () => {
       
       const res = await executeAiPrompt({
         promptType: "chat",
-        text: prompt,
+        userPrompt: prompt,
         targetJob: targetJobName,
       } as any);
 
