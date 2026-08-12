@@ -174,17 +174,19 @@ export const OnboardingTestFlow: React.FC = () => {
             <p className="text-slate-500 text-sm sm:text-base text-center mb-8 sm:mb-12 font-medium break-keep">
               추천된 {Math.min(matchingJobs.length, 6)}개의 캐릭터 중 가장 끌리는 하나를 골라 여정을 시작하세요!
             </p>
-            <div className="grid grid-cols-6 gap-2 sm:gap-6">
+            <div className="grid grid-cols-6 gap-1 sm:gap-6">
               {matchingJobs.slice(0, 6).map((job) => (
                 <button
                   key={job.jobName}
                   onClick={() => setSelectedJob(job)}
-                  className="bg-white hover:bg-slate-50 border border-slate-100 rounded-3xl p-3 sm:p-6 flex flex-col items-center justify-center transition-all group shadow-sm hover:shadow-md"
+                  className="bg-white hover:bg-slate-50 border border-slate-100 rounded-2xl sm:rounded-3xl p-2 sm:p-6 flex flex-col items-center justify-start transition-all group shadow-sm hover:shadow-md"
                 >
-                  <div className="w-full max-w-[192px] aspect-square mb-3 sm:mb-5">
-                    <img src={job.defaultImageUrl} alt={job.jobName} className="w-full h-full object-contain drop-shadow-lg group-hover:scale-110 transition-transform" />
+                  <div className="w-full aspect-square mb-2 sm:mb-5 flex items-center justify-center shrink-0">
+                    <img src={job.defaultImageUrl} alt={job.jobName} className="w-full h-full object-contain drop-shadow-md group-hover:scale-110 transition-transform" />
                   </div>
-                  <span className="text-xs sm:text-lg font-bold tracking-tighter text-slate-700 text-center break-keep leading-tight">{job.jobName}</span>
+                  <span className="text-[10px] sm:text-lg font-bold tracking-tighter text-slate-700 text-center break-words whitespace-normal leading-tight w-full mt-auto">
+                    {job.jobName}
+                  </span>
                 </button>
               ))}
             </div>
