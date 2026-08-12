@@ -251,15 +251,33 @@ function getExpoFallbackResult(payload: AiRequestPayload): AiResponseResult {
   }
 
   if (payload.promptType === "chat") {
-    return {
-      success: true,
-      provider: "expo-demo-fallback",
-      content: `💡 우와, 회원님은 앞으로 **'${profile.jobName}'** 분야에서 정말 멋진 재능을 발휘할 수 있을 거예요!
+    const actName = payload.activityNameAndPeriod || "이 활동";
+    const actCategory = payload.activityDomain || "";
+    let actionList = "";
 
-지금 당장 쉽게 시작해볼 수 있는 **3가지 재미있는 미션**을 추천해드릴게요. 한 번 따라해 볼까요?
+    if (actCategory.includes("자격증")) {
+      actionList = `1. 🏅 **관련 국가/민간 자격증 시험 정보 확인하기**
+   - **Q-Net (큐넷)**: [q-net.or.kr](http://www.q-net.or.kr)에 접속해서 '${actName}' 관련 자격증 시험 과목과 응시 조건을 가볍게 읽어보세요!
+   - 아직 중고등학생이라 응시 못하는 것도 있지만, "아~ 이런 공부가 필요하구나!" 하고 아는 것만으로도 대단한 시작이에요.
 
-1. 🌐 **관련 강연이나 영상 찾아보기**
-   - **Kmooc (무료 강의)**: [kmooc.kr](http://www.kmooc.kr)에 접속해서 '${profile.jobName}'이나 평소 관심있던 키워드를 검색해보세요! 중고등학생도 들을 수 있는 쉽고 재미있는 강의가 많아요.
+2. 📺 **자격증 합격자들의 생생한 후기 영상 보기**
+   - 유튜브에 '${actName} 합격 후기'나 '공부법'을 검색해보세요. 사람들이 얼마나 열심히 노력했는지 구경하고, 가장 기억에 남는 한마디를 적어볼까요?
+
+3. 📖 **동네 서점이나 도서관에서 기출문제집 구경하기**
+   - 근처 서점에 가서 '${actName}' 수험서를 찾아보세요. 딱 한 페이지만 펴서 어떤 문제가 나오는지 눈으로 구경만 해도 큰 공부가 된답니다!`;
+    } else if (actCategory.includes("동아리") || actCategory.includes("독서") || actCategory.includes("예술") || actCategory.includes("진학")) {
+      actionList = `1. 🌐 **'${actName}' 관련 흥미로운 영상이나 강연 찾아보기**
+   - **Kmooc (무료 강의)**: [kmooc.kr](http://www.kmooc.kr)나 세바시(유튜브)에서 관련된 쉬운 강의를 1개만 찾아서 들어보고, 새롭게 알게 된 점을 메모해보세요.
+   - 10분짜리 짧은 영상이라도 내 진로를 고민해본 훌륭한 흔적이 된답니다!
+
+2. 🎬 **비슷한 활동을 먼저 해본 선배들의 후기 검색하기**
+   - 네이버 블로그나 유튜브에 '${actName} 고등학생' 또는 '동아리 꿀팁'을 검색해보세요. 다른 학교 친구들은 어떻게 했는지 구경하고 내 활동에 적용할 아이디어를 한 개만 찾아볼까요?
+
+3. 📚 **더 깊이 알아보고 싶은 주제의 책 골라보기**
+   - 활동하면서 가장 궁금했던 점을 해결해 줄 수 있는 책을 도서관에서 찾아보세요. 전부 읽지 않아도 괜찮아요. 목차만 보고 딱 한 챕터만 읽은 뒤 소감을 적어보세요!`;
+    } else {
+      actionList = `1. 🌐 **'${profile.jobName}' 관련 강연이나 영상 찾아보기**
+   - **Kmooc (무료 강의)**: [kmooc.kr](http://www.kmooc.kr)에 접속해서 평소 관심있던 키워드를 검색해보세요! 중고등학생도 들을 수 있는 쉽고 재미있는 강의가 많아요.
    - **유튜브 브이로그**: 유튜브에 '${profile.jobName} 브이로그'나 '직업 인터뷰'를 검색해서, 실제 일하는 모습이 어떤지 구경하고 가장 신기했던 점을 메모해보세요.
 
 2. 🏅 **어떤 자격증이 있는지 구경해보기**
@@ -268,7 +286,18 @@ function getExpoFallbackResult(payload: AiRequestPayload): AiResponseResult {
 
 3. 🎬 **관련 도서나 기사 읽어보기**
    - 학교 도서관이나 동네 도서관에서 '${profile.jobName}'과 관련된 책을 딱 한 권만 빌려보세요. 
-   - 책 전체를 다 읽지 않아도 좋아요. 목차만 쭉 훑어보고 가장 흥미로운 챕터 하나만 골라서 읽은 뒤, 알게 된 점 3가지를 적어보면 어떨까요?
+   - 책 전체를 다 읽지 않아도 좋아요. 목차만 쭉 훑어보고 가장 흥미로운 챕터 하나만 골라서 읽은 뒤, 알게 된 점 3가지를 적어보면 어떨까요?`;
+    }
+
+    return {
+      success: true,
+      provider: "expo-demo-fallback",
+      content: `💡 우와, 회원님은 **'${profile.jobName}'** 분야에서 정말 멋진 재능을 발휘할 수 있을 거예요!
+특히 **[${actName}]** 활동에 관심을 가지다니 정말 대단해요! 👏
+
+이 활동을 더 알차게 만들기 위해 당장 시작해볼 수 있는 **3가지 재미있는 미션**을 추천해드릴게요. 한 번 따라해 볼까요?
+
+${actionList}
 
 이 3가지 미션 중 하나라도 직접 해본 뒤에 진로 포트폴리오에 추가로 쏙 적어두면, 나만의 진짜 멋진 스토리가 완성될 거예요! 파이팅! 🚀`
     };

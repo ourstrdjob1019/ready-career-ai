@@ -297,6 +297,8 @@ export const Portfolio: React.FC = () => {
         promptType: "chat",
         userPrompt: prompt,
         targetJob: targetJobName,
+        activityNameAndPeriod: rec.title,
+        activityDomain: rec.category,
       } as any);
 
       if (res && res.content) {
