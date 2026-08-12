@@ -285,12 +285,13 @@ export const Portfolio: React.FC = () => {
   const handleGenerateActionPlan = async (rec: any) => {
     setGeneratingActionPlanFor(rec.title);
     try {
-      const prompt = `학생이 다음 진로 활동을 계획하고 있습니다:
+      const prompt = `중고등학교 학생이 다음 진로 활동을 계획하고 있습니다:
 제목: ${rec.title}
 분야: ${rec.category}
 내용: ${rec.content}
 
-이 활동을 실제로 수행하는 데 도움이 될 만한 실제 존재하는 유용한 웹사이트 링크, 온라인 강의 플랫폼, 또는 관련 자격증 정보 3~4가지를 추천해주세요. 학생이 바로 클릭해서 도움을 받을 수 있는 실용적인 리스트(마크다운 형태)로 작성해주세요.`;
+이 학생이 당장 실천해볼 수 있는 실제 유용한 웹사이트 링크, 알아두면 좋은 자격증, 또는 구체적인 활동 3가지를 추천해주세요.
+단, 어려운 전문 용어를 피하고, 중고등학생 눈높이에 맞춰 아주 친근하고 다정한 말투('~해요', '~해볼까요?')로 작성해주세요. 학생이 바로 클릭하거나 검색해서 도움을 받을 수 있도록 실용적이고 보기 편한 마크다운 리스트 형태로 정리해주세요.`;
       
       const res = await executeAiPrompt({
         promptType: "chat",
@@ -718,9 +719,9 @@ export const Portfolio: React.FC = () => {
 
                 <div className="pt-3 border-t border-slate-100 flex flex-col gap-2">
                   {actionPlans[rec.title] ? (
-                    <div className="bg-[#F9F7FF] p-5 rounded-[20px] border-2 border-[#DED4FF] text-sm mb-2 whitespace-pre-wrap shadow-sm">
-                      <strong className="text-[#6A42ED] mb-3 flex items-center gap-1.5 text-sm sm:text-base"><Sparkles className="w-5 h-5 text-amber-400"/> AI 아리의 맞춤 액션 플랜</strong>
-                      <div className="text-[#3B364C] leading-relaxed text-xs sm:text-sm">{actionPlans[rec.title]}</div>
+                    <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200 text-sm mb-2 max-h-48 overflow-y-auto whitespace-pre-wrap shadow-inner custom-scrollbar">
+                      <strong className="text-indigo-600 mb-2 flex items-center gap-1.5"><Sparkles className="w-4 h-4 text-amber-400"/> AI 아리의 맞춤 액션 플랜</strong>
+                      <div className="text-slate-700 leading-relaxed text-xs sm:text-sm">{actionPlans[rec.title]}</div>
                     </div>
                   ) : (
                     <button
