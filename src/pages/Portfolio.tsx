@@ -718,9 +718,9 @@ export const Portfolio: React.FC = () => {
 
                 <div className="pt-3 border-t border-slate-100 flex flex-col gap-2">
                   {actionPlans[rec.title] ? (
-                    <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200 text-sm mb-2 max-h-48 overflow-y-auto whitespace-pre-wrap shadow-inner">
-                      <strong className="text-indigo-600 mb-2 flex items-center gap-1.5"><Sparkles className="w-4 h-4"/> AI 아리의 액션 플랜</strong>
-                      <div className="text-slate-700 leading-relaxed text-xs sm:text-sm">{actionPlans[rec.title]}</div>
+                    <div className="bg-[#F9F7FF] p-5 rounded-[20px] border-2 border-[#DED4FF] text-sm mb-2 whitespace-pre-wrap shadow-sm">
+                      <strong className="text-[#6A42ED] mb-3 flex items-center gap-1.5 text-sm sm:text-base"><Sparkles className="w-5 h-5 text-amber-400"/> AI 아리의 맞춤 액션 플랜</strong>
+                      <div className="text-[#3B364C] leading-relaxed text-xs sm:text-sm">{actionPlans[rec.title]}</div>
                     </div>
                   ) : (
                     <button
