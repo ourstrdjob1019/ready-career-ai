@@ -115,6 +115,10 @@ export const Portfolio: React.FC = () => {
   const [isPhotoCompressing, setIsPhotoCompressing] = useState(false);
   const [isAiRefining, setIsAiRefining] = useState(false);
 
+  // AI 추천 풀 액션플랜 생성 상태
+  const [generatingActionPlanFor, setGeneratingActionPlanFor] = useState<string | null>(null);
+  const [actionPlans, setActionPlans] = useState<Record<string, string>>({});
+
   // 모달 상태 (상세보기 뷰 모달 & 수정 모달)
   const [viewingItem, setViewingItem] = useState<PortfolioItem | null>(null);
   const [editingItem, setEditingItem] = useState<PortfolioItem | null>(null);
@@ -275,6 +279,37 @@ export const Portfolio: React.FC = () => {
     localStorage.setItem("readycareer_portfolio_items_v2", JSON.stringify(updated));
     rewardXP(60, `[${rec.title}] 진로 활동 보관함 장착!`);
     showToast(`✅ [${rec.title}] 항목이 내 진로 포트폴리오 스펙 쇼룸으로 즉시 이동되었습니다!`);
+  };
+
+  // AI 아리와 액션플랜 만들기
+  const handleGenerateActionPlan = async (rec: any) => {
+    setGeneratingActionPlanFor(rec.title);
+    try {
+      const prompt = `학생이 다음 진로 활동을 계획하고 있습니다:
+제목: ${rec.title}
+분야: ${rec.category}
+내용: ${rec.content}
+
+이 활동을 실제로 수행하는 데 도움이 될 만한 실제 존재하는 유용한 웹사이트 링크, 온라인 강의 플랫폼, 또는 관련 자격증 정보 3~4가지를 추천해주세요. 학생이 바로 클릭해서 도움을 받을 수 있는 실용적인 리스트(마크다운 형태)로 작성해주세요.`;
+      
+      const res = await executeAiPrompt({
+        promptType: "chat",
+        text: prompt,
+        targetJob: targetJobName,
+      } as any);
+
+      if (res && res.content) {
+        setActionPlans(prev => ({ ...prev, [rec.title]: res.content }));
+        showToast("✨ AI 아리의 액션 플랜이 생성되었습니다!");
+      } else {
+        throw new Error("No content");
+      }
+    } catch (error) {
+      console.error("Action plan generation error:", error);
+      showToast("액션 플랜을 생성하는 중 오류가 발생했습니다.");
+    } finally {
+      setGeneratingActionPlanFor(null);
+    }
   };
 
   const handleUpdateItem = (e: React.FormEvent) => {
@@ -681,14 +716,32 @@ export const Portfolio: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="pt-3 border-t border-slate-100">
-                  <button
-                    onClick={() => handleImportRecommendation(rec)}
-                    className="w-full py-3 px-4 bg-gradient-to-r from-[#008A90] to-[#00A0A5] hover:brightness-110 text-white font-semibold tracking-tighter text-xs rounded-3xl shadow-md flex items-center justify-center gap-1.5 cursor-pointer transition-transform active:scale-95"
-                  >
-                    <Plus className="w-4 h-4 stroke-[3]" />
-                    <span>내 포트폴리오로 가져오기!</span>
-                  </button>
+                <div className="pt-3 border-t border-slate-100 flex flex-col gap-2">
+                  {actionPlans[rec.title] ? (
+                    <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200 text-sm mb-2 max-h-48 overflow-y-auto whitespace-pre-wrap shadow-inner">
+                      <strong className="text-indigo-600 mb-2 flex items-center gap-1.5"><Sparkles className="w-4 h-4"/> AI 아리의 액션 플랜</strong>
+                      <div className="text-slate-700 leading-relaxed text-xs sm:text-sm">{actionPlans[rec.title]}</div>
+                    </div>
+                  ) : (
+                    <button
+                      onClick={() => handleGenerateActionPlan(rec)}
+                      disabled={generatingActionPlanFor === rec.title}
+                      className="w-full py-3 px-4 bg-gradient-to-r from-indigo-500 to-purple-600 hover:brightness-110 text-white font-semibold tracking-tighter text-xs rounded-3xl shadow-md flex items-center justify-center gap-1.5 cursor-pointer transition-transform active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed"
+                    >
+                      <Sparkles className={`w-4 h-4 text-amber-300 ${generatingActionPlanFor === rec.title ? 'animate-spin' : ''}`} />
+                      <span>{generatingActionPlanFor === rec.title ? "아리가 액션 플랜을 기획 중..." : "AI 아리와 액션플랜 만들기 🌟"}</span>
+                    </button>
+                  )}
+
+                  {actionPlans[rec.title] && (
+                    <button
+                      onClick={() => handleImportRecommendation({...rec, content: rec.content + "\n\n[AI 액션 플랜]\n" + actionPlans[rec.title]})}
+                      className="w-full py-3 px-4 bg-gradient-to-r from-[#008A90] to-[#00A0A5] hover:brightness-110 text-white font-semibold tracking-tighter text-xs rounded-3xl shadow-md flex items-center justify-center gap-1.5 cursor-pointer transition-transform active:scale-95 mt-1"
+                    >
+                      <Plus className="w-4 h-4 stroke-[3]" />
+                      <span>내 포트폴리오에 최종 가져오기!</span>
+                    </button>
+                  )}
                 </div>
               </div>
             ))}
